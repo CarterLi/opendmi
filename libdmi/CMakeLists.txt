@@ -1,6 +1,7 @@
 project(opendmi-libdmi)
 
 include_directories(include)
+add_compile_options(-Wall -Wextra -Werror -pedantic)
 
 add_library(dmi-object OBJECT
     src/table.c
