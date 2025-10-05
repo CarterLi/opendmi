@@ -10,7 +10,11 @@
 #pragma once
 
 #include <sys/cdefs.h>
+
 #include <stdint.h>
+#include <stdbool.h>
+
+#define DMI_HANDLE_INVALID ((dmi_handle_t)0xFFFFU)
 
 /**
  * @brief DMI structure handle, a unique 16-bit number in the range 0 to
@@ -25,6 +29,11 @@
  * by the SMBIOS specification.
  */
 typedef uint16_t dmi_handle_t;
+
+/**
+ * @brief DMI string number.
+ */
+typedef uint8_t dmi_string_t;
 
 /**
  * @brief DMI structure types identifiers. Types 0 through 127 (7Fh) are
@@ -85,7 +94,16 @@ enum dmi_type
 };
 
 /**
- * @brief DMI structure header.
+ * DMI table specification.
+ */
+struct dmi_table_spec
+{
+    enum dmi_type type;
+    char *name;
+};
+
+/**
+ * @brief DMI table header.
  */
 struct dmi_table_header
 {
@@ -119,5 +137,24 @@ struct dmi_table_header
      */
     dmi_handle_t handle;
 } __attribute__((packed));
+
+/**
+ * @brief DMI table descriptor.
+ */
+struct dmi_table
+{
+    struct dmi_table_header *header;
+    unsigned int string_count;
+    const char **strings;
+};
+
+__BEGIN_DECLS
+
+struct dmi_table *dmi_table_open(void *ptr);
+dmi_handle_t dmi_table_handle(struct dmi_table *table);
+const char *dmi_table_string(struct dmi_table *table, dmi_string_t num);
+void dmi_table_close(struct dmi_table *table);
+
+__END_DECLS
 
 #endif // !OPENDMI_TABLE_H

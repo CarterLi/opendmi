@@ -1,10 +1,12 @@
 project(opendmi-libdmi)
 
 include_directories(include)
-add_compile_options(-Wall -Wextra -Werror -pedantic)
+add_compile_options(-Wall -Wextra -Werror -pedantic -Wno-zero-length-array)
 
 add_library(dmi-object OBJECT
     src/table.c
+    src/baseboard.c
+    src/processor.c
     src/cache.c
     src/utils.c)
 
