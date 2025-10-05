@@ -1,0 +1,32 @@
+//
+// OpenDMI: DMI/SMBIOS library
+// Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+//
+// SPDX-License-Identifier: BSD-3-Clause
+//
+#ifndef OPENDMI_CHASSIS_H
+#define OPENDMI_CHASSIS_H
+
+#pragma once
+
+enum dmi_chassis_type
+{
+    DMI_CHASSIS_OTHER   = 0x01,
+    DMI_CHASSIS_UNKNOWN = 0x02,
+    DMI_CHASSIS_DESKTOP = 0x03,
+    DMI_CHASSIS_LOW_PROFILE_DESKTOP = 0x04,
+    DMI_CHASSIS_PIZZA_BOX  = 0x05,
+    DMI_CHASSIS_MINI_TOWER = 0x06,
+    DMI_CHASSIS_TOWER      = 0x07,
+    DMI_CHASSIS_PORTABLE   = 0x08,
+    DMI_CHASSIS_LAPTOP     = 0x09,
+    DMI_CHASSIS_NOTEBOOK   = 0x0A,
+    DMI_CHASSIS_HAND_HELD  = 0x0B,
+    DMI_CHASSIS_DOCKING_STATION = 0x0C,
+    DMI_CHASSIS_ALL_IN_ONE = 0x0D,
+    DMI_CHASSIS_SUB_NOTEBOOK = 0x0E,
+    DMI_CHASSIS_SPACE_SAVING = 0x0F,
+    DMI_CHASSIS_LUNCH_BOX    = 0x10
+};
+
+#endif // !OPENDMI_CHASSIS_H

@@ -4,4 +4,4 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/dmi.h>
+#include <opendmi/table.h>

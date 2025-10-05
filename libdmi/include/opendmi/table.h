@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_DMI_H
-#define OPENDMI_DMI_H
+#ifndef OPENDMI_TABLE_H
+#define OPENDMI_TABLE_H
 
 #pragma once
 
@@ -87,14 +87,14 @@ enum dmi_type
 /**
  * @brief DMI structure header.
  */
-struct dmi_header
+struct dmi_table_header
 {
     /**
      * @brief Specifies the type of structure. Types 0 through 127 (7Fh) are
      * reserved for and defined by this specification. Types 128 through 256
      * (0x80 to 0xFF) are available for system- and OEM-specific information.
      */
-    uint8_t type;
+    enum dmi_type type;
 
     /**
      * @brief Specifies the length of the formatted area of the structure,
@@ -120,10 +120,4 @@ struct dmi_header
     dmi_handle_t handle;
 } __attribute__((packed));
 
-__BEGIN_DECLS
-
-const char *dmi_type_name(enum dmi_type id);
-
-__END_DECLS
-
-#endif // !OPENDMI_DMI_H
+#endif // !OPENDMI_TABLE_H
