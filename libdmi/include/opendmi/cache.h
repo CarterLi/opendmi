@@ -24,11 +24,11 @@ typedef uint32_t dmi_cache_size_ex_t;
  */
 enum dmi_cache_type
 {
-    DMI_CACHE_TYPE_OTHER       = 0x01, /**< Other */
-    DMI_CACHE_TYPE_UNKNOWN     = 0x02, /**< Unknown */
-    DMI_CACHE_TYPE_INSTRUCTION = 0x03, /**< Instruction cache */
-    DMI_CACHE_TYPE_DATA        = 0x04, /**< Data cache */
-    DMI_CACHE_TYPE_UNIFIED     = 0x05, /**< Unified cache */
+    DMI_CACHE_TYPE_OTHER       = 0x01, ///< Other
+    DMI_CACHE_TYPE_UNKNOWN     = 0x02, ///< Unknown
+    DMI_CACHE_TYPE_INSTRUCTION = 0x03, ///< Instruction cache
+    DMI_CACHE_TYPE_DATA        = 0x04, ///< Data cache
+    DMI_CACHE_TYPE_UNIFIED     = 0x05, ///< Unified cache
     __DMI_CACHE_TYPE_COUNT
 };
 
@@ -37,10 +37,10 @@ enum dmi_cache_type
  */
 enum dmi_cache_mode
 {
-    DMI_CACHE_MODE_WRITE_THROUGH = 0x00, /**< Write through */
-    DMI_CACHE_MODE_WRITE_BACK    = 0x01, /**< Write back */
-    DMI_CACHE_MODE_VARIABLE      = 0x02, /**< Varies with memory address */
-    DMI_CACHE_MODE_UNKNOWN       = 0x03, /**< Unknown */
+    DMI_CACHE_MODE_WRITE_THROUGH = 0x00, ///< Write through
+    DMI_CACHE_MODE_WRITE_BACK    = 0x01, ///< Write back
+    DMI_CACHE_MODE_VARIABLE      = 0x02, ///< Varies with memory address
+    DMI_CACHE_MODE_UNKNOWN       = 0x03, ///< Unknown
     __DMI_CACHE_MODE_COUNT
 };
 
@@ -49,12 +49,12 @@ enum dmi_cache_mode
  */
 enum dmi_cache_ecc_type
 {
-    DMI_CACHE_ECC_OTHER      = 0x01, /**< Other */
-    DMI_CACHE_ECC_UNKNOWN    = 0x02, /**< Unknown */
-    DMI_CACHE_ECC_NONE       = 0x03, /**< None */
-    DMI_CACHE_ECC_PARITY     = 0x04, /**< Parity */
-    DMI_CACHE_ECC_SINGLE_BIT = 0x05, /**< Single-bit ECC */
-    DMI_CACHE_ECC_MULTI_BIT  = 0x06, /**< Multi-bit ECC */
+    DMI_CACHE_ECC_OTHER      = 0x01, ///< Other
+    DMI_CACHE_ECC_UNKNOWN    = 0x02, ///< Unknown
+    DMI_CACHE_ECC_NONE       = 0x03, ///< None
+    DMI_CACHE_ECC_PARITY     = 0x04, ///< Parity
+    DMI_CACHE_ECC_SINGLE_BIT = 0x05, ///< Single-bit ECC
+    DMI_CACHE_ECC_MULTI_BIT  = 0x06, ///< Multi-bit ECC
     __DMI_CACHE_ECC_TYPE_COUNT
 };
 
@@ -63,20 +63,20 @@ enum dmi_cache_ecc_type
  */
 enum dmi_cache_assoc
 {
-    DMI_CACHE_ASSOC_OTHER   = 0x01, /**< Other */
-    DMI_CACHE_ASSOC_UNKNOWN = 0x02, /**< Unknown */
-    DMI_CACHE_ASSOC_DIRECT  = 0x03, /**< Direct mapped */
-    DMI_CACHE_ASSOC_2WAY    = 0x04, /**< 2-way set-associative */
-    DMI_CACHE_ASSOC_4WAY    = 0x05, /**< 4-way set-associative */
-    DMI_CACHE_ASSOC_FULL    = 0x06, /**< Fully associative */
-    DMI_CACHE_ASSOC_8WAY    = 0x07, /**< 8-way set-associative */
-    DMI_CACHE_ASSOC_16WAY   = 0x08, /**< 16-way set-associative */
-    DMI_CACHE_ASSOC_12WAY   = 0x09, /**< 12-way set-associative */
-    DMI_CACHE_ASSOC_24WAY   = 0x0A, /**< 24-way set-associative */
-    DMI_CACHE_ASSOC_32WAY   = 0x0B, /**< 32-way set-associative */
-    DMI_CACHE_ASSOC_48WAY   = 0x0C, /**< 48-way set-associative */
-    DMI_CACHE_ASSOC_64WAY   = 0x0D, /**< 64-way set-associative */
-    DMI_CACHE_ASSOC_20WAY   = 0x0E, /**< 20-way set-associative */
+    DMI_CACHE_ASSOC_OTHER   = 0x01, ///< Other
+    DMI_CACHE_ASSOC_UNKNOWN = 0x02, ///< Unknown
+    DMI_CACHE_ASSOC_DIRECT  = 0x03, ///< Direct mapped
+    DMI_CACHE_ASSOC_2WAY    = 0x04, ///< 2-way set-associative
+    DMI_CACHE_ASSOC_4WAY    = 0x05, ///< 4-way set-associative
+    DMI_CACHE_ASSOC_FULL    = 0x06, ///< Fully associative
+    DMI_CACHE_ASSOC_8WAY    = 0x07, ///< 8-way set-associative
+    DMI_CACHE_ASSOC_16WAY   = 0x08, ///< 16-way set-associative
+    DMI_CACHE_ASSOC_12WAY   = 0x09, ///< 12-way set-associative
+    DMI_CACHE_ASSOC_24WAY   = 0x0A, ///< 24-way set-associative
+    DMI_CACHE_ASSOC_32WAY   = 0x0B, ///< 32-way set-associative
+    DMI_CACHE_ASSOC_48WAY   = 0x0C, ///< 48-way set-associative
+    DMI_CACHE_ASSOC_64WAY   = 0x0D, ///< 64-way set-associative
+    DMI_CACHE_ASSOC_20WAY   = 0x0E, ///< 20-way set-associative
     __DMI_CACHE_ASSOC_COUNT
 };
 
@@ -85,10 +85,10 @@ enum dmi_cache_assoc
  */
 enum dmi_cache_location
 {
-    DMI_CACHE_LOCATION_INTERNAL = 0x00, /**< Internal */
-    DMI_CACHE_LOCATION_EXTERNAL = 0x01, /**< External */
-    DMI_CACHE_LOCATION_RESERVED = 0x02, /**< Reserved */
-    DMI_CACHE_LOCATION_UNKNOWN  = 0x03, /**< Unknown */
+    DMI_CACHE_LOCATION_INTERNAL = 0x00, ///< Internal
+    DMI_CACHE_LOCATION_EXTERNAL = 0x01, ///< External
+    DMI_CACHE_LOCATION_RESERVED = 0x02, ///< Reserved
+    DMI_CACHE_LOCATION_UNKNOWN  = 0x03, ///< Unknown
     __DMI_CACHE_LOCATION_COUNT
 };
 
@@ -125,7 +125,7 @@ struct dmi_cache_table
      * @brief String number for reference designation, e.g. "CACHE1", 0.
      * @since SMBIOS 2.0
      */
-    uint8_t socket;
+    dmi_string_t socket;
 
     /**
      * @brief Cache configuration.
