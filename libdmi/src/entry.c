@@ -5,7 +5,6 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <string.h>
-#include <errno.h>
 
 #include <opendmi/entry.h>
 #include <opendmi/utils.h>
@@ -45,7 +44,7 @@ static const dmi_entry_spec_t dmi_entry_specs[] =
 bool dmi_entry_decode(dmi_context_t *context, const void *data, size_t length)
 {
     if ((context == nullptr) || (data == nullptr) || (length == 0)) {
-        errno = EINVAL;
+        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
 
@@ -59,7 +58,7 @@ bool dmi_entry_decode(dmi_context_t *context, const void *data, size_t length)
     }
 
     if (spec->name == nullptr) {
-        errno = ENOENT;
+        dmi_set_error(context, DMI_ERROR_UNKNOWN_EPS_ANCHOR);
         return false;
     }
 
@@ -70,7 +69,7 @@ static bool dmi_entry_decode_legacy(dmi_context_t *context,
                                     const void *data, size_t length)
 {
     if ((context == nullptr) || (data == nullptr) || (length < sizeof(dmi_entry_legacy_t))) {
-        errno = EINVAL;
+        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
 
@@ -78,7 +77,7 @@ static bool dmi_entry_decode_legacy(dmi_context_t *context,
 
     // Verify EPS checksum value
     if (!dmi_checksum(data, sizeof(dmi_entry_legacy_t))) {
-        errno = EIO;
+        dmi_set_error(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
         return false;
     }
 
@@ -103,7 +102,7 @@ static bool dmi_entry_decode_v21(dmi_context_t *context,
                                  const void *data, size_t length)
 {
     if ((context == nullptr) || (data == nullptr) || (length < sizeof(dmi_entry_v21_t))) {
-        errno = EINVAL;
+        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
 
@@ -112,7 +111,7 @@ static bool dmi_entry_decode_v21(dmi_context_t *context,
     // Check maximum entry point length to prevent checksum run beyond
     // the buffer.
     if (entry->length > sizeof(dmi_entry_v21_t)) {
-        errno = EIO;
+        dmi_set_error(context, DMI_ERROR_INVALID_EPS_LENGTH);
         return false;
     }
 
@@ -120,13 +119,13 @@ static bool dmi_entry_decode_v21(dmi_context_t *context,
     // bytes, but we also accept value 0x1E due to a mistake in SMBIOS
     // specification version 2.1.
     if (entry->length < sizeof(dmi_entry_v21_t) - 1) {
-        errno = EIO;
+        dmi_set_error(context, DMI_ERROR_INVALID_EPS_LENGTH);
         return false;
     }
 
     // Verify EPS checksum value
     if (!dmi_checksum(data, entry->length)) {
-        errno = EIO;
+        dmi_set_error(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
         return false;
     }
 
@@ -146,7 +145,7 @@ static bool dmi_entry_decode_v30(dmi_context_t *context,
                                  const void *data, size_t length)
 {
     if ((context == nullptr) || (data == nullptr) || (length < sizeof(dmi_entry_v30_t))) {
-        errno = EINVAL;
+        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
 
@@ -155,25 +154,19 @@ static bool dmi_entry_decode_v30(dmi_context_t *context,
     // Check maximum entry point length to prevent checksum run beyond
     // the buffer.
     if (entry->length > sizeof(dmi_entry_v30_t)) {
-        errno = EIO;
+        dmi_set_error(context, DMI_ERROR_INVALID_EPS_LENGTH);
         return false;
     }
 
     // Check minimum entry point length.
     if (entry->length < sizeof(dmi_entry_v30_t)) {
-        errno = EIO;
+        dmi_set_error(context, DMI_ERROR_INVALID_EPS_LENGTH);
         return false;
     }
 
     // Verify EPS checksum value
     if (!dmi_checksum(data, entry->length)) {
-        errno = EIO;
-        return false;
-    }
-
-    // Check platform address size
-    if (sizeof(context->table_area_addr) < sizeof(entry->table_area_addr)) {
-        errno = EIO;
+        dmi_set_error(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
         return false;
     }
 

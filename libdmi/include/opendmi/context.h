@@ -10,6 +10,7 @@
 #pragma once
 
 #include <opendmi/types.h>
+#include <opendmi/error.h>
 #include <opendmi/version.h>
 
 /**
@@ -61,9 +62,31 @@ typedef struct dmi_context
      * @brief Maximum size of SMBIOS table.
      */
     size_t table_size_max;
-} dmi_context_t;
+
+    /**
+     * @brief Last error code.
+     */
+    dmi_error_t last_error;
+};
 
 __BEGIN_DECLS
+
+/**
+ * @brief Set last DMI error code.
+ *
+ * @param context DMI context handle (may be `NULL`)
+ * @param error Error code
+ */
+void dmi_set_error(dmi_context_t *context, dmi_error_t error);
+
+/**
+ * @brief Get last DMI error code.
+ *
+ * @param context DMI context handle (may be `NULL`)
+ * @return Error code
+ */
+dmi_error_t dmi_get_error(const dmi_context_t *context);
+
 
 __END_DECLS
 

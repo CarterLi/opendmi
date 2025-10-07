@@ -12,8 +12,11 @@ static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
 {
     [DMI_OK]                         = "Success",
     [DMI_ERROR_INVALID_ARGUMENT]     = "Invalid argument",
+    [DMI_ERROR_UNKNOWN_EPS_ANCHOR]   = "Unknown entry point structure anchor",
     [DMI_ERROR_INVALID_EPS_LENGTH]   = "Invalid entry point structure length",
     [DMI_ERROR_INVALID_EPS_CHECKSUM] = "Invalid entry point structure checksum",
+    [DMI_ERROR_INVALID_TABLE_ADDR]   = "Invalid table address",
+    [DMI_ERROR_INVALID_TABLE_LENGTH] = "Invalid table length",
     [DMI_ERROR_HANDLE_NOT_FOUND]     = "Handle not found",
     [DMI_ERROR_OUT_OF_MEMORY]        = "Out of memory"
 };
