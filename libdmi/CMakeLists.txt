@@ -13,6 +13,16 @@ add_library(dmi-object OBJECT
     src/cache.c
     src/utils.c)
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    target_sources(dmi-object PRIVATE src/backend/linux.c)
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    target_sources(dmi-object PRIVATE src/backend/darwin.c)
+elseif (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+    target_sources(dmi-object PRIVATE src/backend/freebsd.c)
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    target_sources(dmi-object PRIVATE src/backend/windows.c)
+endif ()
+
 add_library(dmi-static STATIC $<TARGET_OBJECTS:dmi-object>)
 set_target_properties(dmi-static PROPERTIES OUTPUT_NAME dmi)
 
