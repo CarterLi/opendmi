@@ -1,0 +1,104 @@
+//
+// OpenDMI: DMI/SMBIOS library
+// Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+//
+// SPDX-License-Identifier: BSD-3-Clause
+//
+#ifndef OPENDMI_TYPES_H
+#define OPENDMI_TYPES_H
+
+#pragma once
+
+#include <sys/cdefs.h>
+#include <sys/types.h>
+
+#include <stdint.h>
+#include <stdbool.h>
+
+#define DMI_HANDLE_INVALID ((dmi_handle_t)0xFFFFU)
+
+/**
+ * @brief DMI structure handle, a unique 16-bit number in the range 0 to
+ * 0xFFFE (for version 2.0) or 0 to 0xFEFF (for version 2.1 and later). The
+ * handle numbers are not required to be contiguous. For version 2.1 and
+ * later, handle values in the range 0xFF00 to 0xFFFF are reserved for use
+ * by DMI/SMBIOS specification.
+ *
+ * The UEFI Platform Initialization Specification reserves handle number
+ * 0xFFFE for its EFI_SMBIOS_PROTOCOL.Add() function to mean "assign an unused
+ * handle number automatically." This number is not used for any other purpose
+ * by the SMBIOS specification.
+ */
+typedef uint16_t dmi_handle_t;
+
+/**
+ * @brief DMI string number.
+ */
+typedef uint8_t dmi_string_t;
+
+/**
+ * @brief DMI structure types identifiers. Types 0 through 127 (7Fh) are
+ * reserved for and defined by this specification. Types 128 through 256 (0x80
+ * to 0xFF) are available for system- and OEM-specific information.
+ */
+typedef enum dmi_type
+{
+    DMI_TYPE_FIRMWARE                = 0,   ///< Platform firmware information
+    DMI_TYPE_SYSTEM                  = 1,   ///< System information
+    DMI_TYPE_BASEBOARD               = 2,   ///< Baseboard or module information
+    DMI_TYPE_SYS_CHASSIS             = 3,   ///< System enclosure or chassis
+    DMI_TYPE_PROCESSOR               = 4,   ///< Processor information
+    DMI_TYPE_MEM_CONTROLLER          = 5,   ///< Memory controller information (obsolette)
+    DMI_TYPE_MEM_MODULE              = 6,   ///< Memory module information (obsolette)
+    DMI_TYPE_CACHE                   = 7,   ///< Cache information
+    DMI_TYPE_PORT_CONNECTOR          = 8,   ///< Port connector information
+    DMI_TYPE_SYS_SLOTS               = 9,   ///< System slots
+    DMI_TYPE_ONBOARD_DEVICE          = 10,  ///< Onboard devices information
+    DMI_TYPE_OEM_STRINGS             = 11,  ///< OEM strings
+    DMI_TYPE_SYS_CONFIG_OPTIONS      = 12,  ///< System configuration options
+    DMI_TYPE_FIRMWARE_LANGUAGE       = 13,  ///< Firmware language information
+    DMI_TYPE_GROUP_ASSOC             = 14,  ///< Group associations
+    DMI_TYPE_SYS_EVENT_LOG           = 15,  ///< System event log
+    DMI_TYPE_MEM_ARRAY               = 16,  ///< Physical memory array
+    DMI_TYPE_MEM_DEVICE              = 17,  ///< Memory device
+    DMI_TYPE_MEM_ERROR_32            = 18,  ///< 32-bit memory error information
+    DMI_TYPE_MEM_ARRAY_MAPPED_ADDR   = 19,  ///< Memory array mapped address
+    DMI_TYPE_MEM_DEVICE_MAPPED_ADDR  = 20,  ///< Memory device mapped address
+    DMI_TYPE_POINTING_DEVICE         = 21,  ///< Built-in pointing device
+    DMI_TYPE_PORTABLE_BATTERY        = 22,  ///< Portable battery
+    DMI_TYPE_SYS_RESET               = 23,  ///< System reset
+    DMI_TYPE_HARDWARE_SECURITY       = 24,  ///< Hardware security
+    DMI_TYPE_SYS_POWER_CONTROLS      = 25,  ///< System power controls
+    DMI_TYPE_VOLTAGE_PROBE           = 26,  ///< Voltage probe
+    DMI_TYPE_COOLING_DEVICE          = 27,  ///< Cooling device
+    DMI_TYPE_TEMPERATURE_PROBE       = 28,  ///< Temperature probe
+    DMI_TYPE_CURRENT_PROBE           = 29,  ///< Electrical current probe
+    DMI_TYPE_OOB_REMOTE_ACCESS       = 30,  ///< Out-of-band remote access
+    DMI_TYPE_BIS_ENTRY_POINT         = 31,  ///< Boot Integrity Services (BIS) entry point
+    DMI_TYPE_SYS_BOOT                = 32,  ///< System boot information
+    DMI_TYPE_MEM_ERROR_64            = 33,  ///< 64-bit memory error information
+    DMI_TYPE_MGMT_DEVICE             = 34,  ///< Management device
+    DMI_TYPE_MGMT_DEVICE_COMPONENT   = 35,  ///< Management device component
+    DMI_TYPE_MGMT_DEVICE_THRESHOLD   = 36,  ///< Management device threshold data
+    DMI_TYPE_MEM_CHANNEL             = 37,  ///< Memory channel
+    DMI_TYPE_IPMI_DEVICE             = 38,  ///< IPMI device information
+    DMI_TYPE_SYS_POWER_SUPPLY        = 39,  ///< System power supply
+    DMI_TYPE_ADDITIONAL_INFO         = 40,  ///< Additional information
+    DMI_TYPE_ONBOARD_DEVICE_EX       = 41,  ///< Onboard devices extended information
+    DMI_TYPE_MGMT_CONTROLLER_HOST_IF = 42,  ///< Management controller host information
+    DMI_TYPE_TPM_DEVICE              = 43,  ///< TPM device
+    DMI_TYPE_PROCESSOR_EX            = 44,  ///< Processor additional information
+    DMI_TYPE_FIRMWARE_INVENTORY      = 45,  ///< Firmware inventory information
+    DMI_TYPE_STRING_PROPERTY         = 46,  ///< String property
+    DMI_TYPE_INACTIVE                = 126, ///< Inactive
+    DMI_TYPE_END_OF_TABLE            = 127, ///< End of table
+    __DMI_TYPE_COUNT
+} dmi_type_t;
+
+__BEGIN_DECLS
+
+const char *dmi_type_name(dmi_type_t value);
+
+__END_DECLS
+
+#endif // !OPENDMI_TYPES_H

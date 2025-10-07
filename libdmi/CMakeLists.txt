@@ -4,6 +4,7 @@ include_directories(include)
 add_compile_options(-Wall -Wextra -Werror -pedantic -Wno-zero-length-array)
 
 add_library(dmi-object OBJECT
+    src/types.c
     src/table.c
     src/chassis.c
     src/baseboard.c
