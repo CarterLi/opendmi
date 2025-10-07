@@ -4,4 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#ifndef __WINNT__
+#error "Unsupported OS type"
+#endif // !__WINNT__
+
 #include <opendmi/backend.h>
