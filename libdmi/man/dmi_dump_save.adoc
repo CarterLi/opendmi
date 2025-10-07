@@ -1,0 +1,9 @@
+= dmi_dump_save(3)
+Dmitry Sednev
+OpenDMI 0.1.0
+
+:doctype: manpage
+:manmanual: DMI_DUMP_SAVE
+:mansource: DMI_DUMP_SAVE
+
+== Synopsis

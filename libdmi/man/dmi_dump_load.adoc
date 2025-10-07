@@ -1,0 +1,9 @@
+= dmi_dump_load(3)
+Dmitry Sednev
+OpenDMI 0.1.0
+
+:doctype: manpage
+:manmanual: DMI_DUMP_LOAD
+:mansource: DMI_DUMP_LOAD
+
+== Synopsis
