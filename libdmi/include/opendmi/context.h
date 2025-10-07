@@ -41,7 +41,7 @@ typedef struct dmi_context
     /**
      * @brief Address of SMBIOS table area.
      */
-    uintptr_t table_area_addr;
+    uint64_t table_area_addr;
 
     /**
      * @brief Actual size of SMBIOS table area.
@@ -51,7 +51,7 @@ typedef struct dmi_context
     /**
      * @brief Maximum size of SMBIOS table area.
      */
-    size_t table_area_size_max;
+    size_t table_area_max_size;
 
     /**
      * @brief Pointer to SMBIOS table area data.
@@ -61,7 +61,7 @@ typedef struct dmi_context
     /**
      * @brief Maximum size of SMBIOS table.
      */
-    size_t table_size_max;
+    size_t table_max_size;
 
     /**
      * @brief Last error code.

@@ -210,7 +210,7 @@ struct dmi_entry_v21
      * Size of the largest SMBIOS structure, in bytes, and encompasses the
      * structure’s formatted area and text strings.
      */
-    const uint16_t table_size_max;
+    const uint16_t table_max_size;
 
     /**
      * @brief Entry Point Structure revision.
@@ -330,7 +330,7 @@ struct dmi_entry_v30
      * Table Address, in bytes. The actual size is guaranteed to be less or
      * equal to the maximum size.
      */
-    const uint32_t table_area_size_max;
+    const uint32_t table_area_max_size;
 
     /**
      * @brief Structure table address.

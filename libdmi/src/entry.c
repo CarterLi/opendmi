@@ -92,7 +92,7 @@ static bool dmi_entry_decode_legacy(dmi_context_t *context,
     // Decode table area parameters
     context->table_count         = entry->table_count;
     context->table_area_addr     = entry->table_area_addr;
-    context->table_area_size_max = entry->table_area_size;
+    context->table_area_max_size = entry->table_area_size;
     context->table_area_size     = entry->table_area_size;
 
     return true;
@@ -136,7 +136,7 @@ static bool dmi_entry_decode_v21(dmi_context_t *context,
     dmi_entry_version_fixup(context);
 
     // Decode table parameters
-    context->table_size_max = entry->table_size_max;
+    context->table_max_size = entry->table_max_size;
 
     return dmi_entry_decode_legacy(context, (void *)&entry->ieps, sizeof(entry->ieps));
 }
@@ -177,7 +177,7 @@ static bool dmi_entry_decode_v30(dmi_context_t *context,
 
     // Decode table parameters
     context->table_area_addr     = entry->table_area_addr;
-    context->table_area_size_max = entry->table_area_size_max;
+    context->table_area_max_size = entry->table_area_max_size;
 
     return true;
 }
