@@ -19,15 +19,15 @@ typedef unsigned int dmi_version_t;
  *
  * @param major Major version number.
  * @param minor Minor version number.
- * @param patch Patch version number.
+ * @param revision Revision version number.
  *
  * @return Version number.
  */
 static inline dmi_version_t dmi_version(unsigned int major,
                                         unsigned int minor,
-                                        unsigned int patch)
+                                        unsigned int revision)
 {
-    return ((major & 0xFFU) << 16) | ((minor & 0xFFU) << 8) | (patch & 0xFFU);
+    return ((major & 0xFFU) << 16) | ((minor & 0xFFU) << 8) | (revision & 0xFFU);
 }
 
 /**
@@ -53,12 +53,12 @@ static inline unsigned int dmi_version_minor(dmi_version_t version)
 }
 
 /**
- * @brief Get patch component of SMBIOS version number.
+ * @brief Get revision component of SMBIOS version number.
  *
  * @param version Version number.
- * @return Patch version number.
+ * @return Revision version number.
  */
-static inline unsigned int dmi_version_patch(dmi_version_t version)
+static inline unsigned int dmi_version_revision(dmi_version_t version)
 {
     return version & 0x0000FFU;
 }

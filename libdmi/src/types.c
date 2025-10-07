@@ -61,5 +61,5 @@ static const char *dmi_type_names[__DMI_TYPE_COUNT] =
 
 const char *dmi_type_name(dmi_type_t value)
 {
-    return dmi_name(dmi_type_name, value, __DMI_TYPE_COUNT);
+    return dmi_name(dmi_type_names, value, __DMI_TYPE_COUNT);
 }

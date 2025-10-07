@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include <sys/cdefs.h>
-#include <sys/types.h>
+#include <opendmi/types.h>
 
 __BEGIN_DECLS
 
 const char *dmi_name(const char **table, size_t id, size_t count);
+bool dmi_checksum(const void *data, size_t length);
 
 __END_DECLS
 
