@@ -1,13 +1,15 @@
 # OpenDMI
 
+OpenDMI is a cross-platform, commercial-grade DMI/SMBIOS framework, focused on functionality and ease of use. It provides direct access to all of the DMI/SMBIOS data, command line tools, bindings for major programming languages and even more.
+
 ## Features
 
 * Platform-agnostic access to DMI/SMBIOS structures
-* Interfaces for C, C++ and Python languages
+* Bindings for C, C++, Python and Go languages
 * Shell interface compatible with `dmidecode`
 * JSON and XML output support for automation purposes
-* Working on Linux, Mac OS and BSD platforms
-* No external dependencies
+* Works on Linux, Mac OS and BSD platforms
+* Small footprint, no external dependencies
 
 ## Building
 
