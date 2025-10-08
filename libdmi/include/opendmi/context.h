@@ -64,6 +64,11 @@ struct dmi_context
     size_t table_max_size;
 
     /**
+     * @brief Backend-specific data.
+     */
+    void *backend;
+
+    /**
      * @brief Last error code.
      */
     dmi_error_t last_error;

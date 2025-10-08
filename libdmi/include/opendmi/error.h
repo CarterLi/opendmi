@@ -18,6 +18,7 @@ typedef enum dmi_error
 {
     DMI_OK,                         ///< Success
     DMI_ERROR_INVALID_ARGUMENT,     ///< Invalid argument
+    DMI_ERROR_INVALID_STATE,        ///< Invalid state
     DMI_ERROR_UNKNOWN_EPS_ANCHOR,   ///< Unknown entry point structure anchor
     DMI_ERROR_INVALID_EPS_LENGTH,   ///< Invalid entry point structure length
     DMI_ERROR_INVALID_EPS_CHECKSUM, ///< Invalid entry point structure checksum
@@ -26,6 +27,7 @@ typedef enum dmi_error
     DMI_ERROR_ENTRY_NOT_FOUND,      ///< Entry not found
     DMI_ERROR_NO_MORE_ENTRIES,      ///< No more entries
     DMI_ERROR_OUT_OF_MEMORY,        ///< Out of memory
+    DMI_ERROR_SERVICE_NOT_FOUND,    ///< Service not found
     __DMI_ERROR_COUNT
 } dmi_error_t;
 

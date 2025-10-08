@@ -9,14 +9,43 @@
 
 #include <opendmi/context.h>
 
+#if defined(__linux__)
+#include <opendmi/backend/linux.h>
+#define DMI_BACKEND dmi_backend_linux
+#elif defined(__APPLE__)
+#include <opendmi/backend/darwin.h>
+#define DMI_BACKEND dmi_backend_darwin
+#elif defined(__FreeBSD__)
+#include <opendmi/backend/freebsd.h>
+#define DMI_BACKEND dmi_backend_freebsd
+#elif defined(__WINNT__)
+#include <opendmi/backend/windows.h>
+#define DMI_BACKEND dmi_backend_windows
+#else
+#error "Unsupported OS type"
+#endif
+
+/**
+ * @internal
+ * @brief Fixup DMI version number.
+ */
 static void dmi_version_fixup(dmi_context_t *context);
 
+/**
+ * @brief Last error code (thread-local).
+ */
 static __thread dmi_error_t dmi_last_error = DMI_OK;
+
+/**
+ * @brief Backend handle.
+ */
+static dmi_backend_t *dmi_backend = &DMI_BACKEND;
 
 dmi_context_t *dmi_open(void)
 {
     dmi_context_t *context = nullptr;
 
+    // Allocate context descriptor
     context = malloc(sizeof(dmi_context_t));
     if (context == nullptr) {
         dmi_set_error(nullptr,  DMI_ERROR_OUT_OF_MEMORY);
@@ -24,10 +53,25 @@ dmi_context_t *dmi_open(void)
     }
     memset(context, 0, sizeof(dmi_context_t));
 
-    // Fixup SMBIOS version number
-    dmi_version_fixup(context);
+    // Initialize context
+    bool success = false;
+    do {
+        // Initialize backend
+        if (!dmi_backend->open(context))
+            break;
 
-    return nullptr;
+        // Fixup SMBIOS version number
+        dmi_version_fixup(context);
+
+        success = true;
+    } while (false);
+
+    if (!success) {
+        dmi_close(context);
+        return nullptr;
+    }
+
+    return context;
 }
 
 dmi_context_t *dmi_dump_load(const char *path)
