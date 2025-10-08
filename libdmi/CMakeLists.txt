@@ -1,11 +1,11 @@
 project(opendmi-libdmi)
 
-include_directories(include)
 add_compile_options(-Wall -Wextra -Werror -pedantic -Wno-zero-length-array)
 
 add_library(dmi-object OBJECT
     src/types.c
     src/error.c
+    src/context.c
     src/entry.c
     src/table.c
     src/chassis.c
@@ -13,6 +13,8 @@ add_library(dmi-object OBJECT
     src/processor.c
     src/cache.c
     src/utils.c)
+
+target_include_directories(dmi-object PUBLIC include)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_sources(dmi-object PRIVATE src/backend/linux.c)
@@ -25,7 +27,9 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 endif ()
 
 add_library(dmi-static STATIC $<TARGET_OBJECTS:dmi-object>)
+target_include_directories(dmi-static INTERFACE include)
 set_target_properties(dmi-static PROPERTIES OUTPUT_NAME dmi)
 
 add_library(dmi-shared SHARED $<TARGET_OBJECTS:dmi-object>)
+target_include_directories(dmi-shared INTERFACE include)
 set_target_properties(dmi-shared PROPERTIES OUTPUT_NAME dmi)

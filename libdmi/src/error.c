@@ -17,7 +17,8 @@ static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
     [DMI_ERROR_INVALID_EPS_CHECKSUM] = "Invalid entry point structure checksum",
     [DMI_ERROR_INVALID_TABLE_ADDR]   = "Invalid table address",
     [DMI_ERROR_INVALID_TABLE_LENGTH] = "Invalid table length",
-    [DMI_ERROR_HANDLE_NOT_FOUND]     = "Handle not found",
+    [DMI_ERROR_ENTRY_NOT_FOUND]      = "Entry not found",
+    [DMI_ERROR_NO_MORE_ENTRIES]      = "No more entries",
     [DMI_ERROR_OUT_OF_MEMORY]        = "Out of memory"
 };
 

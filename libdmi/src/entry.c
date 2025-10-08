@@ -9,12 +9,42 @@
 #include <opendmi/entry.h>
 #include <opendmi/utils.h>
 
-static void dmi_entry_version_fixup(dmi_context_t *context);
-
+/**
+ * @internal
+ * @brief Decode legacy SMBIOS entry point (32-bit).
+ *
+ * @param context DMI context handle
+ * @param data Pointer to DMI entry point data
+ * @param length DMI entry point data length
+ *
+ * @return The function returns `true` on success and `false` otherwise.
+ */
 static bool dmi_entry_decode_legacy(dmi_context_t *context,
                                     const void *data, size_t length);
+
+/**
+ * @internal
+ * @brief Decode SMBIOS 2.1+ entry point (32-bit).
+ *
+ * @param context DMI context handle
+ * @param data Pointer to DMI entry point data
+ * @param length DMI entry point data length
+ *
+ * @return The function returns `true` on success and `false` otherwise.
+ */
 static bool dmi_entry_decode_v21(dmi_context_t *context,
                                  const void *data, size_t length);
+
+/**
+ * @internal
+ * @brief Decode SMBIOS 3.0+ entry point (64-bit).
+ *
+ * @param context DMI context handle
+ * @param data Pointer to DMI entry point data
+ * @param length DMI entry point data length
+ *
+ * @return The function returns `true` on success and `false` otherwise.
+ */
 static bool dmi_entry_decode_v30(dmi_context_t *context,
                                  const void *data, size_t length);
 
@@ -133,7 +163,6 @@ static bool dmi_entry_decode_v21(dmi_context_t *context,
     context->smbios_version = dmi_version(entry->version_major,
                                           entry->version_minor,
                                           entry->revision);
-    dmi_entry_version_fixup(context);
 
     // Decode table parameters
     context->table_max_size = entry->table_max_size;
@@ -180,31 +209,4 @@ static bool dmi_entry_decode_v30(dmi_context_t *context,
     context->table_area_max_size = entry->table_area_max_size;
 
     return true;
-}
-
-static void dmi_entry_version_fixup(dmi_context_t *context)
-{
-    unsigned int major    = dmi_version_major(context->smbios_version);
-    unsigned int minor    = dmi_version_minor(context->smbios_version);
-    unsigned int revision = dmi_version_revision(context->smbios_version);
-
-    if (major != 2)
-        return;
-
-    // Some BIOS report weird SMBIOS version, fix that up
-    switch (minor) {
-    case 0x1F:
-    case 0x21:
-        minor = 3;
-        break;
-
-    case 0x33:
-        minor = 6;
-        break;
-
-    default:
-        return;
-    }
-
-    context->smbios_version = dmi_version(major, minor, revision);
 }

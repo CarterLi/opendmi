@@ -9,4 +9,18 @@
 
 #pragma once
 
+#include <opendmi/types.h>
+
+#ifndef DMI_BACKEND_T
+#define DMI_BACKEND_T
+typedef struct dmi_backend dmi_backend_t;
+#endif // !DMI_BACKEND_T
+
+struct dmi_backend
+{
+    char *name;
+    bool (*open)(dmi_context_t *context);
+    bool (*close)(dmi_context_t *context);
+};
+
 #endif // !OPENDMI_BACKEND_H

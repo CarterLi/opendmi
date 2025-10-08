@@ -18,6 +18,11 @@
 #define DMI_HANDLE_INVALID ((dmi_handle_t)0xFFFFU)
 
 /**
+ * @brief Byte type for raw data and pointer arithmetics.
+ */
+typedef uint8_t dmi_data_t;
+
+/**
  * @brief DMI structure handle, a unique 16-bit number in the range 0 to
  * 0xFFFE (for version 2.0) or 0 to 0xFEFF (for version 2.1 and later). The
  * handle numbers are not required to be contiguous. For version 2.1 and
@@ -94,6 +99,16 @@ typedef enum dmi_type
     DMI_TYPE_END_OF_TABLE            = 127, ///< End of table
     __DMI_TYPE_COUNT
 } dmi_type_t;
+
+#ifndef DMI_TABLE_T
+#define DMI_TABLE_T
+typedef struct dmi_table dmi_table_t;
+#endif // !DMI_TABLE_T
+
+#ifndef DMI_CONTEXT_T
+#define DMI_CONTEXT_T
+typedef struct dmi_context dmi_context_t;
+#endif // !DMI_CONTEXT_T
 
 __BEGIN_DECLS
 

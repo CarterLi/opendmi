@@ -16,7 +16,7 @@
 /**
  * @brief DMI context descriptor.
  */
-typedef struct dmi_context
+struct dmi_context
 {
     /**
      * @brief SMBIOS version number.
@@ -56,7 +56,7 @@ typedef struct dmi_context
     /**
      * @brief Pointer to SMBIOS table area data.
      */
-    void *table_data;
+    dmi_data_t *table_data;
 
     /**
      * @brief Maximum size of SMBIOS table.
@@ -70,6 +70,21 @@ typedef struct dmi_context
 };
 
 __BEGIN_DECLS
+
+/**
+ * @brief Open DMI context.
+ */
+dmi_context_t *dmi_open(void);
+
+/**
+ * @brief Load DMI context from dump file.
+ */
+dmi_context_t *dmi_dump_load(const char *path);
+
+/**
+ * @brief Save DMI context to dump file.
+ */
+bool dmi_dump_save(dmi_context_t *context, const char *path);
 
 /**
  * @brief Set last DMI error code.
@@ -87,6 +102,10 @@ void dmi_set_error(dmi_context_t *context, dmi_error_t error);
  */
 dmi_error_t dmi_get_error(const dmi_context_t *context);
 
+/**
+ * @brief Close DMI context.
+ */
+void dmi_close(dmi_context_t *context);
 
 __END_DECLS
 
