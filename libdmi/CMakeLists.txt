@@ -12,7 +12,8 @@ add_library(dmi-object OBJECT
     src/baseboard.c
     src/processor.c
     src/cache.c
-    src/utils.c)
+    src/utils.c
+    src/backend/dump.c)
 
 target_include_directories(dmi-object PUBLIC include)
 

@@ -15,6 +15,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define dmi_cast(dst, expr) ((__typeof__(dst))(expr))
+
 #define DMI_HANDLE_INVALID ((dmi_handle_t)0xFFFFU)
 
 /**

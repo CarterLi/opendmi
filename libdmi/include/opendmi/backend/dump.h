@@ -4,13 +4,13 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_BACKEND_WINDOWS_H
-#define OPENDMI_BACKEND_WINDOWS_H
+#ifndef OPENDMI_BACKEND_DUMP_H
+#define OPENDMI_BACKEND_DUMP_H
 
 #pragma once
 
 #include <opendmi/backend.h>
 
-extern dmi_backend_t dmi_windows_backend;
+extern dmi_backend_t dmi_dump_backend;
 
-#endif // !OPENDMI_BACKEND_WINDOWS_H
+#endif // !OPENDMI_BACKEND_DUMP_H

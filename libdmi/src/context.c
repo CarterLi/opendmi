@@ -11,21 +11,24 @@
 #include <opendmi/entry.h>
 #include <opendmi/table.h>
 
+#include <opendmi/backend/dump.h>
 #if defined(__linux__)
 #include <opendmi/backend/linux.h>
-#define DMI_BACKEND dmi_backend_linux
+#define DMI_BACKEND dmi_linux_backend
 #elif defined(__APPLE__)
 #include <opendmi/backend/darwin.h>
-#define DMI_BACKEND dmi_backend_darwin
+#define DMI_BACKEND dmi_darwin_backend
 #elif defined(__FreeBSD__)
 #include <opendmi/backend/freebsd.h>
-#define DMI_BACKEND dmi_backend_freebsd
+#define DMI_BACKEND dmi_freebsd_backend
 #elif defined(__WINNT__)
 #include <opendmi/backend/windows.h>
-#define DMI_BACKEND dmi_backend_windows
+#define DMI_BACKEND dmi_windows_backend
 #else
 #error "Unsupported OS type"
 #endif
+
+static dmi_context_t *dmi_context_create(dmi_backend_t *backend, const void *arg);
 
 /**
  * @internal
@@ -45,51 +48,7 @@ static dmi_backend_t *dmi_backend = &DMI_BACKEND;
 
 dmi_context_t *dmi_open(void)
 {
-    dmi_context_t *context = nullptr;
-
-    // Allocate context descriptor
-    context = malloc(sizeof(dmi_context_t));
-    if (context == nullptr) {
-        dmi_set_error(nullptr,  DMI_ERROR_OUT_OF_MEMORY);
-        return nullptr;
-    }
-    memset(context, 0, sizeof(dmi_context_t));
-
-    // Initialize context
-    bool success = false;
-    do {
-        // Initialize backend
-        if (!dmi_backend->open(context))
-            break;
-
-        // Read and decode entry point
-        context->entry_data = dmi_backend->read_entry(context, &context->entry_size);
-        if (context->entry_data == nullptr)
-            break;
-        if (!dmi_entry_decode(context, context->entry_data, context->entry_size))
-            break;
-
-        // Fixup SMBIOS version number
-        dmi_version_fixup(context);
-
-        // Read and decode SMBIOS tables
-        // TODO: Use separate variable for size
-        context->table_data = dmi_backend->read_tables(context, &context->table_area_size);
-        if (context->table_data == nullptr)
-            break;
-        if (!dmi_table_scan(context))
-            break;
-
-        success = true;
-    } while (false);
-
-    if (!success) {
-        dmi_set_error(nullptr, context->last_error);
-        dmi_close(context);
-        return nullptr;
-    }
-
-    return context;
+    return dmi_context_create(dmi_backend, nullptr);
 }
 
 dmi_context_t *dmi_dump_load(const char *path)
@@ -99,7 +58,7 @@ dmi_context_t *dmi_dump_load(const char *path)
         return nullptr;
     }
 
-    return nullptr;
+    return dmi_context_create(dmi_backend, path);
 }
 
 bool dmi_dump_save(dmi_context_t *context, const char *path)
@@ -134,6 +93,57 @@ void dmi_close(dmi_context_t *context)
         return;
 
     free(context);
+}
+
+static dmi_context_t *dmi_context_create(dmi_backend_t *backend, const void *arg)
+{
+    dmi_context_t *context = nullptr;
+
+    // Allocate context descriptor
+    context = malloc(sizeof(dmi_context_t));
+    if (context == nullptr) {
+        dmi_set_error(nullptr,  DMI_ERROR_OUT_OF_MEMORY);
+        return nullptr;
+    }
+    memset(context, 0, sizeof(dmi_context_t));
+
+    // Initialize context
+    bool success = false;
+    do {
+        context->backend = backend;
+
+        // Initialize backend
+        if (!context->backend->open(context, arg))
+            break;
+
+        // Read and decode entry point
+        context->entry_data = context->backend->read_entry(context, &context->entry_size);
+        if (context->entry_data == nullptr)
+            break;
+        if (!dmi_entry_decode(context, context->entry_data, context->entry_size))
+            break;
+
+        // Fixup SMBIOS version number
+        dmi_version_fixup(context);
+
+        // Read and decode SMBIOS tables
+        // TODO: Use separate variable for size
+        context->table_data = context->backend->read_tables(context, &context->table_area_size);
+        if (context->table_data == nullptr)
+            break;
+        if (!dmi_table_scan(context))
+            break;
+
+        success = true;
+    } while (false);
+
+    if (!success) {
+        dmi_set_error(nullptr, context->last_error);
+        dmi_close(context);
+        return nullptr;
+    }
+
+    return context;
 }
 
 static void dmi_version_fixup(dmi_context_t *context)

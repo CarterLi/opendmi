@@ -11,6 +11,6 @@
 
 #include <opendmi/backend.h>
 
-extern dmi_backend_t dmi_backend_freebsd;
+extern dmi_backend_t dmi_freebsd_backend;
 
 #endif // !OPENDMI_BACKEND_FREEBSD_H

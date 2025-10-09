@@ -11,23 +11,23 @@
 #include <IOKit/IOKitLib.h>
 
 #include <opendmi/context.h>
-#include <opendmi/backend.h>
+#include <opendmi/backend/darwin.h>
 
-typedef struct dmi_context_darwin dmi_context_darwin_t;
+typedef struct dmi_darwin_session dmi_darwin_session_t;
 
-struct dmi_context_darwin
+struct dmi_darwin_session
 {
     io_service_t service;
 };
 
-static bool dmi_darwin_open(dmi_context_t *context);
+static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute__((unused)));
 static dmi_data_t *dmi_darwin_read_entry(dmi_context_t *context, size_t *plength);
 static dmi_data_t *dmi_darwin_read_tables(dmi_context_t *context, size_t *plength);
 static bool dmi_darwin_close(dmi_context_t *context);
 
 static dmi_data_t *dmi_darwin_read_data(dmi_context_t *context, CFStringRef key, size_t *plength);
 
-dmi_backend_t dmi_backend_darwin =
+dmi_backend_t dmi_darwin_backend =
 {
     .name        = "Apple SMBIOS service",
     .open        = dmi_darwin_open,
@@ -36,33 +36,33 @@ dmi_backend_t dmi_backend_darwin =
     .close       = dmi_darwin_close
 };
 
-static bool dmi_darwin_open(dmi_context_t *context)
+static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute__((unused)))
 {
-    dmi_context_darwin_t *backend = nullptr;
+    dmi_darwin_session_t *session = nullptr;
 
     if (context == nullptr) {
         dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
-    if (context->backend != nullptr) {
+    if (context->session != nullptr) {
         dmi_set_error(context, DMI_ERROR_INVALID_STATE);
         return false;
     }
 
     // Allocate backend descriptor
-    backend = malloc(sizeof(dmi_context_darwin_t));
-    if (backend == nullptr) {
+    session = malloc(sizeof(dmi_darwin_session_t));
+    if (session == nullptr) {
         dmi_set_error(context, DMI_ERROR_OUT_OF_MEMORY);
         return false;
     }
-    memset(backend, 0, sizeof(dmi_context_darwin_t));
+    memset(session, 0, sizeof(dmi_darwin_session_t));
 
     // Establish SMBIOS service connection
     bool success = false;
     do {
         // Connect to SMBIOS service
-        backend->service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("AppleSMBIOS"));
-        if (backend->service == MACH_PORT_NULL) {
+        session->service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("AppleSMBIOS"));
+        if (session->service == MACH_PORT_NULL) {
             dmi_set_error(context, DMI_ERROR_SERVICE_UNAVAILABLE);
             return EXIT_FAILURE;
         }
@@ -71,11 +71,11 @@ static bool dmi_darwin_open(dmi_context_t *context)
     } while (false);
 
     if (!success) {
-        free(backend);
+        free(session);
         return false;
     }
 
-    context->backend = backend;
+    context->session = session;
 
     return true;
 }
@@ -96,12 +96,12 @@ static bool dmi_darwin_close(dmi_context_t *context)
         dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
-    if (context->backend == nullptr) {
+    if (context->session == nullptr) {
         dmi_set_error(context, DMI_ERROR_INVALID_STATE);
         return false;
     }
 
-    dmi_context_darwin_t *backend = (dmi_context_darwin_t *)context->backend;
+    dmi_darwin_session_t *session = dmi_cast(session, context->session);
 
     if (context->table_data != nullptr) {
         free(context->table_data);
@@ -112,10 +112,10 @@ static bool dmi_darwin_close(dmi_context_t *context)
         context->entry_data = nullptr;
     }
 
-    if (backend->service != MACH_PORT_NULL)
-        IOObjectRelease(backend->service);
+    if (session->service != MACH_PORT_NULL)
+        IOObjectRelease(session->service);
 
-    free(backend);
+    free(session);
     context->backend = nullptr;
 
     return true;
@@ -127,12 +127,12 @@ static dmi_data_t *dmi_darwin_read_data(dmi_context_t *context, CFStringRef key,
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return nullptr;
     }
-    if (context->backend == nullptr) {
+    if (context->session == nullptr) {
         dmi_set_error(context, DMI_ERROR_INVALID_STATE);
         return nullptr;
     }
 
-    dmi_context_darwin_t *backend = (dmi_context_darwin_t *)context->backend;
+    dmi_darwin_session_t *session = dmi_cast(session, context->session);
 
     bool        success = false;
     CFDataRef   ref     = nullptr;
@@ -140,7 +140,7 @@ static dmi_data_t *dmi_darwin_read_data(dmi_context_t *context, CFStringRef key,
     size_t      length  = 0;
 
     do {
-        ref = (CFDataRef)IORegistryEntryCreateCFProperty(backend->service, key,
+        ref = (CFDataRef)IORegistryEntryCreateCFProperty(session->service, key,
                                                          kCFAllocatorDefault, kNilOptions);
         if (ref == NULL) {
             dmi_set_error(context, DMI_ERROR_INTERNAL);

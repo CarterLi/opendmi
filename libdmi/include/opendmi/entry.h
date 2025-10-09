@@ -47,6 +47,11 @@ typedef struct dmi_entry_v30 dmi_entry_v30_t;
 #endif // !DMI_ENTRY_V30_T
 
 /**
+ * @brief Maximum size of SMBIOS entry point structure.
+ */
+#define DMI_ENTRY_MAX_SIZE 0x20
+
+/**
  * @brief SMBIOS entry point format specification.
  */
 struct dmi_entry_spec

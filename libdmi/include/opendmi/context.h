@@ -12,6 +12,7 @@
 #include <opendmi/types.h>
 #include <opendmi/error.h>
 #include <opendmi/version.h>
+#include <opendmi/backend.h>
 
 /**
  * @brief DMI context descriptor.
@@ -69,9 +70,14 @@ struct dmi_context
     size_t table_max_size;
 
     /**
+     * @brief Backend handle.
+     */
+    dmi_backend_t *backend;
+
+    /**
      * @brief Backend-specific data.
      */
-    void *backend;
+    void *session;
 
     /**
      * @brief Last error code.
