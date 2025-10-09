@@ -34,6 +34,11 @@ struct dmi_context
     void *entry_data;
 
     /**
+     * @brief Actual size of entry point data.
+     */
+    size_t entry_size;
+
+    /**
      * @brief Total number of SMBIOS tables.
      */
     size_t table_count;

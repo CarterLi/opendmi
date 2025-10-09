@@ -4,9 +4,15 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <assert.h>
-#include <errno.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
 
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <assert.h>
+
+#include <opendmi/context.h>
 #include <opendmi/utils.h>
 
 const char *dmi_name(const char **table, size_t id, size_t count)
@@ -36,4 +42,41 @@ bool dmi_checksum(const void *data, size_t length)
     }
 
     return (sum == 0) ? true : false;
+}
+
+dmi_data_t *dmi_file_map(const char *path, size_t *plength)
+{
+    if ((path == nullptr) || (plength == nullptr)) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return nullptr;
+    }
+
+    int         fd   = -1;
+    dmi_data_t *data = nullptr;
+    struct stat st;
+
+    bool success = false;
+    do {
+        fd = open(path, O_RDONLY);
+        if (fd < 0)
+            break;
+ 
+        if (fstat(fd, &st) < 0)
+            break;
+
+        if ((data = mmap(nullptr, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == nullptr)
+            break;
+
+        success = true;
+    } while (false);
+
+    if (fd >= 0)
+        close(fd);
+
+    if (!success)
+        return nullptr;
+
+    *plength = st.st_size;
+
+    return data;
 }

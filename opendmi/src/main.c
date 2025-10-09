@@ -1,8 +1,7 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include <opendmi/context.h>
-
-#include <IOKit/IOKitLib.h>
 
 int main(int argc, char *argv[])
 {

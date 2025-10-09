@@ -20,6 +20,8 @@ struct dmi_backend
 {
     char *name;
     bool (*open)(dmi_context_t *context);
+    dmi_data_t *(*read_entry)(dmi_context_t *context, size_t *plength);
+    dmi_data_t *(*read_tables)(dmi_context_t *context, size_t *plength);
     bool (*close)(dmi_context_t *context);
 };
 

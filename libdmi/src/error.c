@@ -20,8 +20,9 @@ static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
     [DMI_ERROR_INVALID_TABLE_LENGTH] = "Invalid table length",
     [DMI_ERROR_ENTRY_NOT_FOUND]      = "Entry not found",
     [DMI_ERROR_NO_MORE_ENTRIES]      = "No more entries",
-    [DMI_ERROR_SERVICE_NOT_FOUND]    = "Service not found",
-    [DMI_ERROR_OUT_OF_MEMORY]        = "Out of memory"
+    [DMI_ERROR_SERVICE_UNAVAILABLE]  = "Service unavailable",
+    [DMI_ERROR_OUT_OF_MEMORY]        = "Out of memory",
+    [DMI_ERROR_INTERNAL]             = "Internal error"
 };
 
 const char *dmi_error_message(dmi_error_t error)

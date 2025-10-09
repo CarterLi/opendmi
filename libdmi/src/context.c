@@ -8,6 +8,8 @@
 #include <stdlib.h>
 
 #include <opendmi/context.h>
+#include <opendmi/entry.h>
+#include <opendmi/table.h>
 
 #if defined(__linux__)
 #include <opendmi/backend/linux.h>
@@ -60,13 +62,29 @@ dmi_context_t *dmi_open(void)
         if (!dmi_backend->open(context))
             break;
 
+        // Read and decode entry point
+        context->entry_data = dmi_backend->read_entry(context, &context->entry_size);
+        if (context->entry_data == nullptr)
+            break;
+        if (!dmi_entry_decode(context, context->entry_data, context->entry_size))
+            break;
+
         // Fixup SMBIOS version number
         dmi_version_fixup(context);
+
+        // Read and decode SMBIOS tables
+        // TODO: Use separate variable for size
+        context->table_data = dmi_backend->read_tables(context, &context->table_area_size);
+        if (context->table_data == nullptr)
+            break;
+        if (!dmi_table_scan(context))
+            break;
 
         success = true;
     } while (false);
 
     if (!success) {
+        dmi_set_error(nullptr, context->last_error);
         dmi_close(context);
         return nullptr;
     }
