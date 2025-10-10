@@ -14,6 +14,7 @@ add_library(dmi-object OBJECT
     src/table/processor.c
     src/table/cache.c
     src/table/probe.c
+    src/table/cooler.c
     src/backend/dump.c)
 
 target_include_directories(dmi-object PUBLIC include)
