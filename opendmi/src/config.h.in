@@ -1,0 +1,16 @@
+//
+// OpenDMI: DMI/SMBIOS library
+// Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+//
+// SPDX-License-Identifier: BSD-3-Clause
+//
+#ifndef OPENDMI_CONFIG_H
+#define OPENDMI_CONFIG_H
+
+#define DMI_VERSION "@DMI_VERSION@"
+
+#define DMI_VERSION_MAJOR @DMI_VERSION_MAJOR@
+#define DMI_VERSION_MINOR @DMI_VERSION_MINOR@
+#define DMI_VERSION_PATCH @DMI_VERSION_PATCH@
+
+#endif // !OPENDMI_CONFIG_H
