@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/chassis.h>
+#include <opendmi/table/chassis.h>
 #include <opendmi/utils.h>
 
 static const char *dmi_chassis_type_names[__DMI_CHASSIS_TYPE_COUNT] =

@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/cache.h>
+#include <opendmi/table/cache.h>
 #include <opendmi/utils.h>
 
 #include <stdlib.h>

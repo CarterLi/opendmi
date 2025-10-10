@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/processor.h>
+#include <opendmi/table/processor.h>
 #include <opendmi/utils.h>
 
 static const char *dmi_processor_type_names[__DMI_PROCESSOR_TYPE_COUNT] =

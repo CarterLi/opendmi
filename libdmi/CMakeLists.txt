@@ -4,16 +4,16 @@ add_compile_options(-Wall -Wextra -Werror -pedantic -Wno-zero-length-array)
 
 add_library(dmi-object OBJECT
     src/types.c
+    src/utils.c
     src/error.c
     src/context.c
     src/entry.c
     src/table.c
-    src/chassis.c
-    src/baseboard.c
-    src/processor.c
-    src/cache.c
-    src/probe.c
-    src/utils.c
+    src/table/chassis.c
+    src/table/baseboard.c
+    src/table/processor.c
+    src/table/cache.c
+    src/table/probe.c
     src/backend/dump.c)
 
 target_include_directories(dmi-object PUBLIC include)

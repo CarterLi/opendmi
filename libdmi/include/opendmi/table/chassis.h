@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_CHASSIS_H
-#define OPENDMI_CHASSIS_H
+#ifndef OPENDMI_TABLE_CHASSIS_H
+#define OPENDMI_TABLE_CHASSIS_H
 
 #pragma once
 
@@ -96,4 +96,4 @@ const char *dmi_chassis_state_name(enum dmi_chassis_state value);
 
 __END_DECLS
 
-#endif // !OPENDMI_CHASSIS_H
+#endif // !OPENDMI_TABLE_CHASSIS_H

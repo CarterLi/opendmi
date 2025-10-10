@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/baseboard.h>
+#include <opendmi/table/baseboard.h>
 #include <opendmi/utils.h>
 
 static const char *dmi_baseboard_type_names[__DMI_BASEBOARD_COUNT] =

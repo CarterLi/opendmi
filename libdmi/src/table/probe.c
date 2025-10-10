@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/probe.h>
+#include <opendmi/table/probe.h>
 #include <opendmi/utils.h>
 
 const char *dmi_probe_location_names[__DMI_PROBE_LOCATION_COUNT] =

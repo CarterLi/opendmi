@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_CACHE_H
-#define OPENDMI_CACHE_H
+#ifndef OPENDMI_TABLE_CACHE_H
+#define OPENDMI_TABLE_CACHE_H
 
 #pragma once
 
@@ -233,4 +233,4 @@ void dmi_cache_info_destroy(struct dmi_cache_info *info);
 
 __END_DECLS
 
-#endif // !OPENDMI_CACHE_H
+#endif // !OPENDMI_TABLE_CACHE_H

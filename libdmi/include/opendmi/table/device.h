@@ -4,9 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_DEVICE_H
-#define OPENDMI_DEVICE_H
+#ifndef OPENDMI_TABLE_DEVICE_H
+#define OPENDMI_TABLE_DEVICE_H
 
 #pragma once
 
-#endif // !OPENDMI_DEVICE_H
+#endif // !OPENDMI_TABLE_DEVICE_H

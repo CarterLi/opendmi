@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_BASEBOARD_H
-#define OPENDMI_BASEBOARD_H
+#ifndef OPENDMI_TABLE_BASEBOARD_H
+#define OPENDMI_TABLE_BASEBOARD_H
 
 #pragma once
 
@@ -126,4 +126,4 @@ const char *dmi_baseboard_type_name(enum dmi_baseboard_type value);
 
 __END_DECLS
 
-#endif // !OPENDMI_BASEBOARD_H
+#endif // !OPENDMI_TABLE_BASEBOARD_H

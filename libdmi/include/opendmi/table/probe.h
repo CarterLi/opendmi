@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_PROBE_H
-#define OPENDMI_PROBE_H
+#ifndef OPENDMI_TABLE_PROBE_H
+#define OPENDMI_TABLE_PROBE_H
 
 #pragma once
 
@@ -120,4 +120,4 @@ const char *dmi_probe_status_name(dmi_probe_status_t value);
 
 __END_DECLS
 
-#endif // !OPENDMI_PROBE_H
+#endif // !OPENDMI_TABLE_PROBE_H

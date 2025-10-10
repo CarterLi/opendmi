@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_PROCESSOR_H
-#define OPENDMI_PROCESSOR_H
+#ifndef OPENDMI_TABLE_PROCESSOR_H
+#define OPENDMI_TABLE_PROCESSOR_H
 
 #pragma once
 
@@ -300,4 +300,4 @@ const char *dmi_processor_upgrade_name(enum dmi_processor_upgrade value);
 
 __END_DECLS
 
-#endif // !OPENDMI_PROCESSOR_H
+#endif // !OPENDMI_TABLE_PROCESSOR_H

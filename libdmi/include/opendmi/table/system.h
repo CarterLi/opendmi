@@ -4,9 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_MEMORY_H
-#define OPENDMI_MEMORY_H
+#ifndef OPENDMI_TABLE_SYSTEM_H
+#define OPENDMI_TABLE_SYSTEM_H
 
 #pragma once
 
-#endif // !OPENDMI_MEMORY_H
+#endif // !OPENDMI_TABLE_SYSTEM_H

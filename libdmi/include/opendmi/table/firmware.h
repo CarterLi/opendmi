@@ -4,9 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_FIRMWARE_H
-#define OPENDMI_FIRMWARE_H
+#ifndef OPENDMI_TABLE_FIRMWARE_H
+#define OPENDMI_TABLE_FIRMWARE_H
 
 #pragma once
 
-#endif // !OPENDMI_FIRMWARE_H
+#endif // !OPENDMI_TABLE_FIRMWARE_H
