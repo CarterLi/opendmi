@@ -28,7 +28,7 @@
 #error "Unsupported OS type"
 #endif
 
-static dmi_context_t *dmi_context_create(dmi_backend_t *backend, const void *arg);
+static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const void *arg);
 
 /**
  * @internal
@@ -46,19 +46,36 @@ static __thread dmi_error_t dmi_last_error = DMI_OK;
  */
 static dmi_backend_t *dmi_backend = &DMI_BACKEND;
 
-dmi_context_t *dmi_open(void)
+dmi_context_t *dmi_create(void)
 {
-    return dmi_context_create(dmi_backend, nullptr);
-}
+    dmi_context_t *context = nullptr;
 
-dmi_context_t *dmi_dump_load(const char *path)
-{
-    if (path == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    // Allocate context descriptor
+    context = malloc(sizeof(dmi_context_t));
+    if (context == nullptr) {
+        dmi_set_error(nullptr,  DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
 
-    return dmi_context_create(dmi_backend, path);
+    // Initialize context
+    memset(context, 0, sizeof(dmi_context_t));
+
+    return context;
+}
+
+bool dmi_open(dmi_context_t *context)
+{
+    return dmi_open_ex(context, dmi_backend, nullptr);
+}
+
+bool dmi_dump_load(dmi_context_t *context, const char *path)
+{
+    if (path == nullptr) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return false;
+    }
+
+    return dmi_open_ex(context, dmi_backend, path);
 }
 
 bool dmi_dump_save(dmi_context_t *context, const char *path)
@@ -67,6 +84,18 @@ bool dmi_dump_save(dmi_context_t *context, const char *path)
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
+
+    return true;
+}
+
+bool dmi_set_logger(dmi_context_t *context, dmi_log_handler_t logger)
+{
+    if (context == nullptr) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return false;
+    }
+
+    context->logger = logger;
 
     return true;
 }
@@ -87,25 +116,57 @@ dmi_error_t dmi_get_error(const dmi_context_t *context)
     return context->last_error;
 }
 
-void dmi_close(dmi_context_t *context)
+bool dmi_close(dmi_context_t *context)
+{
+    if (context == nullptr) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return false;
+    }
+
+    if (context->backend == nullptr)
+        return true;
+    if (context->session != nullptr)
+        context->backend->close(context);
+
+    context->entry_data = nullptr;
+    context->entry_size = 0;
+
+    context->table_count         = 0;
+    context->table_area_addr     = 0;
+    context->table_area_size     = 0;
+    context->table_area_max_size = 0;
+    context->table_data          = nullptr;
+    context->table_max_size      = 0;
+
+    context->session = nullptr;
+    context->backend = nullptr;
+
+    return true;
+}
+
+void dmi_destroy(dmi_context_t *context)
 {
     if (context == nullptr)
         return;
 
+    // Close and free context
+    dmi_close(context);
     free(context);
 }
 
-static dmi_context_t *dmi_context_create(dmi_backend_t *backend, const void *arg)
+static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const void *arg)
 {
-    dmi_context_t *context = nullptr;
-
-    // Allocate context descriptor
-    context = malloc(sizeof(dmi_context_t));
     if (context == nullptr) {
-        dmi_set_error(nullptr,  DMI_ERROR_OUT_OF_MEMORY);
-        return nullptr;
+        dmi_set_error(nullptr,  DMI_ERROR_INVALID_ARGUMENT);
+        return false;
     }
-    memset(context, 0, sizeof(dmi_context_t));
+    if ((context->backend != nullptr) || (context->session != nullptr)) {
+        dmi_set_error(nullptr,  DMI_ERROR_INVALID_STATE);
+        return false;
+    }
+
+    dmi_info(context, "Opening DMI context...");
+    dmi_info(context, "Using backend: %s", backend->name);
 
     // Initialize context
     bool success = false;
@@ -138,12 +199,11 @@ static dmi_context_t *dmi_context_create(dmi_backend_t *backend, const void *arg
     } while (false);
 
     if (!success) {
-        dmi_set_error(nullptr, context->last_error);
+        dmi_set_error(context, context->last_error);
         dmi_close(context);
-        return nullptr;
     }
 
-    return context;
+    return success;
 }
 
 static void dmi_version_fixup(dmi_context_t *context)

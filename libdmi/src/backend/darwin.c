@@ -8,9 +8,12 @@
 #error "Unsupported OS type"
 #endif // !__APPLE__
 
+#include <errno.h>
+
 #include <IOKit/IOKitLib.h>
 
 #include <opendmi/context.h>
+#include <opendmi/log.h>
 #include <opendmi/backend/darwin.h>
 
 typedef struct dmi_darwin_session dmi_darwin_session_t;
@@ -52,6 +55,7 @@ static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute_
     // Allocate backend descriptor
     session = malloc(sizeof(dmi_darwin_session_t));
     if (session == nullptr) {
+        dmi_error(context, "Unable to allocate DMI backend descriptor: %s", strerror(errno));
         dmi_set_error(context, DMI_ERROR_OUT_OF_MEMORY);
         return false;
     }
@@ -63,6 +67,7 @@ static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute_
         // Connect to SMBIOS service
         session->service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("AppleSMBIOS"));
         if (session->service == MACH_PORT_NULL) {
+            dmi_error(context, "Apple SMBIOS service is not reachable");
             dmi_set_error(context, DMI_ERROR_SERVICE_UNAVAILABLE);
             return EXIT_FAILURE;
         }

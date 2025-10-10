@@ -11,6 +11,7 @@
 
 #include <opendmi/types.h>
 #include <opendmi/error.h>
+#include <opendmi/log.h>
 #include <opendmi/version.h>
 #include <opendmi/backend.h>
 
@@ -70,6 +71,11 @@ struct dmi_context
     size_t table_max_size;
 
     /**
+     * @brief Logger callback.
+     */
+    dmi_log_handler_t logger;
+
+    /**
      * @brief Backend handle.
      */
     dmi_backend_t *backend;
@@ -88,19 +94,29 @@ struct dmi_context
 __BEGIN_DECLS
 
 /**
- * @brief Open DMI context.
+ * @brief Create DMI context.
  */
-dmi_context_t *dmi_open(void);
+dmi_context_t *dmi_create(void);
 
 /**
- * @brief Load DMI context from dump file.
+ * @brief Open DMI context.
  */
-dmi_context_t *dmi_dump_load(const char *path);
+bool dmi_open(dmi_context_t *context);
+
+/**
+ * @brief Load dump file into DMI context.
+ */
+bool dmi_dump_load(dmi_context_t *context, const char *path);
 
 /**
  * @brief Save DMI context to dump file.
  */
 bool dmi_dump_save(dmi_context_t *context, const char *path);
+
+/**
+ * @brief Set logging handler.
+ */
+bool dmi_set_logger(dmi_context_t *context, dmi_log_handler_t logger);
 
 /**
  * @brief Set last DMI error code.
@@ -121,7 +137,12 @@ dmi_error_t dmi_get_error(const dmi_context_t *context);
 /**
  * @brief Close DMI context.
  */
-void dmi_close(dmi_context_t *context);
+bool dmi_close(dmi_context_t *context);
+
+/**
+ * @brief Destroy DMI context.
+ */
+void dmi_destroy(dmi_context_t *context);
 
 __END_DECLS
 

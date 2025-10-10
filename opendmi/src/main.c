@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 #include <opendmi/option.h>
 #include <opendmi/context.h>
@@ -20,6 +21,7 @@ struct dmi_config
 
 static void show_version(void);
 static void show_usage(void);
+static void log_error(dmi_context_t *context, dmi_log_level_t level, const char *format, va_list args);
 
 dmi_option_t dmi_global_options[] =
 {
@@ -57,15 +59,25 @@ dmi_option_t dmi_global_options[] =
 
 int main(int argc, char *argv[])
 {
-    // Open DMI context
-    dmi_context_t *dmi = dmi_open();
-    if (dmi == nullptr) {
-        printf("Unable to open DMI context: %s\n", dmi_error_message(dmi_get_error(nullptr)));
+    dmi_context_t *context;
+
+    // Create DMI context
+    context = dmi_create();
+    if (context == nullptr) {
+        printf("Unable to create DMI context: %s\n", dmi_error_message(dmi_get_error(nullptr)));
         return EXIT_FAILURE;
     }
 
+    dmi_set_logger(context, log_error);
+
+    // Open DMI context
+    if (argc > 1)
+        dmi_dump_load(context, argv[1]);
+    else
+        dmi_open(context);
+
     // Close DMI context
-    dmi_close(dmi);
+    dmi_destroy(context);
 
     return EXIT_SUCCESS;
 }
@@ -76,4 +88,11 @@ static void show_version(void)
 
 static void show_usage(void)
 {
+}
+
+static void log_error(dmi_context_t *context, dmi_log_level_t level, const char *format, va_list args)
+{
+    fprintf(stderr, "[%s] ", dmi_log_level_name(level));
+    vfprintf(stderr, format, args);
+    fprintf(stderr, "\n");
 }
