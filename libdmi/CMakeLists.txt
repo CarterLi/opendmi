@@ -12,6 +12,7 @@ add_library(dmi-object OBJECT
     src/baseboard.c
     src/processor.c
     src/cache.c
+    src/probe.c
     src/utils.c
     src/backend/dump.c)
 
