@@ -30,7 +30,7 @@ static bool dmi_dump_close(dmi_context_t *context);
 
 dmi_backend_t dmi_dump_backend =
 {
-    .name        = "File",
+    .name        = "Binary dump",
     .open        = dmi_dump_open,
     .read_entry  = dmi_dump_read_entry,
     .read_tables = dmi_dump_read_tables,

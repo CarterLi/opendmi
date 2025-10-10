@@ -53,6 +53,9 @@ bool dmi_table_scan(dmi_context_t *context)
         // Update table pointer and index
         ptr += table->total_length;
         index++;
+
+        dmi_info(context, "Handle 0x%04x, DMI type %u (%s), %zu bytes",
+                 table->handle, table->type, dmi_type_name(table->type), table->total_length);
     }
 
     // Set table count

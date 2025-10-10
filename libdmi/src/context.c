@@ -75,7 +75,9 @@ bool dmi_dump_load(dmi_context_t *context, const char *path)
         return false;
     }
 
-    return dmi_open_ex(context, dmi_backend, path);
+    dmi_info(context, "Loading DMI dump: %s...", path);
+
+    return dmi_open_ex(context, &dmi_dump_backend, path);
 }
 
 bool dmi_dump_save(dmi_context_t *context, const char *path)
@@ -174,10 +176,13 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
         context->backend = backend;
 
         // Initialize backend
-        if (!context->backend->open(context, arg))
+        if (!context->backend->open(context, arg)) {
+            dmi_error(context, "Unable to open backend: %s", dmi_error_message(context->last_error));
             break;
+        }
 
         // Read and decode entry point
+        dmi_info(context, "Reading DMI entry point...");
         context->entry_data = context->backend->read_entry(context, &context->entry_size);
         if (context->entry_data == nullptr)
             break;
@@ -186,9 +191,14 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
 
         // Fixup SMBIOS version number
         dmi_version_fixup(context);
+        dmi_info(context, "SMBIOS %u.%u.%u present",
+                 dmi_version_major(context->smbios_version),
+                 dmi_version_minor(context->smbios_version),
+                 dmi_version_revision(context->smbios_version));
 
         // Read and decode SMBIOS tables
         // TODO: Use separate variable for size
+        dmi_info(context, "Reading DMI tables...");
         context->table_data = context->backend->read_tables(context, &context->table_area_size);
         if (context->table_data == nullptr)
             break;
@@ -199,6 +209,7 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
     } while (false);
 
     if (!success) {
+        dmi_error(context, "Unable to open DMI context");
         dmi_set_error(context, context->last_error);
         dmi_close(context);
     }
