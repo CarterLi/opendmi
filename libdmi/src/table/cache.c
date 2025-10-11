@@ -4,11 +4,13 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/cache.h>
-#include <opendmi/utils.h>
-
+#include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+
+#include <opendmi/context.h>
+#include <opendmi/utils.h>
+#include <opendmi/table/cache.h>
 
 static const char *dmi_cache_type_names[__DMI_CACHE_TYPE_COUNT] =
 {
@@ -136,4 +138,66 @@ size_t dmi_cache_size_ex(dmi_cache_size_ex_t value)
         size <<= 10; // Granularity is 1 Kb
 
     return size;
+}
+
+struct dmi_cache_info *dmi_cache_info_decode(dmi_table_t *table)
+{
+    struct dmi_cache_info *info;
+    struct dmi_cache_table *data;
+
+    if (table == nullptr) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return nullptr;
+    }
+    if (table->type != DMI_TYPE_CACHE) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return nullptr;
+    }
+
+    info = malloc(sizeof(*info));
+    if (info == nullptr) {
+        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+        return nullptr;
+    }
+    memset(info, 0, sizeof(*info));
+
+    data = dmi_cast(data, table->data);
+
+    // SMBIOS 2.0+
+    info->socket              = dmi_table_string(table, data->socket);
+    info->level               = data->config.level;
+    info->mode                = data->config.mode;
+    info->location            = data->config.location;
+    info->socketed            = data->config.socketed;
+    info->enabled             = data->config.enabled;
+    info->maximum_size        = dmi_cache_size(data->maximum_size);
+    info->installed_size      = dmi_cache_size(data->installed_size);
+    info->supported_sram_type = data->supported_sram_type;
+    info->current_sram_type   = data->current_sram_type;
+
+    // SMBIOS 2.1+
+    if (data->header.length >= 0x0F) {
+        info->type          = data->type;
+        info->associativity = data->associativity;
+        info->speed         = data->speed;
+        info->ecc_type      = data->ecc_type;
+    }
+
+    // SMBIOS 3.1+
+    if (data->header.length >= 0x13) {
+        if (data->maximum_size == 0xFFFFU)
+            info->maximum_size = dmi_cache_size_ex(data->maximum_size_ex);
+        if (data->installed_size == 0xFFFU)
+            info->installed_size = dmi_cache_size_ex(data->installed_size_ex);
+    }
+
+    return info;
+}
+
+void dmi_cache_info_free(struct dmi_cache_info *info)
+{
+    if (info == nullptr)
+        return;
+
+    free(info);
 }

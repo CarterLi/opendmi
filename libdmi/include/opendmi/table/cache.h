@@ -97,12 +97,60 @@ enum dmi_cache_location
  */
 struct dmi_cache_config
 {
+    /**
+     * @brief Cache Level – 1 through 8. For example, an L1 cache would use
+     * value 0x0 and an L3 cache would use 0x2.
+     */
     uint8_t level : 3;
+
+    /**
+     * @brief Socketed cache flag (e.g., cache on a stick).
+     */
     bool socketed : 1;
+
+    /**
+     * @brief Reserved.
+     */
     uint8_t reserved : 1;
+
+    /**
+     * @brief Location, relative to the CPU module.
+     */
     enum dmi_cache_location location : 2;
+
+    /**
+     * @brief Enable flag (at boot time).
+     */
     bool enabled : 1;
+
+    /**
+     * @brief Operational mode.
+     */
     enum dmi_cache_mode mode : 2;
+} __attribute__((packed));
+
+/**
+ * @brief Cache SRAM type.
+ */
+union dmi_cache_sram_type
+{
+    /**
+     * @brief Encoded type value.
+     */
+    uint16_t type;
+
+    struct
+    {
+        bool other          : 1; ///< Other
+        bool unknown        : 1; ///< Unknown
+        bool non_burst      : 1; ///< Non-burst
+        bool burst          : 1; ///< Burst
+        bool pipeline_burst : 1; ///< Pipeline burst
+        bool synchonous     : 1; ///< Synchronous
+        bool asynchronous   : 1; ///< Asynchronous
+
+        uint16_t reserved : 9; ///< Reserved, must be zero
+    } __attribute__((packed));
 } __attribute__((packed));
 
 /**
@@ -149,17 +197,18 @@ struct dmi_cache_table
      * @brief Supported SRAM type.
      * @since SMBIOS 2.0
      */
-    uint16_t supported_sram_type;
+    union dmi_cache_sram_type supported_sram_type;
 
     /**
      * @brief Current SRAM type.
      * @since SMBIOS 2.0
      */
-    uint16_t current_sram_type;
+    union dmi_cache_sram_type current_sram_type;
 
     /**
      * @brief Cache module speed, in nanoseconds. The value is 0 if the speed
      * is unknown.
+     *
      * @since SMBIOS 2.1
      */
     uint8_t speed;
@@ -204,7 +253,37 @@ struct dmi_cache_info
     /**
      * @brief Socket designator.
      */
-    char *socket;
+    const char *socket;
+
+    /**
+     * @brief Cache level, 1 to 8.
+     */
+    unsigned int level;
+
+    /**
+     * @brief Logical type of cache.
+     */
+    enum dmi_cache_type type;
+
+    /**
+     * @brief Operational mode.
+     */
+    enum dmi_cache_mode mode;
+
+    /**
+     * @brief Location, relative to the CPU module.
+     */
+    enum dmi_cache_location location;
+
+    /**
+     * @brief Socketed cache flag (e.g., cache on a stick).
+     */
+    bool socketed;
+
+    /**
+     * @brief Enable flag (at boot time).
+     */
+    bool enabled;
 
     /**
      * @brief Maximum cache size that can be installed, in bytes.
@@ -215,6 +294,32 @@ struct dmi_cache_info
      * @brief Installed cache size, in bytes.
      */
     size_t installed_size;
+
+    /**
+     * @brief Supported SRAM type.
+     */
+    union dmi_cache_sram_type supported_sram_type;
+
+    /**
+     * @brief Current SRAM type.
+     */
+    union dmi_cache_sram_type current_sram_type;
+
+    /**
+     * @brief Cache module speed, in nanoseconds. The value is 0 if the speed
+     * is unknown.
+     */
+    unsigned int speed;
+
+    /**
+     * @brief Error-correction scheme supported by this cache component.
+     */
+    enum dmi_cache_ecc_type ecc_type;
+
+    /**
+     * @brief Associativity of the cache.
+     */
+    enum dmi_cache_assoc associativity;
 };
 
 __BEGIN_DECLS
@@ -228,8 +333,8 @@ const char *dmi_cache_location_name(enum dmi_cache_location value);
 size_t dmi_cache_size(dmi_cache_size_t value);
 size_t dmi_cache_size_ex(dmi_cache_size_ex_t value);
 
-struct dmi_cache_info *dmi_cache_info_create(struct dmi_cache_table *table);
-void dmi_cache_info_destroy(struct dmi_cache_info *info);
+struct dmi_cache_info *dmi_cache_info_decode(dmi_table_t *table);
+void dmi_cache_info_free(struct dmi_cache_info *info);
 
 __END_DECLS
 
