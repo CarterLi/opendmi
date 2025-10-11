@@ -97,8 +97,26 @@ typedef enum dmi_type
     DMI_TYPE_PROCESSOR_EX            = 44,  ///< Processor additional information
     DMI_TYPE_FIRMWARE_INVENTORY      = 45,  ///< Firmware inventory information
     DMI_TYPE_STRING_PROPERTY         = 46,  ///< String property
-    DMI_TYPE_INACTIVE                = 126, ///< Inactive
-    DMI_TYPE_END_OF_TABLE            = 127, ///< End of table
+
+    DMI_TYPE_INACTIVE     = 126, ///< Inactive
+    DMI_TYPE_END_OF_TABLE = 127, ///< End of table
+
+    DMI_TYPE_INTEL_RSD_NIC                 = 190, ///< Intel: RSD NIC information
+    DMI_TYPE_INTEL_RSD_PCIE                = 192, ///< Intel: RSD PCIe information
+    DMI_TYPE_INTEL_RSD_PROCESSOR_CPUID     = 193, ///< Intel: RSD Processor CPUID information
+    DMI_TYPE_INTEL_RSD_STORAGE_DEVICE      = 194, ///< Intel: RSD Storage device information
+    DMI_TYPE_INTRL_RSD_TPM                 = 195, ///< Intel: RSD TPM information
+    DMI_TYPE_INTEL_RSD_TXT                 = 196, ///< Intel: RSD Trusted Execution Technology (TXT) information
+    DMI_TYPE_INTEL_RSD_MEMORY_DEVICE_EX    = 197, ///< Intel: RSD Memory device extended information
+    DMI_TYPE_INTEL_RSD_FPGA                = 198, ///< Intel: RSD Field-Programmable Gate Array (FPGA) information
+    DMI_TYPE_INTEL_RSD_CABLED_PCIE         = 199, ///< Intel: RSD Cabled PCIe port information
+    DMI_TYPE_INTEL_RSD_PHYS_DEVICE_MAPPING = 200, ///< Intel: RSD SMBIOS physical device mapping
+
+    DMI_TYPE_DELL_INDEXED_IO        = 212, ///< Dell: Indexed IO
+	DMI_TYPE_DELL_PROTECTED_AREA_1  = 214, ///< Dell: Protected Area Type 1
+	DMI_TYPE_DELL_PROTECTED_AREA_2  = 215, ///< Dell: Protected Area Type 2
+	DMI_TYPE_DELL_CALLING_INTERFACE = 218, ///< Dell: Calling interface
+
     __DMI_TYPE_COUNT
 } dmi_type_t;
 
