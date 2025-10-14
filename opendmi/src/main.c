@@ -90,6 +90,10 @@ static void show_usage(void)
 {
 }
 
+static void print_table(struct dmi_table *table)
+{
+}
+
 static void log_error(dmi_context_t *context, dmi_log_level_t level, const char *format, va_list args)
 {
     fprintf(stderr, "[%s] ", dmi_log_level_name(level));

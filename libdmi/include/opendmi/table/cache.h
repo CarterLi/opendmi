@@ -15,6 +15,7 @@
 #include <stdbool.h>
 
 #include <opendmi/table.h>
+#include <opendmi/table/common.h>
 
 typedef uint16_t dmi_cache_size_t;
 typedef uint32_t dmi_cache_size_ex_t;
@@ -42,20 +43,6 @@ enum dmi_cache_mode
     DMI_CACHE_MODE_VARIABLE      = 0x02, ///< Varies with memory address
     DMI_CACHE_MODE_UNKNOWN       = 0x03, ///< Unknown
     __DMI_CACHE_MODE_COUNT
-};
-
-/**
- * @brief Cache error correction types.
- */
-enum dmi_cache_ecc_type
-{
-    DMI_CACHE_ECC_OTHER      = 0x01, ///< Other
-    DMI_CACHE_ECC_UNKNOWN    = 0x02, ///< Unknown
-    DMI_CACHE_ECC_NONE       = 0x03, ///< None
-    DMI_CACHE_ECC_PARITY     = 0x04, ///< Parity
-    DMI_CACHE_ECC_SINGLE_BIT = 0x05, ///< Single-bit ECC
-    DMI_CACHE_ECC_MULTI_BIT  = 0x06, ///< Multi-bit ECC
-    __DMI_CACHE_ECC_TYPE_COUNT
 };
 
 /**
@@ -217,7 +204,7 @@ struct dmi_cache_table
      * @brief Error-correction scheme supported by this cache component.
      * @since SMBIOS 2.1
      */
-    enum dmi_cache_ecc_type ecc_type;
+    enum dmi_ecc_type ecc_type;
 
     /**
      * @brief Logical type of cache.
@@ -314,7 +301,7 @@ struct dmi_cache_info
     /**
      * @brief Error-correction scheme supported by this cache component.
      */
-    enum dmi_cache_ecc_type ecc_type;
+    enum dmi_ecc_type ecc_type;
 
     /**
      * @brief Associativity of the cache.
@@ -322,11 +309,15 @@ struct dmi_cache_info
     enum dmi_cache_assoc associativity;
 };
 
+/**
+ * @brief Cache information table specification.
+ */
+extern const struct dmi_table_spec dmi_cache_table_spec;
+
 __BEGIN_DECLS
 
 const char *dmi_cache_type_name(enum dmi_cache_type value);
 const char *dmi_cache_mode_name(enum dmi_cache_mode value);
-const char *dmi_cache_ecc_type_name(enum dmi_cache_ecc_type value);
 const char *dmi_cache_assoc_name(enum dmi_cache_assoc value);
 const char *dmi_cache_location_name(enum dmi_cache_location value);
 

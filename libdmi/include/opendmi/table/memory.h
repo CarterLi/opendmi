@@ -31,6 +31,18 @@ enum dmi_mem_array_location
     __DMI_MEM_ARRAY_LOCATION_COUNT
 };
 
+enum dmi_mem_array_usage
+{
+    DMI_MEM_ARRAY_USAGE_OTHER   = 0x01, ///< Other
+    DMI_MEM_ARRAY_USAGE_UNKNOWN = 0x02, ///< Unknown
+    DMI_MEM_ARRAY_USAGE_SYSTEM  = 0x03, ///< System memory
+    DMI_MEM_ARRAY_USAGE_VIDEO   = 0x04, ///< Video memory
+    DMI_MEM_ARRAY_USAGE_FLASH   = 0x05, ///< Flash memory
+    DMI_MEM_ARRAY_USAGE_NVRAM   = 0x06, ///< Non-volatile RAM
+    DMI_MEM_ARRAY_USAGE_CACHE   = 0x07, ///< Cache memory
+    __DMI_MEM_ARRAY_USAGE_COUNT
+};
+
 enum dmi_mem_device_type
 {
     DMI_MEM_DEVICE_TYPE_OTHER             = 0x01,

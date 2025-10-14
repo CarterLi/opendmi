@@ -10,6 +10,7 @@
 #pragma once
 
 #include <opendmi/types.h>
+#include <opendmi/model/attribute.h>
 
 #ifndef DMI_TABLE_SPEC_T
 #define DMI_TABLE_SPEC_T
@@ -32,9 +33,19 @@ typedef struct dmi_table dmi_table_t;
 struct dmi_table_spec
 {
     /**
+     * @brief Table tag.
+     */
+    const char *tag;
+
+    /**
+     * @brief Table name.
+     */
+    const char *name;
+
+    /**
      * @brief DMI type.
      */
-    dmi_type_t type;
+    enum dmi_type type;
 
     /**
      * @brief Minimum length. Zero means that the minimum length is not
@@ -60,6 +71,11 @@ struct dmi_table_spec
      * @brief Free handler.
      */
     bool (*free)(dmi_table_t *table);
+
+    /**
+     * @brief Table attributes specification.
+     */
+    const struct dmi_attribute_spec *attributes;
 };
 
 /**

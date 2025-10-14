@@ -29,16 +29,6 @@ static const char *dmi_cache_mode_names[__DMI_CACHE_MODE_COUNT] =
     [DMI_CACHE_MODE_UNKNOWN]       = "Unknown"
 };
 
-static const char *dmi_cache_ecc_type_names[__DMI_CACHE_ECC_TYPE_COUNT] =
-{
-    [DMI_CACHE_ECC_OTHER]      = "Other",
-    [DMI_CACHE_ECC_UNKNOWN]    = "Unknown",
-    [DMI_CACHE_ECC_NONE]       = "None",
-    [DMI_CACHE_ECC_PARITY]     = "Parity",
-    [DMI_CACHE_ECC_SINGLE_BIT] = "Single-bit ECC",
-    [DMI_CACHE_ECC_MULTI_BIT]  = "Multi-bit ECC"
-};
-
 static const char *dmi_cache_assoc_names[__DMI_CACHE_ASSOC_COUNT] =
 {
     [DMI_CACHE_ASSOC_OTHER]   = "Other",
@@ -65,6 +55,95 @@ static const char *dmi_cache_location_names[__DMI_CACHE_LOCATION_COUNT] =
     [DMI_CACHE_LOCATION_UNKNOWN]  = "Unknown"
 };
 
+const struct dmi_attribute_spec dmi_cache_table_attrs[] =
+{
+    {
+        .tag  = "socket-designator",
+        .name = "Socket designator",
+        .type = DMI_ATTRIBUTE_TYPE_STRING
+    },
+    {
+        .tag  = "level",
+        .name = "Cache level"
+    },
+    {
+        .tag  = "socketed",
+        .name = "Socketed",
+        .type = DMI_ATTRIBUTE_TYPE_BOOL
+    },
+    {
+        .tag  = "location",
+        .name = "Location (relative to CPU module)",
+        .type = DMI_ATTRIBUTE_TYPE_ENUM
+    },
+    {
+        .tag  = "status",
+        .name = "Status",
+        .type = DMI_ATTRIBUTE_TYPE_BOOL
+    },
+    {
+        .tag    = "mode",
+        .name   = "Operational mode",
+        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
+        .values = dmi_cache_mode_names
+    },
+    {
+        .tag  = "maximum-size",
+        .name = "Maximum cache size",
+        .type = DMI_ATTRIBUTE_TYPE_SIZE,
+        .unit = "KiB"
+    },
+    {
+        .tag  = "installed-size",
+        .name = "Installed cache size",
+        .type = DMI_ATTRIBUTE_TYPE_SIZE,
+        .unit = "KiB"
+    },
+    {
+        .tag  = "supported-sram",
+        .name = "Supported SRAM type",
+        .type = DMI_ATTRIBUTE_TYPE_SET
+    },
+    {
+        .tag  = "installed-sram",
+        .name = "Installed SRAM type",
+        .type = DMI_ATTRIBUTE_TYPE_SET
+    },
+    {
+        .tag  = "speed",
+        .name = "Cache speed",
+        .type = DMI_ATTRIBUTE_TYPE_INT,
+        .unit = "ns"
+    },
+    {
+        .tag  = "ecc-type",
+        .name = "Error correction type",
+        .type = DMI_ATTRIBUTE_TYPE_ENUM
+    },
+    {
+        .tag    = "type",
+        .name   = "System cache type",
+        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
+        .values = dmi_cache_type_names
+    },
+    {
+        .tag    = "associativity",
+        .name   = "Associativity",
+        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
+        .values = dmi_cache_assoc_names
+    },
+    { NULL, NULL, DMI_ATTRIBUTE_TYPE_NONE, NULL, NULL }
+};
+
+const struct dmi_table_spec dmi_cache_table_spec =
+{
+    .tag        = "cache",
+    .name       = "Cache information",
+    .type       = DMI_TYPE_CACHE,
+    .min_length = 0x0F,
+    .attributes = dmi_cache_table_attrs
+};
+
 const char *dmi_cache_type_name(enum dmi_cache_type value)
 {
     return dmi_name(dmi_cache_type_names, value, __DMI_CACHE_TYPE_COUNT);
@@ -73,11 +152,6 @@ const char *dmi_cache_type_name(enum dmi_cache_type value)
 const char *dmi_cache_mode_name(enum dmi_cache_mode value)
 {
     return dmi_name(dmi_cache_mode_names, value, __DMI_CACHE_MODE_COUNT);
-}
-
-const char *dmi_cache_ecc_type_name(enum dmi_cache_ecc_type value)
-{
-    return dmi_name(dmi_cache_ecc_type_names, value, __DMI_CACHE_ECC_TYPE_COUNT);
 }
 
 const char *dmi_cache_assoc_name(enum dmi_cache_assoc value)
