@@ -19,6 +19,7 @@ add_library(dmi-object OBJECT
     src/table/cache.c
     src/table/port.c
     src/table/slot.c
+    src/table/memory.c
     src/table/battery.c
     src/table/probe.c
     src/table/cooler.c
