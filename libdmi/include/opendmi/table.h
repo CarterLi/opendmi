@@ -179,11 +179,6 @@ struct dmi_table
 __BEGIN_DECLS
 
 /**
- * @brief Scan and decode DMI tables.
- */
-bool dmi_table_scan(dmi_context_t *context);
-
-/**
  * @brief Decode DMI table.
  */
 dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data);

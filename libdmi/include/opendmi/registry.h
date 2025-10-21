@@ -23,17 +23,31 @@ typedef struct dmi_registry_entry dmi_registry_entry_t;
 
 struct dmi_registry
 {
+    /**
+     * @brief DMI context handle.
+     */
+    dmi_context_t *context;
+
+    /**
+     * @brief Table index capacity.
+     */
     size_t capacity;
+
+    /**
+     * @brief Table count.
+     */
     size_t count;
-    dmi_registry_entry_t *index;
-    dmi_registry_entry_t *root;
+
+    /**
+     * @brief Table index.
+     */
+    dmi_registry_entry_t **index;
 };
 
 struct dmi_registry_entry
 {
     dmi_table_t *table;
-    dmi_registry_entry_t *pred;
-    dmi_registry_entry_t *succ;
+
     dmi_registry_entry_t *next;
 };
 
@@ -42,12 +56,7 @@ __BEGIN_DECLS
 /**
  * @brief Create DMI registry.
  */
-dmi_registry_t *dmi_registry_create(void);
-
-/**
- * @brief Put table into DMI registry.
- */
-void dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table);
+dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity);
 
 /**
  * @brief Get table from DMI registry.

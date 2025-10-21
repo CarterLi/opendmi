@@ -14,6 +14,7 @@
 #include <opendmi/log.h>
 #include <opendmi/version.h>
 #include <opendmi/backend.h>
+#include <opendmi/registry.h>
 
 /**
  * @brief DMI context descriptor.
@@ -84,6 +85,11 @@ struct dmi_context
      * @brief Backend-specific data.
      */
     void *session;
+
+    /**
+     * @brief Table registry.
+     */
+    dmi_registry_t *registry;
 
     /**
      * @brief Last error code.

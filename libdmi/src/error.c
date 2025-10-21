@@ -20,6 +20,7 @@ static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
     [DMI_ERROR_INVALID_TABLE_LENGTH] = "Invalid table length",
     [DMI_ERROR_INVALID_TABLE_TYPE]   = "Invalid table type",
     [DMI_ERROR_ENTRY_NOT_FOUND]      = "Entry not found",
+    [DMI_ERROR_DUPLICATE_ENTRY]      = "Duplicate entry",
     [DMI_ERROR_NO_MORE_ENTRIES]      = "No more entries",
     [DMI_ERROR_SERVICE_UNAVAILABLE]  = "Service unavailable",
     [DMI_ERROR_OUT_OF_MEMORY]        = "Out of memory",

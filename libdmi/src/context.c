@@ -125,23 +125,14 @@ bool dmi_close(dmi_context_t *context)
         return false;
     }
 
-    if (context->backend == nullptr)
-        return true;
-    if (context->session != nullptr)
-        context->backend->close(context);
+    dmi_registry_destroy(context->registry);
 
-    context->entry_data = nullptr;
-    context->entry_size = 0;
+    if (context->backend) {
+        if (context->session != nullptr)
+            context->backend->close(context);
+    }
 
-    context->table_count         = 0;
-    context->table_area_addr     = 0;
-    context->table_area_size     = 0;
-    context->table_area_max_size = 0;
-    context->table_data          = nullptr;
-    context->table_max_size      = 0;
-
-    context->session = nullptr;
-    context->backend = nullptr;
+    memset(context, 0, sizeof(*context));
 
     return true;
 }
@@ -202,7 +193,10 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
         context->table_data = context->backend->read_tables(context, &context->table_area_size);
         if (context->table_data == nullptr)
             break;
-        if (!dmi_table_scan(context))
+
+        // TODO: Use constant for default capacity
+        context->registry = dmi_registry_create(context, 64);
+        if (!context->registry)
             break;
 
         success = true;

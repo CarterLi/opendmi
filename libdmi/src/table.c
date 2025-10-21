@@ -22,50 +22,6 @@ static bool dmi_table_decode_length(dmi_table_t *table);
  */
 static bool dmi_table_decode_strings(dmi_table_t *table);
 
-bool dmi_table_scan(dmi_context_t *context)
-{
-    if ((context == nullptr) || (context->table_data == nullptr)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
-
-    size_t index = 0;
-    const dmi_data_t *ptr = context->table_data;
-
-    bool success = false;
-    while ((context->table_count == 0) || (index < context->table_count)) {
-        dmi_table_t *table = nullptr;
-
-        // Check table address
-        if ((size_t)(ptr - context->table_data) > context->table_area_size) {
-            dmi_set_error(context, DMI_ERROR_INVALID_TABLE_ADDR);
-            goto exit;
-        }
-
-        // Decode next table
-        table = dmi_table_decode(context, ptr);
-        if (table == nullptr) {
-            if (dmi_get_error(context) == DMI_ERROR_NO_MORE_ENTRIES)
-                break;
-            goto exit;
-        }
-
-        // Update table pointer and index
-        ptr += table->total_length;
-        index++;
-
-        dmi_info(context, "Handle 0x%04x, DMI type %u (%s), %zu bytes",
-                 table->handle, table->type, dmi_type_name(table->type), table->total_length);
-    }
-
-    // Set table count
-    context->table_count = index + 1;
-    success = true;
-
-exit:
-    return success;
-}
-
 dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
 {
     if ((context == nullptr) || (data == nullptr)) {
