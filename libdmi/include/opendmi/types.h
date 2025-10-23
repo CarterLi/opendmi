@@ -50,6 +50,7 @@ typedef uint8_t dmi_string_t;
  */
 typedef enum dmi_type
 {
+    DMI_TYPE_INVALID                 = -1,
     DMI_TYPE_FIRMWARE                = 0,   ///< Platform firmware information
     DMI_TYPE_SYSTEM                  = 1,   ///< System information
     DMI_TYPE_BASEBOARD               = 2,   ///< Baseboard or module information

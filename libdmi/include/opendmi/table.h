@@ -186,22 +186,27 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data);
 /**
  * @brief Get DMI table handle.
  */
-dmi_handle_t dmi_table_handle(struct dmi_table *table);
+dmi_handle_t dmi_table_handle(const dmi_table_t *table);
 
 /**
- * @brief Get DMI handle name.
+ * @brief Get DMI table type.
  */
-const char *dmi_table_name(struct dmi_table *table);
+dmi_type_t dmi_table_type(const dmi_table_t *table);
+
+/**
+ * @brief Get DMI table name.
+ */
+const char *dmi_table_name(const dmi_table_t *table);
 
 /**
  * @brief Get DMI table string.
  */
-const char *dmi_table_string(struct dmi_table *table, dmi_string_t num);
+const char *dmi_table_string(const dmi_table_t *table, dmi_string_t num);
 
 /**
  * @brief Destroy DMI table handle.
  */
-void dmi_table_destroy(struct dmi_table *table);
+void dmi_table_destroy(dmi_table_t *table);
 
 __END_DECLS
 

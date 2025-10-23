@@ -194,8 +194,7 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
         if (context->table_data == nullptr)
             break;
 
-        // TODO: Use constant for default capacity
-        context->registry = dmi_registry_create(context, 64);
+        context->registry = dmi_registry_create(context, 0);
         if (!context->registry)
             break;
 

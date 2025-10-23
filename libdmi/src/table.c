@@ -83,7 +83,7 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
     return table;
 }
 
-dmi_handle_t dmi_table_handle(struct dmi_table *table)
+dmi_handle_t dmi_table_handle(const dmi_table_t *table)
 {
     if (table == nullptr) {
         dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
@@ -93,7 +93,27 @@ dmi_handle_t dmi_table_handle(struct dmi_table *table)
     return table->handle;
 }
 
-const char *dmi_table_string(struct dmi_table *table, dmi_string_t num)
+dmi_type_t dmi_table_type(const dmi_table_t *table)
+{
+    if (table == nullptr) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return DMI_TYPE_INVALID;
+    }
+
+    return table->type;
+}
+
+const char *dmi_table_name(const dmi_table_t *table)
+{
+    if (table == nullptr) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return NULL;
+    }
+
+    return dmi_type_name(table->type);
+}
+
+const char *dmi_table_string(const dmi_table_t *table, dmi_string_t num)
 {
     if (table == nullptr) {
         dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
@@ -108,7 +128,7 @@ const char *dmi_table_string(struct dmi_table *table, dmi_string_t num)
     return table->strings[num - 1];
 }
 
-void dmi_table_destroy(struct dmi_table *table)
+void dmi_table_destroy(dmi_table_t *table)
 {
     if (table == nullptr)
         return;

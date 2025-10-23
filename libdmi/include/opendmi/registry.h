@@ -11,6 +11,11 @@
 
 #include <opendmi/types.h>
 
+/**
+ * @brief Default DMI registry capacity.
+ */
+#define DMI_REGISTRY_CAPACITY 64
+
 #ifndef DMI_REGISTRY_T
 #define DMI_REGISTRY_T
 typedef struct dmi_registry dmi_registry_t;
@@ -21,6 +26,9 @@ typedef struct dmi_registry dmi_registry_t;
 typedef struct dmi_registry_entry dmi_registry_entry_t;
 #endif // !DMI_REGISTRY_ENTRY_T
 
+/**
+ * @brief DMI registry descriptor.
+ */
 struct dmi_registry
 {
     /**
@@ -42,13 +50,42 @@ struct dmi_registry
      * @brief Table index.
      */
     dmi_registry_entry_t **index;
+
+    /**
+     * @brief Pointer to first entry in sequence.
+     */
+    dmi_registry_entry_t *head;
+
+    /**
+     * @brief Pointer to last entry in sequence.
+     */
+    dmi_registry_entry_t *tail;
 };
 
+/**
+ * @brief DMI registry entry descriptor.
+ */
 struct dmi_registry_entry
 {
+    /**
+     * @brief DMI table.
+     */
     dmi_table_t *table;
 
+    /**
+     * @brief Pointer to next entry in the hash table cell.
+     */
     dmi_registry_entry_t *next;
+
+    /**
+     * @brief Pointer to previous entry in table sequence.
+     */
+    dmi_registry_entry_t *seq_prev;
+
+    /**
+     * @brief Pointer to next entry in table sequence.
+     */
+    dmi_registry_entry_t *seq_next;
 };
 
 __BEGIN_DECLS

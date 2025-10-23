@@ -25,6 +25,9 @@ dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity)
 {
     dmi_registry_t *registry = nullptr;
 
+    if (!capacity)
+        capacity = DMI_REGISTRY_CAPACITY;
+
     registry = malloc(sizeof(*registry));
     if (registry == nullptr) {
         dmi_set_error(nullptr, DMI_ERROR_OUT_OF_MEMORY);
@@ -149,14 +152,22 @@ exit:
 
 static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
 {
-    dmi_registry_entry_t *entry = malloc(sizeof(dmi_registry_entry_t));
+    dmi_registry_entry_t *entry;
+    dmi_registry_entry_t *last;
+
+    // Allocate new entry
+    entry = malloc(sizeof(dmi_registry_entry_t));
     if (entry == nullptr) {
         dmi_set_error(nullptr, DMI_ERROR_OUT_OF_MEMORY);
         return false;
     }
 
-    dmi_registry_entry_t *last = registry->index[(size_t)table->handle % registry->capacity];
+    // Initialize entry
+    memset(entry, 0, sizeof(dmi_registry_entry_t));
+    entry->table = table;
 
+    // Add entry to index
+    last = registry->index[(size_t)table->handle % registry->capacity];
     while (last) {
         if (last->table->handle == table->handle) {
             free(entry);
@@ -172,6 +183,16 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
         last->next = entry;
     else
         registry->index[(size_t)table->handle % registry->capacity] = entry;
+
+    entry->seq_prev = registry->tail;
+
+    if (registry->tail) {
+        registry->tail->seq_next = entry;
+        registry->tail = entry;
+    }
+
+    if (!registry->head)
+        registry->head = entry;
 
     return true;
 }
