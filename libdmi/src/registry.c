@@ -133,9 +133,6 @@ static bool dmi_registry_build(dmi_registry_t *registry)
         ptr += table->total_length;
         index++;
 
-        dmi_info(context, "Handle 0x%04x, DMI type %u (%s), %zu bytes",
-                 table->handle, table->type, dmi_type_name(table->type), table->total_length);
-
         if (!dmi_registry_put(registry, table)) {
             dmi_table_destroy(table);
             goto exit;
@@ -186,10 +183,9 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
 
     entry->seq_prev = registry->tail;
 
-    if (registry->tail) {
+    if (registry->tail)
         registry->tail->seq_next = entry;
-        registry->tail = entry;
-    }
+    registry->tail = entry;
 
     if (!registry->head)
         registry->head = entry;

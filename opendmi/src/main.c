@@ -6,6 +6,7 @@
 //
 #include "config.h"
 
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -22,8 +23,11 @@ struct dmi_config
 
 static void show_version(void);
 static void show_usage(void);
+
 static void print_all(dmi_context_t *context);
-static void print_table(struct dmi_table *table);
+static void print_table(const dmi_table_t *table);
+static void print_hex_data(const void *data, size_t length);
+
 static void log_error(dmi_context_t *context, dmi_log_level_t level, const char *format, va_list args);
 
 dmi_option_t dmi_global_options[] =
@@ -109,13 +113,49 @@ static void print_all(dmi_context_t *context)
     }
 }
 
-static void print_table(struct dmi_table *table)
+static void print_table(const dmi_table_t *table)
 {
-    printf("Handle %04x, DMI type %d (%s), %zu bytes\n",
+    printf("Handle 0x%04x, DMI type %d (%s), %zu bytes\n",
            (unsigned int)dmi_table_handle(table),
            dmi_table_type(table),
            dmi_table_name(table),
            table->total_length);
+
+    if (!table->spec) {
+        printf("\tHeader and data:\n");
+        print_hex_data(table->data, table->body_length);
+
+        if (table->string_count > 0) {
+            printf("\tStrings:\n");
+            for (dmi_string_t i = 1; i <= table->string_count; i++) {
+                const char *str = dmi_table_string(table, i);
+
+                print_hex_data(str, strlen(str) + 1);
+                printf("\t\t\"%s\"\n", str);
+            }
+        }
+    }
+
+    printf("\n");
+}
+
+static void print_hex_data(const void *data, size_t length)
+{
+    const unsigned char *ptr = dmi_cast(ptr, data);
+
+    for (size_t i = 0; i < length; i++) {
+        char sp = ' ';
+
+        if (i % 0x10 == 0)
+            printf("\t\t");
+        if (i % 0x10 == 0x0f)
+            sp = '\n';
+
+        printf("%02X%c", (int)ptr[i], sp);
+    }
+
+    if (length % 0x10 != 0)
+        printf("\n");
 }
 
 static void log_error(dmi_context_t *context, dmi_log_level_t level, const char *format, va_list args)
