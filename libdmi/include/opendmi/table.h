@@ -88,7 +88,7 @@ struct dmi_table_header
      * reserved for and defined by this specification. Types 128 through 256
      * (0x80 to 0xFF) are available for system- and OEM-specific information.
      */
-    enum dmi_type type : 8;
+    uint8_t type;
 
     /**
      * @brief Specifies the length of the formatted area of the structure,

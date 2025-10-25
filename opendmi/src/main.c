@@ -115,11 +115,11 @@ static void print_all(dmi_context_t *context)
 
 static void print_table(const dmi_table_t *table)
 {
-    printf("Handle 0x%04x, DMI type %d (%s), %zu bytes\n",
+    printf("Handle 0x%04x, DMI type %d, %zu bytes\n",
            (unsigned int)dmi_table_handle(table),
            dmi_table_type(table),
-           dmi_table_name(table),
            table->total_length);
+    printf("%s\n", dmi_table_name(table));
 
     if (!table->spec) {
         printf("\tHeader and data:\n");

@@ -172,8 +172,10 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
             return false;
         }
 
-        if (last->next)
-            last = last->next;
+        if (!last->next)
+            break;
+
+        last = last->next;
     }
 
     if (last)

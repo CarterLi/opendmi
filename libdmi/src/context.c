@@ -195,6 +195,7 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
             break;
 
         // Create registry
+        dmi_info(context, "Initializing registry...");
         context->registry = dmi_registry_create(context, 0);
         if (!context->registry)
             break;

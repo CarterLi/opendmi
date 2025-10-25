@@ -208,16 +208,14 @@ static bool dmi_table_decode_strings(dmi_table_t *table)
             if (*ptr != 0) {
                 table->strings[index++] = ptr;
 
-                while (*ptr != 0)
-                {
+                while (*ptr != 0) {
                     ptr++;
                 }
             }
 
             ptr++;
 
-            if (*ptr == 0)
-            {
+            if (*ptr == 0) {
                 ptr++;
                 break;
             }
