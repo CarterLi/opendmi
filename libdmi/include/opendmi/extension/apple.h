@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <opendmi/extension.h>
+
 /**
  * @brief Apple DMI structure type identifiers.
  */
@@ -21,5 +23,10 @@ enum dmi_apple_type
     DMI_TYPE_APPLE_PLATFORM_FEATURE    = 133, ///< Apple: Platform feature information
     DMI_TYPE_APPLE_SMC_VERSION         = 134  ///< Apple: SMC version information
 };
+
+/**
+ * @brief Apple DMI extension.
+ */
+extern const dmi_extension_t dmi_apple_ext;
 
 #endif // !OPENDMI_EXTENSION_APPLE_H

@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <opendmi/extension.h>
+
 /**
  * @brief Intel structure type identifiers.
  */
@@ -25,5 +27,10 @@ enum dmi_intel_type
     DMI_TYPE_INTEL_RSD_CABLED_PCIE         = 199, ///< Intel: RSD Cabled PCIe port information
     DMI_TYPE_INTEL_RSD_PHYS_DEVICE_MAPPING = 200  ///< Intel: RSD SMBIOS physical device mapping
 };
+
+/**
+ * @brief Intel DMI extension.
+ */
+extern const dmi_extension_t dmi_intel_ext;
 
 #endif // !OPENDMI_EXTENSION_INTEL_H

@@ -10,6 +10,7 @@
 #pragma once
 
 #include <opendmi/table.h>
+#include <opendmi/extension.h>
 
 enum dmi_dell_type
 {
@@ -70,5 +71,10 @@ struct dmi_dell_calling_interface_table
      */
 	struct dmi_dell_calling_interface_token tokens[];
 } __attribute__((packed));
+
+/**
+ * @brief Dell DMI extension.
+ */
+extern const dmi_extension_t dmi_dell_ext;
 
 #endif // !OPENDMI_TABLE_DELL_H

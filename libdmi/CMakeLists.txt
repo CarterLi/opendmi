@@ -24,6 +24,9 @@ add_library(dmi-object OBJECT
     src/table/battery.c
     src/table/probe.c
     src/table/cooler.c
+    src/extension/apple.c
+    src/extension/dell.c
+    src/extension/intel.c
     src/backend/dump.c)
 
 target_include_directories(dmi-object PUBLIC include)
