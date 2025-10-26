@@ -121,7 +121,7 @@ static bool dmi_registry_build(dmi_registry_t *registry)
             goto exit;
         }
 
-        // Decode next table
+        // Decode table
         table = dmi_table_decode(context, ptr);
         if (table == nullptr) {
             if (dmi_get_error(context) == DMI_ERROR_NO_MORE_ENTRIES)
@@ -149,6 +149,7 @@ exit:
 
 static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
 {
+    size_t hash;
     dmi_registry_entry_t *entry;
     dmi_registry_entry_t *last;
 
@@ -163,25 +164,28 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
     memset(entry, 0, sizeof(dmi_registry_entry_t));
     entry->table = table;
 
+    hash = (size_t)table->handle % registry->capacity;
+    last = registry->index[hash];
+
     // Add entry to index
-    last = registry->index[(size_t)table->handle % registry->capacity];
-    while (last) {
-        if (last->table->handle == table->handle) {
-            free(entry);
-            dmi_set_error(nullptr, DMI_ERROR_DUPLICATE_ENTRY);
-            return false;
+    if (last == nullptr) {
+        registry->index[hash] = entry;
+    } else {
+        while (true) {
+            if (last->table->handle == table->handle) {
+                free(entry);
+                dmi_set_error(nullptr, DMI_ERROR_DUPLICATE_ENTRY);
+                return false;
+            }
+
+            if (!last->next)
+                break;
+
+            last = last->next;
         }
 
-        if (!last->next)
-            break;
-
-        last = last->next;
-    }
-
-    if (last)
         last->next = entry;
-    else
-        registry->index[(size_t)table->handle % registry->capacity] = entry;
+    }
 
     entry->seq_prev = registry->tail;
 
