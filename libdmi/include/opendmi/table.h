@@ -180,31 +180,45 @@ __BEGIN_DECLS
 
 /**
  * @brief Decode DMI table.
+ *
+ * @param[in] context DMI context handle.
+ * @param[in] data Pointer to table data.
  */
 dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data);
 
 /**
  * @brief Get DMI table handle.
+ *
+ * @param[in] table DMI table handle.
  */
 dmi_handle_t dmi_table_handle(const dmi_table_t *table);
 
 /**
  * @brief Get DMI table type.
+ *
+ * @param[in] table DMI table handle.
  */
 dmi_type_t dmi_table_type(const dmi_table_t *table);
 
 /**
  * @brief Get DMI table name.
+ *
+ * @param[in] table DMI table handle.
  */
 const char *dmi_table_name(const dmi_table_t *table);
 
 /**
  * @brief Get DMI table string.
+ *
+ * @param[in] table DMI table handle.
+ * @param[in] num String number.
  */
 const char *dmi_table_string(const dmi_table_t *table, dmi_string_t num);
 
 /**
  * @brief Destroy DMI table handle.
+ *
+ * @param[in] table DMI table handle.
  */
 void dmi_table_destroy(dmi_table_t *table);
 

@@ -7,3 +7,10 @@ OpenDMI 0.1.0
 :mansource: DMI_DUMP_SAVE
 
 == Synopsis
+
+[source, c]
+----
+#include <opendmi/context.h>
+
+bool dmi_dump_save(dmi_context_t *context, const char *path);
+----

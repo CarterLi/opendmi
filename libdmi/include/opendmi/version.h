@@ -17,9 +17,9 @@ typedef unsigned int dmi_version_t;
 /**
  * @brief Construct SMBIOS version number from its components.
  *
- * @param major Major version number.
- * @param minor Minor version number.
- * @param revision Revision version number.
+ * @param[in] major Major version number.
+ * @param[in] minor Minor version number.
+ * @param[in] revision Revision version number.
  *
  * @return Version number.
  */
@@ -33,7 +33,7 @@ static inline dmi_version_t dmi_version(unsigned int major,
 /**
  * @brief Get major component of SMBIOS version number.
  *
- * @param version Version number.
+ * @param[in] version Version number.
  * @return Major version number.
  */
 static inline unsigned int dmi_version_major(dmi_version_t version)
@@ -44,7 +44,7 @@ static inline unsigned int dmi_version_major(dmi_version_t version)
 /**
  * @brief Get minor component of SMBIOS version number.
  *
- * @param version Version number.
+ * @param[in] version Version number.
  * @return Minor version number.
  */
 static inline unsigned int dmi_version_minor(dmi_version_t version)
@@ -55,7 +55,7 @@ static inline unsigned int dmi_version_minor(dmi_version_t version)
 /**
  * @brief Get revision component of SMBIOS version number.
  *
- * @param version Version number.
+ * @param[in] version Version number.
  * @return Revision version number.
  */
 static inline unsigned int dmi_version_revision(dmi_version_t version)

@@ -92,16 +92,25 @@ __BEGIN_DECLS
 
 /**
  * @brief Create DMI registry.
+ *
+ * @param[in] context DMI context handle.
+ * @param[in] capacity Registry hash-table capacity. Zero means default value
+ *                     of `DMI_REGISTRY_CAPACITY`.
  */
 dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity);
 
 /**
  * @brief Get table from DMI registry.
+ *
+ * @param[in] registry DMI registry handle.
+ * @param[in] handle DMI table identifier.
  */
 dmi_table_t *dmi_registry_get(dmi_registry_t *registry, dmi_handle_t handle);
 
 /**
  * @brief Destroy DMI registry.
+ *
+ * @param[in] registry DMI registry handle.
  */
 void dmi_registry_destroy(dmi_registry_t *registry);
 

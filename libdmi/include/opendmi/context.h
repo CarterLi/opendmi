@@ -106,47 +106,70 @@ dmi_context_t *dmi_create(void);
 
 /**
  * @brief Open DMI context.
+ *
+ * @param[in] context DMI context handle.
+ * @return The function returns `true` on success and `false` otherwise.
  */
 bool dmi_open(dmi_context_t *context);
 
 /**
  * @brief Load dump file into DMI context.
+ *
+ * @param[in] context DMI context handle.
+ * @param[in] path Path to dump file.
+ *
+ * @return The function returns `true` on success and `false` otherwise.
  */
 bool dmi_dump_load(dmi_context_t *context, const char *path);
 
 /**
  * @brief Save DMI context to dump file.
+ *
+ * @param[in] context DMI context handle.
+ * @param[in] path Path to dump file.
+ *
+ * @return The function returns `true` on success and `false` otherwise.
  */
 bool dmi_dump_save(dmi_context_t *context, const char *path);
 
 /**
  * @brief Set logging handler.
+ *
+ * @param[in] context DMI context handle.
+ * @param[in] logger Logging handler.
+ *
+ * @return The function returns `true` on success and `false` otherwise.
  */
 bool dmi_set_logger(dmi_context_t *context, dmi_log_handler_t logger);
 
 /**
  * @brief Set last DMI error code.
  *
- * @param context DMI context handle (may be `NULL`)
- * @param error Error code
+ * @param[in] context DMI context handle (may be `NULL`).
+ * @param[in] error Error code.
  */
 void dmi_set_error(dmi_context_t *context, dmi_error_t error);
 
 /**
  * @brief Get last DMI error code.
  *
- * @param context DMI context handle (may be `NULL`)
- * @return Error code
+ * @param[in] context DMI context handle (may be `NULL`).
+ * @return Error code.
  */
 dmi_error_t dmi_get_error(const dmi_context_t *context);
 
 /**
  * @brief Close DMI context.
+ *
+ * @param[in] context DMI context handle.
+ * @return The function returns `true` on success and `false` otherwise.
  */
 bool dmi_close(dmi_context_t *context);
 
 /**
  * @brief Destroy DMI context.
+ *
+ * @param[in] context DMI context handle.
  */
 void dmi_destroy(dmi_context_t *context);
 

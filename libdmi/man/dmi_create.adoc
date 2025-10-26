@@ -1,10 +1,10 @@
-= dmi_open(3)
+= dmi_create(3)
 Dmitry Sednev
 OpenDMI 0.1.0
 
 :doctype: manpage
-:manmanual: DMI_OPEN
-:mansource: DMI_OPEN
+:manmanual: DMI_CREATE
+:mansource: DMI_CREATE
 
 == Synopsis
 
@@ -12,5 +12,5 @@ OpenDMI 0.1.0
 ----
 #include <opendmi/context.h>
 
-bool dmi_open(dmi_context_t *context);
+dmi_context_t *dmi_create(void);
 ----

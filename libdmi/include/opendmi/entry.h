@@ -354,9 +354,9 @@ __BEGIN_DECLS
  * @internal
  * @brief Decode DMI entry point and initialize related context properties.
  * 
- * @param context Context handle to initialize
- * @param data Pointer to entry point data
- * @param length Entry point data length
+ * @param[in] context Context handle to initialize.
+ * @param[in] data Pointer to entry point data.
+ * @param[in] length Entry point data length.
  * 
  * @return The function returns `true` on success and `false` otherwise.
  */

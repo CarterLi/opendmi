@@ -7,3 +7,10 @@ OpenDMI 0.1.0
 :mansource: DMI_CLOSE
 
 == Synopsis
+
+[source, c]
+----
+#include <opendmi/context.h>
+
+bool dmi_close(dmi_context_t *context);
+----
