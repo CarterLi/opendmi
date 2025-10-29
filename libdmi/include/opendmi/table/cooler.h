@@ -130,6 +130,11 @@ struct dmi_cooler_table
     dmi_string_t description;
 } __attribute__((packed));
 
+/**
+ * @brief Cooling device table specification.
+ */
+extern const dmi_table_spec_t dmi_cooler_table_spec;
+
 __BEGIN_DECLS
 
 const char *dmi_cooler_type_name(dmi_cooler_type_t value);

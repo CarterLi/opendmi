@@ -18,6 +18,10 @@
 #include <opendmi/table/processor.h>
 #include <opendmi/table/memory.h>
 #include <opendmi/table/cache.h>
+#include <opendmi/table/port.h>
+#include <opendmi/table/slot.h>
+#include <opendmi/table/probe.h>
+#include <opendmi/table/cooler.h>
 
 #include <opendmi/backend/dump.h>
 #if defined(__linux__)
@@ -59,14 +63,29 @@ static dmi_backend_t *dmi_backend = &DMI_BACKEND;
  */
 static const dmi_table_spec_t *dmi_table_specs[__DMI_TYPE_COUNT] =
 {
-    [DMI_TYPE_FIRMWARE]       = &dmi_firmware_table_spec,
-    [DMI_TYPE_SYSTEM]         = &dmi_system_table_spec,
-    [DMI_TYPE_BASEBOARD]      = &dmi_baseboard_table_spec,
-    [DMI_TYPE_CHASSIS]        = &dmi_chassis_table_spec,
-    [DMI_TYPE_PROCESSOR]      = &dmi_processor_table_spec,
-    [DMI_TYPE_MEM_CONTROLLER] = &dmi_mem_controller_table_spec,
-    [DMI_TYPE_MEM_MODULE]     = &dmi_mem_module_table_spec,
-    [DMI_TYPE_CACHE]          = &dmi_cache_table_spec
+    [DMI_TYPE_FIRMWARE]           = &dmi_firmware_table_spec,
+    [DMI_TYPE_SYSTEM]             = &dmi_system_table_spec,
+    [DMI_TYPE_BASEBOARD]          = &dmi_baseboard_table_spec,
+    [DMI_TYPE_CHASSIS]            = &dmi_chassis_table_spec,
+    [DMI_TYPE_PROCESSOR]          = &dmi_processor_table_spec,
+    [DMI_TYPE_MEMORY_CONTROLLER]  = &dmi_memory_controller_table_spec,
+    [DMI_TYPE_MEMORY_MODULE]      = &dmi_memory_module_table_spec,
+    [DMI_TYPE_CACHE]              = &dmi_cache_table_spec,
+    [DMI_TYPE_PORT_CONNECTOR]     = &dmi_port_table_spec,
+    [DMI_TYPE_SYSTEM_SLOTS]       = &dmi_slot_table_spec,
+    // ..
+    [DMI_TYPE_FIRMWARE_LANGUAGE]  = &dmi_firmware_language_table_spec,
+    // ..
+    [DMI_TYPE_SYSTEM_RESET]       = &dmi_system_reset_table_spec,
+    // ..
+    [DMI_TYPE_VOLTAGE_PROBE]      = &dmi_voltage_probe_table_spec,
+    [DMI_TYPE_COOLING_DEVICE]     = &dmi_cooler_table_spec,
+    [DMI_TYPE_TEMPERATURE_PROBE]  = &dmi_temperature_probe_table_spec,
+    [DMI_TYPE_CURRENT_PROBE]      = &dmi_current_probe_table_spec,
+    // ..
+    [DMI_TYPE_SYSTEM_BOOT]        = &dmi_system_boot_table_spec,
+    // ..
+    [DMI_TYPE_FIRMWARE_INVENTORY] = &dmi_firmware_inventory_table_spec
 };
 
 dmi_context_t *dmi_create(void)

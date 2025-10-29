@@ -36,6 +36,48 @@ const char *dmi_probe_status_names[__DMI_PROBE_STATUS_COUNT] =
     [DMI_PROBE_STATUS_NON_RECOVERABLE] = "Non-recoverable"
 };
 
+const struct dmi_attribute_spec dmi_voltage_probe_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_voltage_probe_table_spec =
+{
+    .tag        = "voltage-probe",
+    .name       = "Voltage probe",
+    .type       = DMI_TYPE_VOLTAGE_PROBE,
+    .min_length = 0x16,
+    .attributes = dmi_voltage_probe_attrs
+};
+
+const struct dmi_attribute_spec dmi_temperature_probe_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_temperature_probe_table_spec =
+{
+    .tag        = "temperature-probe",
+    .name       = "Temperature probe",
+    .type       = DMI_TYPE_TEMPERATURE_PROBE,
+    .min_length = 0x16,
+    .attributes = dmi_temperature_probe_attrs
+};
+
+const struct dmi_attribute_spec dmi_current_probe_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_current_probe_table_spec =
+{
+    .tag        = "current-probe",
+    .name       = "Electrical current probe",
+    .type       = DMI_TYPE_CURRENT_PROBE,
+    .min_length = 0x16,
+    .attributes = dmi_current_probe_attrs
+};
+
 const char *dmi_probe_location_name(dmi_probe_location_t value)
 {
     return dmi_name(dmi_probe_location_names, value, __DMI_PROBE_LOCATION_COUNT);

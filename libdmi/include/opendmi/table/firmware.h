@@ -102,6 +102,16 @@ struct dmi_firmware_table
 /**
  * @brief Platform firmware information table specification.
  */
-extern const struct dmi_table_spec dmi_firmware_table_spec;
+extern const dmi_table_spec_t dmi_firmware_table_spec;
+
+/**
+ * @brief Firmware language information table specification.
+ */
+extern const dmi_table_spec_t dmi_firmware_language_table_spec;
+
+/**
+ * @brief Firmware inventory information table specification.
+ */
+extern const dmi_table_spec_t dmi_firmware_inventory_table_spec;
 
 #endif // !OPENDMI_TABLE_FIRMWARE_H

@@ -23,6 +23,12 @@ add_library(dmi-object OBJECT
     src/table/port.c
     src/table/slot.c
     src/table/memory.c
+    src/table/memory-array.c
+    src/table/memory-channel.c
+    src/table/memory-controller.c
+    src/table/memory-device.c
+    src/table/memory-error.c
+    src/table/memory-module.c
     src/table/battery.c
     src/table/probe.c
     src/table/cooler.c

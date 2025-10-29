@@ -11,7 +11,7 @@
 
 #include <opendmi/table.h>
 
-enum dmi_mem_array_location
+enum dmi_memory_array_location
 {
     DMI_MEM_ARRAY_LOCATION_OTHER           = 0x01, ///< Other
     DMI_MEM_ARRAY_LOCATION_UNKNOWN         = 0x02, ///< Unknown
@@ -31,7 +31,7 @@ enum dmi_mem_array_location
     __DMI_MEM_ARRAY_LOCATION_COUNT
 };
 
-enum dmi_mem_array_usage
+enum dmi_memory_array_usage
 {
     DMI_MEM_ARRAY_USAGE_OTHER   = 0x01, ///< Other
     DMI_MEM_ARRAY_USAGE_UNKNOWN = 0x02, ///< Unknown
@@ -43,7 +43,7 @@ enum dmi_mem_array_usage
     __DMI_MEM_ARRAY_USAGE_COUNT
 };
 
-enum dmi_mem_device_type
+enum dmi_memory_device_type
 {
     DMI_MEM_DEVICE_TYPE_OTHER             = 0x01,
     DMI_MEM_DEVICE_TYPE_UNKNOWN           = 0x02,
@@ -82,7 +82,7 @@ enum dmi_mem_device_type
     DMI_MEM_DEVICE_TYPE_MRDIMM            = 0x25,
 };
 
-enum dmi_mem_device_form_factor
+enum dmi_memory_device_form_factor
 {
     DMI_MEM_DEVICE_FORM_FACTOR_OTHER   = 0x01, ///< Other
     DMI_MEM_DEVICE_FORM_FACTOR_UNKNOWN = 0x02, ///< Unknown
@@ -106,7 +106,7 @@ enum dmi_mem_device_form_factor
     __DMI_MEM_DEVICE_FORM_FACTOR_COUNT
 };
 
-enum dmi_mem_device_technology
+enum dmi_memory_device_technology
 {
     DMI_MEM_DEVICE_TECHNOLOGY_OTHER    = 0x01, ///< Other
     DMI_MEM_DEVICE_TECHNOLOGY_UNKNOWN  = 0x02, ///< Unknown
@@ -119,7 +119,7 @@ enum dmi_mem_device_technology
     __DMI_MEM_DEVICE_TECHNOLOGY_COUNT
 };
 
-union dmi_mem_device_type_detail
+union dmi_memory_device_type_detail
 {
     uint16_t raw_value;
 
@@ -147,7 +147,7 @@ union dmi_mem_device_type_detail
 /**
  * @since SMBIOS 2.1
  */
-struct dmi_mem_device_table
+struct dmi_memory_device_table
 {
     /**
      * @brief DMI table header.
@@ -216,7 +216,7 @@ struct dmi_mem_device_table
      *
      * @since SMBIOS 2.1
      */
-    enum dmi_mem_device_form_factor form_factor : 8;
+    enum dmi_memory_device_form_factor form_factor : 8;
 
     /**
      * @brief Identifies when the memory device is one of a set of memory
@@ -253,14 +253,14 @@ struct dmi_mem_device_table
      *
      * @since SMBIOS 2.1
      */
-    enum dmi_mem_device_type memory_type : 8;
+    enum dmi_memory_device_type memory_type : 8;
 
     /**
      * @brief Additional detail on the memory device type.
      *
      * @since SMBIOS 2.1
      */
-    union dmi_mem_device_type_detail memory_type_detail;
+    union dmi_memory_device_type_detail memory_type_detail;
 
     /**
      * @brief Identifies the maximum capable speed of the device, in
@@ -433,18 +433,18 @@ struct dmi_mem_device_table
 /**
  * @brief Memory controller information table specification.
  */
-extern const struct dmi_table_spec dmi_mem_controller_table_spec;
+extern const dmi_table_spec_t dmi_memory_controller_table_spec;
 
 /**
  * @brief Memory module information table specification.
  */
-extern const struct dmi_table_spec dmi_mem_module_table_spec;
+extern const dmi_table_spec_t dmi_memory_module_table_spec;
 
 __BEGIN_DECLS
 
-const char *dmi_mem_array_location_name(enum dmi_mem_array_location value);
-const char *dmi_mem_device_type_name(enum dmi_mem_device_type value);
-const char *dmi_mem_device_form_factor_name(enum dmi_mem_device_form_factor value);
+const char *dmi_memory_array_location_name(enum dmi_memory_array_location value);
+const char *dmi_memory_device_type_name(enum dmi_memory_device_type value);
+const char *dmi_memory_device_form_factor_name(enum dmi_memory_device_form_factor value);
 
 __END_DECLS
 

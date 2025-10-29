@@ -32,6 +32,20 @@ const char *dmi_cooler_status_names[__DMI_COOLER_STATUS_COUNT] =
     [DMI_COOLER_STATUS_NON_RECOVERABLE] = "Non-recoverable"
 };
 
+const struct dmi_attribute_spec dmi_cooler_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_cooler_table_spec =
+{
+    .tag        = "cooling-device",
+    .name       = "Cooling device",
+    .type       = DMI_TYPE_COOLING_DEVICE,
+    .min_length = 0x0E,
+    .attributes = dmi_cooler_attrs
+};
+
 const char *dmi_cooler_type_name(dmi_cooler_type_t value)
 {
     return dmi_name(dmi_cooler_type_names, value, __DMI_COOLER_TYPE_COUNT);

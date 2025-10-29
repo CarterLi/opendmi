@@ -229,6 +229,11 @@ struct dmi_slot_info
     const char *designator;
 };
 
+/**
+ * @brief System slots table specification.
+ */
+extern const dmi_table_spec_t dmi_slot_table_spec;
+
 __BEGIN_DECLS
 
 const char *dmi_slot_type_name(enum dmi_slot_type value);

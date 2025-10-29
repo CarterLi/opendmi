@@ -58,6 +58,11 @@ enum dmi_port_type
     __DMI_PORT_TYPE_COUNT
 };
 
+/**
+ * @brief Port connector information table specification.
+ */
+extern const dmi_table_spec_t dmi_port_table_spec;
+
 __BEGIN_DECLS
 
 const char *dmi_port_type_name(enum dmi_port_type value);

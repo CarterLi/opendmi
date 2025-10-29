@@ -113,6 +113,21 @@ struct dmi_probe_table
     uint16_t nom_value;
 } __attribute__((packed));
 
+/**
+ * @brief Voltage probe table specification.
+ */
+extern const dmi_table_spec_t dmi_voltage_probe_table_spec;
+
+/**
+ * @brief Temperature probe table specification.
+ */
+extern const dmi_table_spec_t dmi_temperature_probe_table_spec;
+
+/**
+ * @brief Electrical current probe table specification.
+ */
+extern const dmi_table_spec_t dmi_current_probe_table_spec;
+
 __BEGIN_DECLS
 
 const char *dmi_probe_location_name(dmi_probe_location_t value);
