@@ -57,6 +57,20 @@ static const char *dmi_chassis_state_names[__DMI_CHASSIS_STATE_COUNT] =
     [DMI_CHASSIS_STATE_NON_RECOVERABLE] = "Non-recoverable"
 };
 
+const struct dmi_attribute_spec dmi_chassis_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const struct dmi_table_spec dmi_chassis_table_spec =
+{
+    .tag        = "chassis",
+    .name       = "System enclosure or chassis",
+    .type       = DMI_TYPE_CHASSIS,
+    .min_length = 0x09,
+    .attributes = dmi_chassis_attrs
+};
+
 const char *dmi_chassis_type_name(enum dmi_chassis_type value)
 {
     return dmi_name(dmi_chassis_type_names, value, __DMI_CHASSIS_TYPE_COUNT);

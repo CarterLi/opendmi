@@ -9,4 +9,11 @@
 
 #pragma once
 
+#include <opendmi/table.h>
+
+/**
+ * @brief System information table specification.
+ */
+extern const struct dmi_table_spec dmi_system_table_spec;
+
 #endif // !OPENDMI_TABLE_SYSTEM_H

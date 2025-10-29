@@ -54,7 +54,7 @@ typedef enum dmi_type
     DMI_TYPE_FIRMWARE                = 0,   ///< Platform firmware information
     DMI_TYPE_SYSTEM                  = 1,   ///< System information
     DMI_TYPE_BASEBOARD               = 2,   ///< Baseboard or module information
-    DMI_TYPE_SYS_CHASSIS             = 3,   ///< System enclosure or chassis
+    DMI_TYPE_CHASSIS                 = 3,   ///< System enclosure or chassis
     DMI_TYPE_PROCESSOR               = 4,   ///< Processor information
     DMI_TYPE_MEM_CONTROLLER          = 5,   ///< Memory controller information (obsolette)
     DMI_TYPE_MEM_MODULE              = 6,   ///< Memory module information (obsolette)

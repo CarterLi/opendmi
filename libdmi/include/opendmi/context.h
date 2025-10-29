@@ -14,6 +14,7 @@
 #include <opendmi/log.h>
 #include <opendmi/version.h>
 #include <opendmi/backend.h>
+#include <opendmi/extension.h>
 #include <opendmi/registry.h>
 
 /**
@@ -87,6 +88,11 @@ struct dmi_context
     void *session;
 
     /**
+     * @brief DMI table specifications map.
+     */
+    dmi_table_spec_t **type_map;
+
+    /**
      * @brief Table registry.
      */
     dmi_registry_t *registry;
@@ -113,6 +119,11 @@ dmi_context_t *dmi_create(void);
 bool dmi_open(dmi_context_t *context);
 
 /**
+ * @brief Add DMI extension.
+ */
+bool dmi_add_extension(dmi_context_t *context, const dmi_extension_t *extension);
+
+/**
  * @brief Load dump file into DMI context.
  *
  * @param[in] context DMI context handle.
@@ -131,6 +142,11 @@ bool dmi_dump_load(dmi_context_t *context, const char *path);
  * @return The function returns `true` on success and `false` otherwise.
  */
 bool dmi_dump_save(dmi_context_t *context, const char *path);
+
+/**
+ * @brief Get table specification for specified DMI type.
+ */
+const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type);
 
 /**
  * @brief Set logging handler.

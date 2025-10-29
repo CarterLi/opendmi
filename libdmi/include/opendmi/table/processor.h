@@ -292,6 +292,11 @@ struct dmi_processor_table
     uint8_t socket_type;
 } __attribute__((packed));
 
+/**
+ * @brief Processor information table specification.
+ */
+extern const struct dmi_table_spec dmi_processor_table_spec;
+
 __BEGIN_DECLS
 
 const char *dmi_processor_type_name(enum dmi_processor_type value);

@@ -108,6 +108,20 @@ static const char *dmi_processor_upgrade_names[__DMI_PROCESSOR_UPGRADE_COUNT] =
     [DMI_PROCESSOR_UPGRADE_SOCKET_BGA2833]   = "Socket BGA2833"
 };
 
+const struct dmi_attribute_spec dmi_processor_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const struct dmi_table_spec dmi_processor_table_spec =
+{
+    .tag        = "processor",
+    .name       = "Processor information",
+    .type       = DMI_TYPE_PROCESSOR,
+    .min_length = 0x1A,
+    .attributes = dmi_processor_attrs
+};
+
 const char *dmi_processor_type_name(enum dmi_processor_type value)
 {
     return dmi_name(dmi_processor_type_names, value, __DMI_PROCESSOR_TYPE_COUNT);

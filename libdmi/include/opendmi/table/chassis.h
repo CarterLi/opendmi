@@ -89,6 +89,11 @@ struct dmi_chassis_table
     dmi_string_t manufacturer;
 };
 
+/**
+ * @brief System enclosure or chasis table specification.
+ */
+extern const struct dmi_table_spec dmi_chassis_table_spec;
+
 __BEGIN_DECLS
 
 const char *dmi_chassis_type_name(enum dmi_chassis_type value);

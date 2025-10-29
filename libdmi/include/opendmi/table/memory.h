@@ -430,6 +430,16 @@ struct dmi_mem_device_table
     uint16_t rcd_revision_number;
 } __attribute__((packed));
 
+/**
+ * @brief Memory controller information table specification.
+ */
+extern const struct dmi_table_spec dmi_mem_controller_table_spec;
+
+/**
+ * @brief Memory module information table specification.
+ */
+extern const struct dmi_table_spec dmi_mem_module_table_spec;
+
 __BEGIN_DECLS
 
 const char *dmi_mem_array_location_name(enum dmi_mem_array_location value);

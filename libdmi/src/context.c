@@ -11,6 +11,14 @@
 #include <opendmi/entry.h>
 #include <opendmi/table.h>
 
+#include <opendmi/table/firmware.h>
+#include <opendmi/table/system.h>
+#include <opendmi/table/baseboard.h>
+#include <opendmi/table/chassis.h>
+#include <opendmi/table/processor.h>
+#include <opendmi/table/memory.h>
+#include <opendmi/table/cache.h>
+
 #include <opendmi/backend/dump.h>
 #if defined(__linux__)
 #include <opendmi/backend/linux.h>
@@ -45,6 +53,21 @@ static __thread dmi_error_t dmi_last_error = DMI_OK;
  * @brief Backend handle.
  */
 static dmi_backend_t *dmi_backend = &DMI_BACKEND;
+
+/**
+ * @brief Predefined table specifications map.
+ */
+static const dmi_table_spec_t *dmi_table_specs[__DMI_TYPE_COUNT] =
+{
+    [DMI_TYPE_FIRMWARE]       = &dmi_firmware_table_spec,
+    [DMI_TYPE_SYSTEM]         = &dmi_system_table_spec,
+    [DMI_TYPE_BASEBOARD]      = &dmi_baseboard_table_spec,
+    [DMI_TYPE_CHASSIS]        = &dmi_chassis_table_spec,
+    [DMI_TYPE_PROCESSOR]      = &dmi_processor_table_spec,
+    [DMI_TYPE_MEM_CONTROLLER] = &dmi_mem_controller_table_spec,
+    [DMI_TYPE_MEM_MODULE]     = &dmi_mem_module_table_spec,
+    [DMI_TYPE_CACHE]          = &dmi_cache_table_spec
+};
 
 dmi_context_t *dmi_create(void)
 {
@@ -88,6 +111,20 @@ bool dmi_dump_save(dmi_context_t *context, const char *path)
     }
 
     return true;
+}
+
+const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type)
+{
+    const dmi_table_spec_t *spec = nullptr;
+
+    // TODO: Check bounds
+    if (context != nullptr)
+        spec = context->type_map[type];
+    
+    if (spec == nullptr)
+        spec = dmi_table_specs[type];
+
+    return spec;
 }
 
 bool dmi_set_logger(dmi_context_t *context, dmi_log_handler_t logger)

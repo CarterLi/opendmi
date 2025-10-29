@@ -24,6 +24,20 @@ static const char *dmi_baseboard_type_names[__DMI_BASEBOARD_COUNT] =
     [DMI_BASEBOARD_INTERCONNECT_BOARD]       = "Interconnect board"
 };
 
+const struct dmi_attribute_spec dmi_baseboard_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const struct dmi_table_spec dmi_baseboard_table_spec =
+{
+    .tag        = "baseboard",
+    .name       = "Baseboard or module information",
+    .type       = DMI_TYPE_BASEBOARD,
+    .min_length = 0x0F,
+    .attributes = dmi_baseboard_attrs
+};
+
 const char *dmi_baseboard_type_name(enum dmi_baseboard_type value)
 {
     return dmi_name(dmi_baseboard_type_names, value, __DMI_BASEBOARD_COUNT);

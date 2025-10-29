@@ -55,7 +55,7 @@ static const char *dmi_cache_location_names[__DMI_CACHE_LOCATION_COUNT] =
     [DMI_CACHE_LOCATION_UNKNOWN]  = "Unknown"
 };
 
-const struct dmi_attribute_spec dmi_cache_table_attrs[] =
+const struct dmi_attribute_spec dmi_cache_attrs[] =
 {
     {
         .tag  = "socket-designator",
@@ -141,7 +141,7 @@ const struct dmi_table_spec dmi_cache_table_spec =
     .name       = "Cache information",
     .type       = DMI_TYPE_CACHE,
     .min_length = 0x0F,
-    .attributes = dmi_cache_table_attrs
+    .attributes = dmi_cache_attrs
 };
 
 const char *dmi_cache_type_name(enum dmi_cache_type value)

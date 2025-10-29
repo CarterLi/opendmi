@@ -120,6 +120,11 @@ struct dmi_baseboard
     char *location;
 };
 
+/**
+ * @brief Baseboard or module information table specification.
+ */
+extern const struct dmi_table_spec dmi_baseboard_table_spec;
+
 __BEGIN_DECLS
 
 const char *dmi_baseboard_type_name(enum dmi_baseboard_type value);
