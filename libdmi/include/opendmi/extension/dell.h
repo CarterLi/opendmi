@@ -49,7 +49,7 @@ struct dmi_dell_calling_interface_table
     /**
      * @brief DMI table header.
      */
-    dmi_table_header_t header;
+    dmi_header_t header;
 
     /**
      * @brief Command address.

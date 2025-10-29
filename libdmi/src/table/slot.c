@@ -117,6 +117,20 @@ static const char *dmi_slot_usage_names[__DMI_SLOT_USAGE_COUNT] =
     [DMI_SLOT_USAGE_UNAVAILABLE] = "Unavailable"
 };
 
+const struct dmi_attribute_spec dmi_slot_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_slot_table_spec =
+{
+    .tag        = "slot",
+    .name       = "System slots",
+    .type       = DMI_TYPE_SYSTEM_SLOTS,
+    .min_length = 0x0C,
+    .attributes = dmi_slot_attrs
+};
+
 const char *dmi_slot_type_name(enum dmi_slot_type value)
 {
     return dmi_name(dmi_slot_type_names, value, __DMI_SLOT_TYPE_COUNT);

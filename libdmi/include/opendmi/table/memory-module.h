@@ -16,7 +16,7 @@ struct dmi_memory_module_table
     /**
      * @brief DMI table header.
      */
-    dmi_table_header_t header;
+    dmi_header_t header;
 
     /**
      * @brief String number for reference designation. Example: "J202".

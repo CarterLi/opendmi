@@ -56,7 +56,7 @@ struct dmi_probe_table
     /**
      * @brief DMI table header.
      */
-    dmi_table_header_t header;
+    dmi_header_t header;
 
     struct {
         /**

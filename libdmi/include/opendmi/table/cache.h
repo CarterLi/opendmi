@@ -154,7 +154,7 @@ struct dmi_cache_table
     /**
      * @brief DMI table header.
      */
-    struct dmi_table_header header;
+    dmi_header_t header;
 
     /**
      * @brief String number for reference designation, e.g. "CACHE1", 0.

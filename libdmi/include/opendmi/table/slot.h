@@ -138,10 +138,10 @@ struct dmi_slot_table
     /**
      * @brief DMI table header.
      */
-    dmi_table_header_t header;
+    dmi_header_t header;
 
     /**
-     * @brief String number for reference designation. Example: "PCI-1", 0.
+     * @brief String number for reference designation. Example: "PCI-1".
      * @since SMBIOS 2.0
      */
     dmi_string_t designator;

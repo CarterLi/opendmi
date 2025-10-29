@@ -47,7 +47,7 @@ struct dmi_firmware_table
     /**
      * @brief DMI structure header.
      */
-    dmi_table_header_t header;
+    dmi_header_t header;
 
     /**
      * @brief String number of the firmware vendor’s name.

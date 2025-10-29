@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 
 static void show_version(void)
 {
-    printf("OpenDMI, version %s\n", DMI_VERSION);
+    printf("OpenDMI, version %s\n", OPENDMI_VERSION);
     printf("Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>\n\n");
 }
 

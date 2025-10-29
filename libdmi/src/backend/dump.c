@@ -54,7 +54,7 @@ static bool dmi_dump_open(dmi_context_t *context, const void *arg __attribute__(
     session->data = dmi_file_map((const char *)arg, &session->data_size);
     if (!session->data)
         return false;
-    if (session->data_size < DMI_ENTRY_MAX_SIZE + sizeof(dmi_table_header_t))
+    if (session->data_size < DMI_ENTRY_MAX_SIZE + sizeof(dmi_header_t))
         return false;
 
     context->session = session;

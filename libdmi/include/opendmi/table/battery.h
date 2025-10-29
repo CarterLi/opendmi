@@ -36,7 +36,7 @@ struct dmi_battery_table
     /**
      * @brief DMI table header.
      */
-    dmi_table_header_t header;
+    dmi_header_t header;
 
     /**
      * @brief Number of the string that identifies the location of the battery.

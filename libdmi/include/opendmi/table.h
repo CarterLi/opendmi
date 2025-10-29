@@ -10,6 +10,7 @@
 #pragma once
 
 #include <opendmi/types.h>
+#include <opendmi/version.h>
 #include <opendmi/model/attribute.h>
 
 #ifndef DMI_TABLE_SPEC_T
@@ -17,10 +18,10 @@
 typedef struct dmi_table_spec dmi_table_spec_t;
 #endif // !DMI_TABLE_SPEC_T
 
-#ifndef DMI_TABLE_HEADER_T
-#define DMI_TABLE_HEADER_T
-typedef struct dmi_table_header dmi_table_header_t;
-#endif // !DMI_TABLE_HEADER_T
+#ifndef DMI_HEADER_T
+#define DMI_HEADER_T
+typedef struct dmi_header dmi_header_t;
+#endif // !DMI_HEADER_T
 
 #ifndef DMI_TABLE_T
 #define DMI_TABLE_T
@@ -46,6 +47,12 @@ struct dmi_table_spec
      * @brief DMI type.
      */
     enum dmi_type type;
+
+    /**
+     * @brief Minimum SMBIOS version. Zero means that the minimum version is
+     * not specified.
+     */
+    dmi_version_t min_version;
 
     /**
      * @brief Minimum length. Zero means that the minimum length is not
@@ -81,7 +88,7 @@ struct dmi_table_spec
 /**
  * @brief DMI table header.
  */
-struct dmi_table_header
+struct dmi_header
 {
     /**
      * @brief Specifies the type of structure. Types 0 through 127 (7Fh) are

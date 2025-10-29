@@ -103,7 +103,7 @@ static bool dmi_entry_decode_legacy(dmi_context_t *context,
         return false;
     }
 
-    const dmi_entry_legacy_t *entry = (dmi_entry_legacy_t *)data;
+    const dmi_entry_legacy_t *entry = dmi_cast(entry, data);
 
     // Verify EPS checksum value
     if (!dmi_checksum(data, sizeof(dmi_entry_legacy_t))) {
@@ -136,7 +136,7 @@ static bool dmi_entry_decode_v21(dmi_context_t *context,
         return false;
     }
 
-    const dmi_entry_v21_t *entry = (dmi_entry_v21_t *)data;
+    const dmi_entry_v21_t *entry = dmi_cast(entry, data);
 
     // Check maximum entry point length to prevent checksum run beyond
     // the buffer.
@@ -178,7 +178,7 @@ static bool dmi_entry_decode_v30(dmi_context_t *context,
         return false;
     }
 
-    const dmi_entry_v30_t *entry = (dmi_entry_v30_t *)data;
+    const dmi_entry_v30_t *entry = dmi_cast(entry, data);
 
     // Check maximum entry point length to prevent checksum run beyond
     // the buffer.

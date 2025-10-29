@@ -57,7 +57,7 @@ struct dmi_cooler_table
     /**
      * @brief DMI table header.
      */
-    dmi_table_header_t header;
+    dmi_header_t header;
 
     /**
      * @brief Handle, or instance number, of the temperature probe monitoring

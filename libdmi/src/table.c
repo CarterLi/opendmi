@@ -29,8 +29,8 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
         return nullptr;
     }
 
-    dmi_table_t        *table  = nullptr;
-    dmi_table_header_t *header = (dmi_table_header_t *)data;
+    dmi_table_t  *table  = nullptr;
+    dmi_header_t *header = dmi_cast(header, data);
 
     // Check table type
     if (header->type == DMI_TYPE_END_OF_TABLE) {
@@ -39,7 +39,7 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
     }
 
     // Check table length
-    if (header->length < sizeof(dmi_table_header_t))
+    if (header->length < sizeof(dmi_header_t))
     {
         if (header->length == 0)
             dmi_set_error(context, DMI_ERROR_NO_MORE_ENTRIES);
@@ -149,7 +149,7 @@ static bool dmi_table_decode_length(dmi_table_t *table)
         return false;
     }
 
-    const char *data  = (const char *)table->data;
+    const char *data  = dmi_cast(data, table->data);
     const char *start = data + table->body_length;
     const char *ptr   = start;
     size_t      count = 0;
@@ -190,7 +190,7 @@ static bool dmi_table_decode_strings(dmi_table_t *table)
         return false;
     }
 
-    const char *data  = (const char *)table->data;
+    const char *data  = dmi_cast(data, table->data);
     const char *start = data + table->body_length;
     const char *ptr   = start;
     size_t      index = 0;

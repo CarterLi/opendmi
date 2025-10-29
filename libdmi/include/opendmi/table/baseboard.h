@@ -95,7 +95,11 @@ struct dmi_baseboard_features
  */
 struct dmi_baseboard_table
 {
-    struct dmi_table_header header;
+    /**
+     * @brief DMI table header.
+     */
+    dmi_header_t header;
+
     dmi_string_t manufacturer;
     dmi_string_t product;
     dmi_string_t version;

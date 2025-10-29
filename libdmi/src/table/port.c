@@ -50,6 +50,20 @@ static const char *dmi_port_type_names[] =
     [DMI_PORT_TYPE_OTHER]            = "Other"
 };
 
+const struct dmi_attribute_spec dmi_port_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_port_table_spec =
+{
+    .tag        = "port",
+    .name       = "Port connector information",
+    .type       = DMI_TYPE_PORT_CONNECTOR,
+    .min_length = 0x09,
+    .attributes = dmi_port_attrs
+};
+
 const char *dmi_port_type_name(enum dmi_port_type value)
 {
     return dmi_name(dmi_port_type_names, value, __DMI_PORT_TYPE_COUNT);

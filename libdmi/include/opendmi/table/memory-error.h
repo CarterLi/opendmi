@@ -67,7 +67,7 @@ struct dmi_memory_error_32_table
     /**
      * @brief DMI table header.
      */
-    dmi_table_header_t header;
+    dmi_header_t header;
 
     /**
      * @brief Type of error that is associated with the current status reported
@@ -123,7 +123,7 @@ struct dmi_memory_error_64_table
     /**
      * @brief DMI table header.
      */
-    dmi_table_header_t header;
+    dmi_header_t header;
 
     /**
      * @brief Type of error that is associated with the current status reported

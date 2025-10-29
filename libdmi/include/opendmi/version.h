@@ -14,6 +14,9 @@
  */
 typedef unsigned int dmi_version_t;
 
+#define DMI_VERSION(major, minor, revision) \
+    ((dmi_version_t)((((major) & 0xFFU) << 16) | (((minor) & 0xFFU) << 8) | ((revision) & 0xFFU)))
+
 /**
  * @brief Construct SMBIOS version number from its components.
  *
@@ -27,7 +30,7 @@ static inline dmi_version_t dmi_version(unsigned int major,
                                         unsigned int minor,
                                         unsigned int revision)
 {
-    return ((major & 0xFFU) << 16) | ((minor & 0xFFU) << 8) | (revision & 0xFFU);
+    return DMI_VERSION(major, minor, revision);
 }
 
 /**
