@@ -11,38 +11,6 @@
 
 #include <opendmi/table.h>
 
-enum dmi_memory_array_location
-{
-    DMI_MEM_ARRAY_LOCATION_OTHER           = 0x01, ///< Other
-    DMI_MEM_ARRAY_LOCATION_UNKNOWN         = 0x02, ///< Unknown
-    DMI_MEM_ARRAY_LOCATION_MOTHERBOARD     = 0x03, ///< System board or motherboard
-    DMI_MEM_ARRAY_LOCATION_ISA             = 0x04, ///< ISA add-on card
-    DMI_MEM_ARRAY_LOCATION_EISA            = 0x05, ///< EISA add-on card
-    DMI_MEM_ARRAY_LOCATION_PCI             = 0x06, ///< PCI add-on card
-    DMI_MEM_ARRAY_LOCATION_MCA             = 0x07, ///< MCA add-on card
-    DMI_MEM_ARRAY_LOCATION_PCMCIA          = 0x08, ///< PCMCIA add-on card
-    DMI_MEM_ARRAY_LOCATION_PROPRIETARY     = 0x09, ///< Proprietary add-on card
-    DMI_MEM_ARRAY_LOCATION_NUBUS           = 0x0A, ///< NuBus
-    DMI_MEM_ARRAY_LOCATION_PC_98_C20       = 0xA0, ///< PC-98/C20 add-on card
-    DMI_MEM_ARRAY_LOCATION_PC_98_C24       = 0xA1, ///< PC-98/C24 add-on card
-    DMI_MEM_ARRAY_LOCATION_PC_98_E         = 0xA2, ///< PC-98/E add-on card
-    DMI_MEM_ARRAY_LOCATION_PC_98_LOCAL_BUS = 0xA3, ///< PC-98/Local bus add-on card
-    DMI_MEM_ARRAY_LOCATION_CXL             = 0xA4, ///< CXL add-on card
-    __DMI_MEM_ARRAY_LOCATION_COUNT
-};
-
-enum dmi_memory_array_usage
-{
-    DMI_MEM_ARRAY_USAGE_OTHER   = 0x01, ///< Other
-    DMI_MEM_ARRAY_USAGE_UNKNOWN = 0x02, ///< Unknown
-    DMI_MEM_ARRAY_USAGE_SYSTEM  = 0x03, ///< System memory
-    DMI_MEM_ARRAY_USAGE_VIDEO   = 0x04, ///< Video memory
-    DMI_MEM_ARRAY_USAGE_FLASH   = 0x05, ///< Flash memory
-    DMI_MEM_ARRAY_USAGE_NVRAM   = 0x06, ///< Non-volatile RAM
-    DMI_MEM_ARRAY_USAGE_CACHE   = 0x07, ///< Cache memory
-    __DMI_MEM_ARRAY_USAGE_COUNT
-};
-
 enum dmi_memory_device_type
 {
     DMI_MEM_DEVICE_TYPE_OTHER             = 0x01,
@@ -442,7 +410,6 @@ extern const dmi_table_spec_t dmi_memory_module_table_spec;
 
 __BEGIN_DECLS
 
-const char *dmi_memory_array_location_name(enum dmi_memory_array_location value);
 const char *dmi_memory_device_type_name(enum dmi_memory_device_type value);
 const char *dmi_memory_device_form_factor_name(enum dmi_memory_device_form_factor value);
 
