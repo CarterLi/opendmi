@@ -5,3 +5,18 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <opendmi/table/memory-channel.h>
+
+const dmi_attribute_spec_t dmi_memory_channel_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_memory_channel_table =
+{
+    .tag         = "memory-channel",
+    .name        = "Memory channel",
+    .type        = DMI_TYPE_MEMORY_CHANNEL,
+    .min_version = DMI_VERSION(2, 3, 0),
+    .min_length  = 0x0A,
+    .attributes  = dmi_memory_channel_attrs
+};

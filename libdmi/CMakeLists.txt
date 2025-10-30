@@ -13,35 +13,44 @@ add_library(dmi-object OBJECT
     src/entry.c
     src/table.c
     src/registry.c
+    src/table/additional-info.c
+    src/table/baseboard.c
+    src/table/battery.c
+    src/table/bis-entry-point.c
+    src/table/cache.c
+    src/table/chassis.c
     src/table/common.c
+    src/table/cooling-device.c
     src/table/firmware.c
     src/table/firmware-inventory.c
     src/table/firmware-language.c
     src/table/group-assoc.c
-    src/table/system.c
-    src/table/system-boot.c
-    src/table/system-config.c
-    src/table/system-event-log.c
-    src/table/system-reset.c
-    src/table/chassis.c
-    src/table/baseboard.c
-    src/table/processor.c
-    src/table/cache.c
-    src/table/port.c
-    src/table/slot.c
-    src/table/onboard-device.c
-    src/table/pointing-device.c
-    src/table/oem-strings.c
-    src/table/memory.c
+    src/table/hardware-security.c
+    src/table/ipmi-device.c
     src/table/memory-array.c
     src/table/memory-channel.c
     src/table/memory-controller.c
     src/table/memory-device.c
     src/table/memory-error.c
     src/table/memory-module.c
-    src/table/battery.c
+    src/table/mgmt-controller.c
+    src/table/mgmt-device.c
+    src/table/oem-strings.c
+    src/table/onboard-device.c
+    src/table/oob-remote-access.c
+    src/table/pointing-device.c
+    src/table/port.c
     src/table/probe.c
-    src/table/cooler.c
+    src/table/processor.c
+    src/table/slot.c
+    src/table/string-property.c
+    src/table/system.c
+    src/table/system-boot.c
+    src/table/system-config.c
+    src/table/system-event-log.c
+    src/table/system-power.c
+    src/table/system-reset.c
+    src/table/tpm-device.c
     src/extension/apple.c
     src/extension/dell.c
     src/extension/intel.c

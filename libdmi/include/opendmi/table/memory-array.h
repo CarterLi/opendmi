@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include <opendmi/table.h>
 #include <opendmi/table/common.h>
-#include <opendmi/table/memory.h>
 
 /**
  * @brief Memory array location values.

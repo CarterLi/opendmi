@@ -297,6 +297,11 @@ struct dmi_processor_data
  */
 extern const struct dmi_table_spec dmi_processor_table;
 
+/**
+ * @brief Processor additional information table specification.
+ */
+extern const struct dmi_table_spec dmi_processor_ex_table;
+
 __BEGIN_DECLS
 
 const char *dmi_processor_type_name(enum dmi_processor_type value);

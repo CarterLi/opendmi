@@ -16,4 +16,9 @@
  */
 extern const dmi_table_spec_t dmi_onboard_device_table;
 
+/**
+ * @brief Onboard devices additional information table specification.
+ */
+extern const dmi_table_spec_t dmi_onboard_device_ex_table;
+
 #endif // !OPENDMI_TABLE_ONBOARD_DEVICE_H

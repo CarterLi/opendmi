@@ -14,6 +14,6 @@
 /**
  * @brief System configuration options table specification.
  */
-extern const dmi_table_spec_t dmi_system_config_table;
+extern const dmi_table_spec_t dmi_system_config_options_table;
 
 #endif // !OPENDMI_TABLE_SYSTEM_CONFIG_H

@@ -63,7 +63,7 @@ typedef enum dmi_type
     DMI_TYPE_SYSTEM_SLOTS            = 9,   ///< System slots
     DMI_TYPE_ONBOARD_DEVICE          = 10,  ///< Onboard devices information
     DMI_TYPE_OEM_STRINGS             = 11,  ///< OEM strings
-    DMI_TYPE_SYSTEM_CONFIG           = 12,  ///< System configuration options
+    DMI_TYPE_SYSTEM_CONFIG_OPTIONS   = 12,  ///< System configuration options
     DMI_TYPE_FIRMWARE_LANGUAGE       = 13,  ///< Firmware language information
     DMI_TYPE_GROUP_ASSOC             = 14,  ///< Group associations
     DMI_TYPE_SYSTEM_EVENT_LOG        = 15,  ///< System event log
@@ -93,7 +93,7 @@ typedef enum dmi_type
     DMI_TYPE_SYSTEM_POWER_SUPPLY     = 39,  ///< System power supply
     DMI_TYPE_ADDITIONAL_INFO         = 40,  ///< Additional information
     DMI_TYPE_ONBOARD_DEVICE_EX       = 41,  ///< Onboard devices extended information
-    DMI_TYPE_MGMT_CONTROLLER_HOST_IF = 42,  ///< Management controller host information
+    DMI_TYPE_MGMT_CONTROLLER_HOST_IF = 42,  ///< Management controller host interface
     DMI_TYPE_TPM_DEVICE              = 43,  ///< TPM device
     DMI_TYPE_PROCESSOR_EX            = 44,  ///< Processor additional information
     DMI_TYPE_FIRMWARE_INVENTORY      = 45,  ///< Firmware inventory information

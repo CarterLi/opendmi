@@ -17,6 +17,8 @@ typedef unsigned int dmi_version_t;
 #define DMI_VERSION(major, minor, revision) \
     ((dmi_version_t)((((major) & 0xFFU) << 16) | (((minor) & 0xFFU) << 8) | ((revision) & 0xFFU)))
 
+#define DMI_VERSION_NONE DMI_VERSION(0, 0, 0)
+
 /**
  * @brief Construct SMBIOS version number from its components.
  *

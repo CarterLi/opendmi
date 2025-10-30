@@ -11,33 +11,44 @@
 #include <opendmi/entry.h>
 #include <opendmi/table.h>
 
+#include <opendmi/table/additional-info.h>
+#include <opendmi/table/baseboard.h>
+#include <opendmi/table/battery.h>
+#include <opendmi/table/bis-entry-point.h>
+#include <opendmi/table/cache.h>
+#include <opendmi/table/chassis.h>
+#include <opendmi/table/cooling-device.h>
 #include <opendmi/table/firmware.h>
 #include <opendmi/table/firmware-inventory.h>
 #include <opendmi/table/firmware-language.h>
+#include <opendmi/table/group-assoc.h>
+#include <opendmi/table/hardware-security.h>
+#include <opendmi/table/ipmi-device.h>
+#include <opendmi/table/memory-array.h>
+#include <opendmi/table/memory-channel.h>
+#include <opendmi/table/memory-controller.h>
+#include <opendmi/table/memory-device.h>
+#include <opendmi/table/memory-error.h>
+#include <opendmi/table/memory-module.h>
+#include <opendmi/table/mgmt-controller.h>
+#include <opendmi/table/mgmt-device.h>
+#include <opendmi/table/oem-strings.h>
+#include <opendmi/table/onboard-device.h>
+#include <opendmi/table/oob-remote-access.h>
+#include <opendmi/table/pointing-device.h>
+#include <opendmi/table/port.h>
+#include <opendmi/table/probe.h>
+#include <opendmi/table/processor.h>
+#include <opendmi/table/slot.h>
+#include <opendmi/table/string-property.h>
 #include <opendmi/table/system.h>
 #include <opendmi/table/system-boot.h>
 #include <opendmi/table/system-config.h>
 #include <opendmi/table/system-event-log.h>
+#include <opendmi/table/system-power.h>
 #include <opendmi/table/system-reset.h>
-#include <opendmi/table/baseboard.h>
-#include <opendmi/table/chassis.h>
-#include <opendmi/table/processor.h>
-#include <opendmi/table/memory.h>
-#include <opendmi/table/cache.h>
-#include <opendmi/table/port.h>
-#include <opendmi/table/slot.h>
-#include <opendmi/table/onboard-device.h>
-#include <opendmi/table/oem-strings.h>
 #include <opendmi/table/system-config.h>
-#include <opendmi/table/group-assoc.h>
-#include <opendmi/table/system-event-log.h>
-#include <opendmi/table/memory-array.h>
-#include <opendmi/table/memory-device.h>
-#include <opendmi/table/memory-error.h>
-#include <opendmi/table/pointing-device.h>
-#include <opendmi/table/battery.h>
-#include <opendmi/table/probe.h>
-#include <opendmi/table/cooler.h>
+#include <opendmi/table/tpm-device.h>
 
 #include <opendmi/backend/dump.h>
 #if defined(__linux__)
@@ -74,44 +85,74 @@ static __thread dmi_error_t dmi_last_error = DMI_OK;
  */
 static dmi_backend_t *dmi_backend = &DMI_BACKEND;
 
+static const dmi_table_spec_t dmi_inactive_table =
+{
+    .tag  = "inactive",
+    .name = "Inactive",
+    .type = DMI_TYPE_INACTIVE
+};
+
+static const dmi_table_spec_t dmi_end_of_table =
+{
+    .tag  = "end-of-table",
+    .name = "End of table",
+    .type = DMI_TYPE_END_OF_TABLE
+};
+
 /**
  * @brief Predefined table specifications map.
  */
 static const dmi_table_spec_t *dmi_table_specs[__DMI_TYPE_COUNT] =
 {
-    [DMI_TYPE_FIRMWARE]              = &dmi_firmware_table,
-    [DMI_TYPE_SYSTEM]                = &dmi_system_table,
-    [DMI_TYPE_BASEBOARD]             = &dmi_baseboard_table,
-    [DMI_TYPE_CHASSIS]               = &dmi_chassis_table,
-    [DMI_TYPE_PROCESSOR]             = &dmi_processor_table,
-    [DMI_TYPE_MEMORY_CONTROLLER]     = &dmi_memory_controller_table,
-    [DMI_TYPE_MEMORY_MODULE]         = &dmi_memory_module_table,
-    [DMI_TYPE_CACHE]                 = &dmi_cache_table,
-    [DMI_TYPE_PORT_CONNECTOR]        = &dmi_port_table,
-    [DMI_TYPE_SYSTEM_SLOTS]          = &dmi_slot_table,
-    [DMI_TYPE_ONBOARD_DEVICE]        = &dmi_onboard_device_table,
-    [DMI_TYPE_OEM_STRINGS]           = &dmi_oem_strings_table,
-    [DMI_TYPE_SYSTEM_CONFIG]         = &dmi_system_config_table,
-    [DMI_TYPE_FIRMWARE_LANGUAGE]     = &dmi_firmware_language_table,
-    [DMI_TYPE_GROUP_ASSOC]           = &dmi_group_assoc_table,
-    [DMI_TYPE_SYSTEM_EVENT_LOG]      = &dmi_system_event_log_table,
-    [DMI_TYPE_MEMORY_ARRAY]          = &dmi_memory_array_table,
-    [DMI_TYPE_MEMORY_DEVICE]         = &dmi_memory_device_table,
-    [DMI_TYPE_MEMORY_ERROR_32]       = &dmi_memory_error_32_table,
-    [DMI_TYPE_MEMORY_ARRAY_ADDR]     = &dmi_memory_array_addr_table,
-    [DMI_TYPE_MEMORY_DEVICE_ADDR]    = &dmi_memory_device_addr_table,
-    [DMI_TYPE_POINTING_DEVICE]       = &dmi_pointing_device_table,
-    [DMI_TYPE_PORTABLE_BATTERY]      = &dmi_battery_table,
-    [DMI_TYPE_SYSTEM_RESET]          = &dmi_system_reset_table,
-    // ..
-    [DMI_TYPE_VOLTAGE_PROBE]         = &dmi_voltage_probe_table,
-    [DMI_TYPE_COOLING_DEVICE]        = &dmi_cooler_table,
-    [DMI_TYPE_TEMPERATURE_PROBE]     = &dmi_temperature_probe_table,
-    [DMI_TYPE_CURRENT_PROBE]         = &dmi_current_probe_table,
-    // ..
-    [DMI_TYPE_SYSTEM_BOOT]           = &dmi_system_boot_table,
-    // ..
-    [DMI_TYPE_FIRMWARE_INVENTORY]    = &dmi_firmware_inventory_table
+    [DMI_TYPE_FIRMWARE]                = &dmi_firmware_table,
+    [DMI_TYPE_SYSTEM]                  = &dmi_system_table,
+    [DMI_TYPE_BASEBOARD]               = &dmi_baseboard_table,
+    [DMI_TYPE_CHASSIS]                 = &dmi_chassis_table,
+    [DMI_TYPE_PROCESSOR]               = &dmi_processor_table,
+    [DMI_TYPE_MEMORY_CONTROLLER]       = &dmi_memory_controller_table,
+    [DMI_TYPE_MEMORY_MODULE]           = &dmi_memory_module_table,
+    [DMI_TYPE_CACHE]                   = &dmi_cache_table,
+    [DMI_TYPE_PORT_CONNECTOR]          = &dmi_port_table,
+    [DMI_TYPE_SYSTEM_SLOTS]            = &dmi_slot_table,
+    [DMI_TYPE_ONBOARD_DEVICE]          = &dmi_onboard_device_table,
+    [DMI_TYPE_OEM_STRINGS]             = &dmi_oem_strings_table,
+    [DMI_TYPE_SYSTEM_CONFIG_OPTIONS]   = &dmi_system_config_options_table,
+    [DMI_TYPE_FIRMWARE_LANGUAGE]       = &dmi_firmware_language_table,
+    [DMI_TYPE_GROUP_ASSOC]             = &dmi_group_assoc_table,
+    [DMI_TYPE_SYSTEM_EVENT_LOG]        = &dmi_system_event_log_table,
+    [DMI_TYPE_MEMORY_ARRAY]            = &dmi_memory_array_table,
+    [DMI_TYPE_MEMORY_DEVICE]           = &dmi_memory_device_table,
+    [DMI_TYPE_MEMORY_ERROR_32]         = &dmi_memory_error_32_table,
+    [DMI_TYPE_MEMORY_ARRAY_ADDR]       = &dmi_memory_array_addr_table,
+    [DMI_TYPE_MEMORY_DEVICE_ADDR]      = &dmi_memory_device_addr_table,
+    [DMI_TYPE_POINTING_DEVICE]         = &dmi_pointing_device_table,
+    [DMI_TYPE_PORTABLE_BATTERY]        = &dmi_battery_table,
+    [DMI_TYPE_SYSTEM_RESET]            = &dmi_system_reset_table,
+    [DMI_TYPE_HARDWARE_SECURITY]       = &dmi_hardware_security_table,
+    [DMI_TYPE_SYSTEM_POWER_CONTROLS]   = &dmi_system_power_controls_table,
+    [DMI_TYPE_VOLTAGE_PROBE]           = &dmi_voltage_probe_table,
+    [DMI_TYPE_COOLING_DEVICE]          = &dmi_cooling_device_table,
+    [DMI_TYPE_TEMPERATURE_PROBE]       = &dmi_temperature_probe_table,
+    [DMI_TYPE_CURRENT_PROBE]           = &dmi_current_probe_table,
+    [DMI_TYPE_OOB_REMOTE_ACCESS]       = &dmi_oob_remote_access_table,
+    [DMI_TYPE_BIS_ENTRY_POINT]         = &dmi_bis_entry_point_table,
+    [DMI_TYPE_SYSTEM_BOOT]             = &dmi_system_boot_table,
+    [DMI_TYPE_MEMORY_ERROR_64]         = &dmi_memory_error_64_table,
+    [DMI_TYPE_MGMT_DEVICE]             = &dmi_mgmt_device_table,
+    [DMI_TYPE_MGMT_DEVICE_COMPONENT]   = &dmi_mgmt_device_component_table,
+    [DMI_TYPE_MGMT_DEVICE_THRESHOLD]   = &dmi_mgmt_device_threshold_table,
+    [DMI_TYPE_MEMORY_CHANNEL]          = &dmi_memory_channel_table,
+    [DMI_TYPE_IPMI_DEVICE]             = &dmi_ipmi_device_table,
+    [DMI_TYPE_SYSTEM_POWER_SUPPLY]     = &dmi_system_power_supply_table,
+    [DMI_TYPE_ADDITIONAL_INFO]         = &dmi_additional_info_table,
+    [DMI_TYPE_ONBOARD_DEVICE_EX]       = &dmi_onboard_device_ex_table,
+    [DMI_TYPE_MGMT_CONTROLLER_HOST_IF] = &dmi_mgmt_controller_host_if_table,
+    [DMI_TYPE_TPM_DEVICE]              = &dmi_tpm_device_table,
+    [DMI_TYPE_PROCESSOR_EX]            = &dmi_processor_ex_table,
+    [DMI_TYPE_FIRMWARE_INVENTORY]      = &dmi_firmware_inventory_table,
+    [DMI_TYPE_STRING_PROPERTY]         = &dmi_string_property_table,
+    [DMI_TYPE_INACTIVE]                = &dmi_inactive_table,
+    [DMI_TYPE_END_OF_TABLE]            = &dmi_end_of_table
 };
 
 dmi_context_t *dmi_create(void)

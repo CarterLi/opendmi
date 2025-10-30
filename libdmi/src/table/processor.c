@@ -122,6 +122,20 @@ const dmi_table_spec_t dmi_processor_table =
     .attributes = dmi_processor_attrs
 };
 
+const dmi_attribute_spec_t dmi_processor_ex_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_processor_ex_table =
+{
+    .tag        = "processor-ex",
+    .name       = "Processor additional information",
+    .type       = DMI_TYPE_PROCESSOR_EX,
+    .min_length = 0x06,
+    .attributes = dmi_processor_ex_attrs
+};
+
 const char *dmi_processor_type_name(enum dmi_processor_type value)
 {
     return dmi_name(dmi_processor_type_names, value, __DMI_PROCESSOR_TYPE_COUNT);

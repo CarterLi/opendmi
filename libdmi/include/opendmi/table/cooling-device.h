@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_TABLE_COOLER_H
-#define OPENDMI_TABLE_COOLER_H
+#ifndef OPENDMI_TABLE_COOLING_DEVICE_H
+#define OPENDMI_TABLE_COOLING_DEVICE_H
 
 #pragma once
 
@@ -14,35 +14,35 @@
 /**
  * @brief Cooling device types.
  */
-typedef enum dmi_cooler_type
+typedef enum dmi_cooling_device_type
 {
-    DMI_COOLER_TYPE_OTHER                    = 0x01, ///< Other
-    DMI_COOLER_TYPE_UNKNOWN                  = 0x02, ///< Unknown
-    DMI_COOLER_TYPE_FAN                      = 0x03, ///< Fan
-    DMI_COOLER_TYPE_CENTRIFUGAL_BLOWER       = 0x04, ///< Centrifugal blower
-    DMI_COOLER_TYPE_CHIP_FAN                 = 0x05, ///< Chip fan
-    DMI_COOLER_TYPE_CABINET_FAN              = 0x06, ///< Cabinet fan
-    DMI_COOLER_TYPE_POWER_SUPPLY_FAN         = 0x07, ///< Power supply fan
-    DMI_COOLER_TYPE_HEAT_PIPE                = 0x08, ///< Heat pipe
-    DMI_COOLER_TYPE_INTEGRATED_REFRIGERATION = 0x09, ///< Integrated refrigeration
-    DMI_COOLER_TYPE_ACTIVE_COOLING           = 0x10, ///< Active cooling
-    DMI_COOLER_TYPE_PASSIVE_COOLING          = 0x11, ///< Passive cooling
-    __DMI_COOLER_TYPE_COUNT
-} dmi_cooler_type_t;
+    DMI_COOLING_DEVICE_TYPE_OTHER                    = 0x01, ///< Other
+    DMI_COOLING_DEVICE_TYPE_UNKNOWN                  = 0x02, ///< Unknown
+    DMI_COOLING_DEVICE_TYPE_FAN                      = 0x03, ///< Fan
+    DMI_COOLING_DEVICE_TYPE_CENTRIFUGAL_BLOWER       = 0x04, ///< Centrifugal blower
+    DMI_COOLING_DEVICE_TYPE_CHIP_FAN                 = 0x05, ///< Chip fan
+    DMI_COOLING_DEVICE_TYPE_CABINET_FAN              = 0x06, ///< Cabinet fan
+    DMI_COOLING_DEVICE_TYPE_POWER_SUPPLY_FAN         = 0x07, ///< Power supply fan
+    DMI_COOLING_DEVICE_TYPE_HEAT_PIPE                = 0x08, ///< Heat pipe
+    DMI_COOLING_DEVICE_TYPE_INTEGRATED_REFRIGERATION = 0x09, ///< Integrated refrigeration
+    DMI_COOLING_DEVICE_TYPE_ACTIVE_COOLING           = 0x10, ///< Active cooling
+    DMI_COOLING_DEVICE_TYPE_PASSIVE_COOLING          = 0x11, ///< Passive cooling
+    __DMI_COOLING_DEVICE_TYPE_COUNT
+} dmi_cooling_device_type_t;
 
 /**
  * @brief Cooling device status values.
  */
-typedef enum dmi_cooler_status
+typedef enum dmi_cooling_device_status
 {
-    DMI_COOLER_STATUS_OTHER           = 0x01, ///< Other
-    DMI_COOLER_STATUS_UNKNOWN         = 0x02, ///< Unknown
-    DMI_COOLER_STATUS_OK              = 0x03, ///< OK
-    DMI_COOLER_STATUS_NON_CRITICAL    = 0x04, ///< Non-critical
-    DMI_COOLER_STATUS_CRITICAL        = 0x05, ///< Critical
-    DMI_COOLER_STATUS_NON_RECOVERABLE = 0x06, ///< Non-recoverable
-    __DMI_COOLER_STATUS_COUNT
-} dmi_cooler_status_t;
+    DMI_COOLING_DEVICE_STATUS_OTHER           = 0x01, ///< Other
+    DMI_COOLING_DEVICE_STATUS_UNKNOWN         = 0x02, ///< Unknown
+    DMI_COOLING_DEVICE_STATUS_OK              = 0x03, ///< OK
+    DMI_COOLING_DEVICE_STATUS_NON_CRITICAL    = 0x04, ///< Non-critical
+    DMI_COOLING_DEVICE_STATUS_CRITICAL        = 0x05, ///< Critical
+    DMI_COOLING_DEVICE_STATUS_NON_RECOVERABLE = 0x06, ///< Non-recoverable
+    __DMI_COOLING_DEVICE_STATUS_COUNT
+} dmi_cooling_device_status_t;
 
 /**
  * @brief Cooling device table.
@@ -52,7 +52,7 @@ typedef enum dmi_cooler_status
  * 
  * @since SMBIOS 2.2
  */
-struct dmi_cooler_data
+struct dmi_cooling_device_data
 {
     /**
      * @brief DMI table header.
@@ -74,14 +74,14 @@ struct dmi_cooler_data
          * 
          * @since SMBIOS 2.2
          */
-        dmi_cooler_type_t type : 5;
+        dmi_cooling_device_type_t type : 5;
 
         /**
          * @brief Cooling device status.
          * 
          * @since SMBIOS 2.2
          */
-        dmi_cooler_status_t status : 3;
+        dmi_cooling_device_status_t status : 3;
     } __attribute__((packed));
 
     /**
@@ -115,7 +115,7 @@ struct dmi_cooler_data
      * 
      * @since SMBIOS 2.2
      */
-    uint16_t nom_speed;
+    uint16_t nominal_speed;
 
     /**
      * @brief Number of the string that contains additional descriptive
@@ -133,13 +133,13 @@ struct dmi_cooler_data
 /**
  * @brief Cooling device table specification.
  */
-extern const dmi_table_spec_t dmi_cooler_table;
+extern const dmi_table_spec_t dmi_cooling_device_table;
 
 __BEGIN_DECLS
 
-const char *dmi_cooler_type_name(dmi_cooler_type_t value);
-const char *dmi_cooler_status_name(dmi_cooler_status_t value);
+const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value);
+const char *dmi_cooling_device_status_name(dmi_cooling_device_status_t value);
 
 __END_DECLS
 
-#endif // !OPENDMI_TABLE_COOLER_H
+#endif // !OPENDMI_TABLE_COOLING_DEVICE_H

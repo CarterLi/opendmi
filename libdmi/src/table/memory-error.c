@@ -57,6 +57,21 @@ const dmi_table_spec_t dmi_memory_error_32_table =
     .attributes  = dmi_memory_error_32_attrs
 };
 
+const dmi_attribute_spec_t dmi_memory_error_64_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_memory_error_64_table =
+{
+    .tag         = "memory-error-64",
+    .name        = "64-bit memory error information",
+    .type        = DMI_TYPE_MEMORY_ERROR_64,
+    .min_version = DMI_VERSION(2, 3, 0),
+    .min_length  = 0x1F,
+    .attributes  = dmi_memory_error_64_attrs
+};
+
 const char *dmi_memory_error_type_name(enum dmi_memory_error_type value)
 {
     return dmi_name(dmi_memory_error_type_names, value, __DMI_MEMORY_ERROR_TYPE_COUNT);

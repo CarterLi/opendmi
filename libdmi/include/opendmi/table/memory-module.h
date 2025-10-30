@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <opendmi/table/memory.h>
+#include <opendmi/table.h>
 
 struct dmi_memory_module_data
 {
