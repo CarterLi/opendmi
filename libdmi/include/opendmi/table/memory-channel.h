@@ -14,6 +14,6 @@
 /**
  * @brief Memory channel table specification.
  */
-extern const dmi_table_spec_t dmi_memory_channel_table_spec;
+extern const dmi_table_spec_t dmi_memory_channel_table;
 
 #endif // !OPENDMI_TABLE_MEMORY_CHANNEL_H

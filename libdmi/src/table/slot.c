@@ -117,12 +117,12 @@ static const char *dmi_slot_usage_names[__DMI_SLOT_USAGE_COUNT] =
     [DMI_SLOT_USAGE_UNAVAILABLE] = "Unavailable"
 };
 
-const struct dmi_attribute_spec dmi_slot_attrs[] =
+const dmi_attribute_spec_t dmi_slot_attrs[] =
 {
     { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
 };
 
-const dmi_table_spec_t dmi_slot_table_spec =
+const dmi_table_spec_t dmi_slot_table =
 {
     .tag        = "slot",
     .name       = "System slots",

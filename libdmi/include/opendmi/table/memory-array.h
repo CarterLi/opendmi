@@ -54,7 +54,7 @@ enum dmi_memory_array_usage
  * @brief Physical memory array table (type 16).
  * @since SMBIOS 2.1
  */
-struct dmi_memory_array_table
+struct dmi_memory_array_data
 {
     /**
      * @brief DMI table header.
@@ -135,7 +135,12 @@ struct dmi_memory_array_table
 /**
  * @brief Physical memory array table specification.
  */
-extern const dmi_table_spec_t dmi_memory_array_table_spec;
+extern const dmi_table_spec_t dmi_memory_array_table;
+
+/**
+ * @brief Memory array mapped address table specification.
+ */
+extern const dmi_table_spec_t dmi_memory_array_addr_table;
 
 __BEGIN_DECLS
 

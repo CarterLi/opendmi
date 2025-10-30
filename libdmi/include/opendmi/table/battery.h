@@ -31,7 +31,7 @@ typedef enum dmi_battery_chemistry
  * for the system. The structure contains the static attributes for the group.
  * Each structure describes attributes for a single battery pack.
  */
-struct dmi_battery_table
+struct dmi_battery_data
 {
     /**
      * @brief DMI table header.
@@ -186,6 +186,11 @@ struct dmi_battery_table
      */
     uint32_t oem_defined;
 } __attribute__((packed));
+
+/**
+ * @brief Portable battery table specification.
+ */
+extern const dmi_table_spec_t dmi_battery_table;
 
 __BEGIN_DECLS
 

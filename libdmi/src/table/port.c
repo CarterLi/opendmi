@@ -50,12 +50,12 @@ static const char *dmi_port_type_names[] =
     [DMI_PORT_TYPE_OTHER]            = "Other"
 };
 
-const struct dmi_attribute_spec dmi_port_attrs[] =
+const dmi_attribute_spec_t dmi_port_attrs[] =
 {
     { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
 };
 
-const dmi_table_spec_t dmi_port_table_spec =
+const dmi_table_spec_t dmi_port_table =
 {
     .tag        = "port",
     .name       = "Port connector information",

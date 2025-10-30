@@ -14,6 +14,11 @@
 /**
  * @brief Memory device table specification.
  */
-extern const dmi_table_spec_t dmi_memory_device_table_spec;
+extern const dmi_table_spec_t dmi_memory_device_table;
+
+/**
+ * @brief Memory device mapped address table specification.
+ */
+extern const dmi_table_spec_t dmi_memory_device_addr_table;
 
 #endif // !OPENDMI_TABLE_MEMORY_DEVICE_H

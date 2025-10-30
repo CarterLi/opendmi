@@ -170,7 +170,7 @@ enum dmi_processor_upgrade
     __DMI_PROCESSOR_UPGRADE_COUNT
 };
 
-struct dmi_processor_table
+struct dmi_processor_data
 {
     enum dmi_processor_type type;
 
@@ -295,7 +295,7 @@ struct dmi_processor_table
 /**
  * @brief Processor information table specification.
  */
-extern const struct dmi_table_spec dmi_processor_table_spec;
+extern const struct dmi_table_spec dmi_processor_table;
 
 __BEGIN_DECLS
 

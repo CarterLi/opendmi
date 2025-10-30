@@ -51,7 +51,7 @@ typedef enum dmi_probe_status
 /**
  * @brief Probe table.
  */
-struct dmi_probe_table
+struct dmi_probe_data
 {
     /**
      * @brief DMI table header.
@@ -116,17 +116,17 @@ struct dmi_probe_table
 /**
  * @brief Voltage probe table specification.
  */
-extern const dmi_table_spec_t dmi_voltage_probe_table_spec;
+extern const dmi_table_spec_t dmi_voltage_probe_table;
 
 /**
  * @brief Temperature probe table specification.
  */
-extern const dmi_table_spec_t dmi_temperature_probe_table_spec;
+extern const dmi_table_spec_t dmi_temperature_probe_table;
 
 /**
  * @brief Electrical current probe table specification.
  */
-extern const dmi_table_spec_t dmi_current_probe_table_spec;
+extern const dmi_table_spec_t dmi_current_probe_table;
 
 __BEGIN_DECLS
 

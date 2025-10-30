@@ -82,7 +82,7 @@ struct dmi_table_spec
     /**
      * @brief Table attributes specification.
      */
-    const struct dmi_attribute_spec *attributes;
+    const dmi_attribute_spec_t *attributes;
 };
 
 /**

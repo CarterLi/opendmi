@@ -9,6 +9,11 @@
 
 #pragma once
 
+#ifndef DMI_ATTRIBUTE_SPEC_T
+#define DMI_ATTRIBUTE_SPEC_T
+typedef struct dmi_attribute_spec dmi_attribute_spec_t;
+#endif // !DMI_ATTRIBUTE_SPEC_T
+
 enum dmi_attribute_type
 {
     DMI_ATTRIBUTE_TYPE_NONE,

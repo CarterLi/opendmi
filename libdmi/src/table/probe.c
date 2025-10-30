@@ -36,12 +36,12 @@ const char *dmi_probe_status_names[__DMI_PROBE_STATUS_COUNT] =
     [DMI_PROBE_STATUS_NON_RECOVERABLE] = "Non-recoverable"
 };
 
-const struct dmi_attribute_spec dmi_voltage_probe_attrs[] =
+const dmi_attribute_spec_t dmi_voltage_probe_attrs[] =
 {
     { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
 };
 
-const dmi_table_spec_t dmi_voltage_probe_table_spec =
+const dmi_table_spec_t dmi_voltage_probe_table =
 {
     .tag        = "voltage-probe",
     .name       = "Voltage probe",
@@ -50,12 +50,12 @@ const dmi_table_spec_t dmi_voltage_probe_table_spec =
     .attributes = dmi_voltage_probe_attrs
 };
 
-const struct dmi_attribute_spec dmi_temperature_probe_attrs[] =
+const dmi_attribute_spec_t dmi_temperature_probe_attrs[] =
 {
     { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
 };
 
-const dmi_table_spec_t dmi_temperature_probe_table_spec =
+const dmi_table_spec_t dmi_temperature_probe_table =
 {
     .tag        = "temperature-probe",
     .name       = "Temperature probe",
@@ -64,12 +64,12 @@ const dmi_table_spec_t dmi_temperature_probe_table_spec =
     .attributes = dmi_temperature_probe_attrs
 };
 
-const struct dmi_attribute_spec dmi_current_probe_attrs[] =
+const dmi_attribute_spec_t dmi_current_probe_attrs[] =
 {
     { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
 };
 
-const dmi_table_spec_t dmi_current_probe_table_spec =
+const dmi_table_spec_t dmi_current_probe_table =
 {
     .tag        = "current-probe",
     .name       = "Electrical current probe",

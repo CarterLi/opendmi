@@ -93,7 +93,7 @@ struct dmi_baseboard_features
  * provided, all system elements identified by the SMBIOS implementation are
  * associated with a single motherboard.
  */
-struct dmi_baseboard_table
+struct dmi_baseboard_data
 {
     /**
      * @brief DMI table header.
@@ -127,7 +127,7 @@ struct dmi_baseboard
 /**
  * @brief Baseboard or module information table specification.
  */
-extern const struct dmi_table_spec dmi_baseboard_table_spec;
+extern const struct dmi_table_spec dmi_baseboard_table;
 
 __BEGIN_DECLS
 

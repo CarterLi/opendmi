@@ -14,7 +14,7 @@
 /**
  * @brief OEM strings table (type 11).
  */
-struct dmi_oem_strings_table
+struct dmi_oem_strings_data
 {
     /**
      * @brief DMI table header.
@@ -30,6 +30,6 @@ struct dmi_oem_strings_table
 /**
  * @brief OEM strings table specification.
  */
-extern const dmi_table_spec_t dmi_oem_strings_table_spec;
+extern const dmi_table_spec_t dmi_oem_strings_table;
 
 #endif // !OPENDMI_TABLE_OEM_STRINGS_H

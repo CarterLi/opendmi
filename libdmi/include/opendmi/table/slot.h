@@ -133,7 +133,7 @@ enum dmi_slot_usage
     __DMI_SLOT_USAGE_COUNT
 };
 
-struct dmi_slot_table
+struct dmi_slot_data
 {
     /**
      * @brief DMI table header.
@@ -216,7 +216,7 @@ struct dmi_slot_table
     uint8_t peer_groups[];
 };
 
-struct dmi_slot_table_ex
+struct dmi_slot_data_ex
 {
     uint8_t information;
     uint8_t physical_width;
@@ -232,7 +232,7 @@ struct dmi_slot_info
 /**
  * @brief System slots table specification.
  */
-extern const dmi_table_spec_t dmi_slot_table_spec;
+extern const dmi_table_spec_t dmi_slot_table;
 
 __BEGIN_DECLS
 

@@ -19,6 +19,20 @@ const char *dmi_battery_chemistry_names[__DMI_BATTERY_CHEMISTRY_COUNT] =
     [DMI_BATTERY_CHEMISTRY_LI_PO]     = "Lithium polymer"
 };
 
+const dmi_attribute_spec_t dmi_battery_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_battery_table =
+{
+    .tag        = "portable-battery",
+    .name       = "Portable battery",
+    .type       = DMI_TYPE_PORTABLE_BATTERY,
+    .min_length = 0x05,
+    .attributes = dmi_battery_attrs
+};
+
 const char *dmi_battery_chemistry_name(dmi_battery_chemistry_t value)
 {
     return dmi_name(dmi_battery_chemistry_names, value, __DMI_BATTERY_CHEMISTRY_COUNT);

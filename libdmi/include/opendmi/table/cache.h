@@ -149,7 +149,7 @@ union dmi_cache_sram_type
  * modules can be associated with a processor structure in one or two ways
  * depending on the SMBIOS version.
  */
-struct dmi_cache_table
+struct dmi_cache_data
 {
     /**
      * @brief DMI table header.
@@ -312,7 +312,7 @@ struct dmi_cache_info
 /**
  * @brief Cache information table specification.
  */
-extern const struct dmi_table_spec dmi_cache_table_spec;
+extern const struct dmi_table_spec dmi_cache_table;
 
 __BEGIN_DECLS
 

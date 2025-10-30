@@ -37,7 +37,7 @@ static const char *dmi_memory_array_usage_names[__DMI_MEMORY_ARRAY_USAGE_COUNT] 
     [DMI_MEMORY_ARRAY_USAGE_CACHE]   = "Cache memory"
 };
 
-const struct dmi_attribute_spec dmi_memory_array_attrs[] =
+const dmi_attribute_spec_t dmi_memory_array_attrs[] =
 {
     {
         .tag  = "location",
@@ -72,7 +72,7 @@ const struct dmi_attribute_spec dmi_memory_array_attrs[] =
     { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
 };
 
-const dmi_table_spec_t dmi_memory_array_table_spec =
+const dmi_table_spec_t dmi_memory_array_table =
 {
     .tag         = "memory-array",
     .name        = "Physical memory array",
@@ -80,6 +80,21 @@ const dmi_table_spec_t dmi_memory_array_table_spec =
     .min_version = DMI_VERSION(2, 1, 0),
     .min_length  = 0x0F,
     .attributes  = dmi_memory_array_attrs
+};
+
+const dmi_attribute_spec_t dmi_memory_array_addr_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_memory_array_addr_table =
+{
+    .tag         = "memory-array-address",
+    .name        = "Memory array mapped address",
+    .type        = DMI_TYPE_MEMORY_ARRAY_ADDR,
+    .min_version = DMI_VERSION(2, 1, 0),
+    .min_length  = 0x0F,
+    .attributes  = dmi_memory_array_addr_attrs
 };
 
 const char *dmi_memory_array_location_name(enum dmi_memory_array_location value)

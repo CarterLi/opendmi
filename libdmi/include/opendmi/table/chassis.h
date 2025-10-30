@@ -81,7 +81,7 @@ enum dmi_chassis_state
  * The additions to this structure in version 2.1 of SMBIOS
  * specification support the population of the CIM_Chassis class.
  */
-struct dmi_chassis_table
+struct dmi_chassis_data
 {
     /**
      * @brief Manufacturer name.
@@ -92,7 +92,7 @@ struct dmi_chassis_table
 /**
  * @brief System enclosure or chasis table specification.
  */
-extern const struct dmi_table_spec dmi_chassis_table_spec;
+extern const struct dmi_table_spec dmi_chassis_table;
 
 __BEGIN_DECLS
 

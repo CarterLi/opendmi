@@ -61,7 +61,7 @@ enum dmi_port_type
 /**
  * @brief Port connector information table specification.
  */
-extern const dmi_table_spec_t dmi_port_table_spec;
+extern const dmi_table_spec_t dmi_port_table;
 
 __BEGIN_DECLS
 

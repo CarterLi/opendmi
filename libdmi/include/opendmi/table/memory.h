@@ -115,7 +115,7 @@ union dmi_memory_device_type_detail
 /**
  * @since SMBIOS 2.1
  */
-struct dmi_memory_device_table
+struct dmi_memory_device_data
 {
     /**
      * @brief DMI table header.
@@ -401,12 +401,12 @@ struct dmi_memory_device_table
 /**
  * @brief Memory controller information table specification.
  */
-extern const dmi_table_spec_t dmi_memory_controller_table_spec;
+extern const dmi_table_spec_t dmi_memory_controller_table;
 
 /**
  * @brief Memory module information table specification.
  */
-extern const dmi_table_spec_t dmi_memory_module_table_spec;
+extern const dmi_table_spec_t dmi_memory_module_table;
 
 __BEGIN_DECLS
 

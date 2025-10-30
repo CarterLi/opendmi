@@ -11,7 +11,7 @@
 
 #include <opendmi/table/memory.h>
 
-struct dmi_memory_module_table
+struct dmi_memory_module_data
 {
     /**
      * @brief DMI table header.
@@ -51,6 +51,6 @@ struct dmi_memory_module_table
 /**
  * @brief Memory module information table specification.
  */
-extern const dmi_table_spec_t dmi_memory_module_table_spec;
+extern const dmi_table_spec_t dmi_memory_module_table;
 
 #endif // !OPENDMI_TABLE_MEMORY_MODULE_H

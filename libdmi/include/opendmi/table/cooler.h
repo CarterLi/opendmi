@@ -52,7 +52,7 @@ typedef enum dmi_cooler_status
  * 
  * @since SMBIOS 2.2
  */
-struct dmi_cooler_table
+struct dmi_cooler_data
 {
     /**
      * @brief DMI table header.
@@ -133,7 +133,7 @@ struct dmi_cooler_table
 /**
  * @brief Cooling device table specification.
  */
-extern const dmi_table_spec_t dmi_cooler_table_spec;
+extern const dmi_table_spec_t dmi_cooler_table;
 
 __BEGIN_DECLS
 

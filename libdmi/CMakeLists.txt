@@ -15,13 +15,23 @@ add_library(dmi-object OBJECT
     src/registry.c
     src/table/common.c
     src/table/firmware.c
+    src/table/firmware-inventory.c
+    src/table/firmware-language.c
+    src/table/group-assoc.c
     src/table/system.c
+    src/table/system-boot.c
+    src/table/system-config.c
+    src/table/system-event-log.c
+    src/table/system-reset.c
     src/table/chassis.c
     src/table/baseboard.c
     src/table/processor.c
     src/table/cache.c
     src/table/port.c
     src/table/slot.c
+    src/table/onboard-device.c
+    src/table/pointing-device.c
+    src/table/oem-strings.c
     src/table/memory.c
     src/table/memory-array.c
     src/table/memory-channel.c

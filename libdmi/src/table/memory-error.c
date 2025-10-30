@@ -42,6 +42,21 @@ static const char *dmi_memory_error_operation_names[__DMI_MEMORY_ERROR_OPERATION
     [DMI_MEMORY_ERROR_OPERATION_PARTIAL_WRITE] = "Partial write"
 };
 
+const dmi_attribute_spec_t dmi_memory_error_32_attrs[] =
+{
+    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+};
+
+const dmi_table_spec_t dmi_memory_error_32_table =
+{
+    .tag         = "memory-error-32",
+    .name        = "32-bit memory error information",
+    .type        = DMI_TYPE_MEMORY_ERROR_32,
+    .min_version = DMI_VERSION(2, 1, 0),
+    .min_length  = 0x17,
+    .attributes  = dmi_memory_error_32_attrs
+};
+
 const char *dmi_memory_error_type_name(enum dmi_memory_error_type value)
 {
     return dmi_name(dmi_memory_error_type_names, value, __DMI_MEMORY_ERROR_TYPE_COUNT);

@@ -14,16 +14,6 @@
 /**
  * @brief System information table specification.
  */
-extern const dmi_table_spec_t dmi_system_table_spec;
-
-/**
- * @brief System reset table specification.
- */
-extern const dmi_table_spec_t dmi_system_reset_table_spec;
-
-/**
- * @brief System boot information table specification.
- */
-extern const dmi_table_spec_t dmi_system_boot_table_spec;
+extern const dmi_table_spec_t dmi_system_table;
 
 #endif // !OPENDMI_TABLE_SYSTEM_H

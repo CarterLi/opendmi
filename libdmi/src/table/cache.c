@@ -55,7 +55,7 @@ static const char *dmi_cache_location_names[__DMI_CACHE_LOCATION_COUNT] =
     [DMI_CACHE_LOCATION_UNKNOWN]  = "Unknown"
 };
 
-const struct dmi_attribute_spec dmi_cache_attrs[] =
+const dmi_attribute_spec_t dmi_cache_attrs[] =
 {
     {
         .tag  = "socket-designator",
@@ -135,7 +135,7 @@ const struct dmi_attribute_spec dmi_cache_attrs[] =
     { NULL, NULL, DMI_ATTRIBUTE_TYPE_NONE, NULL, NULL }
 };
 
-const struct dmi_table_spec dmi_cache_table_spec =
+const dmi_table_spec_t dmi_cache_table =
 {
     .tag        = "cache",
     .name       = "Cache information",
@@ -164,7 +164,7 @@ const char *dmi_cache_location_name(enum dmi_cache_location value)
     return dmi_name(dmi_cache_location_names, value, __DMI_CACHE_LOCATION_COUNT);
 }
 
-struct dmi_cache_info *dmi_cache_info_create(struct dmi_cache_table *table)
+struct dmi_cache_info *dmi_cache_info_create(struct dmi_cache_data *table)
 {
     struct dmi_cache_info *info;
 
@@ -217,7 +217,7 @@ size_t dmi_cache_size_ex(dmi_cache_size_ex_t value)
 struct dmi_cache_info *dmi_cache_info_decode(dmi_table_t *table)
 {
     struct dmi_cache_info *info;
-    struct dmi_cache_table *data;
+    struct dmi_cache_data *data;
 
     if (table == nullptr) {
         dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
