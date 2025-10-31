@@ -187,13 +187,20 @@ static void list_keywords(dmi_context_t *context)
 
 static void list_types(dmi_context_t *context)
 {
+    const char *format;
+
+    if (isatty(STDIN_FILENO))
+        format = "%3d %-24s %s\n";
+    else
+        format = "%d\t%s\t%s\n";
+
     for (unsigned int type = 0; type < 0x100; type++) {
         const dmi_table_spec_t *spec = dmi_type_spec(context, (dmi_type_t)type);
 
         if (spec == nullptr)
             continue;
 
-        printf("%d %s %s\n", (int)spec->type, spec->tag, spec->name);
+        printf(format, (int)spec->type, spec->tag, spec->name);
     }
 }
 
