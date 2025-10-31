@@ -6,23 +6,42 @@
 //
 #include "config.h"
 
+#include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <libgen.h>
+#include <getopt.h>
 
-#include <opendmi/option.h>
 #include <opendmi/context.h>
 #include <opendmi/table.h>
 
 typedef struct dmi_config dmi_config_t;
 
+enum dmi_command
+{
+    DMI_COMMAND_DUMP_TABLES,
+    DMI_COMMAND_LIST_KEYWORDS,
+    DMI_COMMAND_LIST_TYPES
+};
 struct dmi_config
 {
+    enum dmi_command command;
+    char *memory_device;
+    bool quiet;
+    bool dump;
+    char *input_path;
+    char *output_path;
 };
 
+static bool parse_args(int argc, char *argv[], dmi_config_t *config, int *rv);
+
 static void show_version(void);
-static void show_usage(void);
+static void show_usage(const char *proc);
+
+static void list_keywords(dmi_context_t *context);
+static void list_types(dmi_context_t *context);
 
 static void print_all(dmi_context_t *context);
 static void print_table(const dmi_table_t *table);
@@ -30,45 +49,17 @@ static void print_hex_data(const void *data, size_t length);
 
 static void log_error(dmi_context_t *context, dmi_log_level_t level, const char *format, va_list args);
 
-dmi_option_t dmi_global_options[] =
-{
-    {
-        .short_name  = 'v',
-        .long_name   = "version",
-        .description = "Display the version and exit",
-    },
-    {
-        .short_name  = 'h',
-        .long_name   = "help",
-        .description = "Display usage information and exit"
-    },
-    {
-        .short_name  = 'x',
-        .long_name   = "xml",
-        .description = "Output in XML format"
-    },
-    {
-        .short_name = 'j',
-        .long_name  = "json",
-        .description = "Output in JSON format"
-    },
-    {
-        .short_name  = 'o',
-        .long_name   = "output",
-        .description = "Set output file name"
-    },
-    {
-        .short_name  = 'q',
-        .long_name   = "quiet",
-        .description = "Be less verbose"
-    }
-};
-
 int main(int argc, char *argv[])
 {
+    dmi_config_t config;
     dmi_context_t *context;
 
-    show_version();
+    int rv = EXIT_SUCCESS;
+    if (!parse_args(argc, argv, &config, &rv))
+        return rv;
+
+    argc -= optind;
+    argv += optind;
 
     // Create DMI context
     context = dmi_create();
@@ -78,6 +69,16 @@ int main(int argc, char *argv[])
     }
 
     dmi_set_logger(context, log_error);
+
+    if (config.command == DMI_COMMAND_LIST_KEYWORDS) {
+        list_keywords(context);
+        return EXIT_SUCCESS;
+    }
+    
+    if (config.command == DMI_COMMAND_LIST_TYPES) {
+        list_types(context);
+        return EXIT_SUCCESS;
+    }
 
     // Open DMI context
     if (argc > 1)
@@ -94,14 +95,106 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
+static bool parse_args(int argc, char *argv[], dmi_config_t *config, int *rv)
+{
+    static struct option long_options[] =
+    {
+        { "dev-mem",   required_argument, nullptr, 'd' },
+        { "quiet",     no_argument,       nullptr, 'q' },
+        { "string",    optional_argument, nullptr, 's' },
+        { "type",      optional_argument, nullptr, 't' },
+        { "dump",      no_argument,       nullptr, 'u' },
+        { "dump-bin",  required_argument, nullptr, 'o' },
+        { "from-dump", required_argument, nullptr, 'i' },
+        { "help",      no_argument,       nullptr, 'h' },
+        { "version",   no_argument,       nullptr, 'v' }
+    };
+
+    const char *proc = basename(argv[0]);
+
+    while (true) {
+        int idx = 0;
+        int opt = getopt_long(argc, argv, "d:qs?t?uo:i:hv", long_options, &idx);
+
+        if (opt < 0)
+            break;
+
+        switch (opt) {
+        case 'd':
+            config->memory_device = optarg;
+            break;
+
+        case 'q':
+            config->quiet = true;
+            break;
+        
+        case 's':
+            if (optarg == nullptr)
+                config->command = DMI_COMMAND_LIST_KEYWORDS;
+            break;
+
+        case 't':
+            if (optarg == nullptr)
+                config->command = DMI_COMMAND_LIST_TYPES;
+            break;
+
+        case 'u':
+            config->dump = true;
+            break;
+
+        case 'o':
+            config->output_path = optarg;
+            break;
+
+        case 'i':
+            config->input_path = optarg;
+            break;
+
+        case 'v':
+            show_version();
+            return false;
+        
+        case 'h':
+            show_usage(proc);
+            return false;
+
+        default:
+            *rv = EXIT_FAILURE;
+            return false;
+        }
+    }
+
+    return true;
+}
+
 static void show_version(void)
 {
     printf("OpenDMI, version %s\n", OPENDMI_VERSION);
     printf("Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>\n\n");
 }
 
-static void show_usage(void)
+static void show_usage(const char *proc)
 {
+    show_version();
+
+    printf("Usage:\n");
+    printf("    %s [options]\n", proc);
+}
+
+static void list_keywords(dmi_context_t *context)
+{
+}
+
+static void list_types(dmi_context_t *context)
+{
+    for (unsigned int type = 0; type < 0x100; type++) {
+        const dmi_table_spec_t *spec = dmi_type_spec(context, (dmi_type_t)type);
+
+        if (spec == nullptr)
+            continue;
+
+        printf("%d %s %s\n", (int)spec->type, spec->tag, spec->name);
+    }
 }
 
 static void print_all(dmi_context_t *context)

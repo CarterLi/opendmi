@@ -169,6 +169,14 @@ dmi_context_t *dmi_create(void)
     // Initialize context
     memset(context, 0, sizeof(dmi_context_t));
 
+    // Allocate type map
+    context->type_map = calloc(0x100, sizeof(dmi_table_spec_t *));
+    if (!context->type_map) {
+        free(context);
+        dmi_set_error(nullptr,  DMI_ERROR_OUT_OF_MEMORY);
+        return nullptr;    
+    }
+
     return context;
 }
 
@@ -207,8 +215,10 @@ const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type)
     if (context != nullptr)
         spec = context->type_map[type];
     
-    if (spec == nullptr)
-        spec = dmi_table_specs[type];
+    if (spec == nullptr) {
+        if ((size_t)type < sizeof(dmi_table_specs) / sizeof(dmi_table_specs[0]))
+            spec = dmi_table_specs[type];
+    }
 
     return spec;
 }
@@ -280,6 +290,8 @@ void dmi_destroy(dmi_context_t *context)
 
     // Close and free context
     dmi_close(context);
+
+    free(context->type_map);
     free(context);
 }
 
