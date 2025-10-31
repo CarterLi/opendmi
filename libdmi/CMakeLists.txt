@@ -5,7 +5,7 @@ add_compile_options(-Wall -Wextra -Werror -pedantic
                     -Wno-gnu-zero-variadic-macro-arguments)
 
 add_library(dmi-object OBJECT
-    src/types.c
+    src/name.c
     src/utils.c
     src/error.c
     src/log.c

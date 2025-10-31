@@ -19,7 +19,7 @@ typedef struct dmi_name dmi_name_t;
 struct dmi_name
 {
     int id;
-    const char *tag;
+    const char *code;
     const char *name;
 };
 
@@ -27,7 +27,8 @@ struct dmi_name
 
 __BEGIN_DECLS
 
-const char *dmi_name_get(const dmi_name_t *names, int value);
+const char *dmi_code_lookup(const dmi_name_t *dictionary, int id);
+const char *dmi_name_lookup(const dmi_name_t *dictionary, int id);
 
 __END_DECLS
 

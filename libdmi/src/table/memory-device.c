@@ -5,79 +5,326 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <opendmi/table/memory-device.h>
-#include <opendmi/utils.h>
+#include <opendmi/name.h>
 
-static const char *dmi_memory_device_type_names[__DMI_MEMORY_DEVICE_TYPE_COUNT] =
+static const dmi_name_t dmi_memory_device_type_names[] =
 {
-    [DMI_MEMORY_DEVICE_TYPE_OTHER]       = "Other",
-    [DMI_MEMORY_DEVICE_TYPE_UNKNOWN]     = "Unknown",
-    [DMI_MEMORY_DEVICE_TYPE_DRAM]        = "DRAM",
-    [DMI_MEMORY_DEVICE_TYPE_EDRAM]       = "EDRAM",
-    [DMI_MEMORY_DEVICE_TYPE_VRAM]        = "VRAM",
-    [DMI_MEMORY_DEVICE_TYPE_SRAM]        = "SRAM",
-    [DMI_MEMORY_DEVICE_TYPE_RAM]         = "RAM",
-    [DMI_MEMORY_DEVICE_TYPE_ROM]         = "ROM",
-    [DMI_MEMORY_DEVICE_TYPE_FLASH]       = "Flash",
-    [DMI_MEMORY_DEVICE_TYPE_EEPROM]      = "EEPROM",
-    [DMI_MEMORY_DEVICE_TYPE_FEPROM]      = "FEPROM",
-    [DMI_MEMORY_DEVICE_TYPE_EPROM]       = "EPROM",
-    [DMI_MEMORY_DEVICE_TYPE_CDRAM]       = "CDRAM",
-    [DMI_MEMORY_DEVICE_TYPE_3DRAM]       = "3DRAM",
-    [DMI_MEMORY_DEVICE_TYPE_SDRAM]       = "SDRAM",
-    [DMI_MEMORY_DEVICE_TYPE_SGRAM]       = "SGRAM",
-    [DMI_MEMORY_DEVICE_TYPE_RDRAM]       = "RDRAM",
-    [DMI_MEMORY_DEVICE_TYPE_DDR]         = "DDR",
-    [DMI_MEMORY_DEVICE_TYPE_DDR2]        = "DDR2",
-    [DMI_MEMORY_DEVICE_TYPE_DDR2_FBDIMM] = "DDR2 FB-DIMM",
-    [DMI_MEMORY_DEVICE_TYPE_DDR3]        = "DDR3",
-    [DMI_MEMORY_DEVICE_TYPE_FBD2]        = "FBD2",
-    [DMI_MEMORY_DEVICE_TYPE_DDR4]        = "DDR4",
-    [DMI_MEMORY_DEVICE_TYPE_LPDDR]       = "LPDDR",
-    [DMI_MEMORY_DEVICE_TYPE_LPDDR2]      = "LPDDR2",
-    [DMI_MEMORY_DEVICE_TYPE_LPDDR3]      = "LPDDR3",
-    [DMI_MEMORY_DEVICE_TYPE_LPDDR4]      = "LPDDR4",
-    [DMI_MEMORY_DEVICE_TYPE_LOGICAL_NV]  = "Logical non-volatile device",
-    [DMI_MEMORY_DEVICE_TYPE_HBM]         = "HBM (High Bandwidth Memory)",
-    [DMI_MEMORY_DEVICE_TYPE_HBM2]        = "HBM2 (High Bandwidth Memory Generation 2)",
-    [DMI_MEMORY_DEVICE_TYPE_DDR5]        = "DDR5",
-    [DMI_MEMORY_DEVICE_TYPE_LPDDR5]      = "LPDDR5",
-    [DMI_MEMORY_DEVICE_TYPE_HBM3]        = "HBM3 (High Bandwidth Memory Generation 3)",
-    [DMI_MEMORY_DEVICE_TYPE_MRDIMM]      = "MRDIMM"
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_DRAM,
+        .code = "dram",
+        .name = "DRAM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_EDRAM,
+        .code = "edram",
+        .name = "EDRAM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_VRAM,
+        .code = "vram",
+        .name = "VRAM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_SRAM,
+        .code = "sram",
+        .name = "SRAM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_RAM,
+        .code = "ram",
+        .name = "RAM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_ROM,
+        .code = "rom",
+        .name = "ROM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_FLASH,
+        .code = "flash",
+        .name = "Flash"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_EEPROM,
+        .code = "eeprom",
+        .name = "EEPROM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_FEPROM,
+        .code = "feprom",
+        .name = "FEPROM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_EPROM,
+        .code = "eprom",
+        .name = "EPROM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_CDRAM,
+        .code = "cdram",
+        .name = "CDRAM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_3DRAM,
+        .code = "3dram",
+        .name = "3DRAM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_SDRAM,
+        .code = "sdram",
+        .name = "SDRAM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_SGRAM,
+        .code = "sgram",
+        .name = "SGRAM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_RDRAM,
+        .code = "rdram",
+        .name = "RDRAM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_DDR,
+        .code = "ddr",
+        .name = "DDR"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_DDR2,
+        .code = "ddr2",
+        .name = "DDR2"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_DDR2_FBDIMM,
+        .code = "ddr2-fbdimm",
+        .name = "DDR2 FB-DIMM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_DDR3,
+        .code = "ddr3",
+        .name = "DDR3"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_FBD2,
+        .code = "fbd2",
+        .name = "FBD2"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_DDR4,
+        .code = "ddr4",
+        .name = "DDR4"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_LPDDR,
+        .code = "lpddr",
+        .name = "LPDDR"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_LPDDR2,
+        .code = "lpddr2",
+        .name = "LPDDR2"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_LPDDR3,
+        .code = "lpddr3",
+        .name = "LPDDR3"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_LPDDR4,
+        .code = "lpddr4",
+        .name = "LPDDR4"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_LOGICAL_NV,
+        .code = "logical-nv",
+        .name = "Logical non-volatile device"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_HBM,
+        .code = "hbm",
+        .name = "HBM (High Bandwidth Memory)"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_HBM2,
+        .code = "hbm2",
+        .name = "HBM2 (High Bandwidth Memory Generation 2)"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_DDR5,
+        .code = "ddr5",
+        .name = "DDR5"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_LPDDR5,
+        .code = "lpddr5",
+        .name = "LPDDR5"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_HBM3,
+        .code = "hbm3",
+        .name = "HBM3 (High Bandwidth Memory Generation 3)"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TYPE_MRDIMM,
+        .code = "mrdimm",
+        .name = "MRDIMM"
+    },
+    DMI_NAME_NULL
 };
 
-static const char *dmi_memory_device_form_factor_names[__DMI_MEMORY_DEVICE_FORM_FACTOR_COUNT] =
+static const dmi_name_t dmi_memory_device_form_factor_names[] =
 {
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_OTHER]   = "Other",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_UNKNOWN] = "Unknown",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_SIMM]    = "SIMM",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_SIP]     = "SIP",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_CHIP]    = "Chip",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_DIP]     = "DIP",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_ZIP]     = "ZIP",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_CARD]    = "Proprietary card",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_DIMM]    = "DIMM",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_TSOP]    = "TSOP",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_ROW]     = "Row of chips",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_RIMM]    = "RIMM",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_SODIMM]  = "SODIMM",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_SRIMM]   = "SRIMM",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_FBDIMM]  = "FBDIMM",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_DIE]     = "Die",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_CAMM]    = "CAMM",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_CUDIMM]  = "CUDIMM",
-    [DMI_MEMORY_DEVICE_FORM_FACTOR_CSODIMM] = "CSODIMM"
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_SIMM,
+        .code = "simm",
+        .name = "SIMM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_SIP,
+        .code = "sip",
+        .name = "SIP"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_CHIP,
+        .code = "chip",
+        .name = "Chip"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_DIP,
+        .code = "dip",
+        .name = "DIP"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_ZIP,
+        .code = "zip",
+        .name = "ZIP"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_CARD,
+        .code = "card",
+        .name = "Proprietary card"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_DIMM,
+        .code = "dimm",
+        .name = "DIMM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_TSOP,
+        .code = "tsop",
+        .name = "TSOP"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_CHIP_ROW,
+        .code = "chip-row",
+        .name = "Row of chips"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_RIMM,
+        .code = "rimm",
+        .name = "RIMM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_SODIMM,
+        .code = "sodimm",
+        .name = "SODIMM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_SRIMM,
+        .code = "srimm",
+        .name = "SRIMM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_FBDIMM,
+        .code = "fbdimm",
+        .name = "FBDIMM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_DIE,
+        .code = "die",
+        .name = "Die"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_CAMM,
+        .code = "camm",
+        .name = "CAMM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_CUDIMM,
+        .code = "cudimm",
+        .name = "CUDIMM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_CSODIMM,
+        .code = "csodimm",
+        .name = "CSODIMM"
+    },
+    DMI_NAME_NULL
 };
 
-static const char *dmi_memory_device_technology_names[__DMI_MEMORY_DEVICE_TECHNOLOGY_COUNT] =
+static const dmi_name_t dmi_memory_device_technology_names[] =
 {
-    [DMI_MEMORY_DEVICE_TECHNOLOGY_OTHER]    = "Other",
-    [DMI_MEMORY_DEVICE_TECHNOLOGY_UNKNOWN]  = "Unknown",
-    [DMI_MEMORY_DEVICE_TECHNOLOGY_DRAM]     = "DRAM",
-    [DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_N] = "NVDIMM-N",
-    [DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_F] = "NVDIMM-F",
-    [DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_P] = "NVDIMM-P",
-    [DMI_MEMORY_DEVICE_TECHNOLOGY_OPTANE]   = "Intel Optane persistent memory",
-    [DMI_MEMORY_DEVICE_TECHNOLOGY_MRDIMM]   = "MRDIMM"
+    {
+        .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_DRAM,
+        .code = "dram",
+        .name = "DRAM"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_N,
+        .code = "nvdimm-n",
+        .name = "NVDIMM-N"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_F,
+        .code = "nvdimm-f",
+        .name = "NVDIMM-F"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_P,
+        .code = "nvdimm-p",
+        .name = "NVDIMM-P"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_OPTANE,
+        .code = "optane",
+        .name = "Intel Optane persistent memory"
+    },
+    {
+        .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_MRDIMM,
+        .code = "mrdimm",
+        .name = "MRDIMM"
+    },
+    DMI_NAME_NULL
 };
 
 const dmi_attribute_spec_t dmi_memory_device_attrs[] =
@@ -111,15 +358,15 @@ const dmi_table_spec_t dmi_memory_device_addr_table =
 
 const char *dmi_memory_device_type_name(enum dmi_memory_device_type value)
 {
-    return dmi_name(dmi_memory_device_type_names, value, __DMI_MEMORY_DEVICE_TYPE_COUNT);
+    return dmi_name_lookup(dmi_memory_device_type_names, value);
 }
 
 const char *dmi_memory_device_form_factor_name(enum dmi_memory_device_form_factor value)
 {
-    return dmi_name(dmi_memory_device_form_factor_names, value, __DMI_MEMORY_DEVICE_FORM_FACTOR_COUNT);
+    return dmi_name_lookup(dmi_memory_device_form_factor_names, value);
 }
 
 const char *dmi_memory_device_technology_name(enum dmi_memory_device_technology value)
 {
-    return dmi_name(dmi_memory_device_technology_names, value, __DMI_MEMORY_DEVICE_TECHNOLOGY_COUNT);
+    return dmi_name_lookup(dmi_memory_device_technology_names, value);
 }

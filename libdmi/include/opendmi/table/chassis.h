@@ -52,7 +52,6 @@ enum dmi_chassis_type
     DMI_CHASSIS_TYPE_EMBEDDED_PC         = 0x22, ///< Embedded PC
     DMI_CHASSIS_TYPE_MINI_PC             = 0x23, ///< Mini PC
     DMI_CHASSIS_TYPE_STICK_PC            = 0x24, ///< Stick PC
-    __DMI_CHASSIS_TYPE_COUNT
 };
 
 /**
@@ -66,7 +65,6 @@ enum dmi_chassis_state
     DMI_CHASSIS_STATE_WARNING         = 0x04, ///< Warning
     DMI_CHASSIS_STATE_CRITICAL        = 0x05, ///< Critical
     DMI_CHASSIS_STATE_NON_RECOVERABLE = 0x06, ///< Non-recoverable
-    __DMI_CHASSIS_STATE_COUNT
 };
 
 /**

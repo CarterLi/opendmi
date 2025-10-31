@@ -30,7 +30,6 @@ enum dmi_memory_error_type
     DMI_MEMORY_ERROR_TYPE_CORRECTED_SINGLE_BIT = 0x0C, ///< Corrected single-bit error
     DMI_MEMORY_ERROR_TYPE_CORRECTED            = 0x0D, ///< Corrected error
     DMI_MEMORY_ERROR_TYPE_UNCORRECTABLE        = 0x0E, ///< Uncorrectable error
-    __DMI_MEMORY_ERROR_TYPE_COUNT
 };
 
 /**
@@ -42,7 +41,6 @@ enum dmi_memory_error_granularity
     DMI_MEMORY_ERROR_GRANULARITY_UNKNOWN   = 0x02, ///< Unknown
     DMI_MEMORY_ERROR_GRANULARITY_DEVICE    = 0x03, ///< Device level
     DMI_MEMORY_ERROR_GRANULARITY_PARTITION = 0x04, ///< Memory partition level
-    __DMI_MEMORY_ERROR_GRANULARITY_COUNT
 };
 
 /**
@@ -55,7 +53,6 @@ enum dmi_memory_error_operation
     DMI_MEMORY_ERROR_OPERATION_READ          = 0x03, ///< Read
     DMI_MEMORY_ERROR_OPERATION_WRITE         = 0x04, ///< Write
     DMI_MEMORY_ERROR_OPERATION_PARTIAL_WRITE = 0x05, ///< Partial write
-    __DMI_MEMORY_ERROR_OPERATION_COUNT
 };
 
 /**

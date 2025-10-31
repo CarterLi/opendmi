@@ -15,18 +15,6 @@
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
 
-const char *dmi_name(const char **table, size_t id, size_t count)
-{
-    assert(table != nullptr);
-
-    if (id >= count) {
-        errno = ENOENT;
-        return nullptr;
-    }
-
-    return table[id];
-}
-
 bool dmi_checksum(const void *data, size_t length)
 {
     if (data == nullptr) {

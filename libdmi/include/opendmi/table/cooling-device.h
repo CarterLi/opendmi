@@ -27,7 +27,6 @@ typedef enum dmi_cooling_device_type
     DMI_COOLING_DEVICE_TYPE_INTEGRATED_REFRIGERATION = 0x09, ///< Integrated refrigeration
     DMI_COOLING_DEVICE_TYPE_ACTIVE_COOLING           = 0x10, ///< Active cooling
     DMI_COOLING_DEVICE_TYPE_PASSIVE_COOLING          = 0x11, ///< Passive cooling
-    __DMI_COOLING_DEVICE_TYPE_COUNT
 } dmi_cooling_device_type_t;
 
 /**
@@ -41,7 +40,6 @@ typedef enum dmi_cooling_device_status
     DMI_COOLING_DEVICE_STATUS_NON_CRITICAL    = 0x04, ///< Non-critical
     DMI_COOLING_DEVICE_STATUS_CRITICAL        = 0x05, ///< Critical
     DMI_COOLING_DEVICE_STATUS_NON_RECOVERABLE = 0x06, ///< Non-recoverable
-    __DMI_COOLING_DEVICE_STATUS_COUNT
 } dmi_cooling_device_status_t;
 
 /**

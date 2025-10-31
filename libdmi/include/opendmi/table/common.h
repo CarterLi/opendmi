@@ -23,7 +23,6 @@ enum dmi_ecc_type
     DMI_ECC_TYPE_SINGLE_BIT = 0x05, ///< Single-bit ECC
     DMI_ECC_TYPE_MULTI_BIT  = 0x06, ///< Multi-bit ECC
     DMI_ECC_TYPE_CRC        = 0x07, ///< CRC
-    __DMI_ECC_TYPE_COUNT
 };
 
 __BEGIN_DECLS

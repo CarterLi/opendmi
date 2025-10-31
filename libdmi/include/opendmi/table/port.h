@@ -39,7 +39,7 @@ enum dmi_port_type
     DMI_PORT_TYPE_PCMCIA_III       = 0x14, ///< PCMCIA type III
     DMI_PORT_TYPE_CARDBUS          = 0x15, ///< CardBus
     DMI_PORT_TYPE_ACCESS_BUS       = 0x16, ///< ACCESS.bus
-    DMI_PORT_TYPE_SCSI_II          = 0x17, ///< SCSI-II
+    DMI_PORT_TYPE_SCSI_2           = 0x17, ///< SCSI-2
     DMI_PORT_TYPE_SCSI_WIDE        = 0x18, ///< Wide SCSI
     DMI_PORT_TYPE_PC_98            = 0x19, ///< PC-98
     DMI_PORT_TYPE_PC_98_HIRESO     = 0x1A, ///< PC-98-Hireso
@@ -55,7 +55,6 @@ enum dmi_port_type
     DMI_PORT_TYPE_8251             = 0xA0, ///< 8251 compatible
     DMI_PORT_TYPE_8251_FIFO        = 0xA1, ///< 8251 FIFO compatible
     DMI_PORT_TYPE_OTHER            = 0xFF, ///< Other
-    __DMI_PORT_TYPE_COUNT
 };
 
 /**

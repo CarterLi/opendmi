@@ -31,7 +31,6 @@ typedef enum dmi_probe_location
     DMI_PROBE_LOCATION_BACK_PANEL_BOARD   = 0x0D, ///< Back panel board
     DMI_PROBE_LOCATION_POWER_SYSTEM_BOARD = 0x0E, ///< Power system board
     DMI_PROBE_LOCATION_DRIVE_BACK_PLANE   = 0x0F, ///< Drive back plane
-    __DMI_PROBE_LOCATION_COUNT
 } dmi_probe_location_t;
 
 /**
@@ -45,7 +44,6 @@ typedef enum dmi_probe_status
     DMI_PROBE_STATUS_NON_CRITICAL    = 0x04, //< Non-critical
     DMI_PROBE_STATUS_CRITICAL        = 0x05, //< Critical
     DMI_PROBE_STATUS_NON_RECOVERABLE = 0x06, //< Non-recoverable
-    __DMI_PROBE_STATUS_COUNT
 } dmi_probe_status_t;
 
 /**

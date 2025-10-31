@@ -113,10 +113,4 @@ typedef struct dmi_table dmi_table_t;
 typedef struct dmi_context dmi_context_t;
 #endif // !DMI_CONTEXT_T
 
-__BEGIN_DECLS
-
-const char *dmi_type_name(dmi_type_t value);
-
-__END_DECLS
-
 #endif // !OPENDMI_TYPES_H

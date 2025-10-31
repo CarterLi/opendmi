@@ -5,23 +5,76 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <opendmi/table/baseboard.h>
-#include <opendmi/utils.h>
+#include <opendmi/name.h>
 
-static const char *dmi_baseboard_type_names[__DMI_BASEBOARD_COUNT] =
+static const dmi_name_t dmi_baseboard_type_names[] =
 {
-    [DMI_BASEBOARD_UNKNOWN]                  = "Unknown",
-    [DMI_BASEBOARD_OTHER]                    = "Other",
-    [DMI_BASEBOARD_SERVER_BLADE]             = "Server blade",
-    [DMI_BASEBOARD_CONNECTIVITY_SWITCH]      = "Connectivity switch",
-    [DMI_BASEBOARD_SYSTEM_MANAGEMENT_MODULE] = "System management module",
-    [DMI_BASEBOARD_PROCESSOR_MODULE]         = "Processor module",
-    [DMI_BASEBOARD_IO_MODULE]                = "IO module",
-    [DMI_BASEBOARD_MEMORY_MODULE]            = "Memory module",
-    [DMI_BASEBOARD_DAUGHTERBOARD]            = "Daughterboard",
-    [DMI_BASEBOARD_MOTHERBOARD]              = "Motherboard",
-    [DMI_BASEBOARD_PROCESSOR_MEMORY_MODULE]  = "Processor/memory module",
-    [DMI_BASEBOARD_PROCESSOR_IO_MODULE]      = "Processor/IO module",
-    [DMI_BASEBOARD_INTERCONNECT_BOARD]       = "Interconnect board"
+    {
+        .id   = DMI_BASEBOARD_TYPE_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_BASEBOARD_TYPE_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_BASEBOARD_TYPE_SERVER_BLADE,
+        .code = "server-blade",
+        .name = "Server blade"
+    },
+    {
+        .id   = DMI_BASEBOARD_TYPE_CONNECTIVITY_SWITCH,
+        .code = "connectivity-switch",
+        .name = "Connectivity switch"
+    },
+    {
+        .id   =  DMI_BASEBOARD_TYPE_SYSTEM_MANAGEMENT_MODULE,
+        .code = "system-management-module",
+        .name = "System management module"
+    },
+    {
+        .id   = DMI_BASEBOARD_TYPE_PROCESSOR_MODULE,
+        .code = "processor-module",
+        .name = "Processor module"
+    },
+    {
+        .id   = DMI_BASEBOARD_TYPE_IO_MODULE,
+        .code = "io-module",
+        .name = "IO module"
+    },
+    {
+        .id   = DMI_BASEBOARD_TYPE_MEMORY_MODULE,
+        .code = "memory-module",
+        .name = "Memory module"
+    },
+    {
+        .id   = DMI_BASEBOARD_TYPE_DAUGHTERBOARD,
+        .code = "daughterboard",
+        .name = "Daughterboard"
+    },
+    {
+        .id   = DMI_BASEBOARD_TYPE_MOTHERBOARD,
+        .code = "motherboard",
+        .name = "Motherboard"
+    },
+    {
+        .id   = DMI_BASEBOARD_TYPE_PROCESSOR_MEMORY_MODULE,
+        .code = "processor-memory-module",
+        .name = "Processor/memory module"
+    },
+    {
+        .id   = DMI_BASEBOARD_TYPE_PROCESSOR_IO_MODULE,
+        .code = "processor-io-module",
+        .name = "Processor/IO module"
+    },
+    {
+        .id   = DMI_BASEBOARD_TYPE_INTERCONNECT_BOARD,
+        .code = "interconnect-board",
+        .name = "Interconnect board"
+    },
+    DMI_NAME_NULL
 };
 
 const dmi_attribute_spec_t dmi_baseboard_attrs[] =
@@ -40,5 +93,5 @@ const dmi_table_spec_t dmi_baseboard_table =
 
 const char *dmi_baseboard_type_name(enum dmi_baseboard_type value)
 {
-    return dmi_name(dmi_baseboard_type_names, value, __DMI_BASEBOARD_COUNT);
+    return dmi_name_lookup(dmi_baseboard_type_names, value);
 }

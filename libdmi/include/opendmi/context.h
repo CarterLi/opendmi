@@ -144,9 +144,14 @@ bool dmi_dump_load(dmi_context_t *context, const char *path);
 bool dmi_dump_save(dmi_context_t *context, const char *path);
 
 /**
- * @brief Get table specification for specified DMI type.
+ * @brief Get table type specification.
  */
 const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type);
+
+/**
+ * @brief Get table type name.
+ */
+const char *dmi_type_name(dmi_context_t *context, dmi_type_t type);
 
 /**
  * @brief Set logging handler.

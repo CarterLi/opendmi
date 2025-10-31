@@ -32,7 +32,6 @@ enum dmi_memory_array_location
     DMI_MEMORY_ARRAY_LOCATION_PC_98_E         = 0xA2, ///< PC-98/E add-on card
     DMI_MEMORY_ARRAY_LOCATION_PC_98_LOCAL_BUS = 0xA3, ///< PC-98/Local bus add-on card
     DMI_MEMORY_ARRAY_LOCATION_CXL             = 0xA4, ///< CXL add-on card
-    __DMI_MEMORY_ARRAY_LOCATION_COUNT
 };
 
 /**
@@ -47,7 +46,6 @@ enum dmi_memory_array_usage
     DMI_MEMORY_ARRAY_USAGE_FLASH   = 0x05, ///< Flash memory
     DMI_MEMORY_ARRAY_USAGE_NVRAM   = 0x06, ///< Non-volatile RAM
     DMI_MEMORY_ARRAY_USAGE_CACHE   = 0x07, ///< Cache memory
-    __DMI_MEMORY_ARRAY_USAGE_COUNT
 };
 
 /**

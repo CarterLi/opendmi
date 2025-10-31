@@ -5,20 +5,49 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <opendmi/table/common.h>
-#include <opendmi/utils.h>
+#include <opendmi/name.h>
 
-static const char *dmi_ecc_type_names[__DMI_ECC_TYPE_COUNT] =
+static const dmi_name_t dmi_ecc_type_names[] =
 {
-    [DMI_ECC_TYPE_OTHER]      = "Other",
-    [DMI_ECC_TYPE_UNKNOWN]    = "Unknown",
-    [DMI_ECC_TYPE_NONE]       = "None",
-    [DMI_ECC_TYPE_PARITY]     = "Parity",
-    [DMI_ECC_TYPE_SINGLE_BIT] = "Single-bit ECC",
-    [DMI_ECC_TYPE_MULTI_BIT]  = "Multi-bit ECC",
-    [DMI_ECC_TYPE_CRC]        = "CRC"
+    {
+        .id   = DMI_ECC_TYPE_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_ECC_TYPE_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown" 
+    },
+    {
+        .id   = DMI_ECC_TYPE_NONE,
+        .code = "none",
+        .name = "None" 
+    },
+    {
+        .id   = DMI_ECC_TYPE_PARITY,
+        .code = "parity",
+        .name = "Parity" 
+    },
+    {
+        .id   = DMI_ECC_TYPE_SINGLE_BIT,
+        .code = "single-bit",
+        .name = "Single-bit ECC" 
+    },
+    {
+        .id   = DMI_ECC_TYPE_MULTI_BIT,
+        .code = "multi-bit",
+        .name = "Multi-bit ECC" 
+    },
+    {
+        .id   = DMI_ECC_TYPE_CRC,
+        .code = "crc",
+        .name = "CRC"
+    },
+    DMI_NAME_NULL
 };
 
 const char *dmi_ecc_type_name(enum dmi_ecc_type value)
 {
-    return dmi_name(dmi_ecc_type_names, value, __DMI_ECC_TYPE_COUNT);
+    return dmi_name_lookup(dmi_ecc_type_names, value);
 }

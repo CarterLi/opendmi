@@ -110,7 +110,7 @@ const char *dmi_table_name(const dmi_table_t *table)
         return NULL;
     }
 
-    return dmi_type_name(table->type);
+    return dmi_type_name(table->context, table->type);
 }
 
 const char *dmi_table_string(const dmi_table_t *table, dmi_string_t num)

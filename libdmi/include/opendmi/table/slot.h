@@ -95,7 +95,6 @@ enum dmi_slot_type
     DMI_SLOT_TYPE_PCI_E_G6              = 0xC4, ///< PCI Express Gen 6 and beyond
     DMI_SLOT_TYPE_EDSFF_E1              = 0xC5, ///< Enterprise and datacenter 1U E1 form factor slot (EDSFF E1.S, E1.L)
     DMI_SLOT_TYPE_EDSFF_E3              = 0xC6, ///< Enterprise and datacenter 3" E3 form factor slot (EDSFF E3.S, E3.L)
-    __DMI_SLOT_TYPE_COUNT
 };
 
 /**
@@ -117,7 +116,6 @@ enum dmi_slot_width
     DMI_SLOT_WIDTH_12X     = 0x0C, ///< 12x or x12
     DMI_SLOT_WIDTH_16X     = 0x0D, ///< 16x or x16
     DMI_SLOT_WIDTH_32X     = 0x0E, ///< 32x or x32
-    __DMI_SLOT_WIDTH_COUNT
 };
 
 /**
@@ -130,7 +128,6 @@ enum dmi_slot_usage
     DMI_SLOT_USAGE_AVAILABLE   = 0x03, ///< Available
     DMI_SLOT_USAGE_IN_USE      = 0x04, ///< In use
     DMI_SLOT_USAGE_UNAVAILABLE = 0x05, ///< Unavailable
-    __DMI_SLOT_USAGE_COUNT
 };
 
 struct dmi_slot_data

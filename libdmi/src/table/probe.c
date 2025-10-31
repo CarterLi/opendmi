@@ -5,35 +5,121 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <opendmi/table/probe.h>
-#include <opendmi/utils.h>
+#include <opendmi/name.h>
 
-const char *dmi_probe_location_names[__DMI_PROBE_LOCATION_COUNT] =
+static const dmi_name_t dmi_probe_location_names[] =
 {
-    [DMI_PROBE_LOCATION_OTHER]              = "Other",
-    [DMI_PROBE_LOCATION_UNKNOWN]            = "Unknown",
-    [DMI_PROBE_LOCATION_PROCESSOR]          = "Processor",
-    [DMI_PROBE_LOCATION_DISK]               = "Disk",
-    [DMI_PROBE_LOCATION_PERIPHERAL_BAY]     = "Peripheral bay",
-    [DMI_PROBE_LOCATION_SYSTEM_MGMT_MODULE] = "System management module",
-    [DMI_PROBE_LOCATION_MOTHERBOARD]        = "Motherboard",
-    [DMI_PROBE_LOCATION_MEMORY_MODULE]      = "Memory module",
-    [DMI_PROBE_LOCATION_PROCESSOR_MODULE]   = "Processor module",
-    [DMI_PROBE_LOCATION_POWER_UNIT]         = "Power unit",
-    [DMI_PROBE_LOCATION_ADDIN_CARD]         = "Add-in card",
-    [DMI_PROBE_LOCATION_FRONT_PANEL_BOARD]  = "Front panel board",
-    [DMI_PROBE_LOCATION_BACK_PANEL_BOARD]   = "Back panel board",
-    [DMI_PROBE_LOCATION_POWER_SYSTEM_BOARD] = "Power system board",
-    [DMI_PROBE_LOCATION_DRIVE_BACK_PLANE]   = "Drive back plane"
+    {
+        .id   = DMI_PROBE_LOCATION_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_PROCESSOR,
+        .code = "processor",
+        .name = "Processor"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_DISK,
+        .code = "disk",
+        .name = "Disk"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_PERIPHERAL_BAY,
+        .code = "peripheral-bay",
+        .name = "Peripheral bay"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_SYSTEM_MGMT_MODULE,
+        .code = "system-mgmt-module",
+        .name = "System management module"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_MOTHERBOARD,
+        .code = "motherboard",
+        .name = "Motherboard"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_MEMORY_MODULE,
+        .code = "memory-module",
+        .name = "Memory module"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_PROCESSOR_MODULE,
+        .code = "processor-module",
+        .name = "Processor module"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_POWER_UNIT,
+        .code = "power-unit",
+        .name = "Power unit"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_ADDIN_CARD,
+        .code = "addin-card",
+        .name = "Add-in card"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_FRONT_PANEL_BOARD,
+        .code = "front-panel-board",
+        .name = "Front panel board"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_BACK_PANEL_BOARD,
+        .code = "back-panel-board",
+        .name = "Back panel board"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_POWER_SYSTEM_BOARD,
+        .code = "power-system-board",
+        .name = "Power system board"
+    },
+    {
+        .id   = DMI_PROBE_LOCATION_DRIVE_BACK_PLANE,
+        .code = "drive-back-plane",
+        .name = "Drive back plane"
+    },
+    DMI_NAME_NULL
 };
 
-const char *dmi_probe_status_names[__DMI_PROBE_STATUS_COUNT] =
+static const dmi_name_t dmi_probe_status_names[] =
 {
-    [DMI_PROBE_STATUS_OTHER]           = "Other",
-    [DMI_PROBE_STATUS_UNKNOWN]         = "Unknown",
-    [DMI_PROBE_STATUS_OK]              = "OK",
-    [DMI_PROBE_STATUS_NON_CRITICAL]    = "Non-critical",
-    [DMI_PROBE_STATUS_CRITICAL]        = "Critical",
-    [DMI_PROBE_STATUS_NON_RECOVERABLE] = "Non-recoverable"
+    {
+        .id   = DMI_PROBE_STATUS_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_PROBE_STATUS_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_PROBE_STATUS_OK,
+        .code = "ok",
+        .name = "OK"
+    },
+    {
+        .id   = DMI_PROBE_STATUS_NON_CRITICAL,
+        .code = "non-critical",
+        .name = "Non-critical"
+    },
+    {
+        .id   = DMI_PROBE_STATUS_CRITICAL,
+        .code = "critical",
+        .name = "Critical"
+    },
+    {
+        .id   = DMI_PROBE_STATUS_NON_RECOVERABLE,
+        .code = "non-recoverable",
+        .name = "Non-recoverable"
+    },
+    DMI_NAME_NULL
 };
 
 const dmi_attribute_spec_t dmi_voltage_probe_attrs[] =
@@ -80,10 +166,10 @@ const dmi_table_spec_t dmi_current_probe_table =
 
 const char *dmi_probe_location_name(dmi_probe_location_t value)
 {
-    return dmi_name(dmi_probe_location_names, value, __DMI_PROBE_LOCATION_COUNT);
+    return dmi_name_lookup(dmi_probe_location_names, value);
 }
 
 const char *dmi_probe_status_name(dmi_probe_status_t value)
 {
-    return dmi_name(dmi_probe_status_names, value, __DMI_PROBE_STATUS_COUNT);
+    return dmi_name_lookup(dmi_probe_status_names, value);
 }

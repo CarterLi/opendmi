@@ -19,7 +19,6 @@ enum dmi_processor_type
     DMI_PROCESSOR_TYPE_MATH    = 0x04, ///< Math processor
     DMI_PROCESSOR_TYPE_DSP     = 0x05, ///< DSP processor
     DMI_PROCESSOR_TYPE_VIDEO   = 0x06, ///< Video processor
-    __DMI_PROCESSOR_TYPE_COUNT
 };
 
 enum dmi_processor_family
@@ -74,8 +73,6 @@ enum dmi_processor_family
     DMI_PROCESSOR_FAMILY_ALPHA                 = 0x30,
     DMI_PROCESSOR_FAMILY_ALPHA_21064           = 0x31,
     DMI_PROCESSOR_FAMILY_ALPHA_21066           = 0x32,
-
-    __DMI_PROCESSOR_FAMILY_COUNT
 };
 
 enum dmi_processor_upgrade
@@ -167,7 +164,6 @@ enum dmi_processor_upgrade
     DMI_PROCESSOR_UPGRADE_SOCKET_LGA1851   = 0x55, ///< Socket LGA1851
     DMI_PROCESSOR_UPGRADE_SOCKET_BGA2114   = 0x56, ///< Socket BGA2114
     DMI_PROCESSOR_UPGRADE_SOCKET_BGA2833   = 0x57, ///< Socket BGA2833
-    __DMI_PROCESSOR_UPGRADE_COUNT
 };
 
 struct dmi_processor_data

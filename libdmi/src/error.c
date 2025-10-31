@@ -29,5 +29,8 @@ static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
 
 const char *dmi_error_message(dmi_error_t error)
 {
-    return dmi_name(dmi_error_messages, error, __DMI_ERROR_COUNT);
+    if ((error < 0) || (error >= __DMI_ERROR_COUNT) || (dmi_error_messages[error] == nullptr))
+        return "Unknown error";
+
+    return dmi_error_messages[error];
 }

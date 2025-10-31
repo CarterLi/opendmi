@@ -102,7 +102,7 @@ static const dmi_table_spec_t dmi_end_of_table =
 /**
  * @brief Predefined table specifications map.
  */
-static const dmi_table_spec_t *dmi_table_specs[__DMI_TYPE_COUNT] =
+static const dmi_table_spec_t *dmi_table_specs[] =
 {
     [DMI_TYPE_FIRMWARE]                = &dmi_firmware_table,
     [DMI_TYPE_SYSTEM]                  = &dmi_system_table,
@@ -211,6 +211,19 @@ const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type)
         spec = dmi_table_specs[type];
 
     return spec;
+}
+
+const char *dmi_type_name(dmi_context_t *context, dmi_type_t type)
+{
+    const char *name;
+    const dmi_table_spec_t *spec = dmi_type_spec(context, type);
+
+    if (spec != nullptr)
+        name = spec->name;
+    else
+        name = type > 0x7F ? "OEM-specific" : "Unknown";
+
+    return name;
 }
 
 bool dmi_set_logger(dmi_context_t *context, dmi_log_handler_t logger)

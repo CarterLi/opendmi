@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <opendmi/name.h>
+
 #ifndef DMI_ATTRIBUTE_SPEC_T
 #define DMI_ATTRIBUTE_SPEC_T
 typedef struct dmi_attribute_spec dmi_attribute_spec_t;
@@ -32,7 +34,7 @@ struct dmi_attribute_spec
     char *name;
     enum dmi_attribute_type type;
     const char *unit;
-    const char **values;
+    const dmi_name_t *values;
 };
 
 #endif // !OPENDMI_MODEL_ATTRIBUTE_H

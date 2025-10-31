@@ -5,36 +5,126 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <opendmi/table/memory-array.h>
-#include <opendmi/utils.h>
+#include <opendmi/name.h>
 
-static const char *dmi_memory_array_location_names[__DMI_MEMORY_ARRAY_LOCATION_COUNT] =
+static const dmi_name_t dmi_memory_array_location_names[] =
 {
-    [DMI_MEMORY_ARRAY_LOCATION_OTHER]           = "Other",
-    [DMI_MEMORY_ARRAY_LOCATION_UNKNOWN]         = "Unknown",
-    [DMI_MEMORY_ARRAY_LOCATION_MOTHERBOARD]     = "System board or motherboard",
-    [DMI_MEMORY_ARRAY_LOCATION_ISA]             = "ISA add-on card",
-    [DMI_MEMORY_ARRAY_LOCATION_EISA]            = "EISA add-on card",
-    [DMI_MEMORY_ARRAY_LOCATION_PCI]             = "PCI add-on card",
-    [DMI_MEMORY_ARRAY_LOCATION_MCA]             = "MCA add-on card",
-    [DMI_MEMORY_ARRAY_LOCATION_PCMCIA]          = "PCMCIA add-on card",
-    [DMI_MEMORY_ARRAY_LOCATION_PROPRIETARY]     = "Proprietary add-on card",
-    [DMI_MEMORY_ARRAY_LOCATION_NUBUS]           = "NuBus",
-    [DMI_MEMORY_ARRAY_LOCATION_PC_98_C20]       = "PC-98/C20 add-on card",
-    [DMI_MEMORY_ARRAY_LOCATION_PC_98_C24]       = "PC-98/C24 add-on card",
-    [DMI_MEMORY_ARRAY_LOCATION_PC_98_E]         = "PC-98/E add-on card",
-    [DMI_MEMORY_ARRAY_LOCATION_PC_98_LOCAL_BUS] = "PC-98/Local bus add-on card",
-    [DMI_MEMORY_ARRAY_LOCATION_CXL]             = "CXL add-on card"
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_MOTHERBOARD,
+        .code = "motherboard",
+        .name = "System board or motherboard"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_ISA,
+        .code = "isa",
+        .name = "ISA add-on card"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_EISA,
+        .code = "eisa",
+        .name = "EISA add-on card"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_PCI,
+        .code = "pci",
+        .name = "PCI add-on card"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_MCA,
+        .code = "mca",
+        .name = "MCA add-on card"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_PCMCIA,
+        .code = "pcmcia",
+        .name = "PCMCIA add-on card"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_PROPRIETARY,
+        .code = "proprietary",
+        .name = "Proprietary add-on card"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_NUBUS,
+        .code = "nubus",
+        .name = "NuBus"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_PC_98_C20,
+        .code = "pc-98-c20",
+        .name = "PC-98/C20 add-on card"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_PC_98_C24,
+        .code = "pc-98-c24",
+        .name = "PC-98/C24 add-on card"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_PC_98_E,
+        .code = "pc-98-e",
+        .name = "PC-98/E add-on card"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_PC_98_LOCAL_BUS,
+        .code = "pc-98-local-bus",
+        .name = "PC-98/Local bus add-on card"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_LOCATION_CXL,
+        .code = "cxl",
+        .name = "CXL add-on card"
+    },
+    DMI_NAME_NULL
 };
 
-static const char *dmi_memory_array_usage_names[__DMI_MEMORY_ARRAY_USAGE_COUNT] =
+static const dmi_name_t dmi_memory_array_usage_names[] =
 {
-    [DMI_MEMORY_ARRAY_USAGE_OTHER]   = "Other",
-    [DMI_MEMORY_ARRAY_USAGE_UNKNOWN] = "Unknown",
-    [DMI_MEMORY_ARRAY_USAGE_SYSTEM]  = "System memory",
-    [DMI_MEMORY_ARRAY_USAGE_VIDEO]   = "Video memory",
-    [DMI_MEMORY_ARRAY_USAGE_FLASH]   = "Flash memory",
-    [DMI_MEMORY_ARRAY_USAGE_NVRAM]   = "Non-volatile RAM",
-    [DMI_MEMORY_ARRAY_USAGE_CACHE]   = "Cache memory"
+    {
+        .id   = DMI_MEMORY_ARRAY_USAGE_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_USAGE_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_USAGE_SYSTEM,
+        .code = "system",
+        .name = "System memory"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_USAGE_VIDEO,
+        .code = "video",
+        .name = "Video memory"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_USAGE_FLASH,
+        .code = "flash",
+        .name = "Flash memory"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_USAGE_NVRAM,
+        .code = "nvram",
+        .name = "Non-volatile RAM"
+    },
+    {
+        .id   = DMI_MEMORY_ARRAY_USAGE_CACHE,
+        .code = "cache",
+        .name = "Cache memory"
+    },
+    DMI_NAME_NULL
 };
 
 const dmi_attribute_spec_t dmi_memory_array_attrs[] =
@@ -99,10 +189,10 @@ const dmi_table_spec_t dmi_memory_array_addr_table =
 
 const char *dmi_memory_array_location_name(enum dmi_memory_array_location value)
 {
-    return dmi_name(dmi_memory_array_location_names, value, __DMI_MEMORY_ARRAY_LOCATION_COUNT);
+    return dmi_name_lookup(dmi_memory_array_location_names, value);
 }
 
 const char *dmi_memory_array_usage_name(enum dmi_memory_array_usage value)
 {
-    return dmi_name(dmi_memory_array_usage_names, value, __DMI_MEMORY_ARRAY_USAGE_COUNT);
+    return dmi_name_lookup(dmi_memory_array_usage_names, value);
 }

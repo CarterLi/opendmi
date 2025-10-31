@@ -29,7 +29,10 @@ void dmi_log(dmi_context_t *context, dmi_log_level_t level, const char *fmt, ...
     va_end(args);
 }
 
-const char *dmi_log_level_name(dmi_log_level_t value)
+const char *dmi_log_level_name(dmi_log_level_t level)
 {
-    return dmi_name(dmi_log_level_names, value, __DMI_LOG_LEVEL_COUNT);
+    if ((level < 0) || (level >= __DMI_LOG_LEVEL_COUNT) || (dmi_log_level_names[level] == nullptr))
+        return "UNKNOWN";
+
+    return dmi_log_level_names[level];
 }

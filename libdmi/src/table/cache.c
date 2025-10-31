@@ -9,50 +9,162 @@
 #include <errno.h>
 
 #include <opendmi/context.h>
-#include <opendmi/utils.h>
+#include <opendmi/name.h>
 #include <opendmi/table/cache.h>
 
-static const char *dmi_cache_type_names[__DMI_CACHE_TYPE_COUNT] =
+static const dmi_name_t dmi_cache_type_names[] =
 {
-    [DMI_CACHE_TYPE_OTHER]       = "Other",
-    [DMI_CACHE_TYPE_UNKNOWN]     = "Unknown",
-    [DMI_CACHE_TYPE_INSTRUCTION] = "Instruction",
-    [DMI_CACHE_TYPE_DATA]        = "Data",
-    [DMI_CACHE_TYPE_UNIFIED]     = "Unified"
+    {
+        .id   = DMI_CACHE_TYPE_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_CACHE_TYPE_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_CACHE_TYPE_INSTRUCTION,
+        .code = "instruction",
+        .name = "Instruction"
+    },
+    {
+        .id   = DMI_CACHE_TYPE_DATA,
+        .code = "data",
+        .name = "Data"
+    },
+    {
+        .id   = DMI_CACHE_TYPE_UNIFIED,
+        .code = "unified",
+        .name = "Unified"
+    },
+    DMI_NAME_NULL
 };
 
-static const char *dmi_cache_mode_names[__DMI_CACHE_MODE_COUNT] =
+static const dmi_name_t dmi_cache_mode_names[] =
 {
-    [DMI_CACHE_MODE_WRITE_THROUGH] = "Write-through",
-    [DMI_CACHE_MODE_WRITE_BACK]    = "Write-back",
-    [DMI_CACHE_MODE_VARIABLE]      = "Variable",
-    [DMI_CACHE_MODE_UNKNOWN]       = "Unknown"
+    {
+        .id   = DMI_CACHE_MODE_WRITE_THROUGH,
+        .code = "write-through",
+        .name = "Write-through"
+    },
+    {
+        .id   = DMI_CACHE_MODE_WRITE_BACK,
+        .code = "write-back",
+        .name = "Write-back"
+    },
+    {
+        .id   = DMI_CACHE_MODE_VARIABLE,
+        .code = "variable",
+        .name = "Variable"
+    },
+    {
+        .id   = DMI_CACHE_MODE_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    DMI_NAME_NULL
 };
 
-static const char *dmi_cache_assoc_names[__DMI_CACHE_ASSOC_COUNT] =
+static const dmi_name_t dmi_cache_assoc_names[] =
 {
-    [DMI_CACHE_ASSOC_OTHER]   = "Other",
-    [DMI_CACHE_ASSOC_UNKNOWN] = "Unknown",
-    [DMI_CACHE_ASSOC_DIRECT]  = "Direct mapped",
-    [DMI_CACHE_ASSOC_2WAY]    = "2-way set-associative",
-    [DMI_CACHE_ASSOC_4WAY]    = "4-way set-associative",
-    [DMI_CACHE_ASSOC_FULL]    = "Fully associative",
-    [DMI_CACHE_ASSOC_8WAY]    = "8-way set-associative",
-    [DMI_CACHE_ASSOC_16WAY]   = "16-way set-associative",
-    [DMI_CACHE_ASSOC_12WAY]   = "12-way set-associative",
-    [DMI_CACHE_ASSOC_24WAY]   = "24-way set-associative",
-    [DMI_CACHE_ASSOC_32WAY]   = "32-way set-associative",
-    [DMI_CACHE_ASSOC_48WAY]   = "48-way set-associative",
-    [DMI_CACHE_ASSOC_64WAY]   = "64-way set-associative",
-    [DMI_CACHE_ASSOC_20WAY]   = "20-way set-associative"
+    {
+        .id   = DMI_CACHE_ASSOC_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_DIRECT,
+        .code = "direct",
+        .name = "Direct mapped"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_2WAY,
+        .code = "2-way",
+        .name = "2-way set-associative"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_4WAY,
+        .code = "4-way",
+        .name = "4-way set-associative"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_FULL,
+        .code = "full",
+        .name = "Fully associative"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_8WAY,
+        .code = "8-way",
+        .name = "8-way set-associative"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_16WAY,
+        .code = "16-way",
+        .name = "16-way set-associative"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_12WAY,
+        .code = "12-way",
+        .name = "12-way set-associative"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_24WAY,
+        .code = "24-way",
+        .name = "24-way set-associative"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_32WAY,
+        .code = "32-way",
+        .name = "32-way set-associative"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_48WAY,
+        .code = "48-way",
+        .name = "48-way set-associative"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_64WAY,
+        .code = "64-way",
+        .name = "64-way set-associative"
+    },
+    {
+        .id   = DMI_CACHE_ASSOC_20WAY,
+        .code = "20-way",
+        .name = "20-way set-associative"
+    },
+    DMI_NAME_NULL
 };
 
-static const char *dmi_cache_location_names[__DMI_CACHE_LOCATION_COUNT] =
+static const dmi_name_t dmi_cache_location_names[] =
 {
-    [DMI_CACHE_LOCATION_INTERNAL] = "Internal",
-    [DMI_CACHE_LOCATION_EXTERNAL] = "External",
-    [DMI_CACHE_LOCATION_RESERVED] = "Reserved",
-    [DMI_CACHE_LOCATION_UNKNOWN]  = "Unknown"
+    {
+        .id   = DMI_CACHE_LOCATION_INTERNAL,
+        .code = "internal",
+        .name = "Internal"
+    },
+    {
+        .id   = DMI_CACHE_LOCATION_EXTERNAL,
+        .code = "external",
+        .name = "External"
+    },
+    {
+        .id   = DMI_CACHE_LOCATION_RESERVED,
+        .code = "reserved",
+        .name = "Reserved"
+    },
+    {
+        .id   = DMI_CACHE_LOCATION_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    DMI_NAME_NULL
 };
 
 const dmi_attribute_spec_t dmi_cache_attrs[] =
@@ -146,22 +258,22 @@ const dmi_table_spec_t dmi_cache_table =
 
 const char *dmi_cache_type_name(enum dmi_cache_type value)
 {
-    return dmi_name(dmi_cache_type_names, value, __DMI_CACHE_TYPE_COUNT);
+    return dmi_name_lookup(dmi_cache_type_names, value);
 }
 
 const char *dmi_cache_mode_name(enum dmi_cache_mode value)
 {
-    return dmi_name(dmi_cache_mode_names, value, __DMI_CACHE_MODE_COUNT);
+    return dmi_name_lookup(dmi_cache_mode_names, value);
 }
 
 const char *dmi_cache_assoc_name(enum dmi_cache_assoc value)
 {
-    return dmi_name(dmi_cache_assoc_names, value, __DMI_CACHE_ASSOC_COUNT);
+    return dmi_name_lookup(dmi_cache_assoc_names, value);
 }
 
 const char *dmi_cache_location_name(enum dmi_cache_location value)
 {
-    return dmi_name(dmi_cache_location_names, value, __DMI_CACHE_LOCATION_COUNT);
+    return dmi_name_lookup(dmi_cache_location_names, value);
 }
 
 struct dmi_cache_info *dmi_cache_info_create(struct dmi_cache_data *table)
