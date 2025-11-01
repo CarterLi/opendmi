@@ -51,7 +51,16 @@ static void log_error(dmi_context_t *context, dmi_log_level_t level, const char 
 
 int main(int argc, char *argv[])
 {
-    dmi_config_t config;
+    dmi_config_t config =
+    {
+        .command       = DMI_COMMAND_DUMP_TABLES,
+        .memory_device = nullptr,
+        .quiet         = false,
+        .dump          = false,
+        .input_path    = nullptr,
+        .output_path  = nullptr
+    };
+
     dmi_context_t *context;
 
     int rv = EXIT_SUCCESS;
@@ -81,10 +90,16 @@ int main(int argc, char *argv[])
     }
 
     // Open DMI context
-    if (argc > 1)
-        dmi_dump_load(context, argv[1]);
+    bool status;
+    if (config.input_path != nullptr)
+        status = dmi_dump_load(context, config.input_path);
     else
-        dmi_open(context);
+        status = dmi_open(context);
+
+    if (!status) {
+        dmi_destroy(context);
+        return EXIT_FAILURE;
+    }
 
     // Print all SMBIOS tables
     print_all(context);
@@ -181,7 +196,7 @@ static void show_usage(const char *proc)
     printf("    %s [options]\n", proc);
 }
 
-static void list_keywords(dmi_context_t *context)
+static void list_keywords(dmi_context_t *context __attribute__((unused)))
 {
 }
 
@@ -258,7 +273,7 @@ static void print_hex_data(const void *data, size_t length)
         printf("\n");
 }
 
-static void log_error(dmi_context_t *context, dmi_log_level_t level, const char *format, va_list args)
+static void log_error(dmi_context_t *context __attribute__((unused)), dmi_log_level_t level, const char *format, va_list args)
 {
     fprintf(stderr, "[%s] ", dmi_log_level_name(level));
     vfprintf(stderr, format, args);

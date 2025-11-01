@@ -32,10 +32,10 @@ bool dmi_checksum(const void *data, size_t length)
     return (sum == 0) ? true : false;
 }
 
-dmi_data_t *dmi_file_map(const char *path, size_t *plength)
+dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength)
 {
-    if ((path == nullptr) || (plength == nullptr)) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    if ((context == nullptr) || (path == nullptr) || (plength == nullptr)) {
+        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return nullptr;
     }
 
@@ -61,8 +61,10 @@ dmi_data_t *dmi_file_map(const char *path, size_t *plength)
     if (fd >= 0)
         close(fd);
 
-    if (!success)
+    if (!success) {
+        dmi_set_error(context, DMI_ERROR_SYSTEM);
         return nullptr;
+    }
 
     *plength = st.st_size;
 

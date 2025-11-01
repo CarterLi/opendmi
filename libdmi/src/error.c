@@ -24,6 +24,7 @@ static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
     [DMI_ERROR_NO_MORE_ENTRIES]      = "No more entries",
     [DMI_ERROR_SERVICE_UNAVAILABLE]  = "Service unavailable",
     [DMI_ERROR_OUT_OF_MEMORY]        = "Out of memory",
+    [DMI_ERROR_SYSTEM]               = "System error",
     [DMI_ERROR_INTERNAL]             = "Internal error"
 };
 

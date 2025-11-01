@@ -1,9 +1,5 @@
 project(opendmi-libdmi)
 
-add_compile_options(-Wall -Wextra -Werror -pedantic
-                    -Wno-zero-length-array
-                    -Wno-gnu-zero-variadic-macro-arguments)
-
 add_library(dmi-object OBJECT
     src/name.c
     src/utils.c

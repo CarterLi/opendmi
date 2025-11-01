@@ -12,6 +12,16 @@ set(CMAKE_C_EXTENSIONS ON)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_EXTENSIONS ON)
 
+set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+
+if(MSVC)
+    add_compile_options(PRIVATE /W4)
+else()
+    add_compile_options(-Wall -Wextra -pedantic
+                        -Wno-zero-length-array
+                        -Wno-gnu-zero-variadic-macro-arguments)
+endif()
+
 set(OPENDMI_VERSION "${CMAKE_PROJECT_VERSION}")
 
 set(OPENDMI_VERSION_MAJOR "${CMAKE_PROJECT_VERSION_MAJOR}")

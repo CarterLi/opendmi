@@ -14,7 +14,7 @@
 __BEGIN_DECLS
 
 bool dmi_checksum(const void *data, size_t length);
-dmi_data_t *dmi_file_map(const char *path, size_t *plength);
+dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength);
 
 __END_DECLS
 

@@ -139,7 +139,7 @@ struct dmi_table
     /**
      * @brief Pointer to table specification.
      */
-    dmi_table_spec_t *spec;
+    const dmi_table_spec_t *spec;
 
     /**
      * @brief DMI handle.

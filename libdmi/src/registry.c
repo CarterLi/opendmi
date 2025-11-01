@@ -129,14 +129,15 @@ static bool dmi_registry_build(dmi_registry_t *registry)
             goto exit;
         }
 
-        // Update table pointer and index
-        ptr += table->total_length;
-        index++;
-
+        // Add table to registry
         if (!dmi_registry_put(registry, table)) {
             dmi_table_destroy(table);
             goto exit;
         }
+    
+        // Update table pointer and index
+        ptr += table->total_length;
+        index++;
     }
 
     // Set table count

@@ -60,17 +60,25 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
     // Decode table header
     table->context     = context;
     table->type        = header->type;
+    table->spec        = dmi_type_spec(context, table->type);
     table->handle      = header->handle;
     table->data        = data;
     table->body_length = header->length;
 
-    // Decode unformed section
+    // Decode table data
     bool success = false;
     do {
+        // Decode strings
         if (!dmi_table_decode_length(table))
             break;
         if (!dmi_table_decode_strings(table))
             break;
+
+        // Decode information
+        if ((table->spec != nullptr) && (table->spec->decode != nullptr)) {
+            if (!table->spec->decode(table))
+                break;
+        }
 
         success = true;
     } while (false);
@@ -133,8 +141,11 @@ void dmi_table_destroy(dmi_table_t *table)
     if (table == nullptr)
         return;
 
+    if ((table->spec != nullptr) && (table->spec->free != nullptr))
+        table->spec->free(table);
     if (table->strings != nullptr)
         free(table->strings);
+
     free(table);
 }
 
