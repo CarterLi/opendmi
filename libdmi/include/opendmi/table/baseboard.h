@@ -34,7 +34,7 @@ enum dmi_baseboard_type
 /**
  * @brief Baseboard feature flags.
  */
-struct dmi_baseboard_features
+DMI_PACKED_STRUCT(dmi_baseboard_features)
 {
     /**
      * @brief Set to `true` if the board is a hosting board (for example, a
@@ -74,7 +74,7 @@ struct dmi_baseboard_features
      * @brief Reserved for future definition by SMBIOS specification, set to 0.
      */
     uint8_t reserved : 3;
-} __attribute__((packed));
+};
 
 /**
  * @brief Baseboard or module information table (type 2).
@@ -92,7 +92,7 @@ struct dmi_baseboard_features
  * provided, all system elements identified by the SMBIOS implementation are
  * associated with a single motherboard.
  */
-struct dmi_baseboard_data
+DMI_PACKED_STRUCT(dmi_baseboard_data)
 {
     /**
      * @brief DMI table header.
@@ -109,8 +109,8 @@ struct dmi_baseboard_data
     dmi_handle_t chassis_handle;
     enum dmi_baseboard_type type;
     uint8_t children_count;
-    dmi_handle_t children_handles[0];
-} __attribute__((packed));
+    dmi_handle_t children_handles[];
+};
 
 struct dmi_baseboard
 {

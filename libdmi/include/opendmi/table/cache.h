@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include <sys/cdefs.h>
-#include <sys/types.h>
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -78,7 +76,7 @@ enum dmi_cache_location
 /**
  * @brief Cache configuration.
  */
-struct dmi_cache_config
+DMI_PACKED_STRUCT(dmi_cache_config)
 {
     /**
      * @brief Cache Level – 1 through 8. For example, an L1 cache would use
@@ -110,19 +108,19 @@ struct dmi_cache_config
      * @brief Operational mode.
      */
     enum dmi_cache_mode mode : 2;
-} __attribute__((packed));
+};
 
 /**
  * @brief Cache SRAM type.
  */
-union dmi_cache_sram_type
+DMI_PACKED_UNION(dmi_cache_sram_type)
 {
     /**
      * @brief Encoded type value.
      */
     uint16_t type;
 
-    struct
+    DMI_PACKED_STRUCT()
     {
         bool other          : 1; ///< Other
         bool unknown        : 1; ///< Unknown
@@ -133,8 +131,8 @@ union dmi_cache_sram_type
         bool asynchronous   : 1; ///< Asynchronous
 
         uint16_t reserved : 9; ///< Reserved, must be zero
-    } __attribute__((packed));
-} __attribute__((packed));
+    };
+};
 
 /**
  * @brief Cache information table (type 7).
@@ -145,7 +143,7 @@ union dmi_cache_sram_type
  * modules can be associated with a processor structure in one or two ways
  * depending on the SMBIOS version.
  */
-struct dmi_cache_data
+DMI_PACKED_STRUCT(dmi_cache_data)
 {
     /**
      * @brief DMI table header.
@@ -226,7 +224,7 @@ struct dmi_cache_data
      * @since SMBIOS 3.1
      */
     dmi_cache_size_ex_t installed_size_ex;
-} __attribute__((packed));
+};
 
 /**
  * @brief Decoded cache information.

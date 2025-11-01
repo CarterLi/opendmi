@@ -52,7 +52,7 @@ enum dmi_memory_array_usage
  * @brief Physical memory array table (type 16).
  * @since SMBIOS 2.1
  */
-struct dmi_memory_array_data
+DMI_PACKED_STRUCT(dmi_memory_array_data)
 {
     /**
      * @brief DMI table header.
@@ -128,7 +128,7 @@ struct dmi_memory_array_data
      * @since SMBIOS 2.7
      */
     uint64_t maximum_capacity_ex;
-} __attribute__((packed));
+};
 
 /**
  * @brief Physical memory array table specification.

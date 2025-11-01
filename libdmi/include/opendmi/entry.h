@@ -80,7 +80,7 @@ struct dmi_entry_spec
 /**
  * @brief DMI entry specifications list terminator.
  */
-#define DMI_ENTRY_SPEC_NULL (dmi_entry_spec_t){ nullptr, nullptr, 0, nullptr }
+#define DMI_ENTRY_SPEC_NULL { nullptr, nullptr, 0, nullptr }
 
 /**
  * @brief The 32-bit SMBIOS legacy Entry Point Structure (EPS).
@@ -89,7 +89,7 @@ struct dmi_entry_spec
  * On modern 32-bit systems with SMBIOS v2.1 or newer, this is also used as a
  * part of EPS called IEPS (Intermediate EPS) for compatibility reasons.
  */
-struct dmi_entry_legacy
+DMI_PACKED_STRUCT(dmi_entry_legacy)
 {
     /**
      * @brief Anchor string.
@@ -154,7 +154,7 @@ struct dmi_entry_legacy
 /**
  * @brief The 32-bit SMBIOS 2.1+ Entry Point Structure (EPS).
  */
-struct dmi_entry_v21
+DMI_PACKED_STRUCT(dmi_entry_v21)
 {
     /**
      * @brief Anchor string.
@@ -243,12 +243,12 @@ struct dmi_entry_v21
      * @brief Intermediate Entry Point Structure (IEPS).
      */
     const dmi_entry_legacy_t ieps;
-} __attribute__((packed));
+};
 
 /**
  * @brief The 64-bit SMBIOS 3.0+ Entry Point Structure (EPS).
  */
-struct dmi_entry_v30
+DMI_PACKED_STRUCT(dmi_entry_v30)
 {
     /**
      * @brief Anchor string.
@@ -346,7 +346,7 @@ struct dmi_entry_v30
      * the SMBIOS structures fully packed together.
      */
     const uint64_t table_area_addr;
-} __attribute__((packed));
+};
 
 __BEGIN_DECLS
 

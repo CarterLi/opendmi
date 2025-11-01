@@ -8,14 +8,14 @@ OpenDMI is a cross-platform, commercial-grade DMI/SMBIOS framework, focused on f
 * Bindings for C, C++, Python and Go languages
 * Shell interface compatible with `dmidecode`
 * JSON and XML output support for automation purposes
-* Works on Linux, Mac OS and BSD platforms
+* Works on Linux, MacOS, BSD and Windows platforms
 * Small footprint, no external dependencies
 
 ## Building
 
 ### Prerequisites
 
-* GCC or CLang compiler
+* GCC, CLang or MSVC compiler
 * CMake 4.1 or newer
 
 ## Licensing

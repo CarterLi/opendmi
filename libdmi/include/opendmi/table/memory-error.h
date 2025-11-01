@@ -59,7 +59,7 @@ enum dmi_memory_error_operation
  * @brief 32-Bit memory error information table (type 18).
  * @since SMBIOS 2.1
  */
-struct dmi_memory_error_32_data
+DMI_PACKED_STRUCT(dmi_memory_error_32_data)
 {
     /**
      * @brief DMI table header.
@@ -109,13 +109,13 @@ struct dmi_memory_error_32_data
      * 0x80000000.
      */
     uint32_t resolution;
-} __attribute__((packed));
+};
 
 /**
  * @brief 64-Bit memory error information table (type 33).
  * @since SMBIOS 2.3
  */
-struct dmi_memory_error_64_table
+DMI_PACKED_STRUCT(dmi_memory_error_64_table)
 {
     /**
      * @brief DMI table header.
@@ -165,7 +165,7 @@ struct dmi_memory_error_64_table
      * 0x80000000.
      */
     uint32_t resolution;
-} __attribute__((packed));
+};
 
 /**
  * @brief 32-bit memory error information table specification.

@@ -14,7 +14,7 @@
 /**
  * @brief OEM strings table (type 11).
  */
-struct dmi_oem_strings_data
+DMI_PACKED_STRUCT(dmi_oem_strings_data)
 {
     /**
      * @brief DMI table header.
@@ -25,7 +25,7 @@ struct dmi_oem_strings_data
      * @brief Number of strings.
      */
     uint8_t count;
-} __attribute__((packed));
+};
 
 /**
  * @brief OEM strings table specification.

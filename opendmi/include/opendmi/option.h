@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <sys/cdefs.h>
+#include <opendmi/defs.h>
 
 #ifndef DMI_OPTION_T
 #define DMI_OPTION_T

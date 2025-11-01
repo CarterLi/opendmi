@@ -88,7 +88,7 @@ struct dmi_table_spec
 /**
  * @brief DMI table header.
  */
-struct dmi_header
+DMI_PACKED_STRUCT(dmi_header)
 {
     /**
      * @brief Specifies the type of structure. Types 0 through 127 (7Fh) are
@@ -119,7 +119,7 @@ struct dmi_header
      * @see dmi_handle_t
      */
     dmi_handle_t handle;
-} __attribute__((packed));
+};
 
 /**
  * @brief DMI table descriptor.

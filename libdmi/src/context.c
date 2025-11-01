@@ -60,7 +60,7 @@
 #elif defined(__FreeBSD__)
 #include <opendmi/backend/freebsd.h>
 #define DMI_BACKEND dmi_freebsd_backend
-#elif defined(__WINNT__)
+#elif defined(_WIN32)
 #include <opendmi/backend/windows.h>
 #define DMI_BACKEND dmi_windows_backend
 #else
@@ -78,7 +78,7 @@ static void dmi_version_fixup(dmi_context_t *context);
 /**
  * @brief Last error code (thread-local).
  */
-static __thread dmi_error_t dmi_last_error = DMI_OK;
+static thread_local dmi_error_t dmi_last_error = DMI_OK;
 
 /**
  * @brief Backend handle.

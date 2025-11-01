@@ -23,7 +23,7 @@ enum dmi_dell_type
 /**
  * @brief Dell SMI calling interface token.
  */
-struct dmi_dell_calling_interface_token
+DMI_PACKED_STRUCT(dmi_dell_calling_interface_token)
 {
     /**
      * @brief Token identifier.
@@ -39,12 +39,12 @@ struct dmi_dell_calling_interface_token
      * @brief Token value or string length.
      */
     uint16_t length;
-} __attribute__((packed));
+};
 
 /**
  * @brief Dell SMI calling interface table (type 218).
  */
-struct dmi_dell_calling_interface_table
+DMI_PACKED_STRUCT(dmi_dell_calling_interface_table)
 {
     /**
      * @brief DMI table header.
@@ -70,7 +70,7 @@ struct dmi_dell_calling_interface_table
      * @brief Tokens.
      */
 	struct dmi_dell_calling_interface_token tokens[];
-} __attribute__((packed));
+};
 
 /**
  * @brief Dell DMI extension.

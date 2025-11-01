@@ -85,11 +85,11 @@ enum dmi_memory_device_technology
     DMI_MEMORY_DEVICE_TECHNOLOGY_MRDIMM   = 0x08, ///< MRDIMM (deprecated)
 };
 
-union dmi_memory_device_type_detail
+DMI_PACKED_UNION(dmi_memory_device_type_detail)
 {
     uint16_t raw_value;
 
-    struct
+    DMI_PACKED_STRUCT()
     {
         bool reserved : 1;
         bool other : 1;
@@ -107,13 +107,13 @@ union dmi_memory_device_type_detail
         bool registered : 1;
         bool unbuffered : 1;
         bool lrdimm : 1;
-    } __attribute__((packed));
-} __attribute__((packed));
+    };
+};
 
 /**
  * @since SMBIOS 2.1
  */
-struct dmi_memory_device_data
+DMI_PACKED_STRUCT(dmi_memory_device_data)
 {
     /**
      * @brief DMI table header.
@@ -394,7 +394,7 @@ struct dmi_memory_device_data
      * @since SMBIOS 3.7
      */
     uint16_t rcd_revision_number;
-} __attribute__((packed));
+};
 
 /**
  * @brief Memory device table specification.

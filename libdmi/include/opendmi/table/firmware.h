@@ -11,11 +11,11 @@
 
 #include <opendmi/table.h>
 
-union dmi_firmware_features
+DMI_PACKED_UNION(dmi_firmware_features)
 {
     uint64_t raw_value;
 
-    struct {
+    DMI_PACKED_STRUCT() {
         unsigned int reserved : 2;
         bool unknown : 1;
         bool features_not_supported : 1;
@@ -35,14 +35,13 @@ union dmi_firmware_features
         bool socketed : 1;
         bool boot_pcmcia : 1;
         bool edd_supported : 1;
-    } __attribute__((packed));
-} __attribute__((packed));
-
+    };
+};
 
 /**
  * @brief Platform firmware information table (type 0).
  */
-struct dmi_firmware_data
+DMI_PACKED_STRUCT(dmi_firmware_data)
 {
     /**
      * @brief DMI structure header.
@@ -97,7 +96,7 @@ struct dmi_firmware_data
      * @since SMBIOS 2.0
      */
     uint8_t rom_size;
-} __attribute__((packed));
+};
 
 /**
  * @brief Platform firmware information table specification.

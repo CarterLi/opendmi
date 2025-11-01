@@ -6,6 +6,12 @@ project(opendmi
         HOMEPAGE_URL https://github.com/sdnvx/opendmi
         LANGUAGES C CXX)
 
+set(OPENDMI_VERSION "${CMAKE_PROJECT_VERSION}")
+
+set(OPENDMI_VERSION_MAJOR "${CMAKE_PROJECT_VERSION_MAJOR}")
+set(OPENDMI_VERSION_MINOR "${CMAKE_PROJECT_VERSION_MINOR}")
+set(OPENDMI_VERSION_PATCH "${CMAKE_PROJECT_VERSION_PATCH}")
+
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_EXTENSIONS ON)
 
@@ -17,16 +23,13 @@ set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 if(MSVC)
     add_compile_options(PRIVATE /W4)
 else()
-    add_compile_options(-Wall -Wextra -pedantic
-                        -Wno-zero-length-array
-                        -Wno-gnu-zero-variadic-macro-arguments)
+    add_compile_options(-Wall -Wextra -pedantic)
+
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
+       "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+        add_compile_options(-Wno-gnu-zero-variadic-macro-arguments -Wno-keyword-macro)
+    endif()
 endif()
-
-set(OPENDMI_VERSION "${CMAKE_PROJECT_VERSION}")
-
-set(OPENDMI_VERSION_MAJOR "${CMAKE_PROJECT_VERSION_MAJOR}")
-set(OPENDMI_VERSION_MINOR "${CMAKE_PROJECT_VERSION_MINOR}")
-set(OPENDMI_VERSION_PATCH "${CMAKE_PROJECT_VERSION_PATCH}")
 
 add_subdirectory(libdmi)
 add_subdirectory(libdmi++)

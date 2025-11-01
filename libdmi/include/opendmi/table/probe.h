@@ -49,14 +49,14 @@ typedef enum dmi_probe_status
 /**
  * @brief Probe table.
  */
-struct dmi_probe_data
+DMI_PACKED_STRUCT(dmi_probe_data)
 {
     /**
      * @brief DMI table header.
      */
     dmi_header_t header;
 
-    struct {
+    DMI_PACKED_STRUCT() {
         /**
          * @brief Physical location.
          */
@@ -66,7 +66,7 @@ struct dmi_probe_data
          * @brief Status.
          */
         dmi_probe_status_t status : 3;
-    } __attribute((packed));
+    };
 
     /**
      * @brief Maximum value readable by this probe. If the value is unknown,
@@ -109,7 +109,7 @@ struct dmi_probe_data
      * only if the structure’s Length is larger than `0x14`.
      */
     uint16_t nom_value;
-} __attribute__((packed));
+};
 
 /**
  * @brief Voltage probe table specification.

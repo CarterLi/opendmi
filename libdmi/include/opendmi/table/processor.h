@@ -166,7 +166,7 @@ enum dmi_processor_upgrade
     DMI_PROCESSOR_UPGRADE_SOCKET_BGA2833   = 0x57, ///< Socket BGA2833
 };
 
-struct dmi_processor_data
+DMI_PACKED_STRUCT(dmi_processor_data)
 {
     enum dmi_processor_type type;
 
@@ -286,7 +286,7 @@ struct dmi_processor_data
     uint16_t thread_enabled;
 
     uint8_t socket_type;
-} __attribute__((packed));
+};
 
 /**
  * @brief Processor information table specification.

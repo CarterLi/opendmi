@@ -50,7 +50,7 @@ typedef enum dmi_cooling_device_status
  * 
  * @since SMBIOS 2.2
  */
-struct dmi_cooling_device_data
+DMI_PACKED_STRUCT(dmi_cooling_device_data)
 {
     /**
      * @brief DMI table header.
@@ -65,7 +65,7 @@ struct dmi_cooling_device_data
      */
     dmi_handle_t temp_probe;
 
-    struct
+    DMI_PACKED_STRUCT()
     {
         /**
          * @brief Cooling device type.
@@ -80,7 +80,7 @@ struct dmi_cooling_device_data
          * @since SMBIOS 2.2
          */
         dmi_cooling_device_status_t status : 3;
-    } __attribute__((packed));
+    };
 
     /**
      * @brief Cooling unit group to which this cooling device is associated.
@@ -126,7 +126,7 @@ struct dmi_cooling_device_data
      * @since SMBIOS 2.7
      */
     dmi_string_t description;
-} __attribute__((packed));
+};
 
 /**
  * @brief Cooling device table specification.

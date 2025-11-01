@@ -9,11 +9,11 @@
 
 #pragma once
 
-#include <sys/cdefs.h>
 #include <sys/types.h>
-
 #include <stdint.h>
 #include <stdbool.h>
+
+#include <opendmi/defs.h>
 
 #define dmi_cast(dst, expr) ((__typeof__(dst))(expr))
 
