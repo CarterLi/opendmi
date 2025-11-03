@@ -10,6 +10,7 @@
 #pragma once
 
 #include <opendmi/table.h>
+#include <opendmi/table/common.h>
 
 /**
  * @brief Cooling device types.
@@ -28,19 +29,6 @@ typedef enum dmi_cooling_device_type
     DMI_COOLING_DEVICE_TYPE_ACTIVE_COOLING           = 0x10, ///< Active cooling
     DMI_COOLING_DEVICE_TYPE_PASSIVE_COOLING          = 0x11, ///< Passive cooling
 } dmi_cooling_device_type_t;
-
-/**
- * @brief Cooling device status values.
- */
-typedef enum dmi_cooling_device_status
-{
-    DMI_COOLING_DEVICE_STATUS_OTHER           = 0x01, ///< Other
-    DMI_COOLING_DEVICE_STATUS_UNKNOWN         = 0x02, ///< Unknown
-    DMI_COOLING_DEVICE_STATUS_OK              = 0x03, ///< OK
-    DMI_COOLING_DEVICE_STATUS_NON_CRITICAL    = 0x04, ///< Non-critical
-    DMI_COOLING_DEVICE_STATUS_CRITICAL        = 0x05, ///< Critical
-    DMI_COOLING_DEVICE_STATUS_NON_RECOVERABLE = 0x06, ///< Non-recoverable
-} dmi_cooling_device_status_t;
 
 /**
  * @brief Cooling device table.
@@ -79,7 +67,7 @@ DMI_PACKED_STRUCT(dmi_cooling_device_data)
          * 
          * @since SMBIOS 2.2
          */
-        dmi_cooling_device_status_t status : 3;
+        dmi_status_t status : 3;
     };
 
     /**
@@ -136,7 +124,6 @@ extern const dmi_table_spec_t dmi_cooling_device_table;
 __BEGIN_DECLS
 
 const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value);
-const char *dmi_cooling_device_status_name(dmi_cooling_device_status_t value);
 
 __END_DECLS
 

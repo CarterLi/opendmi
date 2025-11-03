@@ -10,6 +10,7 @@
 #pragma once
 
 #include <opendmi/table.h>
+#include <opendmi/table/common.h>
 
 /**
  * @brief Probe locations.
@@ -34,19 +35,6 @@ typedef enum dmi_probe_location
 } dmi_probe_location_t;
 
 /**
- * @brief Probe status values.
- */
-typedef enum dmi_probe_status
-{
-    DMI_PROBE_STATUS_OTHER           = 0x01, //< Other
-    DMI_PROBE_STATUS_UNKNOWN         = 0x02, //< Unknown
-    DMI_PROBE_STATUS_OK              = 0x03, //< OK
-    DMI_PROBE_STATUS_NON_CRITICAL    = 0x04, //< Non-critical
-    DMI_PROBE_STATUS_CRITICAL        = 0x05, //< Critical
-    DMI_PROBE_STATUS_NON_RECOVERABLE = 0x06, //< Non-recoverable
-} dmi_probe_status_t;
-
-/**
  * @brief Probe table.
  */
 DMI_PACKED_STRUCT(dmi_probe_data)
@@ -65,7 +53,7 @@ DMI_PACKED_STRUCT(dmi_probe_data)
         /**
          * @brief Status.
          */
-        dmi_probe_status_t status : 3;
+        dmi_status_t status : 3;
     };
 
     /**
@@ -129,7 +117,6 @@ extern const dmi_table_spec_t dmi_current_probe_table;
 __BEGIN_DECLS
 
 const char *dmi_probe_location_name(dmi_probe_location_t value);
-const char *dmi_probe_status_name(dmi_probe_status_t value);
 
 __END_DECLS
 

@@ -67,41 +67,6 @@ static const dmi_name_t dmi_cooling_device_type_names[] =
     DMI_NAME_NULL
 };
 
-static const dmi_name_t dmi_cooling_device_status_names[] =
-{
-    {
-        .id   = DMI_COOLING_DEVICE_STATUS_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_STATUS_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_STATUS_OK,
-        .code = "ok",
-        .name = "OK"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_STATUS_NON_CRITICAL,
-        .code = "non-critical",
-        .name = "Non-critical"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_STATUS_CRITICAL,
-        .code = "critical",
-        .name = "Critical"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_STATUS_NON_RECOVERABLE,
-        .code = "non-recoverable",
-        .name = "Non-recoverable"
-    },
-    DMI_NAME_NULL
-};
-
 const dmi_attribute_spec_t dmi_cooling_device_attrs[] =
 {
     { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
@@ -119,9 +84,4 @@ const dmi_table_spec_t dmi_cooling_device_table =
 const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value)
 {
     return dmi_name_lookup(dmi_cooling_device_type_names, value);
-}
-
-const char *dmi_cooling_device_status_name(dmi_cooling_device_status_t value)
-{
-    return dmi_name_lookup(dmi_cooling_device_status_names, value);
 }

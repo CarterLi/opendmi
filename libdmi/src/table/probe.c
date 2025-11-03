@@ -87,41 +87,6 @@ static const dmi_name_t dmi_probe_location_names[] =
     DMI_NAME_NULL
 };
 
-static const dmi_name_t dmi_probe_status_names[] =
-{
-    {
-        .id   = DMI_PROBE_STATUS_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_PROBE_STATUS_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
-    {
-        .id   = DMI_PROBE_STATUS_OK,
-        .code = "ok",
-        .name = "OK"
-    },
-    {
-        .id   = DMI_PROBE_STATUS_NON_CRITICAL,
-        .code = "non-critical",
-        .name = "Non-critical"
-    },
-    {
-        .id   = DMI_PROBE_STATUS_CRITICAL,
-        .code = "critical",
-        .name = "Critical"
-    },
-    {
-        .id   = DMI_PROBE_STATUS_NON_RECOVERABLE,
-        .code = "non-recoverable",
-        .name = "Non-recoverable"
-    },
-    DMI_NAME_NULL
-};
-
 const dmi_attribute_spec_t dmi_voltage_probe_attrs[] =
 {
     { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
@@ -167,9 +132,4 @@ const dmi_table_spec_t dmi_current_probe_table =
 const char *dmi_probe_location_name(dmi_probe_location_t value)
 {
     return dmi_name_lookup(dmi_probe_location_names, value);
-}
-
-const char *dmi_probe_status_name(dmi_probe_status_t value)
-{
-    return dmi_name_lookup(dmi_probe_status_names, value);
 }

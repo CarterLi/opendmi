@@ -12,9 +12,22 @@
 #include <opendmi/types.h>
 
 /**
+ * @brief Status types.
+ */
+typedef enum dmi_status
+{
+    DMI_STATUS_OTHER           = 0x01, ///< Other
+    DMI_STATUS_UNKNOWN         = 0x02, ///< Unknown
+    DMI_STATUS_OK              = 0x03, ///< OK
+    DMI_STATUS_NON_CRITICAL    = 0x04, ///< Non-critical
+    DMI_STATUS_CRITICAL        = 0x05, ///< Critical
+    DMI_STATUS_NON_RECOVERABLE = 0x06, ///< Non-recoverable
+} dmi_status_t;
+
+/**
  * @brief Error correction types.
  */
-enum dmi_ecc_type
+typedef enum dmi_ecc_type
 {
     DMI_ECC_TYPE_OTHER      = 0x01, ///< Other
     DMI_ECC_TYPE_UNKNOWN    = 0x02, ///< Unknown
@@ -23,10 +36,11 @@ enum dmi_ecc_type
     DMI_ECC_TYPE_SINGLE_BIT = 0x05, ///< Single-bit ECC
     DMI_ECC_TYPE_MULTI_BIT  = 0x06, ///< Multi-bit ECC
     DMI_ECC_TYPE_CRC        = 0x07, ///< CRC
-};
+} dmi_ecc_type_t;
 
 __BEGIN_DECLS
 
+const char *dmi_status_name(enum dmi_status value);
 const char *dmi_ecc_type_name(enum dmi_ecc_type value);
 
 __END_DECLS

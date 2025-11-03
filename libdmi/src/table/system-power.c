@@ -5,6 +5,52 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <opendmi/table/system-power.h>
+#include <opendmi/name.h>
+
+static const dmi_name_t dmi_power_supply_type_names[] =
+{
+    {
+        .id   = DMI_POWER_SUPPLY_TYPE_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_POWER_SUPPLY_TYPE_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_POWER_SUPPLY_TYPE_LINEAR,
+        .code = "linear",
+        .name = "Linear"
+    },
+    {
+        .id   = DMI_POWER_SUPPLY_TYPE_SWITCHING,
+        .code = "switching",
+        .name = "Switching"
+    },
+    {
+        .id   = DMI_POWER_SUPPLY_TYPE_BATTERY,
+        .code = "battery",
+        .name = "Battery"
+    },
+    {
+        .id   = DMI_POWER_SUPPLY_TYPE_UPS,
+        .code = "ups",
+        .name = "UPS"
+    },
+    {
+        .id   = DMI_POWER_SUPPLY_TYPE_CONVERTER,
+        .code = "converter",
+        .name = "Converter"
+    },
+    {
+        .id   = DMI_POWER_SUPPLY_TYPE_REGULATOR,
+        .code = "regulator",
+        .name = "Regulator"
+    },
+    DMI_NAME_NULL
+};
 
 const dmi_attribute_spec_t dmi_system_power_controls_attrs[] =
 {
@@ -35,3 +81,8 @@ const dmi_table_spec_t dmi_system_power_supply_table =
     .min_length  = 0x16,
     .attributes  = dmi_system_power_supply_attrs
 };
+
+const char *dmi_power_supply_type_name(enum dmi_power_supply_type value)
+{
+    return dmi_name_lookup(dmi_power_supply_type_names, value);
+}

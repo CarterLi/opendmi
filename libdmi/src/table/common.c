@@ -7,6 +7,41 @@
 #include <opendmi/table/common.h>
 #include <opendmi/name.h>
 
+static const dmi_name_t dmi_status_names[] =
+{
+    {
+        .id   = DMI_STATUS_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_STATUS_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_STATUS_OK,
+        .code = "ok",
+        .name = "OK"
+    },
+    {
+        .id   = DMI_STATUS_NON_CRITICAL,
+        .code = "non-critical",
+        .name = "Non-critical"
+    },
+    {
+        .id   = DMI_STATUS_CRITICAL,
+        .code = "critical",
+        .name = "Critical"
+    },
+    {
+        .id   = DMI_STATUS_NON_RECOVERABLE,
+        .code = "non-recoverable",
+        .name = "Non-recoverable"
+    },
+    DMI_NAME_NULL
+};
+
 static const dmi_name_t dmi_ecc_type_names[] =
 {
     {
@@ -47,7 +82,12 @@ static const dmi_name_t dmi_ecc_type_names[] =
     DMI_NAME_NULL
 };
 
-const char *dmi_ecc_type_name(enum dmi_ecc_type value)
+const char *dmi_status_name(dmi_status_t value)
+{
+    return dmi_name_lookup(dmi_status_names, value);
+}
+
+const char *dmi_ecc_type_name(dmi_ecc_type_t value)
 {
     return dmi_name_lookup(dmi_ecc_type_names, value);
 }

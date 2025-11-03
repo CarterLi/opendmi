@@ -11,6 +11,9 @@
 
 #include <opendmi/table.h>
 
+/**
+ * @brief Memory device types.
+ */
 enum dmi_memory_device_type
 {
     DMI_MEMORY_DEVICE_TYPE_OTHER       = 0x01, ///< Other
@@ -50,6 +53,9 @@ enum dmi_memory_device_type
     DMI_MEMORY_DEVICE_TYPE_MRDIMM      = 0x25, ///< MDRIMM
 };
 
+/**
+ * @brief Memory device form factors.
+ */
 enum dmi_memory_device_form_factor
 {
     DMI_MEMORY_DEVICE_FORM_FACTOR_OTHER    = 0x01, ///< Other
@@ -73,6 +79,9 @@ enum dmi_memory_device_form_factor
     DMI_MEMORY_DEVICE_FORM_FACTOR_CSODIMM  = 0x13, ///< CSODIMM
 };
 
+/**
+ * @brief Memory device technologies.
+ */
 enum dmi_memory_device_technology
 {
     DMI_MEMORY_DEVICE_TECHNOLOGY_OTHER    = 0x01, ///< Other
