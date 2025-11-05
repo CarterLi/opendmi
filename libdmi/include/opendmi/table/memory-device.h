@@ -279,99 +279,156 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
     dmi_string_t part_number;
 
     /**
+     * @brief Memory device attributes.
+     *
      * @since SMBIOS 2.6
      */
     dmi_byte_t attributes;
 
     /**
+     * @brief Extended size of the memory device (complements the size field
+     * at offset 0x0C).
+     *
      * @since SMBIOS 2.7
      */
     dmi_dword_t size_ex;
 
     /**
+     * @brief Identifies the configured speed of the memory device, in
+     * megatransfers per second (MT/s). The value 0x0000h means that the speed
+     * is unknown. The value 0xFFFF means that the speed is 65,535 MT/s or
+     * greater, and the actual speed is stored in the extended configured
+     * memory speed field.
+     *
      * @since SMBIOS 2.7
      */
-    dmi_word_t configured_speed;
+    dmi_word_t conf_speed;
 
     /**
+     * @brief Minimum operating voltage for this device, in millivolts. If the
+     * value is 0, the voltage is unknown.
+     *
      * @since SMBIOS 2.8
      */
-    dmi_word_t minimum_voltage;
+    dmi_word_t min_voltage;
 
     /**
+     * @brief Maximum operating voltage for this device, in millivolts. If the
+     * value is 0, the voltage is unknown.
+     *
      * @since SMBIOS 2.8
      */
-    dmi_word_t maximum_voltage;
+    dmi_word_t max_voltage;
 
     /**
+     * @brief Configured voltage for this device, in millivolts. If the value
+     * is 0, the voltage is unknown.
+     *
      * @since SMBIOS 2.8
      */
-    dmi_word_t configured_voltage;
+    dmi_word_t conf_voltage;
 
     /**
+     * @brief Memory technology type for this memory device.
      * @since SMBIOS 3.2
      */
     dmi_byte_t memory_technology;
 
     /**
+     * @brief The operating modes supported by this memory device.
      * @since SMBIOS 3.2
      */
     dmi_word_t memory_mode_caps;
 
     /**
+     * @brief String number for the firmware version of this memory device.
      * @since SMBIOS 3.2
      */
     dmi_string_t firmware_version;
 
     /**
+     * @brief The two-byte module manufacturer ID found in the SPD of this
+     * memory device; LSB first.
+     *
      * @since SMBIOS 3.2
      */
     dmi_word_t module_manufacturer_id;
 
     /**
+     * @brief The two-byte module product ID found in the SPD of this memory
+     * device; LSB first.
+     *
      * @since SMBIOS 3.2
      */
     dmi_word_t module_product_id;
 
     /**
+     * @brief The two-byte memory subsystem controller manufacturer ID found
+     * in the SPD of this memory device; LSB first.
+     *
      * @since SMBIOS 3.2
      */
     dmi_word_t memory_subsys_ctrl_manufacturer_id;
 
     /**
+     * @brief The two-byte memory subsystem controller product ID found in the
+     * SPD of this memory device; LSB first.
+     *
      * @since SMBIOS 3.2
      */
     dmi_word_t memory_subsys_ctrl_product_id;
 
     /**
+     * @brief Size of the non-volatile portion of the memory device in bytes,
+     * if any. If the value is 0, there is no non-volatile portion. If the
+     * non-volatile Size is unknown, the field is set to 0xFFFFFFFFFFFFFFFF.
+     *
      * @since SMBIOS 3.2
      */
     dmi_qword_t non_volatile_size;
 
     /**
+     * @brief Size of the volatile portion of the memory device in bytes, if
+     * any. If the value is 0, there is no volatile portion. If the volatile
+     * size is unknown, the field is set to 0xFFFFFFFFFFFFFFFF.
+     *
      * @since SMBIOS 3.2
      */
     dmi_qword_t volatile_size;
 
     /**
+     * @brief Size of the cache portion of the memory device in bytes, if any.
+     * If the value is 0, there is no cache portion. If the cache size is
+     * unknown, the field is set to 0xFFFFFFFFFFFFFFFF.
      * @since SMBIOS 3.2
      */
     dmi_qword_t cache_size;
 
     /**
+     * @brief Size of the logical memory device in bytes. If the size is
+     * unknown, the field is set to 0xFFFFFFFFFFFFFFFF.
+     *
      * @since SMBIOS 3.2
      */
     dmi_qword_t logical_size;
 
     /**
+     * @brief Extended speed of the memory device (complements the speed field
+     * at offset 0x15). Identifies the maximum capable speed of the device, in
+     * megatransfers per second (MT/s).
+     *
      * @since SMBIOS 3.3
      */
-    dmi_dword_t maximum_speed_ex;
+    dmi_dword_t max_speed_ex;
 
     /**
+     * @brief Extended configured memory speed of the memory device (complements
+     * the configured memory speed field at offset 0x20h). Identifies the configured
+     * speed of the memory device, in megatransfers per second (MT/s).
+     *
      * @since SMBIOS 3.3
      */
-    dmi_dword_t configured_speed_ex;
+    dmi_dword_t conf_speed_ex;
 
     /**
      * @brief The two-byte PMIC0 manufacturer ID found in the SPD of this

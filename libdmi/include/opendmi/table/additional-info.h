@@ -12,6 +12,63 @@
 #include <opendmi/table.h>
 
 /**
+ * @brief Additional information entry.
+ */
+DMI_PACKED_STRUCT(dmi_additional_info_entry_data)
+{
+    /**
+     * @brief Length of this additional information entry instance; a minimum
+     * of 6.
+     */
+    dmi_byte_t length;
+
+    /**
+     * @brief Handle, or instance number, associated with the structure for
+     * which additional information is provided.
+     */
+    dmi_word_t ref_handle;
+
+    /**
+     * @brief Offset of the field within the structure referenced by the
+     * referenced handle for which additional information is provided.
+     */
+    dmi_byte_t ref_offset;
+
+    /**
+     * @brief Number of the optional string to be associated with the field
+     * referenced by the referenced offset.
+     */
+    dmi_string_t string;
+
+    /**
+     * @brief Enumerated value or updated field content that has not yet been
+     * approved for publication in this specification and therefore could not
+     * be used in the field referenced by referenced offset.
+     * 
+     * @note
+     * This field is the same type and size as the field being referenced by
+     * this additional information entry.
+     */
+    dmi_data_t value[];
+};
+
+/**
+ * @brief Additional information table (type 40).
+ */
+DMI_PACKED_STRUCT(dmi_additional_info_data)
+{
+    /**
+     * @brief DMI table header.
+     */
+    dmi_header_t header;
+
+    /**
+     * @brief Number of additional information entries that follow.
+     */
+    dmi_byte_t entry_count;
+};
+
+/**
  * @brief Additional information table specification.
  */
 extern const dmi_table_spec_t dmi_additional_info_table;

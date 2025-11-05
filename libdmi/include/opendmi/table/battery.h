@@ -11,6 +11,9 @@
 
 #include <opendmi/table.h>
 
+/**
+ * @brief Battery chemistry types.
+ */
 typedef enum dmi_battery_chemistry
 {
     DMI_BATTERY_CHEMISTRY_OTHER     = 0x01, ///< Other

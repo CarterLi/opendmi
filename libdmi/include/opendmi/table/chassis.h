@@ -78,13 +78,81 @@ enum dmi_chassis_state
  * 
  * The additions to this structure in version 2.1 of SMBIOS
  * specification support the population of the CIM_Chassis class.
+ * 
+ * @since SMBIOS 2.0
  */
 struct dmi_chassis_data
 {
     /**
      * @brief Manufacturer name.
+     * @since SMBIOS 2.0
      */
     dmi_string_t manufacturer;
+
+    /**
+     * @since SMBIOS 2.0
+     */
+    dmi_byte_t type;
+
+    /**
+     * @since SMBIOS 2.0
+     */
+    dmi_string_t version;
+
+    /**
+     * @since SMBIOS 2.0
+     */
+    dmi_string_t serial_number;
+
+    /**
+     * @since SMBIOS 2.0
+     */
+    dmi_string_t asset_tag;
+
+    /**
+     * @since SMBIOS 2.1
+     */
+    dmi_byte_t bootup_state;
+
+    /**
+     * @since SMBIOS 2.1
+     */
+    dmi_byte_t power_supply_state;
+
+    /**
+     * @since SMBIOS 2.1
+     */
+    dmi_byte_t thermal_state;
+
+    /**
+     * @since SMBIOS 2.1
+     */
+    dmi_byte_t security_status;
+
+    /**
+     * @since SMBIOS 2.3
+     */
+    dmi_dword_t oem_defined;
+
+    /**
+     * @since SMBIOS 2.3
+     */
+    dmi_byte_t height;
+
+    /**
+     * @since SMBIOS 2.3
+     */
+    dmi_byte_t power_cord_count;
+
+    /**
+     * @since SMBIOS 2.3
+     */
+    dmi_byte_t children_count;
+
+    /**
+     * @since SMBIOS 2.3
+     */
+    dmi_byte_t child_size;
 };
 
 /**

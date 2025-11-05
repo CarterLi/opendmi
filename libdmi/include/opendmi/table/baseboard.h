@@ -99,16 +99,64 @@ DMI_PACKED_STRUCT(dmi_baseboard_data)
      */
     dmi_header_t header;
 
+    /**
+     * @brief Manufacturer name.
+     */
     dmi_string_t manufacturer;
+
+    /**
+     * @brief Product name.
+     */
     dmi_string_t product;
+
+    /**
+     * @brief Product version.
+     */
     dmi_string_t version;
+
+    /**
+     * @brief Serial number.
+     */
     dmi_string_t serial_number;
+
+    /**
+     * @brief Asset tag.
+     */
     dmi_string_t asset_tag;
+
+    /**
+     * @brief Collection of flags that identify features of this baseboard.
+     */
     struct dmi_baseboard_features features;
+
+    /**
+     * @brief Number of a null-terminated string that describes this board's
+     * location within the chassis referenced by the chassis handle (described
+     * below in this table).
+     */
     dmi_string_t location;
+
+    /**
+     * @brief Handle, or instance number, associated with the chassis in which
+     * this board resides.
+     */
     dmi_handle_t chassis_handle;
+
+    /**
+     * @brief Type of board.
+     */
     enum dmi_baseboard_type type;
+
+    /**
+     * @brief Number (0 to 255) of contained object handles that follow.
+     */
     dmi_byte_t children_count;
+
+    /**
+     * @brief List of handles of other structures (for example, baseboard,
+     * processor, port, system slots, memory device) that are contained by
+     * this baseboard.
+     */
     dmi_handle_t children_handles[];
 };
 
