@@ -1,5 +1,7 @@
 project(opendmi-libdmi)
 
+include(CTest)
+
 add_library(dmi-object OBJECT
     src/name.c
     src/utils.c
@@ -77,3 +79,15 @@ add_library(dmi-shared SHARED $<TARGET_OBJECTS:dmi-object>)
 target_include_directories(dmi-shared INTERFACE include)
 target_link_libraries(dmi-shared PUBLIC ${LIBDMI_LIBRARIES})
 set_target_properties(dmi-shared PROPERTIES OUTPUT_NAME dmi)
+
+add_executable(bswap16-test test/bswap16.c)
+target_link_libraries(bswap16-test dmi-shared)
+add_test(NAME bswap16 COMMAND bswap16-test)
+
+add_executable(bswap32-test test/bswap32.c)
+target_link_libraries(bswap32-test dmi-shared)
+add_test(NAME bswap32 COMMAND bswap32-test)
+
+add_executable(bswap64-test test/bswap64.c)
+target_link_libraries(bswap64-test dmi-shared)
+add_test(NAME bswap64 COMMAND bswap64-test)

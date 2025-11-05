@@ -25,6 +25,29 @@
 typedef uint8_t dmi_data_t;
 
 /**
+ * @brief SMBIOS BYTE type.
+ */
+typedef uint8_t dmi_byte_t;
+
+/**
+ * @brief SMBIOS WORD type.
+ * @note Raw values are always little-endian.
+ */
+typedef uint16_t dmi_word_t;
+
+/**
+ * @brief SMBIOS DWORD type.
+ * @note Raw values are always little-endian.
+ */
+typedef uint32_t dmi_dword_t;
+
+/**
+ * @brief SMBIOS QWORD value type.
+ * @note Raw values are always little-endian.
+ */
+typedef uint64_t dmi_qword_t;
+
+/**
  * @brief DMI structure handle, a unique 16-bit number in the range 0 to
  * 0xFFFE (for version 2.0) or 0 to 0xFEFF (for version 2.1 and later). The
  * handle numbers are not required to be contiguous. For version 2.1 and
