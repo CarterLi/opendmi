@@ -165,60 +165,60 @@ struct dmi_slot_data
      * @brief Slot length.
      * @since SMBIOS 2.0
      */
-    uint8_t length : 8;
+    dmi_byte_t length : 8;
 
     /**
      * @brief Slot identifier.
      * @since SMBIOS 2.0
      */
-    uint16_t id;
+    dmi_word_t id;
 
     /**
      * @since SMBIOS 2.0
      */
-    uint8_t features;
+    dmi_byte_t features;
 
     /**
      * @since SMBIOS 2.1
      */
-    uint8_t features_ex;
+    dmi_byte_t features_ex;
 
     /**
      * @since SMBIOS 2.6
      */
-    uint16_t segment_group;
+    dmi_word_t segment_group;
 
     /**
      * @since SMBIOS 2.6
      */
-    uint8_t bus_number;
+    dmi_byte_t bus_number;
 
     struct
     {
         /**
          * @since SMBIOS 2.6
          */
-        uint8_t function_number : 3;
+        dmi_byte_t function_number : 3;
 
         /**
          * @since SMBIOS 2.6
          */
-        uint8_t device_number : 5;
+        dmi_byte_t device_number : 5;
     };
     
-    uint8_t data_bus_width;
+    dmi_byte_t data_bus_width;
 
-    uint8_t peer_group_count;
+    dmi_byte_t peer_group_count;
 
-    uint8_t peer_groups[];
+    dmi_byte_t peer_groups[];
 };
 
 struct dmi_slot_data_ex
 {
-    uint8_t information;
-    uint8_t physical_width;
-    uint8_t pitch;
-    uint8_t height;
+    dmi_byte_t information;
+    dmi_byte_t physical_width;
+    dmi_byte_t pitch;
+    dmi_byte_t height;
 };
 
 struct dmi_slot_info

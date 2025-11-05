@@ -45,7 +45,7 @@ DMI_PACKED_STRUCT(dmi_ipmi_device_data)
     /**
      * @brief Baseboard Management Controller (BMC) interface type.
      */
-    uint8_t interface_type;
+    dmi_byte_t interface_type;
 
     /**
      * @brief IPMI specification revision, in BCD format, to which the BMC was
@@ -53,7 +53,7 @@ DMI_PACKED_STRUCT(dmi_ipmi_device_data)
      * while bits 3:0 hold the least significant bits. Example: A value of 0x10
      * indicates revision 1.0.
      */
-    uint8_t ipmi_revision;
+    dmi_byte_t ipmi_revision;
 
     /**
      * @brief Target address on the I2C bus of this BMC.
@@ -72,19 +72,19 @@ DMI_PACKED_STRUCT(dmi_ipmi_device_data)
      * Otherwise, the address is memory-mapped. See the IPMI Interface
      * Specification for usage details.
      */
-    uint64_t base_addr;
+    dmi_qword_t base_addr;
 
     DMI_PACKED_STRUCT()
     {
-        uint8_t interrupt_info : 4;
-        uint8_t base_addr_modifier : 4;
+        dmi_byte_t interrupt_info : 4;
+        dmi_byte_t base_addr_modifier : 4;
     };
 
     /**
      * @brief Interrupt number for IPMI System Interface. Zero means that IPMI
      * interrupt is unspecified or unsupported.
      */
-    uint8_t interrupt_number;
+    dmi_byte_t interrupt_number;
 };
 
 /**

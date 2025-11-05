@@ -46,7 +46,7 @@ DMI_PACKED_STRUCT(dmi_power_supply_data)
      * redundant power unit. Non-zero values imply redundancy and that at least
      * one other power supply will be enumerated with the same value.
      */
-    uint8_t power_unit_group;
+    dmi_byte_t power_unit_group;
 
     /**
      * @brief Number of the string that identifies the location of the power
@@ -93,9 +93,9 @@ DMI_PACKED_STRUCT(dmi_power_supply_data)
      * unknown. Note that the units specified by DMTF for this field are
      * milliwatts.
      */
-    uint16_t maximum_capacity;
+    dmi_word_t maximum_capacity;
 
-    uint16_t characteristics;
+    dmi_word_t characteristics;
 
     /**
      * @brief Handle, or instance number, of a voltage probe (type 26)

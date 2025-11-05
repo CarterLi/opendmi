@@ -24,7 +24,7 @@ DMI_PACKED_STRUCT(dmi_oem_strings_data)
     /**
      * @brief Number of strings.
      */
-    uint8_t count;
+    dmi_byte_t count;
 };
 
 /**

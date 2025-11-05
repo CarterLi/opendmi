@@ -59,12 +59,12 @@ typedef uint64_t dmi_qword_t;
  * handle number automatically." This number is not used for any other purpose
  * by the SMBIOS specification.
  */
-typedef uint16_t dmi_handle_t;
+typedef dmi_word_t dmi_handle_t;
 
 /**
  * @brief DMI string number.
  */
-typedef uint8_t dmi_string_t;
+typedef dmi_byte_t dmi_string_t;
 
 /**
  * @brief DMI structure types identifiers. Types 0 through 127 (7Fh) are

@@ -11,6 +11,7 @@
 
 #include <opendmi/context.h>
 #include <opendmi/table.h>
+#include <opendmi/utils.h>
 
 /**
  * @internal
@@ -61,7 +62,7 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
     table->context     = context;
     table->type        = header->type;
     table->spec        = dmi_type_spec(context, table->type);
-    table->handle      = header->handle;
+    table->handle      = dmi_decode_word(header->handle);
     table->data        = data;
     table->body_length = header->length;
 

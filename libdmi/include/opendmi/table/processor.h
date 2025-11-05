@@ -174,19 +174,19 @@ DMI_PACKED_STRUCT(dmi_processor_data)
 
     dmi_string_t manufacturer;
 
-    uint64_t raw_id;
+    dmi_qword_t raw_id;
 
     dmi_string_t version;
 
-    uint8_t voltage;
+    dmi_byte_t voltage;
 
-    uint16_t external_clock;
+    dmi_word_t external_clock;
 
-    uint16_t maximum_speed;
+    dmi_word_t maximum_speed;
 
-    uint16_t current_speed;
+    dmi_word_t current_speed;
 
-    uint8_t status;
+    dmi_byte_t status;
 
     enum dmi_processor_upgrade upgrade;
 
@@ -258,34 +258,34 @@ DMI_PACKED_STRUCT(dmi_processor_data)
     /**
      * @since SMBIOS 2.5
      */
-    uint8_t core_count;
+    dmi_byte_t core_count;
 
     /**
      * @since SMBIOS 2.5
      */
-    uint8_t core_enabled;
+    dmi_byte_t core_enabled;
 
     /**
      * @since SMBIOS 2.5
      */
-    uint8_t thread_count;
+    dmi_byte_t thread_count;
 
     /**
      * @since SMBIOS 2.5
      */
-    uint16_t features;
+    dmi_word_t features;
 
-    uint16_t family_ex;
+    dmi_word_t family_ex;
 
-    uint16_t core_count_ex;
+    dmi_word_t core_count_ex;
 
-    uint16_t core_enabled_ex;
+    dmi_word_t core_enabled_ex;
 
-    uint16_t thread_count_ex;
+    dmi_word_t thread_count_ex;
 
-    uint16_t thread_enabled;
+    dmi_word_t thread_enabled;
 
-    uint8_t socket_type;
+    dmi_byte_t socket_type;
 };
 
 /**

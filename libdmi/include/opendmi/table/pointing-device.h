@@ -71,7 +71,7 @@ DMI_PACKED_STRUCT(dmi_pointing_device_data)
      * @brief Number of buttons on the pointing device. If the device has
      * three buttons, the field value is 0x03.
      */
-    uint8_t button_count;
+    dmi_byte_t button_count;
 };
 
 /**

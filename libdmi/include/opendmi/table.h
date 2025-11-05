@@ -95,14 +95,14 @@ DMI_PACKED_STRUCT(dmi_header)
      * reserved for and defined by this specification. Types 128 through 256
      * (0x80 to 0xFF) are available for system- and OEM-specific information.
      */
-    uint8_t type;
+    dmi_byte_t type;
 
     /**
      * @brief Specifies the length of the formatted area of the structure,
      * starting at the Type field. The length of the structure’s string-set is
      * not included.
      */
-    uint8_t length;
+    dmi_byte_t length;
 
     /**
      * @brief Specifies the structure’s handle.

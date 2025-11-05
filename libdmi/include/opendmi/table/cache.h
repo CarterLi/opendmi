@@ -82,7 +82,7 @@ DMI_PACKED_STRUCT(dmi_cache_config)
      * @brief Cache Level – 1 through 8. For example, an L1 cache would use
      * value 0x0 and an L3 cache would use 0x2.
      */
-    uint8_t level : 3;
+    dmi_byte_t level : 3;
 
     /**
      * @brief Socketed cache flag (e.g., cache on a stick).
@@ -92,7 +92,7 @@ DMI_PACKED_STRUCT(dmi_cache_config)
     /**
      * @brief Reserved.
      */
-    uint8_t reserved : 1;
+    dmi_byte_t reserved : 1;
 
     /**
      * @brief Location, relative to the CPU module.
@@ -118,7 +118,7 @@ DMI_PACKED_UNION(dmi_cache_sram_type)
     /**
      * @brief Encoded type value.
      */
-    uint16_t type;
+    dmi_word_t type;
 
     DMI_PACKED_STRUCT()
     {
@@ -192,7 +192,7 @@ DMI_PACKED_STRUCT(dmi_cache_data)
      *
      * @since SMBIOS 2.1
      */
-    uint8_t speed;
+    dmi_byte_t speed;
 
     /**
      * @brief Error-correction scheme supported by this cache component.

@@ -109,7 +109,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.1
      */
-    uint16_t design_capacity;
+    dmi_word_t design_capacity;
 
     /**
      * @brief Design voltage of the battery in mVolts. If the value is unknown,
@@ -117,7 +117,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.1
      */
-    uint16_t design_voltage;
+    dmi_word_t design_voltage;
 
     /**
      * @brief Number of the string that contains the Smart Battery Data
@@ -126,7 +126,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.1
      */
-    uint8_t sbds_version;
+    dmi_byte_t sbds_version;
 
     /**
      * @brief Maximum error (as a percentage in the range 0 to 100) in the
@@ -136,7 +136,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.1
      */
-    uint8_t max_error;
+    dmi_byte_t max_error;
 
     /**
      * @brief 16-bit value that identifies the battery’s serial number.
@@ -154,7 +154,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.2
      */
-    uint16_t sbds_manufacture_date;
+    dmi_word_t sbds_manufacture_date;
 
     /**
      * @brief Number of the string that identifies the battery chemistry (for
@@ -176,14 +176,14 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      *
      * @since SMBIOS 2.2
      */
-    uint8_t design_capacity_factor;
+    dmi_byte_t design_capacity_factor;
 
     /**
      * @brief Contains OEM- or firmware vendor-specific information.
      * 
      * @since SMBIOS 2.2
      */
-    uint32_t oem_defined;
+    dmi_dword_t oem_defined;
 };
 
 /**

@@ -92,7 +92,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
      * 
      * @since SMBIOS 2.1
      */
-    uint32_t maximum_capacity;
+    dmi_dword_t maximum_capacity;
 
     /**
      * @brief Handle, or instance number, associated with any error that was
@@ -116,7 +116,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
      * 
      * @since SMBIOS 2.1
      */
-    uint16_t device_count;
+    dmi_word_t device_count;
 
     /**
      * @brief Extended maximum memory capacity, in bytes, for this array.
@@ -127,7 +127,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
      *
      * @since SMBIOS 2.7
      */
-    uint64_t maximum_capacity_ex;
+    dmi_qword_t maximum_capacity_ex;
 };
 
 /**

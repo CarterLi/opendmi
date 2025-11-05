@@ -81,14 +81,14 @@ DMI_PACKED_STRUCT(dmi_cooling_device_data)
      * 
      * @since SMBIOS 2.2
      */
-    uint8_t group;
+    dmi_byte_t group;
 
     /**
      * @brief OEM- or firmware vendor-specific information.
      * 
      * @since SMBIOS 2.2
      */
-    uint32_t oem_defined;
+    dmi_dword_t oem_defined;
 
     /**
      * @brief Nominal value for the cooling device’s rotational speed, in
@@ -101,7 +101,7 @@ DMI_PACKED_STRUCT(dmi_cooling_device_data)
      * 
      * @since SMBIOS 2.2
      */
-    uint16_t nominal_speed;
+    dmi_word_t nominal_speed;
 
     /**
      * @brief Number of the string that contains additional descriptive

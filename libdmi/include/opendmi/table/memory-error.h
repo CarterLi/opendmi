@@ -87,28 +87,28 @@ DMI_PACKED_STRUCT(dmi_memory_error_32_data)
      * @brief Vendor-specific ECC syndrome or CRC data associated with the
      * erroneous access. If the value is unknown, this field contains 0.
      */
-    uint32_t vendor_syndrome;
+    dmi_dword_t vendor_syndrome;
 
     /**
      * @brief 32-bit physical address of the error based on the addressing of
      * the bus to which the memory array is connected. If the address is
      * unknown, this field contains 0x80000000.
      */
-    uint32_t array_address;
+    dmi_dword_t array_address;
 
     /**
      * @brief 32-bit physical address of the error relative to the start of
      * the failing memory device, in bytes. If the address is unknown, this
      * field contains 0x80000000.
      */
-    uint32_t device_address;
+    dmi_dword_t device_address;
 
     /**
      * @brief Range, in bytes, within which the error can be determined, when
      * an error address is given. If the range is unknown, this field contains
      * 0x80000000.
      */
-    uint32_t resolution;
+    dmi_dword_t resolution;
 };
 
 /**
@@ -143,28 +143,28 @@ DMI_PACKED_STRUCT(dmi_memory_error_64_table)
      * @brief Vendor-specific ECC syndrome or CRC data associated with the
      * erroneous access. If the value is unknown, this field contains 0.
      */
-    uint32_t vendor_syndrome;
+    dmi_dword_t vendor_syndrome;
 
     /**
      * @brief 64-bit physical address of the error based on the addressing of
      * the bus to which the memory array is connected. If the address is
      * unknown, this field contains 0x8000000000000000.
      */
-    uint64_t array_address;
+    dmi_qword_t array_address;
 
     /**
      * @brief 64-bit physical address of the error relative to the start of
      * the failing memory device, in bytes. If the address is unknown, this
      * field contains 0x8000000000000000.
      */
-    uint64_t device_address;
+    dmi_qword_t device_address;
 
     /**
      * @brief Range, in bytes, within which the error can be determined, when
      * an error address is given. If the range is unknown, this field contains
      * 0x80000000.
      */
-    uint32_t resolution;
+    dmi_dword_t resolution;
 };
 
 /**

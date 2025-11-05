@@ -120,10 +120,10 @@ static bool dmi_entry_decode_legacy(dmi_context_t *context,
     }
 
     // Decode table area parameters
-    context->table_count         = entry->table_count;
-    context->table_area_addr     = entry->table_area_addr;
-    context->table_area_max_size = entry->table_area_size;
-    context->table_area_size     = entry->table_area_size;
+    context->table_count         = dmi_decode_word(entry->table_count);
+    context->table_area_addr     = dmi_decode_dword(entry->table_area_addr);
+    context->table_area_max_size = dmi_decode_word(entry->table_area_size);
+    context->table_area_size     = dmi_decode_word(entry->table_area_size);
 
     return true;
 }
@@ -205,8 +205,8 @@ static bool dmi_entry_decode_v30(dmi_context_t *context,
                                           entry->revision);
 
     // Decode table parameters
-    context->table_area_addr     = entry->table_area_addr;
-    context->table_area_max_size = entry->table_area_max_size;
+    context->table_area_addr     = dmi_decode_qword(entry->table_area_addr);
+    context->table_area_max_size = dmi_decode_dword(entry->table_area_max_size);
 
     return true;
 }

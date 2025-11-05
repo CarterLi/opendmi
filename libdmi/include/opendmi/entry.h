@@ -107,7 +107,7 @@ DMI_PACKED_STRUCT(dmi_entry_legacy)
      * systems), results in the value 00h (using 8-bit addition calculations).
      * Values in the EPS/IEPS are summed starting at offset 10h, for 0Fh bytes.
      */
-    const uint8_t checksum;
+    const dmi_byte_t checksum;
 
     /**
      * @brief Structure table length.
@@ -116,7 +116,7 @@ DMI_PACKED_STRUCT(dmi_entry_legacy)
      * Total length of SMBIOS Structure Table, pointed to by the
      * Structure Table Address, in bytes.
      */
-    const uint16_t table_area_size;
+    const dmi_word_t table_area_size;
 
     /**
      * @brief Structure table address.
@@ -126,7 +126,7 @@ DMI_PACKED_STRUCT(dmi_entry_legacy)
      * Table, which can start at any 32-bit address. This area contains all of
      * the SMBIOS structures fully packed together.
      */
-    const uint32_t table_area_addr;
+    const dmi_dword_t table_area_addr;
 
     /**
      * @brief Number of SMBIOS tables.
@@ -134,7 +134,7 @@ DMI_PACKED_STRUCT(dmi_entry_legacy)
      * @details
      * Total number of structures present in the SMBIOS Structure Table.
      */
-    const uint16_t table_count;
+    const dmi_word_t table_count;
 
     /**
      * @brief SMBIOS revision (BCD).
@@ -148,7 +148,7 @@ DMI_PACKED_STRUCT(dmi_entry_legacy)
      * Versions in offsets 6 and 7 of the v2.1+ EPS provide the version
      * information.
      */
-    const uint8_t version;
+    const dmi_byte_t version;
 };
 
 /**
@@ -172,7 +172,7 @@ DMI_PACKED_STRUCT(dmi_entry_v21)
      * value 00h (using 8-bit addition calculations). Values in the EPS are
      * summed starting at offset `0x00`, for Entry Point Length bytes.
      */
-    const uint8_t checksum;
+    const dmi_byte_t checksum;
 
     /**
      * @brief Entry Point Structure length.
@@ -186,7 +186,7 @@ DMI_PACKED_STRUCT(dmi_entry_v21)
      * implementations that use either the `0x1E` or the `0x1F` value, but
      * version 2.2 or later implementations must use the `0x1F` value.
      */
-    const uint8_t length;
+    const dmi_byte_t length;
 
     /**
      * @brief SMBIOS major version.
@@ -196,7 +196,7 @@ DMI_PACKED_STRUCT(dmi_entry_v21)
      * (for example, the value is `0x0A` for revision 10.22 and `0x02` for
      * revision 2.1).
      */
-    const uint8_t version_major;
+    const dmi_byte_t version_major;
 
     /**
      * @brief SMBIOS minor version.
@@ -206,7 +206,7 @@ DMI_PACKED_STRUCT(dmi_entry_v21)
      * (for example, the value is `0x16` for revision 10.22 and `0x01` for
      * revision 2.1).
      */
-    const uint8_t version_minor;
+    const dmi_byte_t version_minor;
 
     /**
      * @brief Maximum SMBIOS structure size.
@@ -215,7 +215,7 @@ DMI_PACKED_STRUCT(dmi_entry_v21)
      * Size of the largest SMBIOS structure, in bytes, and encompasses the
      * structure’s formatted area and text strings.
      */
-    const uint16_t table_max_size;
+    const dmi_word_t table_max_size;
 
     /**
      * @brief Entry Point Structure revision.
@@ -228,7 +228,7 @@ DMI_PACKED_STRUCT(dmi_entry_v21)
      *                    formatted area is reserved and set to all 00h.
      * - `0x01`-`0xFF` -- Reserved for assignment by this specification.
      */
-    const uint8_t revision;
+    const dmi_byte_t revision;
 
     /**
      * @brief Formatted area.
@@ -265,7 +265,7 @@ DMI_PACKED_STRUCT(dmi_entry_v30)
      * value `0x00` (using 8-bit addition calculations). Values in the EPS are
      * summed starting at offset `0x00`, for Entry Point Length bytes.
      */
-    const uint8_t checksum;
+    const dmi_byte_t checksum;
 
     /**
      * @brief Entry Point Structure length.
@@ -274,7 +274,7 @@ DMI_PACKED_STRUCT(dmi_entry_v30)
      * Length of the Entry Point Structure, starting with the Anchor String
      * field, in bytes, currently `0x18`.
      */
-    const uint8_t length;
+    const dmi_byte_t length;
 
     /**
      * @brief SMBIOS major version.
@@ -284,7 +284,7 @@ DMI_PACKED_STRUCT(dmi_entry_v30)
      * (for example, the value is `0x0A` for revision 10.22 and `0x02` for
      * revision 2.1).
      */
-    const uint8_t version_major;
+    const dmi_byte_t version_major;
 
     /**
      * @brief SMBIOS minor version.
@@ -294,7 +294,7 @@ DMI_PACKED_STRUCT(dmi_entry_v30)
      * (for example, the value is `0x16` for revision 10.22 and `0x01` for
      * revision 2.1).
      */
-    const uint8_t version_minor;
+    const dmi_byte_t version_minor;
 
     /**
      * @brief SMBIOS version revision.
@@ -304,7 +304,7 @@ DMI_PACKED_STRUCT(dmi_entry_v30)
      * structures (for example, the value is `0x00` for revision 10.22.0 and
      * `0x01` for revision 2.7.1).
      */
-    const uint8_t version_rev;
+    const dmi_byte_t version_rev;
 
     /**
      * @brief Entry point revision.
@@ -318,7 +318,7 @@ DMI_PACKED_STRUCT(dmi_entry_v30)
      * - `0x02`-`0xFF` -- Reserved for assignment by this specification,
      *                    offsets 0Ch-17h are defined per revision `0x01`.
      */
-    const uint8_t revision;
+    const dmi_byte_t revision;
 
     /**
      * @brief Reserved.
@@ -326,7 +326,7 @@ DMI_PACKED_STRUCT(dmi_entry_v30)
      * @details
      * Reserved for assignment by SMBIOS specification, set to 0.
      */
-    const uint8_t reserved;
+    const dmi_byte_t reserved;
 
     /**
      * @brief Structure table maximum size.
@@ -335,7 +335,7 @@ DMI_PACKED_STRUCT(dmi_entry_v30)
      * Table Address, in bytes. The actual size is guaranteed to be less or
      * equal to the maximum size.
      */
-    const uint32_t table_area_max_size;
+    const dmi_dword_t table_area_max_size;
 
     /**
      * @brief Structure table address.
@@ -345,7 +345,7 @@ DMI_PACKED_STRUCT(dmi_entry_v30)
      * Table, which can start at any 64-bit address. This area contains all of
      * the SMBIOS structures fully packed together.
      */
-    const uint64_t table_area_addr;
+    const dmi_qword_t table_area_addr;
 };
 
 __BEGIN_DECLS

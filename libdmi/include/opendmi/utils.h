@@ -29,13 +29,13 @@ dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *pleng
 __END_DECLS
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#   define dmi_decode_word(value)  (value)
-#   define dmi_decode_dword(value) (value)
-#   define dmi_decode_qword(value) (value)
+static inline uint16_t dmi_decode_word(dmi_word_t value)   { return value; }
+static inline uint32_t dmi_decode_dword(dmi_dword_t value) { return value; }
+static inline uint64_t dmi_decode_qword(dmi_qword_t value) { return value; }
 #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN
-#   define dmi_decode_word(value)  dmi_bswap16(value)
-#   define dmi_decode_dword(value) dmi_bswap32(value)
-#   define dmi_decode_qword(value) dmi_bswap64(value)
+static inline uint16_t dmi_decode_word(dmi_word_t value)   { return dmi_bswap16(value); }
+static inline uint32_t dmi_decode_dword(dmi_dword_t value) { return dmi_bswap32(value); }
+static inline uint64_t dmi_decode_qword(dmi_qword_t value) { return dmi_bswap64(value); }
 #else
 #   error "Unsupported endianness"
 #endif

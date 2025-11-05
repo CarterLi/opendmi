@@ -13,7 +13,7 @@
 
 DMI_PACKED_UNION(dmi_firmware_features)
 {
-    uint64_t raw_value;
+    dmi_qword_t raw_value;
 
     DMI_PACKED_STRUCT() {
         unsigned int reserved : 2;
@@ -74,7 +74,7 @@ DMI_PACKED_STRUCT(dmi_firmware_data)
      *
      * @since SMBIOS 2.0
      */
-    uint16_t bios_segment;
+    dmi_word_t bios_segment;
 
     /**
      * @brief String number of the firmware release date. The date string, if
@@ -95,7 +95,7 @@ DMI_PACKED_STRUCT(dmi_firmware_data)
      *
      * @since SMBIOS 2.0
      */
-    uint8_t rom_size;
+    dmi_byte_t rom_size;
 };
 
 /**

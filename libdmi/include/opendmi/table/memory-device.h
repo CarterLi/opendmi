@@ -96,7 +96,7 @@ enum dmi_memory_device_technology
 
 DMI_PACKED_UNION(dmi_memory_device_type_detail)
 {
-    uint16_t raw_value;
+    dmi_word_t raw_value;
 
     DMI_PACKED_STRUCT()
     {
@@ -156,7 +156,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    uint16_t total_width;
+    dmi_word_t total_width;
 
     /**
      * @brief Data width, in bits, of this memory device. A data width of 0 and
@@ -166,7 +166,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    uint16_t data_width;
+    dmi_word_t data_width;
 
     /**
      * @brief Size of the memory device.
@@ -184,7 +184,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    uint16_t size;
+    dmi_word_t size;
 
     /**
      * @brief Implementation form factor for this memory device.
@@ -203,7 +203,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    uint8_t device_set;
+    dmi_byte_t device_set;
 
     /**
      * @brief String number of the string that identifies the physically
@@ -246,7 +246,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.3
      */
-    uint16_t maximum_speed;
+    dmi_word_t maximum_speed;
 
     /**
      * @brief String number for the manufacturer of this memory device.
@@ -281,42 +281,42 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
     /**
      * @since SMBIOS 2.6
      */
-    uint8_t attributes;
+    dmi_byte_t attributes;
 
     /**
      * @since SMBIOS 2.7
      */
-    uint32_t size_ex;
+    dmi_dword_t size_ex;
 
     /**
      * @since SMBIOS 2.7
      */
-    uint16_t configured_speed;
+    dmi_word_t configured_speed;
 
     /**
      * @since SMBIOS 2.8
      */
-    uint16_t minimum_voltage;
+    dmi_word_t minimum_voltage;
 
     /**
      * @since SMBIOS 2.8
      */
-    uint16_t maximum_voltage;
+    dmi_word_t maximum_voltage;
 
     /**
      * @since SMBIOS 2.8
      */
-    uint16_t configured_voltage;
+    dmi_word_t configured_voltage;
 
     /**
      * @since SMBIOS 3.2
      */
-    uint8_t memory_technology;
+    dmi_byte_t memory_technology;
 
     /**
      * @since SMBIOS 3.2
      */
-    uint16_t memory_mode_caps;
+    dmi_word_t memory_mode_caps;
 
     /**
      * @since SMBIOS 3.2
@@ -326,52 +326,52 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
     /**
      * @since SMBIOS 3.2
      */
-    uint16_t module_manufacturer_id;
+    dmi_word_t module_manufacturer_id;
 
     /**
      * @since SMBIOS 3.2
      */
-    uint16_t module_product_id;
+    dmi_word_t module_product_id;
 
     /**
      * @since SMBIOS 3.2
      */
-    uint16_t memory_subsys_ctrl_manufacturer_id;
+    dmi_word_t memory_subsys_ctrl_manufacturer_id;
 
     /**
      * @since SMBIOS 3.2
      */
-    uint16_t memory_subsys_ctrl_product_id;
+    dmi_word_t memory_subsys_ctrl_product_id;
 
     /**
      * @since SMBIOS 3.2
      */
-    uint64_t non_volatile_size;
+    dmi_qword_t non_volatile_size;
 
     /**
      * @since SMBIOS 3.2
      */
-    uint64_t volatile_size;
+    dmi_qword_t volatile_size;
 
     /**
      * @since SMBIOS 3.2
      */
-    uint64_t cache_size;
+    dmi_qword_t cache_size;
 
     /**
      * @since SMBIOS 3.2
      */
-    uint64_t logical_size;
+    dmi_qword_t logical_size;
 
     /**
      * @since SMBIOS 3.3
      */
-    uint32_t maximum_speed_ex;
+    dmi_dword_t maximum_speed_ex;
 
     /**
      * @since SMBIOS 3.3
      */
-    uint32_t configured_speed_ex;
+    dmi_dword_t configured_speed_ex;
 
     /**
      * @brief The two-byte PMIC0 manufacturer ID found in the SPD of this
@@ -379,7 +379,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.7
      */
-    uint16_t pmic0_manufacturer_id;
+    dmi_word_t pmic0_manufacturer_id;
 
     /**
      * @brief The PMIC 0 Revision Number found in the SPD of this memory
@@ -387,7 +387,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.7
      */
-    uint16_t pmic0_revision_number;
+    dmi_word_t pmic0_revision_number;
 
     /**
      * @brief The two-byte RCD manufacturer ID found in the SPD of this memory
@@ -395,14 +395,14 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.7
      */
-    uint16_t rcd_manufacturer_id;
+    dmi_word_t rcd_manufacturer_id;
 
     /**
      * @brief The RCD 0 Revision Number found in the SPD of this memory device.
      *
      * @since SMBIOS 3.7
      */
-    uint16_t rcd_revision_number;
+    dmi_word_t rcd_revision_number;
 };
 
 /**

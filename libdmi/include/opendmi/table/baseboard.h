@@ -108,7 +108,7 @@ DMI_PACKED_STRUCT(dmi_baseboard_data)
     dmi_string_t location;
     dmi_handle_t chassis_handle;
     enum dmi_baseboard_type type;
-    uint8_t children_count;
+    dmi_byte_t children_count;
     dmi_handle_t children_handles[];
 };
 

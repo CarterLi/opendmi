@@ -60,43 +60,43 @@ DMI_PACKED_STRUCT(dmi_probe_data)
      * @brief Maximum value readable by this probe. If the value is unknown,
      * the field is set to `0x8000`.
      */
-    uint16_t max_value;
+    dmi_word_t max_value;
 
     /**
      * @brief Minimum value readable by this probe. If the value is unknown,
      * the field is set to `0x8000`.
      */
-    uint16_t min_value;
+    dmi_word_t min_value;
 
     /**
      * @brief Resolution for the probe's reading. If the value is unknown,
      * the field is set to `0x8000`.
      */
-    uint16_t resolution;
+    dmi_word_t resolution;
 
     /**
      * @brief Tolerance for reading from this probe. If the value is unknown,
      * the field is set to `0x8000`.
      */
-    uint16_t tolerance;
+    dmi_word_t tolerance;
 
     /**
      * @brief Accuracy for reading from this probe. If the value is unknown,
      * the field is set to `0x8000`.
      */
-    uint16_t accuracy;
+    dmi_word_t accuracy;
 
     /**
      * @brief OEM- or firmware vendor-specific information.
      */
-    uint32_t oem_defined;
+    dmi_dword_t oem_defined;
 
     /**
      * @brief Nominal value for the probe’s reading. If the value is unknown,
      * the field is set to `0x8000`. This field is present in the structure
      * only if the structure’s Length is larger than `0x14`.
      */
-    uint16_t nom_value;
+    dmi_word_t nom_value;
 };
 
 /**
