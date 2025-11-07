@@ -4,13 +4,12 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_TABLE_SYSTEM_POWER_H
-#define OPENDMI_TABLE_SYSTEM_POWER_H
+#ifndef OPENDMI_TABLE_POWER_SUPPLY_H
+#define OPENDMI_TABLE_POWER_SUPPLY_H
 
 #pragma once
 
 #include <opendmi/table.h>
-#include <opendmi/table/common.h>
 
 /**
  * @brief Power supply types.
@@ -117,14 +116,9 @@ DMI_PACKED_STRUCT(dmi_power_supply_data)
 };
 
 /**
- * @brief System power controls table specification.
- */
-extern const dmi_table_spec_t dmi_system_power_controls_table;
-
-/**
  * @brief System power supply table specification.
  */
-extern const dmi_table_spec_t dmi_system_power_supply_table;
+extern const dmi_table_spec_t dmi_power_supply_table;
 
 __BEGIN_DECLS
 
@@ -132,4 +126,4 @@ const char *dmi_power_supply_type_name(enum dmi_power_supply_type value);
 
 __END_DECLS
 
-#endif // !OPENDMI_TABLE_SYSTEM_POWER_H
+#endif // !OPENDMI_TABLE_POWER_SUPPLY_H

@@ -130,7 +130,7 @@ enum dmi_slot_usage
     DMI_SLOT_USAGE_UNAVAILABLE = 0x05, ///< Unavailable
 };
 
-struct dmi_slot_data
+DMI_PACKED_STRUCT(dmi_slot_data)
 {
     /**
      * @brief DMI table header.

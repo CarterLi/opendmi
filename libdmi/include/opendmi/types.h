@@ -99,7 +99,7 @@ typedef enum dmi_type
     DMI_TYPE_PORTABLE_BATTERY        = 22,  ///< Portable battery
     DMI_TYPE_SYSTEM_RESET            = 23,  ///< System reset
     DMI_TYPE_HARDWARE_SECURITY       = 24,  ///< Hardware security
-    DMI_TYPE_SYSTEM_POWER_CONTROLS   = 25,  ///< System power controls
+    DMI_TYPE_POWER_CONTROLS          = 25,  ///< System power controls
     DMI_TYPE_VOLTAGE_PROBE           = 26,  ///< Voltage probe
     DMI_TYPE_COOLING_DEVICE          = 27,  ///< Cooling device
     DMI_TYPE_TEMPERATURE_PROBE       = 28,  ///< Temperature probe
@@ -113,7 +113,7 @@ typedef enum dmi_type
     DMI_TYPE_MGMT_DEVICE_THRESHOLD   = 36,  ///< Management device threshold data
     DMI_TYPE_MEMORY_CHANNEL          = 37,  ///< Memory channel
     DMI_TYPE_IPMI_DEVICE             = 38,  ///< IPMI device information
-    DMI_TYPE_SYSTEM_POWER_SUPPLY     = 39,  ///< System power supply
+    DMI_TYPE_POWER_SUPPLY            = 39,  ///< System power supply
     DMI_TYPE_ADDITIONAL_INFO         = 40,  ///< Additional information
     DMI_TYPE_ONBOARD_DEVICE_EX       = 41,  ///< Onboard devices extended information
     DMI_TYPE_MGMT_CONTROLLER_HOST_IF = 42,  ///< Management controller host interface

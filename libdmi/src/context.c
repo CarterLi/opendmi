@@ -37,6 +37,8 @@
 #include <opendmi/table/oob-remote-access.h>
 #include <opendmi/table/pointing-device.h>
 #include <opendmi/table/port.h>
+#include <opendmi/table/power-controls.h>
+#include <opendmi/table/power-supply.h>
 #include <opendmi/table/probe.h>
 #include <opendmi/table/processor.h>
 #include <opendmi/table/slot.h>
@@ -45,7 +47,6 @@
 #include <opendmi/table/system-boot.h>
 #include <opendmi/table/system-config.h>
 #include <opendmi/table/system-event-log.h>
-#include <opendmi/table/system-power.h>
 #include <opendmi/table/system-reset.h>
 #include <opendmi/table/system-config.h>
 #include <opendmi/table/tpm-device.h>
@@ -129,7 +130,7 @@ static const dmi_table_spec_t *dmi_table_specs[] =
     [DMI_TYPE_PORTABLE_BATTERY]        = &dmi_battery_table,
     [DMI_TYPE_SYSTEM_RESET]            = &dmi_system_reset_table,
     [DMI_TYPE_HARDWARE_SECURITY]       = &dmi_hardware_security_table,
-    [DMI_TYPE_SYSTEM_POWER_CONTROLS]   = &dmi_system_power_controls_table,
+    [DMI_TYPE_POWER_CONTROLS]          = &dmi_power_controls_table,
     [DMI_TYPE_VOLTAGE_PROBE]           = &dmi_voltage_probe_table,
     [DMI_TYPE_COOLING_DEVICE]          = &dmi_cooling_device_table,
     [DMI_TYPE_TEMPERATURE_PROBE]       = &dmi_temperature_probe_table,
@@ -143,7 +144,7 @@ static const dmi_table_spec_t *dmi_table_specs[] =
     [DMI_TYPE_MGMT_DEVICE_THRESHOLD]   = &dmi_mgmt_device_threshold_table,
     [DMI_TYPE_MEMORY_CHANNEL]          = &dmi_memory_channel_table,
     [DMI_TYPE_IPMI_DEVICE]             = &dmi_ipmi_device_table,
-    [DMI_TYPE_SYSTEM_POWER_SUPPLY]     = &dmi_system_power_supply_table,
+    [DMI_TYPE_POWER_SUPPLY]            = &dmi_power_supply_table,
     [DMI_TYPE_ADDITIONAL_INFO]         = &dmi_additional_info_table,
     [DMI_TYPE_ONBOARD_DEVICE_EX]       = &dmi_onboard_device_ex_table,
     [DMI_TYPE_MGMT_CONTROLLER_HOST_IF] = &dmi_mgmt_controller_host_if_table,

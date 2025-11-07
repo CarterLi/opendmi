@@ -38,6 +38,8 @@ add_library(dmi-object OBJECT
     src/table/oob-remote-access.c
     src/table/pointing-device.c
     src/table/port.c
+    src/table/power-controls.c
+    src/table/power-supply.c
     src/table/probe.c
     src/table/processor.c
     src/table/slot.c
@@ -46,7 +48,6 @@ add_library(dmi-object OBJECT
     src/table/system-boot.c
     src/table/system-config.c
     src/table/system-event-log.c
-    src/table/system-power.c
     src/table/system-reset.c
     src/table/tpm-device.c
     src/extension/apple.c
