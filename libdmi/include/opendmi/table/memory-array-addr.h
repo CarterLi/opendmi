@@ -109,6 +109,7 @@ struct dmi_memory_array_addr
 {
     dmi_size_t starting_addr;
     dmi_size_t ending_addr;
+    dmi_size_t range_size;
     dmi_handle_t array_handle;
     dmi_memory_array_t *array;
     int partition_width;

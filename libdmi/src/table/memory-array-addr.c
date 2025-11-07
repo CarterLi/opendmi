@@ -29,6 +29,12 @@ const dmi_attribute_spec_t dmi_memory_array_addr_attrs[] =
         .format = DMI_ATTRIBUTE_FORMAT_HEX
     },
     {
+        .code   = "range-size",
+        .name   = "Range size",
+        .offset = offsetof(dmi_memory_array_addr_t, range_size),
+        .type   = DMI_ATTRIBUTE_TYPE_SIZE
+    },
+    {
         .code   = "array-handle",
         .name   = "Memory array handle",
         .offset = offsetof(dmi_memory_array_addr_t, array_handle),
@@ -73,6 +79,7 @@ static bool dmi_memory_array_addr_decode(dmi_table_t *table)
         info->ending_addr   = data->ending_addr << 10;
     }
 
+    info->range_size      = info->ending_addr - info->starting_addr;
     info->array_handle    = data->array_handle;
     info->partition_width = data->partition_width;
 

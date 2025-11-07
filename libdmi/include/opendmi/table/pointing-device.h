@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_POINTING_DEVICE_DATA_T
+#define DMI_POINTING_DEVICE_DATA_T
+typedef struct dmi_pointing_device_data dmi_pointing_device_data_t; 
+#endif // !DMI_POINTING_DEVICE_DATA_T
+
+#ifndef DMI_POINTING_DEVICE_T
+#define DMI_POINTING_DEVICE_T
+typedef struct dmi_pointing_device dmi_pointing_device_t; 
+#endif // !DMI_POINTING_DEVICE_T
+
 /**
  * @brief Pointing device types.
  */
@@ -60,6 +70,25 @@ DMI_PACKED_STRUCT(dmi_pointing_device_data)
     /**
      * @brief Type of pointing device.
      */
+    dmi_byte_t type;
+
+    /**
+     * @brief Interface type for the pointing device.
+     */
+    dmi_byte_t interface;
+
+    /**
+     * @brief Number of buttons on the pointing device. If the device has
+     * three buttons, the field value is 0x03.
+     */
+    dmi_byte_t button_count;
+};
+
+struct dmi_pointing_device
+{
+    /**
+     * @brief Type of pointing device.
+     */
     dmi_pointing_device_type_t type;
 
     /**
@@ -71,7 +100,7 @@ DMI_PACKED_STRUCT(dmi_pointing_device_data)
      * @brief Number of buttons on the pointing device. If the device has
      * three buttons, the field value is 0x03.
      */
-    dmi_byte_t button_count;
+    int button_count;   
 };
 
 /**

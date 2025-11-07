@@ -4,8 +4,13 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <stdlib.h>
+
 #include <opendmi/table/pointing-device.h>
 #include <opendmi/name.h>
+
+static bool dmi_pointing_device_decode(dmi_table_t *table);
+static void dmi_pointing_device_free(dmi_table_t *table);
 
 static const dmi_name_t dmi_pointing_device_type_names[] =
 {
@@ -129,6 +134,26 @@ static const dmi_name_t dmi_pointing_device_interface_names[] =
 
 const dmi_attribute_spec_t dmi_pointing_device_attrs[] =
 {
+    {
+        .code   = "type",
+        .name   = "Type",
+        .offset = offsetof(dmi_pointing_device_t, type),
+        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
+        .values = dmi_pointing_device_type_names
+    },
+    {
+        .code   = "interface",
+        .name   = "Interface type",
+        .offset = offsetof(dmi_pointing_device_t, interface),
+        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
+        .values = dmi_pointing_device_interface_names
+    },
+    {
+        .code   = "button-count",
+        .name   = "Button count",
+        .offset = offsetof(dmi_pointing_device_t, button_count),
+        .type   = DMI_ATTRIBUTE_TYPE_INT
+    },
     DMI_ATTRIBUTE_NULL
 };
 
@@ -139,6 +164,8 @@ const dmi_table_spec_t dmi_pointing_device_table =
     .type        = DMI_TYPE_POINTING_DEVICE,
     .min_version = DMI_VERSION(2, 1, 0),
     .min_length  = 0x07,
+    .decode      = dmi_pointing_device_decode,
+    .free        = dmi_pointing_device_free,
     .attributes  = dmi_pointing_device_attrs
 };
 
@@ -150,4 +177,27 @@ const char *dmi_pointing_device_type_name(dmi_pointing_device_type_t value)
 const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t value)
 {
     return dmi_name_lookup(dmi_pointing_device_interface_names, value);
+}
+
+static bool dmi_pointing_device_decode(dmi_table_t *table)
+{
+    dmi_pointing_device_t *info = nullptr;
+    dmi_pointing_device_data_t *data = dmi_cast(data, table->data);
+
+    info = calloc(1, sizeof(*info));
+    if (!info)
+        return false;
+
+    info->type         = data->type;
+    info->interface    = data->interface;
+    info->button_count = data->button_count;
+
+    table->info = info;
+
+    return true;
+}
+
+static void dmi_pointing_device_free(dmi_table_t *table)
+{
+    free(table->info);
 }

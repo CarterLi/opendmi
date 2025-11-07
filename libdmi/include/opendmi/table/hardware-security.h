@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_HARDWARE_SECURITY_DATA_T
+#define DMI_HARDWARE_SECURITY_DATA_T
+typedef struct dmi_hardware_security_data dmi_hardware_security_data_t;
+#endif // !DMI_HARDWARE_SECURITY_DATA_T 
+
+#ifndef DMI_HARDWARE_SECURITY_T
+#define DMI_HARDWARE_SECURITY_T
+typedef struct dmi_hardware_security dmi_hardware_security_t;
+#endif // !DMI_HARDWARE_SECURITY_T 
+
 /**
  * @brief Hardware security status values.
  */
@@ -69,6 +79,29 @@ DMI_PACKED_STRUCT(dmi_hardware_security_data)
     struct dmi_hardware_security_settings settings;
 };
 
+struct dmi_hardware_security
+{
+        /**
+         * @brief front panel reset status.
+         */
+        dmi_hardware_security_status_t front_panel_reset;
+
+        /**
+         * @brief Administrator password status.
+         */
+        dmi_hardware_security_status_t admin_password;
+
+        /**
+         * @brief Keyboard password status.
+         */
+        dmi_hardware_security_status_t keyboard_password;
+
+        /**
+         * @brief Power-on password status.
+         */
+        dmi_hardware_security_status_t poweron_password;
+};
+
 /**
  * @brief Hardware security table specification.
  */
@@ -76,7 +109,7 @@ extern const dmi_table_spec_t dmi_hardware_security_table;
 
 __BEGIN_DECLS
 
-const char *dmi_hardware_security_status_name(enum dmi_hardware_security_status value);
+const char *dmi_hardware_security_status_name(dmi_hardware_security_status_t value);
 
 __END_DECLS
 

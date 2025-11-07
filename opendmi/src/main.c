@@ -45,6 +45,8 @@ static void list_types(dmi_context_t *context);
 
 static void print_all(dmi_context_t *context);
 static void print_table(const dmi_table_t *table);
+static void print_table_attrs(const dmi_table_t *table);
+static void print_table_dump(const dmi_table_t *table);
 static void print_hex_data(const void *data, size_t length);
 
 static void log_error(dmi_context_t *context, dmi_log_level_t level, const char *format, va_list args);
@@ -236,22 +238,75 @@ static void print_table(const dmi_table_t *table)
            table->total_length);
     printf("%s\n", dmi_table_name(table));
 
-    if (!table->spec) {
-        printf("\tHeader and data:\n");
-        print_hex_data(table->data, table->body_length);
-
-        if (table->string_count > 0) {
-            printf("\tStrings:\n");
-            for (dmi_string_t i = 1; i <= table->string_count; i++) {
-                const char *str = dmi_table_string(table, i);
-
-                print_hex_data(str, strlen(str) + 1);
-                printf("\t\t\"%s\"\n", str);
-            }
-        }
-    }
+    if (table->info)
+        print_table_attrs(table);
+    else
+        print_table_dump(table);
 
     printf("\n");
+}
+
+static void print_table_attrs(const dmi_table_t *table)
+{
+    const char *str;
+    const dmi_table_spec_t *spec = table->spec;
+    const dmi_attribute_spec_t *attr = nullptr;
+
+    for (attr = spec->attributes; attr->name; attr++) {
+        const dmi_data_t *ptr = (dmi_data_t *)table->info + attr->offset;
+
+        printf("\t%s: ", attr->name);
+
+        switch (attr->type) {
+        case DMI_ATTRIBUTE_TYPE_HANDLE:
+            printf("0x%04X", *(dmi_handle_t *)ptr);
+            break;
+
+        case DMI_ATTRIBUTE_TYPE_STRING:
+            str = dmi_table_string(table, *(dmi_string_t *)ptr);
+            printf("%s", str ? str : "<unspecified>");
+            break;
+
+        case DMI_ATTRIBUTE_TYPE_ENUM:
+            str = dmi_name_lookup(attr->values, *(int *)ptr);
+            printf("%s", str ? str : "<invalid>");
+            break;
+
+        case DMI_ATTRIBUTE_TYPE_INT:
+            printf("%d", *(int *)ptr);
+            break;
+
+        case DMI_ATTRIBUTE_TYPE_SIZE:
+            bool is_64bit = (table->context->entry_version >= DMI_VERSION(3, 0, 0));
+
+            if (attr->format == DMI_ATTRIBUTE_FORMAT_HEX)
+                printf(is_64bit ? "0x%016llX" : "0x%08llX", *(uint64_t *)ptr);
+            else
+                printf("%lld", *(uint64_t *)ptr);
+            break;
+
+        default:
+            break;
+        }
+
+        printf("\n");
+    }
+}
+
+static void print_table_dump(const dmi_table_t *table)
+{
+    printf("\tHeader and data:\n");
+    print_hex_data(table->data, table->body_length);
+
+    if (table->string_count > 0) {
+        printf("\tStrings:\n");
+        for (dmi_string_t i = 1; i <= table->string_count; i++) {
+            const char *str = dmi_table_string(table, i);
+
+            print_hex_data(str, strlen(str) + 1);
+            printf("\t\t\"%s\"\n", str);
+        }
+    }
 }
 
 static void print_hex_data(const void *data, size_t length)
