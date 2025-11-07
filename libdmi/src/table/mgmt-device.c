@@ -109,7 +109,7 @@ static const dmi_name_t dmi_mgmt_device_address_type_names[] =
 
 const dmi_attribute_spec_t dmi_mgmt_device_attrs[] =
 {
-    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+    DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_mgmt_device_table =
@@ -124,7 +124,7 @@ const dmi_table_spec_t dmi_mgmt_device_table =
 
 const dmi_attribute_spec_t dmi_mgmt_device_component_attrs[] =
 {
-    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+    DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_mgmt_device_component_table =
@@ -139,7 +139,7 @@ const dmi_table_spec_t dmi_mgmt_device_component_table =
 
 const dmi_attribute_spec_t dmi_mgmt_device_threshold_attrs[] =
 {
-    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+    DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_mgmt_device_threshold_table =

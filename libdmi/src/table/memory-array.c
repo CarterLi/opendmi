@@ -130,36 +130,36 @@ static const dmi_name_t dmi_memory_array_usage_names[] =
 const dmi_attribute_spec_t dmi_memory_array_attrs[] =
 {
     {
-        .tag  = "location",
+        .code = "location",
         .name = "Location",
         .type = DMI_ATTRIBUTE_TYPE_ENUM
     },
     {
-        .tag  = "use",
+        .code = "use",
         .name = "Use",
         .type = DMI_ATTRIBUTE_TYPE_ENUM
     },
     {
-        .tag  = "error-correction",
+        .code = "error-correction",
         .name = "Memory error correction",
         .type = DMI_ATTRIBUTE_TYPE_ENUM
     },
     {
-        .tag = "maximum-capacity",
+        .code = "maximum-capacity",
         .name = "Maximum capacity",
         .type = DMI_ATTRIBUTE_TYPE_SIZE
     },
     {
-        .tag  = "error-information",
+        .code = "error-information",
         .name = "Memory error information handle",
         .type = DMI_ATTRIBUTE_TYPE_HANDLE
     },
     {
-        .tag  = "device-count",
+        .code = "device-count",
         .name = "Number of memory devices",
         .type = DMI_ATTRIBUTE_TYPE_INT
     },
-    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+    DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_memory_array_table =

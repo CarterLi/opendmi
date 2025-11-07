@@ -11,6 +11,7 @@
 
 #include <sys/types.h>
 #include <stdint.h>
+#include <stddef.h>
 #include <stdbool.h>
 
 #include <opendmi/defs.h>
@@ -65,6 +66,11 @@ typedef dmi_word_t dmi_handle_t;
  * @brief DMI string number.
  */
 typedef dmi_byte_t dmi_string_t;
+
+/**
+ * @brief DMI size type.
+ */
+typedef uint64_t dmi_size_t;
 
 /**
  * @brief DMI structure types identifiers. Types 0 through 127 (7Fh) are

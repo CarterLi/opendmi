@@ -88,7 +88,7 @@ struct dmi_table_spec
     /**
      * @brief Free handler.
      */
-    bool (*free)(dmi_table_t *table);
+    void (*free)(dmi_table_t *table);
 
     /**
      * @brief Table attributes specification.

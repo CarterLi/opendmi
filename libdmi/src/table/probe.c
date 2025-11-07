@@ -89,7 +89,7 @@ static const dmi_name_t dmi_probe_location_names[] =
 
 const dmi_attribute_spec_t dmi_voltage_probe_attrs[] =
 {
-    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+    DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_voltage_probe_table =
@@ -103,7 +103,7 @@ const dmi_table_spec_t dmi_voltage_probe_table =
 
 const dmi_attribute_spec_t dmi_temperature_probe_attrs[] =
 {
-    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+    DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_temperature_probe_table =
@@ -117,7 +117,7 @@ const dmi_table_spec_t dmi_temperature_probe_table =
 
 const dmi_attribute_spec_t dmi_current_probe_attrs[] =
 {
-    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+    DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_current_probe_table =

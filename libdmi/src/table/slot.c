@@ -514,7 +514,7 @@ static const dmi_name_t dmi_slot_usage_names[] =
 
 const dmi_attribute_spec_t dmi_slot_attrs[] =
 {
-    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+    DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_slot_table =

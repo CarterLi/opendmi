@@ -28,13 +28,31 @@ enum dmi_attribute_type
     DMI_ATTRIBUTE_TYPE_SET
 };
 
+enum dmi_attribute_format
+{
+    DMI_ATTRIBUTE_FORMAT_NONE,
+    DMI_ATTRIBUTE_FORMAT_HEX
+};
+
 struct dmi_attribute_spec
 {
-    char *tag;
+    char *code;
     char *name;
+    size_t offset;
     enum dmi_attribute_type type;
+    enum dmi_attribute_format format;
     const char *unit;
     const dmi_name_t *values;
 };
+
+#define DMI_ATTRIBUTE_NULL                   \
+    {                                        \
+        .code   = nullptr,                   \
+        .name   = nullptr,                   \
+        .type   = DMI_ATTRIBUTE_TYPE_NONE,   \
+        .format = DMI_ATTRIBUTE_FORMAT_NONE, \
+        .unit   = nullptr,                   \
+        .values = nullptr                    \
+    }
 
 #endif // !OPENDMI_MODEL_ATTRIBUTE_H

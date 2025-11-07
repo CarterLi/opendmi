@@ -484,7 +484,7 @@ static const dmi_name_t dmi_processor_upgrade_names[] =
 
 const dmi_attribute_spec_t dmi_processor_attrs[] =
 {
-    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+    DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_processor_table =
@@ -500,7 +500,7 @@ const dmi_table_spec_t dmi_processor_table =
 
 const dmi_attribute_spec_t dmi_processor_ex_attrs[] =
 {
-    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
+    DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_processor_ex_table =

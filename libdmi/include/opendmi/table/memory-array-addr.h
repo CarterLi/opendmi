@@ -9,7 +9,17 @@
 
 #pragma once
 
-#include <opendmi/table.h>
+#include <opendmi/table/memory-array.h>
+
+#ifndef DMI_MEMORY_ARRAY_ADDR_DATA_T
+#define DMI_MEMORY_ARRAT_ADDR_DATA_T
+typedef struct dmi_memory_array_addr_data dmi_memory_array_addr_data_t;
+#endif // !DMI_MEMORY_ARRAT_ADDR_DATA_T
+
+#ifndef DMI_MEMORY_ARRAY_ADDR_T
+#define DMI_MEMORY_ARRAT_ADDR_T
+typedef struct dmi_memory_array_addr dmi_memory_array_addr_t;
+#endif // !DMI_MEMORY_ARRAT_ADDR_DATA_T
 
 /**
  * @brief Memory array mapped address table (type 19).
@@ -93,6 +103,15 @@ DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
      * @since SMBIOS 2.7
      */
     dmi_qword_t ending_addr_ex;
+};
+
+struct dmi_memory_array_addr
+{
+    dmi_size_t starting_addr;
+    dmi_size_t ending_addr;
+    dmi_handle_t array_handle;
+    dmi_memory_array_t *array;
+    int partition_width;
 };
 
 /**

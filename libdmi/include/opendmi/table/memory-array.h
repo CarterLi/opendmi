@@ -12,10 +12,20 @@
 #include <opendmi/table.h>
 #include <opendmi/table/common.h>
 
+#ifndef DMI_MEMORY_ARRAY_DATA_T
+#define DMI_MEMORY_ARRAY_DATA_T
+typedef struct dmi_memory_array_data dmi_memory_array_data_t;
+#endif // !DMI_MEMORY_ARRAY_DATA_T
+
+#ifndef DMI_MEMORY_ARRAY_T
+#define DMI_MEMORY_ARRAY_T
+typedef struct dmi_memory_array dmi_memory_array_t;
+#endif // !DMI_MEMORY_ARRAY_T
+
 /**
  * @brief Memory array location values.
  */
-enum dmi_memory_array_location
+typedef enum dmi_memory_array_location
 {
     DMI_MEMORY_ARRAY_LOCATION_OTHER           = 0x01, ///< Other
     DMI_MEMORY_ARRAY_LOCATION_UNKNOWN         = 0x02, ///< Unknown
@@ -32,12 +42,12 @@ enum dmi_memory_array_location
     DMI_MEMORY_ARRAY_LOCATION_PC_98_E         = 0xA2, ///< PC-98/E add-on card
     DMI_MEMORY_ARRAY_LOCATION_PC_98_LOCAL_BUS = 0xA3, ///< PC-98/Local bus add-on card
     DMI_MEMORY_ARRAY_LOCATION_CXL             = 0xA4, ///< CXL add-on card
-};
+} dmi_memory_array_location_t;
 
 /**
  * @brief Memory array usage values.
  */
-enum dmi_memory_array_usage
+typedef enum dmi_memory_array_usage
 {
     DMI_MEMORY_ARRAY_USAGE_OTHER   = 0x01, ///< Other
     DMI_MEMORY_ARRAY_USAGE_UNKNOWN = 0x02, ///< Unknown
@@ -46,7 +56,7 @@ enum dmi_memory_array_usage
     DMI_MEMORY_ARRAY_USAGE_FLASH   = 0x05, ///< Flash memory
     DMI_MEMORY_ARRAY_USAGE_NVRAM   = 0x06, ///< Non-volatile RAM
     DMI_MEMORY_ARRAY_USAGE_CACHE   = 0x07, ///< Cache memory
-};
+} dmi_memory_array_usage_t;
 
 /**
  * @brief Physical memory array table (type 16).
@@ -128,6 +138,12 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
      * @since SMBIOS 2.7
      */
     dmi_qword_t maximum_capacity_ex;
+};
+
+struct dmi_memory_array
+{
+    dmi_memory_array_location_t location;
+    dmi_memory_array_usage_t usage;
 };
 
 /**

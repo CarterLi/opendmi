@@ -170,81 +170,81 @@ static const dmi_name_t dmi_cache_location_names[] =
 const dmi_attribute_spec_t dmi_cache_attrs[] =
 {
     {
-        .tag  = "socket-designator",
+        .code = "socket-designator",
         .name = "Socket designator",
         .type = DMI_ATTRIBUTE_TYPE_STRING
     },
     {
-        .tag  = "level",
+        .code = "level",
         .name = "Cache level"
     },
     {
-        .tag  = "socketed",
+        .code = "socketed",
         .name = "Socketed",
         .type = DMI_ATTRIBUTE_TYPE_BOOL
     },
     {
-        .tag  = "location",
+        .code = "location",
         .name = "Location (relative to CPU module)",
         .type = DMI_ATTRIBUTE_TYPE_ENUM
     },
     {
-        .tag  = "status",
+        .code = "status",
         .name = "Status",
         .type = DMI_ATTRIBUTE_TYPE_BOOL
     },
     {
-        .tag    = "mode",
+        .code   = "mode",
         .name   = "Operational mode",
         .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_cache_mode_names
     },
     {
-        .tag  = "maximum-size",
+        .code = "maximum-size",
         .name = "Maximum cache size",
         .type = DMI_ATTRIBUTE_TYPE_SIZE,
         .unit = "KiB"
     },
     {
-        .tag  = "installed-size",
+        .code = "installed-size",
         .name = "Installed cache size",
         .type = DMI_ATTRIBUTE_TYPE_SIZE,
         .unit = "KiB"
     },
     {
-        .tag  = "supported-sram",
+        .code = "supported-sram",
         .name = "Supported SRAM type",
         .type = DMI_ATTRIBUTE_TYPE_SET
     },
     {
-        .tag  = "installed-sram",
+        .code = "installed-sram",
         .name = "Installed SRAM type",
         .type = DMI_ATTRIBUTE_TYPE_SET
     },
     {
-        .tag  = "speed",
+        .code = "speed",
         .name = "Cache speed",
         .type = DMI_ATTRIBUTE_TYPE_INT,
         .unit = "ns"
     },
     {
-        .tag  = "ecc-type",
+        .code = "ecc-type",
         .name = "Error correction type",
         .type = DMI_ATTRIBUTE_TYPE_ENUM
     },
     {
-        .tag    = "type",
+        .code   = "type",
         .name   = "System cache type",
         .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_cache_type_names
     },
     {
-        .tag    = "associativity",
+        .code   = "associativity",
         .name   = "Associativity",
         .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_cache_assoc_names
     },
-    { NULL, NULL, DMI_ATTRIBUTE_TYPE_NONE, NULL, NULL }
+    DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_cache_table =
