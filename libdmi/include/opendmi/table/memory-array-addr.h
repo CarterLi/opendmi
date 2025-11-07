@@ -1,0 +1,103 @@
+//
+// OpenDMI: Cross-platform DMI/SMBIOS framework
+// Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+//
+// SPDX-License-Identifier: BSD-3-Clause
+//
+#ifndef OPENDMI_TABLE_MEMORY_ARRAY_ADDR_H
+#define OPENDMI_TABLE_MEMORY_ARRAY_ADDR_H
+
+#pragma once
+
+#include <opendmi/table.h>
+
+/**
+ * @brief Memory array mapped address table (type 19).
+ * @since SMBIOS 2.1
+ */
+DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
+{
+    /**
+     * @brief DMI table header.
+     */
+    dmi_header_t header;
+
+    /**
+     * @brief Physical address, in kibibytes, of a range of memory mapped to
+     * the specified physical memory array.
+     * 
+     * When the field value is `0xFFFFFFFF`, the actual address is stored in
+     * the extended starting address field. When this field contains a valid
+     * address, ending address must also contain a valid address. When this
+     * field contains `0xFFFFFFFF`, ending address must also contain
+     * `0xFFFFFFFF`.
+     * 
+     * @since SMBIOS 2.1
+     */
+    dmi_dword_t starting_addr;
+
+    /**
+     * @brief Physical ending address of the last kibibyte of a range of
+     * addresses mapped to the specified physical memory array.
+     *
+     * When the field value is `0xFFFFFFFF` and the starting address field
+     * also contains FFFF FFFFh, the actual address is stored in the extended
+     * ending address field. When this field contains a valid address, starting
+     * address must also contain a valid address.
+     * 
+     * @since SMBIOS 2.1
+     */
+    dmi_dword_t ending_addr;
+
+    /**
+     * @brief Handle, or instance number, associated with the physical memory
+     * array to which this address range is mapped. Multiple address ranges can
+     * be mapped to a single physical memory array.
+     *
+     * @since SMBIOS 2.1
+     */
+    dmi_handle_t array_handle;
+
+    /**
+     * @brief Number of memory devices that form a single row of memory for the
+     * address partition defined by this structure.
+     * 
+     * @since SMBIOS 2.1
+     */
+    dmi_byte_t partition_width;
+
+    /**
+     * @brief Physical address, in bytes, of a range of memory mapped to the
+     * specified physical memory array.
+     *
+     * This field is valid when starting address contains the value
+     * `0xFFFFFFFF`. If starting Address contains a value other than
+     * `0xFFFFFFFF`, this field contains zeros. When this field contains a
+     * valid address, extended ending address must also contain a valid
+     * address.
+     * 
+     * @since SMBIOS 2.7
+     */
+    dmi_qword_t starting_addr_ex;
+
+    /**
+     * @brief Physical ending address, in bytes, of the last of a range of
+     * addresses mapped to the specified physical memory array.
+     *
+     * This field is valid when both starting address and ending address
+     * contain the value `0xFFFFFFFF`. If ending address contains a value other
+     * than `0xFFFFFFFF`, this field contains zeros. When this field contains a
+     * valid address, extended starting address must also contain a valid
+     * address.
+     *
+     * @since SMBIOS 2.7
+     */
+    dmi_qword_t ending_addr_ex;
+};
+
+/**
+ * @brief Memory array mapped address table specification.
+ */
+extern const dmi_table_spec_t dmi_memory_array_addr_table;
+
+#endif // !OPENDMI_TABLE_MEMORY_ARRAY_ADDR_H

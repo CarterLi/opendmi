@@ -54,6 +54,12 @@ struct dmi_table_spec
      */
     dmi_version_t min_version;
 
+    dmi_version_t required_from;
+
+    dmi_version_t required_till;
+
+    bool unique;
+
     /**
      * @brief Minimum length. Zero means that the minimum length is not
      * specified.
@@ -73,6 +79,11 @@ struct dmi_table_spec
      * @brief Decode handler.
      */
     bool (*decode)(dmi_table_t *table);
+
+    /**
+     * @brief Validation handler (optional).
+     */
+    bool (*validate)(dmi_table_t *table);
 
     /**
      * @brief Free handler.

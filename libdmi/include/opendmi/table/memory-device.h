@@ -467,11 +467,6 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
  */
 extern const dmi_table_spec_t dmi_memory_device_table;
 
-/**
- * @brief Memory device mapped address table specification.
- */
-extern const dmi_table_spec_t dmi_memory_device_addr_table;
-
 __BEGIN_DECLS
 
 const char *dmi_memory_device_type_name(enum dmi_memory_device_type value);

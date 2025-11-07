@@ -26,9 +26,11 @@ add_library(dmi-object OBJECT
     src/table/hardware-security.c
     src/table/ipmi-device.c
     src/table/memory-array.c
+    src/table/memory-array-addr.c
     src/table/memory-channel.c
     src/table/memory-controller.c
     src/table/memory-device.c
+    src/table/memory-device-addr.c
     src/table/memory-error.c
     src/table/memory-module.c
     src/table/mgmt-controller.c

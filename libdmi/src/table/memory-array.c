@@ -172,21 +172,6 @@ const dmi_table_spec_t dmi_memory_array_table =
     .attributes  = dmi_memory_array_attrs
 };
 
-const dmi_attribute_spec_t dmi_memory_array_addr_attrs[] =
-{
-    { nullptr, nullptr, DMI_ATTRIBUTE_TYPE_NONE, nullptr, nullptr }
-};
-
-const dmi_table_spec_t dmi_memory_array_addr_table =
-{
-    .tag         = "memory-array-address",
-    .name        = "Memory array mapped address",
-    .type        = DMI_TYPE_MEMORY_ARRAY_ADDR,
-    .min_version = DMI_VERSION(2, 1, 0),
-    .min_length  = 0x0F,
-    .attributes  = dmi_memory_array_addr_attrs
-};
-
 const char *dmi_memory_array_location_name(enum dmi_memory_array_location value)
 {
     return dmi_name_lookup(dmi_memory_array_location_names, value);

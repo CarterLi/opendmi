@@ -135,11 +135,6 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
  */
 extern const dmi_table_spec_t dmi_memory_array_table;
 
-/**
- * @brief Memory array mapped address table specification.
- */
-extern const dmi_table_spec_t dmi_memory_array_addr_table;
-
 __BEGIN_DECLS
 
 const char *dmi_memory_array_location_name(enum dmi_memory_array_location value);

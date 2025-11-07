@@ -234,11 +234,14 @@ const dmi_attribute_spec_t dmi_chassis_attrs[] =
 
 const dmi_table_spec_t dmi_chassis_table =
 {
-    .tag        = "chassis",
-    .name       = "System enclosure or chassis",
-    .type       = DMI_TYPE_CHASSIS,
-    .min_length = 0x09,
-    .attributes = dmi_chassis_attrs
+    .tag           = "chassis",
+    .name          = "System enclosure or chassis",
+    .type          = DMI_TYPE_CHASSIS,
+    .required_from = DMI_VERSION(2, 3, 0),
+    .required_till = DMI_VERSION_NONE,
+    .unique        = false,
+    .min_length    = 0x09,
+    .attributes    = dmi_chassis_attrs
 };
 
 const char *dmi_chassis_type_name(enum dmi_chassis_type value)
