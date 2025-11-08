@@ -19,6 +19,7 @@ add_library(dmi-object OBJECT
     src/table/chassis.c
     src/table/common.c
     src/table/cooling-device.c
+    src/table/current-probe.c
     src/table/firmware.c
     src/table/firmware-inventory.c
     src/table/firmware-language.c
@@ -51,7 +52,9 @@ add_library(dmi-object OBJECT
     src/table/system-config.c
     src/table/system-event-log.c
     src/table/system-reset.c
+    src/table/temperature-probe.c
     src/table/tpm-device.c
+    src/table/voltage-probe.c
     src/extension/apple.c
     src/extension/dell.c
     src/extension/intel.c

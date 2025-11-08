@@ -18,6 +18,7 @@
 #include <opendmi/table/cache.h>
 #include <opendmi/table/chassis.h>
 #include <opendmi/table/cooling-device.h>
+#include <opendmi/table/current-probe.h>
 #include <opendmi/table/firmware.h>
 #include <opendmi/table/firmware-inventory.h>
 #include <opendmi/table/firmware-language.h>
@@ -51,7 +52,9 @@
 #include <opendmi/table/system-event-log.h>
 #include <opendmi/table/system-reset.h>
 #include <opendmi/table/system-config.h>
+#include <opendmi/table/temperature-probe.h>
 #include <opendmi/table/tpm-device.h>
+#include <opendmi/table/voltage-probe.h>
 
 #include <opendmi/backend/dump.h>
 #if defined(__linux__)

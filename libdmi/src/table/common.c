@@ -5,9 +5,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <opendmi/table/common.h>
-#include <opendmi/name.h>
 
-static const dmi_name_t dmi_status_names[] =
+const dmi_name_t dmi_status_names[] =
 {
     {
         .id   = DMI_STATUS_OTHER,

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <opendmi/types.h>
+#include <opendmi/name.h>
 
 /**
  * @brief Status types.
@@ -37,6 +37,8 @@ typedef enum dmi_ecc_type
     DMI_ECC_TYPE_MULTI_BIT  = 0x06, ///< Multi-bit ECC
     DMI_ECC_TYPE_CRC        = 0x07, ///< CRC
 } dmi_ecc_type_t;
+
+extern const dmi_name_t dmi_status_names[];
 
 __BEGIN_DECLS
 

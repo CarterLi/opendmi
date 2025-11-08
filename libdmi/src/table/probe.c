@@ -4,10 +4,15 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/probe.h>
-#include <opendmi/name.h>
+#include <stdlib.h>
 
-static const dmi_name_t dmi_probe_location_names[] =
+#include <opendmi/name.h>
+#include <opendmi/utils.h>
+#include <opendmi/table/probe.h>
+
+static int dmi_probe_decode_value(dmi_word_t value);
+
+const dmi_name_t dmi_probe_location_names[] =
 {
     {
         .id   = DMI_PROBE_LOCATION_OTHER,
@@ -87,49 +92,51 @@ static const dmi_name_t dmi_probe_location_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_voltage_probe_attrs[] =
-{
-    DMI_ATTRIBUTE_NULL
-};
-
-const dmi_table_spec_t dmi_voltage_probe_table =
-{
-    .tag        = "voltage-probe",
-    .name       = "Voltage probe",
-    .type       = DMI_TYPE_VOLTAGE_PROBE,
-    .min_length = 0x16,
-    .attributes = dmi_voltage_probe_attrs
-};
-
-const dmi_attribute_spec_t dmi_temperature_probe_attrs[] =
-{
-    DMI_ATTRIBUTE_NULL
-};
-
-const dmi_table_spec_t dmi_temperature_probe_table =
-{
-    .tag        = "temperature-probe",
-    .name       = "Temperature probe",
-    .type       = DMI_TYPE_TEMPERATURE_PROBE,
-    .min_length = 0x16,
-    .attributes = dmi_temperature_probe_attrs
-};
-
-const dmi_attribute_spec_t dmi_current_probe_attrs[] =
-{
-    DMI_ATTRIBUTE_NULL
-};
-
-const dmi_table_spec_t dmi_current_probe_table =
-{
-    .tag        = "current-probe",
-    .name       = "Electrical current probe",
-    .type       = DMI_TYPE_CURRENT_PROBE,
-    .min_length = 0x16,
-    .attributes = dmi_current_probe_attrs
-};
-
 const char *dmi_probe_location_name(dmi_probe_location_t value)
 {
     return dmi_name_lookup(dmi_probe_location_names, value);
+}
+
+bool dmi_probe_decode(dmi_table_t *table)
+{
+    dmi_probe_t *info = nullptr;
+    dmi_probe_data_t *data = dmi_cast(data, table->data);
+
+    info = calloc(1, sizeof(*info));
+    if (!info)
+        return false;
+
+    info->description = dmi_table_string(table, data->description);
+    info->location    = data->location;
+    info->status      = data->status;
+    info->max_value   = dmi_probe_decode_value(data->max_value);
+    info->min_value   = dmi_probe_decode_value(data->min_value);
+    info->resolution  = dmi_probe_decode_value(data->resolution);
+    info->tolerance   = dmi_probe_decode_value(data->tolerance);
+    info->accuracy    = dmi_probe_decode_value(data->accuracy);
+    info->oem_defined = dmi_decode_dword(data->oem_defined);
+
+    if (table->body_length > 0x14)
+        info->nom_value = dmi_probe_decode_value(data->nom_value);
+    else
+        info->nom_value = -1;
+
+    table->info = info;
+
+    return true;
+}
+
+static int dmi_probe_decode_value(dmi_word_t value)
+{
+    value = dmi_decode_word(value);
+
+    if (value == DMI_PROBE_VALUE_UNKNOWN)
+        return -1;
+
+    return (int)(int16_t)value;
+}
+
+void dmi_probe_free(dmi_table_t *table)
+{
+    free(table->info);
 }

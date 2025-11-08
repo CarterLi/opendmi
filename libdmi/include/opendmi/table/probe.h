@@ -12,6 +12,18 @@
 #include <opendmi/table.h>
 #include <opendmi/table/common.h>
 
+#define DMI_PROBE_VALUE_UNKNOWN ((dmi_word_t)0x8000U)
+
+#ifndef DMI_PROBE_DATA_T
+#define DMI_PROBE_DATA_T
+typedef struct dmi_probe_data dmi_probe_data_t;
+#endif // !DMI_PROBE_DATA_T
+
+#ifndef DMI_PROBE_T
+#define DMI_PROBE_T
+typedef struct dmi_probe dmi_probe_t;
+#endif // !DMI_PROBE_T
+
 /**
  * @brief Probe locations.
  */
@@ -44,16 +56,22 @@ DMI_PACKED_STRUCT(dmi_probe_data)
      */
     dmi_header_t header;
 
+    /**
+     * @brief Number of the string that contains additional descriptive
+     * information about the probe or its location.
+     */
+    dmi_string_t description;
+
     DMI_PACKED_STRUCT() {
         /**
          * @brief Physical location.
          */
-        dmi_probe_location_t location : 5;
+        dmi_byte_t location : 5;
 
         /**
          * @brief Status.
          */
-        dmi_status_t status : 3;
+        dmi_byte_t status : 3;
     };
 
     /**
@@ -99,24 +117,81 @@ DMI_PACKED_STRUCT(dmi_probe_data)
     dmi_word_t nom_value;
 };
 
-/**
- * @brief Voltage probe table specification.
- */
-extern const dmi_table_spec_t dmi_voltage_probe_table;
+struct dmi_probe
+{
+    /**
+     * @brief Additional descriptive information about the probe or its
+     * location.
+     */
+    const char *description;
 
-/**
- * @brief Temperature probe table specification.
- */
-extern const dmi_table_spec_t dmi_temperature_probe_table;
+    /**
+     * @brief Physical location.
+     */
+    dmi_probe_location_t location;
 
-/**
- * @brief Electrical current probe table specification.
- */
-extern const dmi_table_spec_t dmi_current_probe_table;
+    /**
+     * @brief Status.
+     */
+    dmi_status_t status;
+
+    /**
+     * @brief Maximum value readable by this probe. If the value is unknown,
+     * the field is set to -1.
+     */
+    int max_value;
+
+    /**
+     * @brief Minimum value readable by this probe. If the value is unknown,
+     * the field is set to -1.
+     */
+    int min_value;
+
+    /**
+     * @brief Resolution for the probe's reading. If the value is unknown,
+     * the field is set to -1.
+     */
+    int resolution;
+
+    /**
+     * @brief Tolerance for reading from this probe. If the value is unknown,
+     * the field is set to `-1`.
+     */
+    int tolerance;
+
+    /**
+     * @brief Accuracy for reading from this probe. If the value is unknown,
+     * the field is set to -1.
+     */
+    int accuracy;
+
+    /**
+     * @brief OEM- or firmware vendor-specific information.
+     */
+    uint32_t oem_defined;
+
+    /**
+     * @brief Nominal value for the probe’s reading. If the value is unknown,
+     * the field is set to -1.
+     */
+    int nom_value;
+};
+
+extern const dmi_name_t dmi_probe_location_names[];
 
 __BEGIN_DECLS
 
 const char *dmi_probe_location_name(dmi_probe_location_t value);
+
+/**
+ * @internal
+ */
+bool dmi_probe_decode(dmi_table_t *table);
+
+/**
+ * @internal
+ */
+void dmi_probe_free(dmi_table_t *table);
 
 __END_DECLS
 
