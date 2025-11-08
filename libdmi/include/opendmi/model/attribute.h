@@ -43,6 +43,7 @@ struct dmi_attribute_spec
     enum dmi_attribute_format format;
     const char *unit;
     const dmi_name_t *values;
+    const char *(*to_string)(const void *value);
 };
 
 #define DMI_ATTRIBUTE_NULL                   \

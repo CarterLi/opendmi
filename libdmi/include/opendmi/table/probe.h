@@ -137,31 +137,31 @@ struct dmi_probe
 
     /**
      * @brief Maximum value readable by this probe. If the value is unknown,
-     * the field is set to -1.
+     * the field is set to `INT_MIN`.
      */
     int max_value;
 
     /**
      * @brief Minimum value readable by this probe. If the value is unknown,
-     * the field is set to -1.
+     * the field is set to `INT_MIN`.
      */
     int min_value;
 
     /**
      * @brief Resolution for the probe's reading. If the value is unknown,
-     * the field is set to -1.
+     * the field is set to `INT_MIN`.
      */
     int resolution;
 
     /**
      * @brief Tolerance for reading from this probe. If the value is unknown,
-     * the field is set to `-1`.
+     * the field is set to `INT_MIN`.
      */
     int tolerance;
 
     /**
      * @brief Accuracy for reading from this probe. If the value is unknown,
-     * the field is set to -1.
+     * the field is set to `INT_MIN`.
      */
     int accuracy;
 
@@ -172,7 +172,7 @@ struct dmi_probe
 
     /**
      * @brief Nominal value for the probe’s reading. If the value is unknown,
-     * the field is set to -1.
+     * the field is set to `INT_MIN`.
      */
     int nom_value;
 };

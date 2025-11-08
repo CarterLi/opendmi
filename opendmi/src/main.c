@@ -249,6 +249,7 @@ static void print_table(const dmi_table_t *table)
 static void print_table_attrs(const dmi_table_t *table)
 {
     const char *str;
+    int num;
     const dmi_table_spec_t *spec = table->spec;
     const dmi_attribute_spec_t *attr = nullptr;
 
@@ -273,7 +274,22 @@ static void print_table_attrs(const dmi_table_t *table)
             break;
 
         case DMI_ATTRIBUTE_TYPE_INT:
-            printf("%d", *(int *)ptr);
+            num = *(int *)ptr;
+            if (num != INT_MIN) {
+                if (attr->to_string) {
+                    if (attr->unit)
+                        printf("%s %s", attr->to_string(ptr), attr->unit);
+                    else
+                        printf("%s", attr->to_string(ptr));
+                } else {
+                    if (attr->unit)
+                        printf("%d %s", *(int *)ptr, attr->unit);
+                    else
+                        printf("%d", *(int *)ptr);
+                }
+            } else {
+                printf("<unknown>");
+            }
             break;
 
         case DMI_ATTRIBUTE_TYPE_SIZE:

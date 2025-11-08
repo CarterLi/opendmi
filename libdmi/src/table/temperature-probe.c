@@ -4,7 +4,13 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <stdio.h>
+
 #include <opendmi/table/temperature-probe.h>
+
+const char *dmi_temperature_value_format(const void *value_ptr);
+const char *dmi_temperature_resolution_format(const void *value_ptr);
+const char *dmi_temperature_accuracy_format(const void *value_ptr);
 
 const dmi_attribute_spec_t dmi_temperature_probe_attrs[] =
 {
@@ -29,37 +35,43 @@ const dmi_attribute_spec_t dmi_temperature_probe_attrs[] =
         .values = dmi_status_names
     },
     {
-        .code   = "max-value",
-        .name   = "Maximum value",
-        .offset = offsetof(dmi_temperature_probe_t, max_value),
-        .type   = DMI_ATTRIBUTE_TYPE_INT,
-        .unit   = "C"
+        .code      = "max-value",
+        .name      = "Maximum value",
+        .offset    = offsetof(dmi_temperature_probe_t, max_value),
+        .type      = DMI_ATTRIBUTE_TYPE_INT,
+        .unit      = "°C",
+        .to_string = dmi_temperature_value_format
     },
     {
-        .code   = "min-value",
-        .name   = "Minimum value",
-        .offset = offsetof(dmi_temperature_probe_t, min_value),
-        .type   = DMI_ATTRIBUTE_TYPE_INT,
-        .unit   = "C"
+        .code      = "min-value",
+        .name      = "Minimum value",
+        .offset    = offsetof(dmi_temperature_probe_t, min_value),
+        .type      = DMI_ATTRIBUTE_TYPE_INT,
+        .unit      = "°C",
+        .to_string = dmi_temperature_value_format
     },
     {
-        .code   = "resolution",
-        .name   = "Resolution",
-        .offset = offsetof(dmi_temperature_probe_t, resolution),
-        .type   = DMI_ATTRIBUTE_TYPE_INT
+        .code      = "resolution",
+        .name      = "Resolution",
+        .offset    = offsetof(dmi_temperature_probe_t, resolution),
+        .type      = DMI_ATTRIBUTE_TYPE_INT,
+        .unit      = "°C",
+        .to_string = dmi_temperature_resolution_format
     },
     {
-        .code   = "tolerance",
-        .name   = "Tolerance",
-        .offset = offsetof(dmi_temperature_probe_t, tolerance),
-        .type   = DMI_ATTRIBUTE_TYPE_INT,
-        .unit   = "C"
+        .code      = "tolerance",
+        .name      = "Tolerance",
+        .offset    = offsetof(dmi_temperature_probe_t, tolerance),
+        .type      = DMI_ATTRIBUTE_TYPE_INT,
+        .unit      = "°C",
+        .to_string = dmi_temperature_value_format
     },
     {
-        .code   = "accuracy",
-        .name   = "Accuracy",
-        .offset = offsetof(dmi_temperature_probe_t, accuracy),
-        .type   = DMI_ATTRIBUTE_TYPE_INT
+        .code      = "accuracy",
+        .name      = "Accuracy",
+        .offset    = offsetof(dmi_temperature_probe_t, accuracy),
+        .type      = DMI_ATTRIBUTE_TYPE_INT,
+        .to_string = dmi_temperature_accuracy_format
     },
     /*
     {
@@ -68,11 +80,12 @@ const dmi_attribute_spec_t dmi_temperature_probe_attrs[] =
     },
     */
     {
-        .code   = "nom-value",
-        .name   = "Nominal value",
-        .offset = offsetof(dmi_temperature_probe_t, nom_value),
-        .type   = DMI_ATTRIBUTE_TYPE_INT,
-        .unit   = "C"
+        .code      = "nom-value",
+        .name      = "Nominal value",
+        .offset    = offsetof(dmi_temperature_probe_t, nom_value),
+        .type      = DMI_ATTRIBUTE_TYPE_INT,
+        .unit      = "°C",
+        .to_string = dmi_temperature_value_format,
     },
     DMI_ATTRIBUTE_NULL
 };
@@ -87,3 +100,34 @@ const dmi_table_spec_t dmi_temperature_probe_table =
     .free       = dmi_probe_free,
     .attributes = dmi_temperature_probe_attrs
 };
+
+const char *dmi_temperature_value_format(const void *value_ptr)
+{
+    static char str[16];
+
+    int value = *(const int *)value_ptr;
+    snprintf(str, sizeof(str), "%d.%01d", value / 10, value % 10);
+
+    return str;
+}
+
+const char *dmi_temperature_resolution_format(const void *value_ptr)
+{
+    static char str[16];
+
+    int value = *(const int *)value_ptr;
+    snprintf(str, sizeof(str), "%d.%03d", value / 1000, value % 1000);
+
+    return str;
+
+}
+
+const char *dmi_temperature_accuracy_format(const void *value_ptr)
+{
+    static char str[16];
+
+    int value = *(const int *)value_ptr;
+    snprintf(str, sizeof(str), "%d.%02d", value / 100, value % 100);
+
+    return str;
+}
