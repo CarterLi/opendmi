@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_POWER_SUPPLY_DATA_T
+#define DMI_POWER_SUPPLY_DATA_T
+typedef struct dmi_power_supply_data dmi_power_supply_data_t;
+#endif // !DMI_POWER_SUPPLY_DATA_T
+
+#ifndef DMI_POWER_SUPPLY_T
+#define DMI_POWER_SUPPLY_T
+typedef struct dmi_power_supply dmi_power_supply_t;
+#endif // !DMI_POWER_SUPPLY_T
+
 /**
  * @brief Power supply types.
  */

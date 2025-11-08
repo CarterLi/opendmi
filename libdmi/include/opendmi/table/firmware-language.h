@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_FIRMWARE_LANGUAGE_DATA_T
+#define DMI_FIRMWARE_LANGUAGE_DATA_T
+typedef struct dmi_firmware_language_data dmi_firmware_language_data_t;
+#endif // !DMI_FIRMWARE_LANGUAGE_DATA_T
+
+#ifndef DMI_FIRMWARE_LANGUAGE_T
+#define DMI_FIRMWARE_LANGUAGE_T
+typedef struct dmi_firmware_language dmi_firmware_language_t;
+#endif // !DMI_FIRMWARE_LANGUAGE_T
+
 /**
  * @brief Firmware language information table (type 13).
  */

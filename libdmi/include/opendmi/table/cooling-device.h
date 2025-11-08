@@ -12,6 +12,16 @@
 #include <opendmi/table.h>
 #include <opendmi/table/common.h>
 
+#ifndef DMI_COOLING_DEVICE_DATA_T
+#define DMI_COOLING_DEVICE_DATA_T
+typedef struct dmi_cooling_device_data dmi_cooling_device_data_t;
+#endif // !DMI_COOLING_DEVICE_DATA_T
+
+#ifndef DMI_COOLING_DEVICE_T
+#define DMI_COOLING_DEVICE_T
+typedef struct dmi_cooling_device dmi_cooling_device_t;
+#endif // !DMI_COOLING_DEVICE_T
+
 /**
  * @brief Cooling device types.
  */

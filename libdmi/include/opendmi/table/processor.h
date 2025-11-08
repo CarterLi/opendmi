@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_PROCESSOR_DATA_T
+#define DMI_PROCESSOR_DATA_T
+typedef struct dmi_processor_data dmi_processor_data_t;
+#endif // !DMI_PROCESSOR_DATA_T
+
+#ifndef DMI_PROCESSOR_T
+#define DMI_PROCESSOR_T
+typedef struct dmi_processor dmi_processor_t;
+#endif // !DMI_PROCESSOR_T
+
 enum dmi_processor_type
 {
     DMI_PROCESSOR_TYPE_OTHER   = 0x01, ///< Other

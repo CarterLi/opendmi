@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_FIRMWARE_INVENTORY_DATA_T
+#define DMI_FIRMWARE_INVENTORY_DATA_T
+typedef struct dmi_firmware_inventory_data dmi_firmware_inventory_data_t;
+#endif // !DMI_FIRMWARE_INVENTORY_DATA_T
+
+#ifndef DMI_FIRMWARE_INVENTORY_T
+#define DMI_FIRMWARE_INVENTORY_T
+typedef struct dmi_firmware_inventory dmi_firmware_inventory_t;
+#endif // !DMI_FIRMWARE_INVENTORY_T
+
 /**
  * @brief Version number formats.
  */

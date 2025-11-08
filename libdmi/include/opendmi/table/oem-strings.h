@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_OEM_STRINGS_DATA_T
+#define DMI_OEM_STRINGS_DATA_T
+typedef struct dmi_oem_strings_data dmi_oem_strings_data_t;
+#endif // !DMI_OEM_STRINGS_DATA_T
+
+#ifndef DMI_OEM_STRINGS_T
+#define DMI_OEM_STRINGS_T
+typedef struct dmi_oem_strings dmi_oem_strings_t;
+#endif // !DMI_OEM_STRINGS_T
+
 /**
  * @brief OEM strings table (type 11).
  */

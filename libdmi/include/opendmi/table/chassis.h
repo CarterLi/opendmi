@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_CHASSIS_DATA_T
+#define DMI_CHASSIS_DATA_T
+typedef struct dmi_chassis_data dmi_chassis_data_t;
+#endif // !DMI_CHASSIS_DATA_T
+
+#ifndef DMI_CHASSIS_T
+#define DMI_CHASSIS_T
+typedef struct dmi_chassis dmi_chassis_t;
+#endif // !DMI_CHASSIS_T
+
 /**
  * @brief System enclosure or chassis types.
  */

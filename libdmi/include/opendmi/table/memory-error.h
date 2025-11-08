@@ -11,6 +11,26 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_MEMORY_ERROR_32_DATA_T
+#define DMI_MEMORY_ERROR_32_DATA_T
+typedef struct dmi_memory_error_32_data dmi_memory_error_32_data_t;
+#endif // !DMI_MEMORY_ERROR_32_DATA_T
+
+#ifndef DMI_MEMORY_ERROR_32_T
+#define DMI_MEMORY_ERROR_32_T
+typedef struct dmi_memory_error_32 dmi_memory_error_32_t;
+#endif // !DMI_MEMORY_ERROR_32_T
+
+#ifndef DMI_MEMORY_ERROR_64_DATA_T
+#define DMI_MEMORY_ERROR_64_DATA_T
+typedef struct dmi_memory_error_64_data dmi_memory_error_64_data_t;
+#endif // !DMI_MEMORY_ERROR_64_DATA_T
+
+#ifndef DMI_MEMORY_ERROR_64_T
+#define DMI_MEMORY_ERROR_64_T
+typedef struct dmi_memory_error_64 dmi_memory_error_64_t;
+#endif // !DMI_MEMORY_ERROR_64_T
+
 /**
  * @brief Memory error types.
  */

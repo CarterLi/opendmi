@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_BASEBOARD_DATA_T
+#define DMI_BASEBOARD_DATA_T
+typedef struct dmi_baseboard_data dmi_baseboard_data_t;
+#endif // !DMI_BASEBOARD_DATA_T
+
+#ifndef DMI_BASEBOARD_T
+#define DMI_BASEBOARD_T
+typedef struct dmi_baseboard dmi_baseboard_t;
+#endif // !DMI_BASEBOARD_T
+
 /**
  * @brief Baseboard type identifiers.
  */

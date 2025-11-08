@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_MEMORY_DEVICE_DATA_T
+#define DMI_MEMORY_DEVICE_DATA_T
+typedef struct dmi_memory_device_data dmi_memory_device_data_t;
+#endif // !DMI_MEMORY_DEVICE_DATA_T
+
+#ifndef DMI_MEMORY_DEVICE_T
+#define DMI_MEMORY_DEVICE_T
+typedef struct dmi_memory_device dmi_memory_device_t;
+#endif // !DMI_MEMORY_DEVICE_T
+
 /**
  * @brief Memory device types.
  */

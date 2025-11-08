@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_FIRMWARE_DATA_T
+#define DMI_FIRMWARE_DATA_T
+typedef struct dmi_firmware_data dmi_firmware_data_t;
+#endif // !DMI_FIRMWARE_DATA_T
+
+#ifndef DMI_FIRMWARE_T
+#define DMI_FIRMWARE_T
+typedef struct dmi_firmware dmi_firmware_t;
+#endif // !DMI_FIRMWARE_T
+
 DMI_PACKED_UNION(dmi_firmware_features)
 {
     dmi_qword_t raw_value;

@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_MGMT_DEVICE_DATA_T
+#define DMI_MGMT_DEVICE_DATA_T
+typedef struct dmi_mgmt_device_data dmi_mgmt_device_data_t;
+#endif // !DMI_MGMT_DEVICE_DATA_T
+
+#ifndef DMI_MGMT_DEVICE_T
+#define DMI_MGMT_DEVICE_T
+typedef struct dmi_mgmt_device dmi_mgmt_device_t;
+#endif // !DMI_MGMT_DEVICE_T
+
 /**
  * @brief Management device types.
  */

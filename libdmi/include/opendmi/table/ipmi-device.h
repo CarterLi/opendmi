@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_IPMI_DEVICE_DATA_T
+#define DMI_IPMI_DEVICE_DATA_T
+typedef struct dmi_ipmi_device_data dmi_ipmi_device_data_t;
+#endif // !DMI_IPMI_DEVICE_DATA_T
+
+#ifndef DMI_IPMI_DEVICE_T
+#define DMI_IPMI_DEVICE_T
+typedef struct dmi_ipmi_device dmi_ipmi_device_t;
+#endif // !DMI_IPMI_DEVICE_T
+
 enum dmi_bmc_interface
 {
     DMI_BMC_INTERFACE_UNKNOWN = 0x00, ///< Unknown

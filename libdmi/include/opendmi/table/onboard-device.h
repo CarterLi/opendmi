@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_ONBOARD_DEVICE_DATA_T
+#define DMI_ONBOARD_DEVICE_DATA_T
+typedef struct dmi_onboard_device_data dmi_onboard_device_data_t;
+#endif // !DMI_ONBOARD_DEVICE_DATA_T
+
+#ifndef DMI_ONBOARD_DEVICE_T
+#define DMI_ONBOARD_DEVICE_T
+typedef struct dmi_onboard_device dmi_onboard_device_t;
+#endif // !DMI_ONBOARD_DEVICE_T
+
 /**
  * @brief Onboard device types.
  */

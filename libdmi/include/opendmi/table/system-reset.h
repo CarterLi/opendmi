@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_SYSTEM_RESET_DATA_T
+#define DMI_SYSTEM_RESET_DATA_T
+typedef struct dmi_system_reset_data dmi_system_reset_data_t;
+#endif // !DMI_SYSTEM_RESET_DATA_T
+
+#ifndef DMI_SYSTEM_RESET_T
+#define DMI_SYSTEM_RESET_T
+typedef struct dmi_system_reset dmi_system_reset_t;
+#endif // !DMI_SYSTEM_RESET_T
+
 /**
  * @brief System reset table (type 23).
  */

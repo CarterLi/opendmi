@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_POWER_CONTROLS_DATA_T
+#define DMI_POWER_CONTROLS_DATA_T
+typedef struct dmi_power_controls_data dmi_power_controls_data_t;
+#endif // !DMI_POWER_CONTROLS_DATA_T
+
+#ifndef DMI_POWER_CONTROLS_T
+#define DMI_POWER_CONTROLS_T
+typedef struct dmi_power_controls dmi_power_controls_t;
+#endif // !DMI_POWER_CONTROLS_T
+
 /**
  * @brief System power controls table (type 25).
  */

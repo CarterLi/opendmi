@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_BATTERY_DATA_T
+#define DMI_BATTERY_DATA_T
+typedef struct dmi_battery_data dmi_battery_data_t;
+#endif // !DMI_BATTERY_DATA_T
+
+#ifndef DMI_BATTERY_T
+#define DMI_BATTERY_T
+typedef struct dmi_battery dmi_battery_t;
+#endif // !DMI_BATTERY_T
+
 /**
  * @brief Battery chemistry types.
  */

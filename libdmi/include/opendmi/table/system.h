@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_SYSTEM_DATA_T
+#define DMI_SYSTEM_DATA_T
+typedef struct dmi_system_data dmi_system_data_t;
+#endif // !DMI_SYSTEM_DATA_T
+
+#ifndef DMI_SYSTEM_T
+#define DMI_SYSTEM_T
+typedef struct dmi_system dmi_system_t;
+#endif // !DMI_SYSTEM_T
+
 /**
  * @brief System information table (type 1).
  */

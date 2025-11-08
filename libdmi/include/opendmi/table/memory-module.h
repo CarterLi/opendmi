@@ -11,6 +11,16 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_MEMORY_MODULE_DATA_T
+#define DMI_MEMORY_MODULE_DATA_T
+typedef struct dmi_memory_module_data dmi_memory_module_data_t;
+#endif // !DMI_MEMORY_MODULE_DATA_T
+
+#ifndef DMI_MEMORY_MODULE_T
+#define DMI_MEMORY_MODULE_T
+typedef struct dmi_memory_module dmi_memory_module_t;
+#endif // !DMI_MEMORY_MODULE_T
+
 struct dmi_memory_module_data
 {
     /**
