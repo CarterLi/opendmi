@@ -61,7 +61,7 @@ DMI_PACKED_STRUCT(dmi_cooling_device_data)
      * 
      * @since SMBIOS 2.2
      */
-    dmi_handle_t temp_probe;
+    dmi_handle_t probe_handle;
 
     DMI_PACKED_STRUCT()
     {
@@ -124,6 +124,54 @@ DMI_PACKED_STRUCT(dmi_cooling_device_data)
      * @since SMBIOS 2.7
      */
     dmi_string_t description;
+};
+
+struct dmi_cooling_device
+{
+    /**
+     * @brief Handle, or instance number, of the temperature probe monitoring
+     * this cooling device.
+     */
+    dmi_handle_t probe_handle;
+
+    /**
+     * @brief Cooling device type.
+     */
+    dmi_cooling_device_type_t type;
+
+    /**
+     * @brief Cooling device status.
+     */
+    dmi_status_t status;
+
+    /**
+     * @brief Cooling unit group to which this cooling device is associated.
+     * 
+     * Having multiple cooling devices in the same cooling unit implies a
+     * redundant configuration. The value is `0` if the cooling device is
+     * not a member of a redundant cooling unit. Non-zero values imply
+     * redundancy and that at least one other cooling device will be enumerated
+     * with the same value.
+     */
+    int group;
+
+    /**
+     * @brief OEM- or firmware vendor-specific information.
+     */
+    uint32_t oem_defined;
+
+    /**
+     * @brief Nominal value for the cooling device’s rotational speed, in
+     * revolutions-per-minute (rpm). If the value is unknown or the cooling
+     * device is non-rotating, the field is set to `INT_MIN`
+     */
+    int nominal_speed;
+
+    /**
+     * @brief Additional descriptive information about the cooling device or
+     * its location.
+     */
+    const char *description;
 };
 
 /**

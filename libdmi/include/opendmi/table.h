@@ -13,6 +13,11 @@
 #include <opendmi/version.h>
 #include <opendmi/model/attribute.h>
 
+#ifndef DMI_TABLE_OPS_T
+#define DMI_TABLE_OPS_T
+typedef struct dmi_table_ops dmi_table_ops_t;
+#endif // !DMI_TABLE_OPS_T
+
 #ifndef DMI_TABLE_SPEC_T
 #define DMI_TABLE_SPEC_T
 typedef struct dmi_table_spec dmi_table_spec_t;
@@ -29,7 +34,28 @@ typedef struct dmi_table dmi_table_t;
 #endif // !DMI_TABLE_T
 
 /**
- * DMI table specification.
+ * @brief DMI table operations.
+ */
+struct dmi_table_ops
+{
+    /**
+     * @brief Decoding handler.
+     */
+    bool (*decode)(dmi_table_t *table);
+
+    /**
+     * @brief Validation handler (optional).
+     */
+    bool (*validate)(dmi_table_t *table);
+
+    /**
+     * @brief Destroy handler.
+     */
+    void (*destroy)(dmi_table_t *table);
+};
+
+/**
+ * @brief DMI table specification.
  */
 struct dmi_table_spec
 {

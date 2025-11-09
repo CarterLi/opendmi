@@ -21,30 +21,30 @@ typedef uint32_t dmi_cache_size_ex_t;
 /**
  * @brief Cache types.
  */
-enum dmi_cache_type
+typedef enum dmi_cache_type
 {
     DMI_CACHE_TYPE_OTHER       = 0x01, ///< Other
     DMI_CACHE_TYPE_UNKNOWN     = 0x02, ///< Unknown
     DMI_CACHE_TYPE_INSTRUCTION = 0x03, ///< Instruction cache
     DMI_CACHE_TYPE_DATA        = 0x04, ///< Data cache
     DMI_CACHE_TYPE_UNIFIED     = 0x05, ///< Unified cache
-};
+} dmi_cache_type_t;
 
 /**
  * @brief Cache operational modes.
  */
-enum dmi_cache_mode
+typedef enum dmi_cache_mode
 {
     DMI_CACHE_MODE_WRITE_THROUGH = 0x00, ///< Write through
     DMI_CACHE_MODE_WRITE_BACK    = 0x01, ///< Write back
     DMI_CACHE_MODE_VARIABLE      = 0x02, ///< Varies with memory address
     DMI_CACHE_MODE_UNKNOWN       = 0x03, ///< Unknown
-};
+} dmi_cache_mode_t;
 
 /**
  * @brief Cache associativity types.
  */
-enum dmi_cache_assoc
+typedef enum dmi_cache_assoc
 {
     DMI_CACHE_ASSOC_OTHER   = 0x01, ///< Other
     DMI_CACHE_ASSOC_UNKNOWN = 0x02, ///< Unknown
@@ -60,18 +60,18 @@ enum dmi_cache_assoc
     DMI_CACHE_ASSOC_48WAY   = 0x0C, ///< 48-way set-associative
     DMI_CACHE_ASSOC_64WAY   = 0x0D, ///< 64-way set-associative
     DMI_CACHE_ASSOC_20WAY   = 0x0E, ///< 20-way set-associative
-};
+} dmi_cache_assoc_t;
 
 /**
  * @brief Cache location, relative to the CPU module.
  */
-enum dmi_cache_location
+typedef enum dmi_cache_location
 {
     DMI_CACHE_LOCATION_INTERNAL = 0x00, ///< Internal
     DMI_CACHE_LOCATION_EXTERNAL = 0x01, ///< External
     DMI_CACHE_LOCATION_RESERVED = 0x02, ///< Reserved
     DMI_CACHE_LOCATION_UNKNOWN  = 0x03, ///< Unknown
-};
+} dmi_cache_location_t;
 
 /**
  * @brief Cache configuration.
@@ -97,7 +97,7 @@ DMI_PACKED_STRUCT(dmi_cache_config)
     /**
      * @brief Location, relative to the CPU module.
      */
-    enum dmi_cache_location location : 2;
+    dmi_cache_location_t location : 2;
 
     /**
      * @brief Enable flag (at boot time).
@@ -107,7 +107,7 @@ DMI_PACKED_STRUCT(dmi_cache_config)
     /**
      * @brief Operational mode.
      */
-    enum dmi_cache_mode mode : 2;
+    dmi_cache_mode_t mode : 2;
 };
 
 /**
@@ -198,19 +198,19 @@ DMI_PACKED_STRUCT(dmi_cache_data)
      * @brief Error-correction scheme supported by this cache component.
      * @since SMBIOS 2.1
      */
-    enum dmi_ecc_type ecc_type;
+    dmi_ecc_type_t ecc_type;
 
     /**
      * @brief Logical type of cache.
      * @since SMBIOS 2.1
      */
-    enum dmi_cache_type type;
+    dmi_cache_type_t type;
 
     /**
      * @brief Associativity of the cache.
      * @since SMBIOS 2.1
      */
-    enum dmi_cache_assoc associativity;
+    dmi_cache_assoc_t associativity;
 
     /**
      * @brief Maximum cache size that can be installed (for caches larger than
@@ -229,7 +229,7 @@ DMI_PACKED_STRUCT(dmi_cache_data)
 /**
  * @brief Decoded cache information.
  */
-struct dmi_cache_info
+struct dmi_cache
 {
     /**
      * @brief Socket designator.
@@ -244,12 +244,12 @@ struct dmi_cache_info
     /**
      * @brief Logical type of cache.
      */
-    enum dmi_cache_type type;
+    dmi_cache_type_t type;
 
     /**
      * @brief Operational mode.
      */
-    enum dmi_cache_mode mode;
+    dmi_cache_mode_t mode;
 
     /**
      * @brief Location, relative to the CPU module.
@@ -295,12 +295,12 @@ struct dmi_cache_info
     /**
      * @brief Error-correction scheme supported by this cache component.
      */
-    enum dmi_ecc_type ecc_type;
+    dmi_ecc_type_t ecc_type;
 
     /**
      * @brief Associativity of the cache.
      */
-    enum dmi_cache_assoc associativity;
+    dmi_cache_assoc_t associativity;
 };
 
 /**
@@ -310,16 +310,16 @@ extern const struct dmi_table_spec dmi_cache_table;
 
 __BEGIN_DECLS
 
-const char *dmi_cache_type_name(enum dmi_cache_type value);
-const char *dmi_cache_mode_name(enum dmi_cache_mode value);
-const char *dmi_cache_assoc_name(enum dmi_cache_assoc value);
-const char *dmi_cache_location_name(enum dmi_cache_location value);
+const char *dmi_cache_type_name(dmi_cache_type_t value);
+const char *dmi_cache_mode_name(dmi_cache_mode_t value);
+const char *dmi_cache_assoc_name(dmi_cache_assoc_t value);
+const char *dmi_cache_location_name(dmi_cache_location_t value);
 
 size_t dmi_cache_size(dmi_cache_size_t value);
 size_t dmi_cache_size_ex(dmi_cache_size_ex_t value);
 
-struct dmi_cache_info *dmi_cache_info_decode(dmi_table_t *table);
-void dmi_cache_info_free(struct dmi_cache_info *info);
+struct dmi_cache *dmi_cache_info_decode(dmi_table_t *table);
+void dmi_cache_info_free(struct dmi_cache *info);
 
 __END_DECLS
 

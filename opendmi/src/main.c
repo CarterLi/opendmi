@@ -264,7 +264,7 @@ static void print_table_attrs(const dmi_table_t *table)
             break;
 
         case DMI_ATTRIBUTE_TYPE_STRING:
-            str = dmi_table_string(table, *(dmi_string_t *)ptr);
+            str = *(const char **)ptr;
             printf("%s", str ? str : "<unspecified>");
             break;
 

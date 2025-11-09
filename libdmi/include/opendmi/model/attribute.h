@@ -25,7 +25,8 @@ enum dmi_attribute_type
     DMI_ATTRIBUTE_TYPE_INT,
     DMI_ATTRIBUTE_TYPE_SIZE,
     DMI_ATTRIBUTE_TYPE_ENUM,
-    DMI_ATTRIBUTE_TYPE_SET
+    DMI_ATTRIBUTE_TYPE_SET,
+    DMI_ATTRIBUTE_TYPE_UUID
 };
 
 enum dmi_attribute_format

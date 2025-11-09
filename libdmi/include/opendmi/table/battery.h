@@ -110,7 +110,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.1
      */
-    dmi_battery_chemistry_t chemistry : 8;
+    dmi_byte_t chemistry;
 
     /**
      * @brief Design capacity of the battery in mWatt-hours. If the value is
@@ -197,6 +197,19 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * @since SMBIOS 2.2
      */
     dmi_dword_t oem_defined;
+};
+
+struct dmi_battery
+{
+    const char *location;
+    const char *manufacturer;
+    const char *manufacture_date;
+    const char *serial_number;
+    const char *name;
+    dmi_battery_chemistry_t chemistry;
+    int design_capacity;
+    int design_voltage;
+    const char *sbds_device_chemistry;
 };
 
 /**

@@ -256,36 +256,36 @@ const dmi_table_spec_t dmi_cache_table =
     .attributes = dmi_cache_attrs
 };
 
-const char *dmi_cache_type_name(enum dmi_cache_type value)
+const char *dmi_cache_type_name(dmi_cache_type_t value)
 {
     return dmi_name_lookup(dmi_cache_type_names, value);
 }
 
-const char *dmi_cache_mode_name(enum dmi_cache_mode value)
+const char *dmi_cache_mode_name(dmi_cache_mode_t value)
 {
     return dmi_name_lookup(dmi_cache_mode_names, value);
 }
 
-const char *dmi_cache_assoc_name(enum dmi_cache_assoc value)
+const char *dmi_cache_assoc_name(dmi_cache_assoc_t value)
 {
     return dmi_name_lookup(dmi_cache_assoc_names, value);
 }
 
-const char *dmi_cache_location_name(enum dmi_cache_location value)
+const char *dmi_cache_location_name(dmi_cache_location_t value)
 {
     return dmi_name_lookup(dmi_cache_location_names, value);
 }
 
-struct dmi_cache_info *dmi_cache_info_create(struct dmi_cache_data *table)
+struct dmi_cache *dmi_cache_info_create(struct dmi_cache_data *table)
 {
-    struct dmi_cache_info *info;
+    struct dmi_cache *info;
 
     if (!table) {
         errno = EINVAL;
         return nullptr;
     }
 
-    info = malloc(sizeof(struct dmi_cache_info));
+    info = malloc(sizeof(struct dmi_cache));
     if (!info) {
         errno = ENOMEM;
         return nullptr;
@@ -294,7 +294,7 @@ struct dmi_cache_info *dmi_cache_info_create(struct dmi_cache_data *table)
     return info;
 }
 
-void dmi_cache_info_destroy(struct dmi_cache_info *info)
+void dmi_cache_info_destroy(struct dmi_cache *info)
 {
     if (!info)
         return;
@@ -326,9 +326,9 @@ size_t dmi_cache_size_ex(dmi_cache_size_ex_t value)
     return size;
 }
 
-struct dmi_cache_info *dmi_cache_info_decode(dmi_table_t *table)
+struct dmi_cache *dmi_cache_info_decode(dmi_table_t *table)
 {
-    struct dmi_cache_info *info;
+    struct dmi_cache *info;
     struct dmi_cache_data *data;
 
     if (table == nullptr) {
@@ -380,7 +380,7 @@ struct dmi_cache_info *dmi_cache_info_decode(dmi_table_t *table)
     return info;
 }
 
-void dmi_cache_info_free(struct dmi_cache_info *info)
+void dmi_cache_info_free(struct dmi_cache *info)
 {
     if (info == nullptr)
         return;

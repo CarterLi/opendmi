@@ -24,7 +24,7 @@ typedef struct dmi_baseboard dmi_baseboard_t;
 /**
  * @brief Baseboard type identifiers.
  */
-enum dmi_baseboard_type
+typedef enum dmi_baseboard_type
 {
     DMI_BASEBOARD_TYPE_UNKNOWN                  = 0x01, /**< Unknown */
     DMI_BASEBOARD_TYPE_OTHER                    = 0x02, /**< Other */
@@ -39,7 +39,7 @@ enum dmi_baseboard_type
     DMI_BASEBOARD_TYPE_PROCESSOR_MEMORY_MODULE  = 0x0B, /**< Processor/memory module */
     DMI_BASEBOARD_TYPE_PROCESSOR_IO_MODULE      = 0x0C, /**< Processor/IO module */
     DMI_BASEBOARD_TYPE_INTERCONNECT_BOARD       = 0x0D, /**< Interconnect board */
-};
+} dmi_baseboard_type_t;
 
 /**
  * @brief Baseboard feature flags.

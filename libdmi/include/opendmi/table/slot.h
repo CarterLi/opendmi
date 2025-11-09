@@ -12,7 +12,7 @@
 /**
  * @brief Slot type identifiers.
  */
-enum dmi_slot_type
+typedef enum dmi_slot_type
 {
     DMI_SLOT_TYPE_OTHER                 = 0x01, ///< Other
     DMI_SLOT_TYPE_UNKNOWN               = 0x02, ///< Unknown
@@ -95,12 +95,12 @@ enum dmi_slot_type
     DMI_SLOT_TYPE_PCI_E_G6              = 0xC4, ///< PCI Express Gen 6 and beyond
     DMI_SLOT_TYPE_EDSFF_E1              = 0xC5, ///< Enterprise and datacenter 1U E1 form factor slot (EDSFF E1.S, E1.L)
     DMI_SLOT_TYPE_EDSFF_E3              = 0xC6, ///< Enterprise and datacenter 3" E3 form factor slot (EDSFF E3.S, E3.L)
-};
+} dmi_slot_type_t;
 
 /**
  * @brief Slot data bus width values.
  */
-enum dmi_slot_width
+typedef enum dmi_slot_width
 {
     DMI_SLOT_WIDTH_OTHER   = 0x01, ///< Other
     DMI_SLOT_WIDTH_UNKNOWN = 0x02, ///< Unknown
@@ -116,19 +116,19 @@ enum dmi_slot_width
     DMI_SLOT_WIDTH_12X     = 0x0C, ///< 12x or x12
     DMI_SLOT_WIDTH_16X     = 0x0D, ///< 16x or x16
     DMI_SLOT_WIDTH_32X     = 0x0E, ///< 32x or x32
-};
+} dmi_slot_width_t;
 
 /**
  * @brief Slot usage values.
  */
-enum dmi_slot_usage
+typedef enum dmi_slot_usage
 {
     DMI_SLOT_USAGE_OTHER       = 0x01, ///< Other
     DMI_SLOT_USAGE_UNKNOWN     = 0x02, ///< Unknown
     DMI_SLOT_USAGE_AVAILABLE   = 0x03, ///< Available
     DMI_SLOT_USAGE_IN_USE      = 0x04, ///< In use
     DMI_SLOT_USAGE_UNAVAILABLE = 0x05, ///< Unavailable
-};
+} dmi_slot_usage_t;
 
 DMI_PACKED_STRUCT(dmi_slot_data)
 {
@@ -147,19 +147,19 @@ DMI_PACKED_STRUCT(dmi_slot_data)
      * @brief Slot type.
      * @since SMBIOS 2.0
      */
-    enum dmi_slot_type type : 8;
+    dmi_slot_type_t type : 8;
 
     /**
      * @brief Data bus width.
      * @since SMBIOS 2.0
      */
-    enum dmi_slot_width width : 8;
+    dmi_slot_width_t width : 8;
 
     /**
      * @brief Current usage.
      * @since SMBIOS 2.0
      */
-    enum dmi_slot_usage usage : 8;
+    dmi_slot_usage_t usage : 8;
 
     /**
      * @brief Slot length.
@@ -233,9 +233,9 @@ extern const dmi_table_spec_t dmi_slot_table;
 
 __BEGIN_DECLS
 
-const char *dmi_slot_type_name(enum dmi_slot_type value);
-const char *dmi_slot_width_name(enum dmi_slot_width value);
-const char *dmi_slot_usage_name(enum dmi_slot_usage value);
+const char *dmi_slot_type_name(dmi_slot_type_t value);
+const char *dmi_slot_width_name(dmi_slot_width_t value);
+const char *dmi_slot_usage_name(dmi_slot_usage_t value);
 
 __END_DECLS
 

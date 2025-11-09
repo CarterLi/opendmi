@@ -526,17 +526,17 @@ const dmi_table_spec_t dmi_slot_table =
     .attributes = dmi_slot_attrs
 };
 
-const char *dmi_slot_type_name(enum dmi_slot_type value)
+const char *dmi_slot_type_name(dmi_slot_type_t value)
 {
     return dmi_name_lookup(dmi_slot_type_names, value);
 }
 
-const char *dmi_slot_width_name(enum dmi_slot_width value)
+const char *dmi_slot_width_name(dmi_slot_width_t value)
 {
     return dmi_name_lookup(dmi_slot_width_names, value);
 }
 
-const char *dmi_slot_usage_name(enum dmi_slot_usage value)
+const char *dmi_slot_usage_name(dmi_slot_usage_t value)
 {
     return dmi_name_lookup(dmi_slot_usage_names, value);
 }

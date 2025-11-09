@@ -24,7 +24,7 @@ typedef struct dmi_memory_device dmi_memory_device_t;
 /**
  * @brief Memory device types.
  */
-enum dmi_memory_device_type
+typedef enum dmi_memory_device_type
 {
     DMI_MEMORY_DEVICE_TYPE_OTHER       = 0x01, ///< Other
     DMI_MEMORY_DEVICE_TYPE_UNKNOWN     = 0x02, ///< Unknown
@@ -61,12 +61,12 @@ enum dmi_memory_device_type
     DMI_MEMORY_DEVICE_TYPE_LPDDR5      = 0x23, ///< LPDDR5
     DMI_MEMORY_DEVICE_TYPE_HBM3        = 0x24, ///< HBM3 (High Bandwidth Memory Generation 3)
     DMI_MEMORY_DEVICE_TYPE_MRDIMM      = 0x25, ///< MDRIMM
-};
+} dmi_memory_device_type_t;
 
 /**
  * @brief Memory device form factors.
  */
-enum dmi_memory_device_form_factor
+typedef enum dmi_memory_device_form_factor
 {
     DMI_MEMORY_DEVICE_FORM_FACTOR_OTHER    = 0x01, ///< Other
     DMI_MEMORY_DEVICE_FORM_FACTOR_UNKNOWN  = 0x02, ///< Unknown
@@ -87,12 +87,12 @@ enum dmi_memory_device_form_factor
     DMI_MEMORY_DEVICE_FORM_FACTOR_CAMM     = 0x11, ///< CAMM
     DMI_MEMORY_DEVICE_FORM_FACTOR_CUDIMM   = 0x12, ///< CUDIMM
     DMI_MEMORY_DEVICE_FORM_FACTOR_CSODIMM  = 0x13, ///< CSODIMM
-};
+} dmi_memory_device_form_factor_t;
 
 /**
  * @brief Memory device technologies.
  */
-enum dmi_memory_device_technology
+typedef enum dmi_memory_device_technology
 {
     DMI_MEMORY_DEVICE_TECHNOLOGY_OTHER    = 0x01, ///< Other
     DMI_MEMORY_DEVICE_TECHNOLOGY_UNKNOWN  = 0x02, ///< Unknown
@@ -102,7 +102,7 @@ enum dmi_memory_device_technology
     DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_P = 0x06, ///< NVDIMM-P
     DMI_MEMORY_DEVICE_TECHNOLOGY_OPTANE   = 0x07, ///< Intel Optane persistent memory
     DMI_MEMORY_DEVICE_TECHNOLOGY_MRDIMM   = 0x08, ///< MRDIMM (deprecated)
-};
+} dmi_memory_device_technology_t;
 
 DMI_PACKED_UNION(dmi_memory_device_type_detail)
 {

@@ -4,8 +4,15 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/cooling-device.h>
+#include <stdlib.h>
+#include <limits.h>
+
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
+#include <opendmi/table/cooling-device.h>
+
+static bool dmi_cooling_device_decode(dmi_table_t *table);
+static void dmi_cooling_device_free(dmi_table_t *table);
 
 static const dmi_name_t dmi_cooling_device_type_names[] =
 {
@@ -69,6 +76,51 @@ static const dmi_name_t dmi_cooling_device_type_names[] =
 
 const dmi_attribute_spec_t dmi_cooling_device_attrs[] =
 {
+    {
+        .code   = "probe-handle",
+        .name   = "Temperature probe handle",
+        .offset = offsetof(dmi_cooling_device_t, probe_handle),
+        .type   = DMI_ATTRIBUTE_TYPE_HANDLE
+    },
+    {
+        .code   = "type",
+        .name   = "Type",
+        .offset = offsetof(dmi_cooling_device_t, type),
+        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
+        .values = dmi_cooling_device_type_names,
+    },
+    {
+        .code   = "status",
+        .name   = "Status",
+        .offset = offsetof(dmi_cooling_device_t, status),
+        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
+        .values = dmi_status_names
+    },
+    {
+        .code   = "group",
+        .name   = "Group",
+        .offset = offsetof(dmi_cooling_device_t, group),
+        .type   = DMI_ATTRIBUTE_TYPE_INT
+    },
+    /*
+    {
+        .code = "oem-defined",
+        .name = "OEM-defined"
+    },
+     */
+    {
+        .code   = "nominal-speed",
+        .name   = "Nominal speed",
+        .offset = offsetof(dmi_cooling_device_t, nominal_speed),
+        .type   = DMI_ATTRIBUTE_TYPE_INT,
+        .unit   = "rpm"
+    },
+    {
+        .code   = "description",
+        .name   = "Description",
+        .offset = offsetof(dmi_cooling_device_t, description),
+        .type   = DMI_ATTRIBUTE_TYPE_STRING
+    },
     DMI_ATTRIBUTE_NULL
 };
 
@@ -78,10 +130,48 @@ const dmi_table_spec_t dmi_cooling_device_table =
     .name       = "Cooling device",
     .type       = DMI_TYPE_COOLING_DEVICE,
     .min_length = 0x0E,
+    .decode     = dmi_cooling_device_decode,
+    .free       = dmi_cooling_device_free,
     .attributes = dmi_cooling_device_attrs
 };
 
 const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value)
 {
     return dmi_name_lookup(dmi_cooling_device_type_names, value);
+}
+
+static bool dmi_cooling_device_decode(dmi_table_t *table)
+{
+    dmi_cooling_device_t *info = nullptr;
+    dmi_cooling_device_data_t *data = dmi_cast(data, table->data);
+
+    info = calloc(1, sizeof(*info));
+    if (!info)
+        return false;
+
+    info->probe_handle = dmi_decode_word(data->probe_handle);
+    info->type         = data->type;
+    info->status       = data->status;
+    info->group        = data->group;
+    info->oem_defined  = dmi_decode_dword(data->oem_defined);
+
+    if (table->body_length > 0x0C) {
+        info->nominal_speed = dmi_decode_word(data->nominal_speed);
+        if (info->nominal_speed == 0xFFFF)
+            info->nominal_speed = INT_MIN;
+    } else {
+        info->nominal_speed = INT_MIN;
+    }
+
+    if (table->body_length >= 0x0F)
+        info->description = dmi_table_string(table, data->description);
+
+    table->info = info;
+
+    return true;
+}
+
+static void dmi_cooling_device_free(dmi_table_t *table)
+{
+    free(table->info);
 }

@@ -97,6 +97,14 @@ DMI_PACKED_STRUCT(dmi_ipmi_device_data)
     dmi_byte_t interrupt_number;
 };
 
+struct dmi_ipmi_device
+{
+    /**
+     * @brief Baseboard Management Controller (BMC) interface type.
+     */
+    enum dmi_bmc_interface interface_type;
+};
+
 /**
  * @brief IPMI device information table specification.
  */
