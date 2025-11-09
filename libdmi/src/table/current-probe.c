@@ -74,7 +74,9 @@ const dmi_table_spec_t dmi_current_probe_table =
     .name       = "Electrical current probe",
     .type       = DMI_TYPE_CURRENT_PROBE,
     .min_length = 0x16,
-    .decode     = dmi_probe_decode,
-    .free       = dmi_probe_free,
-    .attributes = dmi_current_probe_attrs
+    .attributes = dmi_current_probe_attrs,
+    .handlers   = {
+        .decoder     = (dmi_table_decoder_t)dmi_probe_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_probe_destroy
+    }
 };

@@ -111,6 +111,9 @@ __BEGIN_DECLS
 
 const char *dmi_hardware_security_status_name(dmi_hardware_security_status_t value);
 
+dmi_hardware_security_t *dmi_hardware_security_decode(dmi_table_t *table);
+void dmi_hardware_security_destroy(dmi_hardware_security_t *info);
+
 __END_DECLS
 
 #endif // !OPENDMI_TABLE_HARDWARE_SECURITY_H

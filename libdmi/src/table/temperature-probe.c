@@ -87,9 +87,11 @@ const dmi_table_spec_t dmi_temperature_probe_table =
     .name       = "Temperature probe",
     .type       = DMI_TYPE_TEMPERATURE_PROBE,
     .min_length = 0x16,
-    .decode     = dmi_probe_decode,
-    .free       = dmi_probe_free,
-    .attributes = dmi_temperature_probe_attrs
+    .attributes = dmi_temperature_probe_attrs,
+    .handlers   = {
+        .decoder     = (dmi_table_decoder_t)dmi_probe_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_probe_destroy
+    }
 };
 
 const char *dmi_temperature_value_format(const void *value_ptr)

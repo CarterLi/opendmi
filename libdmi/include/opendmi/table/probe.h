@@ -186,12 +186,12 @@ const char *dmi_probe_location_name(dmi_probe_location_t value);
 /**
  * @internal
  */
-bool dmi_probe_decode(dmi_table_t *table);
+dmi_probe_t *dmi_probe_decode(dmi_table_t *table);
 
 /**
  * @internal
  */
-void dmi_probe_free(dmi_table_t *table);
+void dmi_probe_destroy(dmi_probe_t *info);
 
 __END_DECLS
 

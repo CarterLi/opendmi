@@ -8,10 +8,6 @@
 
 #include <opendmi/table/memory-array-addr.h>
 
-static bool dmi_memory_array_addr_decode(dmi_table_t *table);
-static bool dmi_memory_array_addr_validate(dmi_table_t *table);
-static void dmi_memory_array_addr_free(dmi_table_t *table);
-
 const dmi_attribute_spec_t dmi_memory_array_addr_attrs[] =
 {
     {
@@ -51,39 +47,15 @@ const dmi_table_spec_t dmi_memory_array_addr_table =
     .type        = DMI_TYPE_MEMORY_ARRAY_ADDR,
     .min_version = DMI_VERSION(2, 1, 0),
     .min_length  = 0x0F,
-    .decode      = dmi_memory_array_addr_decode,
-    .validate    = dmi_memory_array_addr_validate,
-    .free        = dmi_memory_array_addr_free,
-    .attributes  = dmi_memory_array_addr_attrs
+    .attributes  = dmi_memory_array_addr_attrs,
+    .handlers    = {
+        .validator   = (dmi_table_validator_t)dmi_memory_array_addr_validate,
+        .decoder     = (dmi_table_decoder_t)dmi_memory_array_addr_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_memory_array_addr_destroy
+    }
 };
 
-static bool dmi_memory_array_addr_decode(dmi_table_t *table)
-{
-    dmi_memory_array_addr_t *info = nullptr;
-    dmi_memory_array_addr_data_t *data = dmi_cast(data, table->data);
-    
-    info = calloc(1, sizeof(*info));
-    if (!info)
-        return false;
-
-    if ((table->total_length >= 0x1F) && (data->starting_addr == 0xFFFFFFFFU)) {
-        info->starting_addr = data->starting_addr_ex;
-        info->ending_addr   = data->ending_addr_ex;
-    } else {
-        info->starting_addr = data->starting_addr << 10;
-        info->ending_addr   = data->ending_addr << 10;
-    }
-
-    info->range_size      = info->ending_addr - info->starting_addr;
-    info->array_handle    = data->array_handle;
-    info->partition_width = data->partition_width;
-
-    table->info = info;
-
-    return true;
-}
-
-static bool dmi_memory_array_addr_validate(dmi_table_t *table)
+bool dmi_memory_array_addr_validate(dmi_table_t *table)
 {
     dmi_memory_array_addr_data_t *data = dmi_cast(data, table->data);
 
@@ -112,7 +84,31 @@ static bool dmi_memory_array_addr_validate(dmi_table_t *table)
     return true;
 }
 
-static void dmi_memory_array_addr_free(dmi_table_t *table)
+dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table)
 {
-    free(table->info);
+    dmi_memory_array_addr_t *info = nullptr;
+    dmi_memory_array_addr_data_t *data = dmi_cast(data, table->data);
+    
+    info = calloc(1, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    if ((table->total_length >= 0x1F) && (data->starting_addr == 0xFFFFFFFFU)) {
+        info->starting_addr = data->starting_addr_ex;
+        info->ending_addr   = data->ending_addr_ex;
+    } else {
+        info->starting_addr = data->starting_addr << 10;
+        info->ending_addr   = data->ending_addr << 10;
+    }
+
+    info->range_size      = info->ending_addr - info->starting_addr;
+    info->array_handle    = data->array_handle;
+    info->partition_width = data->partition_width;
+
+    return info;
+}
+
+void dmi_memory_array_addr_destroy(dmi_memory_array_addr_t *info)
+{
+    free(info);
 }

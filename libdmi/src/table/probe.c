@@ -98,14 +98,14 @@ const char *dmi_probe_location_name(dmi_probe_location_t value)
     return dmi_name_lookup(dmi_probe_location_names, value);
 }
 
-bool dmi_probe_decode(dmi_table_t *table)
+dmi_probe_t * dmi_probe_decode(dmi_table_t *table)
 {
     dmi_probe_t *info = nullptr;
     dmi_probe_data_t *data = dmi_cast(data, table->data);
 
     info = calloc(1, sizeof(*info));
     if (!info)
-        return false;
+        return nullptr;
 
     info->description = dmi_table_string(table, data->description);
     info->location    = data->location;
@@ -122,9 +122,7 @@ bool dmi_probe_decode(dmi_table_t *table)
     else
         info->nom_value = INT_MIN;
 
-    table->info = info;
-
-    return true;
+    return info;
 }
 
 static int dmi_probe_decode_value(dmi_word_t value)
@@ -137,7 +135,7 @@ static int dmi_probe_decode_value(dmi_word_t value)
     return (int)(int16_t)value;
 }
 
-void dmi_probe_free(dmi_table_t *table)
+void dmi_probe_destroy(dmi_probe_t *info)
 {
-    free(table->info);
+    free(info);
 }

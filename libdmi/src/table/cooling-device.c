@@ -11,9 +11,6 @@
 #include <opendmi/utils.h>
 #include <opendmi/table/cooling-device.h>
 
-static bool dmi_cooling_device_decode(dmi_table_t *table);
-static void dmi_cooling_device_free(dmi_table_t *table);
-
 static const dmi_name_t dmi_cooling_device_type_names[] =
 {
     {
@@ -124,9 +121,11 @@ const dmi_table_spec_t dmi_cooling_device_table =
     .name       = "Cooling device",
     .type       = DMI_TYPE_COOLING_DEVICE,
     .min_length = 0x0E,
-    .decode     = dmi_cooling_device_decode,
-    .free       = dmi_cooling_device_free,
-    .attributes = dmi_cooling_device_attrs
+    .attributes = dmi_cooling_device_attrs,
+    .handlers   = {
+        .decoder     = (dmi_table_decoder_t)dmi_cooling_device_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_cooling_device_destroy
+    }
 };
 
 const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value)
@@ -134,14 +133,14 @@ const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value)
     return dmi_name_lookup(dmi_cooling_device_type_names, value);
 }
 
-static bool dmi_cooling_device_decode(dmi_table_t *table)
+dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table)
 {
     dmi_cooling_device_t *info = nullptr;
     dmi_cooling_device_data_t *data = dmi_cast(data, table->data);
 
     info = calloc(1, sizeof(*info));
     if (!info)
-        return false;
+        return nullptr;
 
     info->probe_handle = dmi_decode_word(data->probe_handle);
     info->type         = data->type;
@@ -160,12 +159,10 @@ static bool dmi_cooling_device_decode(dmi_table_t *table)
     if (table->body_length >= 0x0F)
         info->description = dmi_table_string(table, data->description);
 
-    table->info = info;
-
-    return true;
+    return info;
 }
 
-static void dmi_cooling_device_free(dmi_table_t *table)
+void dmi_cooling_device_destroy(dmi_cooling_device_t *info)
 {
-    free(table->info);
+    free(info);
 }

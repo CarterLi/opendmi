@@ -33,25 +33,29 @@ typedef struct dmi_header dmi_header_t;
 typedef struct dmi_table dmi_table_t;
 #endif // !DMI_TABLE_T
 
+typedef bool (*dmi_table_validator_t)(dmi_table_t *table);
+typedef void *(*dmi_table_decoder_t)(dmi_table_t *table);
+typedef void (*dmi_table_deallocator_t)(void *info);
+
 /**
  * @brief DMI table operations.
  */
 struct dmi_table_ops
 {
     /**
-     * @brief Decoding handler.
-     */
-    bool (*decode)(dmi_table_t *table);
-
-    /**
      * @brief Validation handler (optional).
      */
-    bool (*validate)(dmi_table_t *table);
+    dmi_table_validator_t validator;
+
+    /**
+     * @brief Decoding handler.
+     */
+    dmi_table_decoder_t decoder;
 
     /**
      * @brief Destroy handler.
      */
-    void (*destroy)(dmi_table_t *table);
+    dmi_table_deallocator_t deallocator;
 };
 
 /**
@@ -102,24 +106,14 @@ struct dmi_table_spec
     size_t min_length;
 
     /**
-     * @brief Decode handler.
-     */
-    bool (*decode)(dmi_table_t *table);
-
-    /**
-     * @brief Validation handler (optional).
-     */
-    bool (*validate)(dmi_table_t *table);
-
-    /**
-     * @brief Free handler.
-     */
-    void (*free)(dmi_table_t *table);
-
-    /**
      * @brief Table attributes specification.
      */
     const dmi_attribute_spec_t *attributes;
+
+    /**
+     * @brief Table operation handlers.
+     */
+    dmi_table_ops_t handlers;
 };
 
 /**

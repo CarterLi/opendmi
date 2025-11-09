@@ -183,6 +183,9 @@ __BEGIN_DECLS
 
 const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value);
 
+dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table);
+void dmi_cooling_device_destroy(dmi_cooling_device_t *info);
+
 __END_DECLS
 
 #endif // !OPENDMI_TABLE_COOLING_DEVICE_H

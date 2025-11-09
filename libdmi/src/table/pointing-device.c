@@ -9,9 +9,6 @@
 #include <opendmi/table/pointing-device.h>
 #include <opendmi/name.h>
 
-static bool dmi_pointing_device_decode(dmi_table_t *table);
-static void dmi_pointing_device_free(dmi_table_t *table);
-
 static const dmi_name_t dmi_pointing_device_type_names[] =
 {
     {
@@ -161,9 +158,11 @@ const dmi_table_spec_t dmi_pointing_device_table =
     .type        = DMI_TYPE_POINTING_DEVICE,
     .min_version = DMI_VERSION(2, 1, 0),
     .min_length  = 0x07,
-    .decode      = dmi_pointing_device_decode,
-    .free        = dmi_pointing_device_free,
-    .attributes  = dmi_pointing_device_attrs
+    .attributes  = dmi_pointing_device_attrs,
+    .handlers = {
+        .decoder     = (dmi_table_decoder_t)dmi_pointing_device_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_pointing_device_destroy
+    }
 };
 
 const char *dmi_pointing_device_type_name(dmi_pointing_device_type_t value)
@@ -176,25 +175,23 @@ const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t v
     return dmi_name_lookup(dmi_pointing_device_interface_names, value);
 }
 
-static bool dmi_pointing_device_decode(dmi_table_t *table)
+dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table)
 {
     dmi_pointing_device_t *info = nullptr;
     dmi_pointing_device_data_t *data = dmi_cast(data, table->data);
 
     info = calloc(1, sizeof(*info));
     if (!info)
-        return false;
+        return nullptr;
 
     info->type         = data->type;
     info->interface    = data->interface;
     info->button_count = data->button_count;
 
-    table->info = info;
-
-    return true;
+    return info;
 }
 
-static void dmi_pointing_device_free(dmi_table_t *table)
+void dmi_pointing_device_destroy(dmi_pointing_device_t *info)
 {
-    free(table->info);
+    free(info);
 }

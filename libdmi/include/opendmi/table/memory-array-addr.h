@@ -120,4 +120,12 @@ struct dmi_memory_array_addr
  */
 extern const dmi_table_spec_t dmi_memory_array_addr_table;
 
+__BEGIN_DECLS
+
+bool dmi_memory_array_addr_validate(dmi_table_t *table);
+dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table);
+void dmi_memory_array_addr_destroy(dmi_memory_array_addr_t *info);
+
+__END_DECLS
+
 #endif // !OPENDMI_TABLE_MEMORY_ARRAY_ADDR_H

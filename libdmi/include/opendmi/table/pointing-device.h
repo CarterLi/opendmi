@@ -114,6 +114,9 @@ __BEGIN_DECLS
 const char *dmi_pointing_device_type_name(dmi_pointing_device_type_t value);
 const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t value);
 
+dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table);
+void dmi_pointing_device_destroy(dmi_pointing_device_t *info);
+
 __END_DECLS
 
 #endif // !OPENDMI_TABLE_POINTING_DEVICE_H

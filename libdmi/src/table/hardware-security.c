@@ -9,9 +9,6 @@
 #include <opendmi/table/hardware-security.h>
 #include <opendmi/name.h>
 
-static bool dmi_hardware_security_decode(dmi_table_t *table);
-static void dmi_hardware_security_free(dmi_table_t *table);
-
 static const dmi_name_t dmi_hardware_security_status_names[] =
 {
     {
@@ -73,9 +70,11 @@ const dmi_table_spec_t dmi_hardware_security_table =
     .type        = DMI_TYPE_HARDWARE_SECURITY,
     .min_version = DMI_VERSION(2, 2, 0),
     .min_length  = 0x05,
-    .decode      = dmi_hardware_security_decode,
-    .free        = dmi_hardware_security_free,
-    .attributes  = dmi_hardware_security_attrs
+    .attributes  = dmi_hardware_security_attrs,
+    .handlers    = {
+        .decoder     = (dmi_table_decoder_t)dmi_hardware_security_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_hardware_security_destroy
+    }
 };
 
 const char *dmi_hardware_security_status_name(dmi_hardware_security_status_t value)
@@ -83,26 +82,24 @@ const char *dmi_hardware_security_status_name(dmi_hardware_security_status_t val
     return dmi_name_lookup(dmi_hardware_security_status_names, value);
 }
 
-static bool dmi_hardware_security_decode(dmi_table_t *table)
+dmi_hardware_security_t *dmi_hardware_security_decode(dmi_table_t *table)
 {
     dmi_hardware_security_t *info = nullptr;
     dmi_hardware_security_data_t *data = dmi_cast(data, table->data);
 
     info = calloc(1, sizeof(*info));
     if (!info)
-        return false;
+        return nullptr;
 
     info->front_panel_reset = data->settings.front_panel_reset;
     info->admin_password    = data->settings.admin_password;
     info->keyboard_password = data->settings.keyboard_password;
     info->poweron_password  = data->settings.poweron_password;
 
-    table->info = info;
-
-    return true;
+    return info;
 }
 
-static void dmi_hardware_security_free(dmi_table_t *table)
+void dmi_hardware_security_destroy(dmi_hardware_security_t *info)
 {
-    free(table->info);
+    free(info);
 }
