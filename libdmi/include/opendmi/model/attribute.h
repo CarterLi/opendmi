@@ -23,6 +23,7 @@ enum dmi_attribute_type
     DMI_ATTRIBUTE_TYPE_STRING,
     DMI_ATTRIBUTE_TYPE_BOOL,
     DMI_ATTRIBUTE_TYPE_INT,
+    DMI_ATTRIBUTE_TYPE_DECIMAL,
     DMI_ATTRIBUTE_TYPE_SIZE,
     DMI_ATTRIBUTE_TYPE_ENUM,
     DMI_ATTRIBUTE_TYPE_SET,
@@ -37,12 +38,15 @@ enum dmi_attribute_format
 
 struct dmi_attribute_spec
 {
+    size_t offset;
+    size_t size;
+    enum dmi_attribute_type type;
     char *code;
     char *name;
-    size_t offset;
-    enum dmi_attribute_type type;
     enum dmi_attribute_format format;
     const char *unit;
+    unsigned int scale;
+    unsigned int flags;
     const dmi_name_t *values;
     const char *(*to_string)(const void *value);
 };
@@ -56,5 +60,10 @@ struct dmi_attribute_spec
         .unit   = nullptr,                   \
         .values = nullptr                    \
     }
+
+#define DMI_ATTRIBUTE(entity, member, vtype)     \
+    .offset = dmi_member_offset(entity, member), \
+    .size   = dmi_member_size(entity, member),   \
+    .type   = DMI_ATTRIBUTE_TYPE_ ## vtype
 
 #endif // !OPENDMI_MODEL_ATTRIBUTE_H

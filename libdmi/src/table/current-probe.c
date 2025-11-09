@@ -9,57 +9,49 @@
 const dmi_attribute_spec_t dmi_current_probe_attrs[] =
 {
     {
+        DMI_ATTRIBUTE(dmi_current_probe_t, description, STRING),
         .code   = "description",
-        .name   = "Description",
-        .offset = offsetof(dmi_current_probe_t, description),
-        .type   = DMI_ATTRIBUTE_TYPE_STRING
+        .name   = "Description"
     },
     {
+        DMI_ATTRIBUTE(dmi_current_probe_t, location, ENUM),
         .code   = "location",
         .name   = "Location",
-        .offset = offsetof(dmi_current_probe_t, location),
-        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_probe_location_names
     },
     {
+        DMI_ATTRIBUTE(dmi_current_probe_t, status, ENUM),
         .code   = "status",
         .name   = "Status",
-        .offset = offsetof(dmi_current_probe_t, status),
-        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_status_names
     },
     {
+        DMI_ATTRIBUTE(dmi_current_probe_t, max_value, INT),
         .code   = "max-value",
         .name   = "Maximum value",
-        .offset = offsetof(dmi_current_probe_t, max_value),
-        .type   = DMI_ATTRIBUTE_TYPE_INT,
         .unit   = "mA"
     },
     {
+        DMI_ATTRIBUTE(dmi_current_probe_t, min_value, INT),
         .code   = "min-value",
         .name   = "Minimum value",
-        .offset = offsetof(dmi_current_probe_t, min_value),
-        .type   = DMI_ATTRIBUTE_TYPE_INT,
         .unit   = "mA"
     },
     {
+        DMI_ATTRIBUTE(dmi_current_probe_t, resolution, INT),
         .code   = "resolution",
         .name   = "Resolution",
-        .offset = offsetof(dmi_current_probe_t, resolution),
-        .type   = DMI_ATTRIBUTE_TYPE_INT
     },
     {
+        DMI_ATTRIBUTE(dmi_current_probe_t, tolerance, INT),
         .code   = "tolerance",
         .name   = "Tolerance",
-        .offset = offsetof(dmi_current_probe_t, tolerance),
-        .type   = DMI_ATTRIBUTE_TYPE_INT,
         .unit   = "mA"
     },
     {
+        DMI_ATTRIBUTE(dmi_current_probe_t, accuracy, INT),
         .code   = "accuracy",
-        .name   = "Accuracy",
-        .offset = offsetof(dmi_current_probe_t, accuracy),
-        .type   = DMI_ATTRIBUTE_TYPE_INT
+        .name   = "Accuracy"
     },
     /*
     {
@@ -68,10 +60,9 @@ const dmi_attribute_spec_t dmi_current_probe_attrs[] =
     },
     */
     {
+        DMI_ATTRIBUTE(dmi_current_probe_t, nom_value, INT),
         .code   = "nom-value",
         .name   = "Nominal value",
-        .offset = offsetof(dmi_current_probe_t, nom_value),
-        .type   = DMI_ATTRIBUTE_TYPE_INT,
         .unit   = "mA"
     },
     DMI_ATTRIBUTE_NULL

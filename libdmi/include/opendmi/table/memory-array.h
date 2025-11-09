@@ -75,14 +75,14 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
      *
      * @since SMBIOS 2.1
      */
-    enum dmi_memory_array_location location : 8;
+    dmi_byte_t location;
 
     /**
      * @brief Function for which the array is used.
      *
      * @since SMBIOS 2.1
      */
-    enum dmi_memory_array_usage usage : 8;
+    dmi_byte_t usage;
 
     /**
      * @brief Primary hardware error correction or detection method supported
@@ -90,7 +90,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
      *
      * @since SMBIOS 2.1
      */
-    enum dmi_ecc_type ecc_type : 8;
+    dmi_byte_t ecc_type;
 
     /**
      * @brief Maximum memory capacity, in kibibytes, for this array.
@@ -140,10 +140,17 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
     dmi_qword_t maximum_capacity_ex;
 };
 
+/**
+ * @brief Physical memory array table.
+ */
 struct dmi_memory_array
 {
     dmi_memory_array_location_t location;
     dmi_memory_array_usage_t usage;
+    dmi_ecc_type_t ecc_type;
+    dmi_handle_t error_handle;
+    int device_count;
+    dmi_size_t maximum_capacity;
 };
 
 /**

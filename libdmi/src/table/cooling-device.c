@@ -77,30 +77,26 @@ static const dmi_name_t dmi_cooling_device_type_names[] =
 const dmi_attribute_spec_t dmi_cooling_device_attrs[] =
 {
     {
+        DMI_ATTRIBUTE(dmi_cooling_device_t, probe_handle, HANDLE),
         .code   = "probe-handle",
-        .name   = "Temperature probe handle",
-        .offset = offsetof(dmi_cooling_device_t, probe_handle),
-        .type   = DMI_ATTRIBUTE_TYPE_HANDLE
+        .name   = "Temperature probe handle"
     },
     {
+        DMI_ATTRIBUTE(dmi_cooling_device_t, type, ENUM),
         .code   = "type",
         .name   = "Type",
-        .offset = offsetof(dmi_cooling_device_t, type),
-        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_cooling_device_type_names,
     },
     {
+        DMI_ATTRIBUTE(dmi_cooling_device_t, status, ENUM),
         .code   = "status",
         .name   = "Status",
-        .offset = offsetof(dmi_cooling_device_t, status),
-        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_status_names
     },
     {
+        DMI_ATTRIBUTE(dmi_cooling_device_t, group, INT),
         .code   = "group",
-        .name   = "Group",
-        .offset = offsetof(dmi_cooling_device_t, group),
-        .type   = DMI_ATTRIBUTE_TYPE_INT
+        .name   = "Group"
     },
     /*
     {
@@ -109,17 +105,15 @@ const dmi_attribute_spec_t dmi_cooling_device_attrs[] =
     },
      */
     {
+        DMI_ATTRIBUTE(dmi_cooling_device_t, nominal_speed, INT),
         .code   = "nominal-speed",
         .name   = "Nominal speed",
-        .offset = offsetof(dmi_cooling_device_t, nominal_speed),
-        .type   = DMI_ATTRIBUTE_TYPE_INT,
         .unit   = "rpm"
     },
     {
+        DMI_ATTRIBUTE(dmi_cooling_device_t, description, STRING),
         .code   = "description",
-        .name   = "Description",
-        .offset = offsetof(dmi_cooling_device_t, description),
-        .type   = DMI_ATTRIBUTE_TYPE_STRING
+        .name   = "Description"
     },
     DMI_ATTRIBUTE_NULL
 };

@@ -135,24 +135,21 @@ static const dmi_name_t dmi_pointing_device_interface_names[] =
 const dmi_attribute_spec_t dmi_pointing_device_attrs[] =
 {
     {
+        DMI_ATTRIBUTE(dmi_pointing_device_t, type, ENUM),
         .code   = "type",
         .name   = "Type",
-        .offset = offsetof(dmi_pointing_device_t, type),
-        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_pointing_device_type_names
     },
     {
+        DMI_ATTRIBUTE(dmi_pointing_device_t, interface, ENUM),
         .code   = "interface",
         .name   = "Interface type",
-        .offset = offsetof(dmi_pointing_device_t, interface),
-        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_pointing_device_interface_names
     },
     {
+        DMI_ATTRIBUTE(dmi_pointing_device_t, button_count, INT),
         .code   = "button-count",
-        .name   = "Button count",
-        .offset = offsetof(dmi_pointing_device_t, button_count),
-        .type   = DMI_ATTRIBUTE_TYPE_INT
+        .name   = "Button count"
     },
     DMI_ATTRIBUTE_NULL
 };
