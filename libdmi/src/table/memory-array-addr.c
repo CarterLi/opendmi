@@ -10,33 +10,28 @@
 
 const dmi_attribute_spec_t dmi_memory_array_addr_attrs[] =
 {
-    {
-        DMI_ATTRIBUTE(dmi_memory_array_addr_t, starting_addr, SIZE),
+    DMI_ATTRIBUTE(dmi_memory_array_addr_t, starting_addr, SIZE, {
         .code   = "starting-address",
         .name   = "Starting address",
         .format = DMI_ATTRIBUTE_FORMAT_HEX
-    },
-    {
-        DMI_ATTRIBUTE(dmi_memory_array_addr_t, ending_addr, SIZE),
+    }),
+    DMI_ATTRIBUTE(dmi_memory_array_addr_t, ending_addr, SIZE, {
         .code   = "ending-address",
         .name   = "Ending address",
         .format = DMI_ATTRIBUTE_FORMAT_HEX
-    },
-    {
-        DMI_ATTRIBUTE(dmi_memory_array_addr_t, range_size, SIZE),
+    }),
+    DMI_ATTRIBUTE(dmi_memory_array_addr_t, range_size, SIZE, {
         .code   = "range-size",
         .name   = "Range size"
-    },
-    {
-        DMI_ATTRIBUTE(dmi_memory_array_addr_t, array_handle, HANDLE),
+    }),
+    DMI_ATTRIBUTE(dmi_memory_array_addr_t, array_handle, HANDLE, {
         .code   = "array-handle",
         .name   = "Memory array handle"
-    },
-    {
-        DMI_ATTRIBUTE(dmi_memory_array_addr_t, partition_width, INT),
+    }),
+    DMI_ATTRIBUTE(dmi_memory_array_addr_t, partition_width, INT, {
         .code   = "partition-width",
         .name   = "Partition width"
-    },
+    }),
     DMI_ATTRIBUTE_NULL
 };
 

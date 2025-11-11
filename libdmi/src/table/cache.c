@@ -169,81 +169,68 @@ static const dmi_name_t dmi_cache_location_names[] =
 
 const dmi_attribute_spec_t dmi_cache_attrs[] =
 {
-    {
+    DMI_ATTRIBUTE(dmi_cache_t, socket, STRING, {
         .code = "socket-designator",
-        .name = "Socket designator",
-        .type = DMI_ATTRIBUTE_TYPE_STRING
-    },
-    {
+        .name = "Socket designator"
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, level, INT, {
         .code = "level",
         .name = "Cache level"
-    },
-    {
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, socketed, BOOL, {
         .code = "socketed",
         .name = "Socketed",
-        .type = DMI_ATTRIBUTE_TYPE_BOOL
-    },
-    {
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, location, ENUM, {
         .code = "location",
         .name = "Location (relative to CPU module)",
-        .type = DMI_ATTRIBUTE_TYPE_ENUM
-    },
-    {
-        .code = "status",
-        .name = "Status",
-        .type = DMI_ATTRIBUTE_TYPE_BOOL
-    },
-    {
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, enabled, BOOL, {
+        .code = "enabled",
+        .name = "Enabled"
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, mode, ENUM, {
         .code   = "mode",
         .name   = "Operational mode",
-        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_cache_mode_names
-    },
-    {
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, maximum_size, SIZE, {
         .code = "maximum-size",
         .name = "Maximum cache size",
-        .type = DMI_ATTRIBUTE_TYPE_SIZE,
         .unit = "KiB"
-    },
-    {
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, installed_size, SIZE, {
         .code = "installed-size",
         .name = "Installed cache size",
-        .type = DMI_ATTRIBUTE_TYPE_SIZE,
         .unit = "KiB"
-    },
-    {
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, supported_sram_type, SET, {
         .code = "supported-sram",
-        .name = "Supported SRAM type",
-        .type = DMI_ATTRIBUTE_TYPE_SET
-    },
-    {
-        .code = "installed-sram",
-        .name = "Installed SRAM type",
-        .type = DMI_ATTRIBUTE_TYPE_SET
-    },
-    {
+        .name = "Supported SRAM type"
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, current_sram_type, SET, {
+        .code = "current-sram",
+        .name = "Current SRAM type"
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, speed, INT, {
         .code = "speed",
         .name = "Cache speed",
-        .type = DMI_ATTRIBUTE_TYPE_INT,
         .unit = "ns"
-    },
-    {
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, ecc_type, ENUM, {
         .code = "ecc-type",
         .name = "Error correction type",
-        .type = DMI_ATTRIBUTE_TYPE_ENUM
-    },
-    {
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, type, ENUM, {
         .code   = "type",
         .name   = "System cache type",
-        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_cache_type_names
-    },
-    {
+    }),
+    DMI_ATTRIBUTE(dmi_cache_t, associativity, ENUM, {
         .code   = "associativity",
         .name   = "Associativity",
-        .type   = DMI_ATTRIBUTE_TYPE_ENUM,
         .values = dmi_cache_assoc_names
-    },
+    }),
     DMI_ATTRIBUTE_NULL
 };
 

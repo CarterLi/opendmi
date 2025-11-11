@@ -15,6 +15,16 @@
 #include <opendmi/table.h>
 #include <opendmi/table/common.h>
 
+#ifndef DMI_CACHE_DATA_T
+#define DMI_CACHE_DATA_T
+typedef struct dmi_cache_data dmi_cache_data_t;
+#endif // !DMI_CACHE_DATA_T
+
+#ifndef DMI_CACHE_T
+#define DMI_CACHE_T
+typedef struct dmi_cache dmi_cache_t;
+#endif // !DMI_CACHE_T
+
 typedef uint16_t dmi_cache_size_t;
 typedef uint32_t dmi_cache_size_ex_t;
 
@@ -269,12 +279,12 @@ struct dmi_cache
     /**
      * @brief Maximum cache size that can be installed, in bytes.
      */
-    size_t maximum_size;
+    dmi_size_t maximum_size;
 
     /**
      * @brief Installed cache size, in bytes.
      */
-    size_t installed_size;
+    dmi_size_t installed_size;
 
     /**
      * @brief Supported SRAM type.

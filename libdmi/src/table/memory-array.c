@@ -129,36 +129,33 @@ static const dmi_name_t dmi_memory_array_usage_names[] =
 
 const dmi_attribute_spec_t dmi_memory_array_attrs[] =
 {
-    {
-        .code = "location",
-        .name = "Location",
-        .type = DMI_ATTRIBUTE_TYPE_ENUM
-    },
-    {
-        .code = "use",
-        .name = "Use",
-        .type = DMI_ATTRIBUTE_TYPE_ENUM
-    },
-    {
-        .code = "error-correction",
-        .name = "Memory error correction",
-        .type = DMI_ATTRIBUTE_TYPE_ENUM
-    },
-    {
+    DMI_ATTRIBUTE(dmi_memory_array_t, location, ENUM, {
+        .code   = "location",
+        .name   = "Location",
+        .values = dmi_memory_array_location_names
+    }),
+    DMI_ATTRIBUTE(dmi_memory_array_t, usage, ENUM, {
+        .code   = "use",
+        .name   = "Use",
+        .values = dmi_memory_array_usage_names
+    }),
+    DMI_ATTRIBUTE(dmi_memory_array_t, ecc_type, ENUM, {
+        .code   = "error-correction",
+        .name   = "Memory error correction",
+        .values = dmi_ecc_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_memory_array_t, maximum_capacity, SIZE, {
         .code = "maximum-capacity",
-        .name = "Maximum capacity",
-        .type = DMI_ATTRIBUTE_TYPE_SIZE
-    },
-    {
+        .name = "Maximum capacity"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_array_t, error_handle, HANDLE, {
         .code = "error-information",
-        .name = "Memory error information handle",
-        .type = DMI_ATTRIBUTE_TYPE_HANDLE
-    },
-    {
+        .name = "Memory error information handle"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_array_t, device_count, INT, {
         .code = "device-count",
-        .name = "Number of memory devices",
-        .type = DMI_ATTRIBUTE_TYPE_INT
-    },
+        .name = "Number of memory devices"
+    }),
     DMI_ATTRIBUTE_NULL
 };
 

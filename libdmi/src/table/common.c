@@ -41,7 +41,7 @@ const dmi_name_t dmi_status_names[] =
     DMI_NAME_NULL
 };
 
-static const dmi_name_t dmi_ecc_type_names[] =
+const dmi_name_t dmi_ecc_type_names[] =
 {
     {
         .id   = DMI_ECC_TYPE_OTHER,

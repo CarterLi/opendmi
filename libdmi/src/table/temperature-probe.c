@@ -14,70 +14,61 @@ const char *dmi_temperature_accuracy_format(const void *value_ptr);
 
 const dmi_attribute_spec_t dmi_temperature_probe_attrs[] =
 {
-    {
-        DMI_ATTRIBUTE(dmi_temperature_probe_t, description, STRING),
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, description, STRING, {
         .code   = "description",
         .name   = "Description"
-    },
-    {
-        DMI_ATTRIBUTE(dmi_temperature_probe_t, location, ENUM),
+    }),
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, location, ENUM, {
         .code   = "location",
         .name   = "Location",
         .values = dmi_probe_location_names
-    },
-    {
-        DMI_ATTRIBUTE(dmi_temperature_probe_t, status, ENUM),
+    }),
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, status, ENUM, {
         .code   = "status",
         .name   = "Status",
         .values = dmi_status_names
-    },
-    {
-        DMI_ATTRIBUTE(dmi_temperature_probe_t, max_value, INT),
+    }),
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, max_value, INT, {
         .code      = "max-value",
         .name      = "Maximum value",
         .unit      = "°C",
         .to_string = dmi_temperature_value_format
-    },
-    {
-        DMI_ATTRIBUTE(dmi_temperature_probe_t, min_value, INT),
+    }),
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, min_value, INT, {
         .code      = "min-value",
         .name      = "Minimum value",
         .unit      = "°C",
         .to_string = dmi_temperature_value_format
-    },
-    {
-        DMI_ATTRIBUTE(dmi_temperature_probe_t, resolution, INT),
+    }),
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, resolution, INT, {
         .code      = "resolution",
         .name      = "Resolution",
         .unit      = "°C",
         .to_string = dmi_temperature_resolution_format
-    },
-    {
-        DMI_ATTRIBUTE(dmi_temperature_probe_t, tolerance, INT),
+    }),
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, tolerance, INT, {
         .code      = "tolerance",
         .name      = "Tolerance",
         .unit      = "°C",
         .to_string = dmi_temperature_value_format
-    },
-    {
-        DMI_ATTRIBUTE(dmi_temperature_probe_t, accuracy, INT),
+    }),
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, accuracy, INT, {
         .code      = "accuracy",
         .name      = "Accuracy",
         .to_string = dmi_temperature_accuracy_format
-    },
+    }),
     /*
     {
         .code = "oem-defined",
         .name = "OEM-defined"
     },
     */
-    {
-        DMI_ATTRIBUTE(dmi_temperature_probe_t, nom_value, INT),
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, nom_value, INT, {
         .code      = "nom-value",
         .name      = "Nominal value",
         .unit      = "°C",
         .to_string = dmi_temperature_value_format,
-    },
+    }),
     DMI_ATTRIBUTE_NULL
 };
 

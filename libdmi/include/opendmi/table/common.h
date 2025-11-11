@@ -39,6 +39,7 @@ typedef enum dmi_ecc_type
 } dmi_ecc_type_t;
 
 extern const dmi_name_t dmi_status_names[];
+extern const dmi_name_t dmi_ecc_type_names[];
 
 __BEGIN_DECLS
 

@@ -73,45 +73,39 @@ static const dmi_name_t dmi_cooling_device_type_names[] =
 
 const dmi_attribute_spec_t dmi_cooling_device_attrs[] =
 {
-    {
-        DMI_ATTRIBUTE(dmi_cooling_device_t, probe_handle, HANDLE),
+    DMI_ATTRIBUTE(dmi_cooling_device_t, probe_handle, HANDLE, {
         .code   = "probe-handle",
         .name   = "Temperature probe handle"
-    },
-    {
-        DMI_ATTRIBUTE(dmi_cooling_device_t, type, ENUM),
+    }),
+    DMI_ATTRIBUTE(dmi_cooling_device_t, type, ENUM, {
         .code   = "type",
         .name   = "Type",
         .values = dmi_cooling_device_type_names,
-    },
-    {
-        DMI_ATTRIBUTE(dmi_cooling_device_t, status, ENUM),
+    }),
+    DMI_ATTRIBUTE(dmi_cooling_device_t, status, ENUM, {
         .code   = "status",
         .name   = "Status",
         .values = dmi_status_names
-    },
-    {
-        DMI_ATTRIBUTE(dmi_cooling_device_t, group, INT),
+    }),
+    DMI_ATTRIBUTE(dmi_cooling_device_t, group, INT, {
         .code   = "group",
         .name   = "Group"
-    },
+    }),
     /*
     {
         .code = "oem-defined",
         .name = "OEM-defined"
     },
      */
-    {
-        DMI_ATTRIBUTE(dmi_cooling_device_t, nominal_speed, INT),
+    DMI_ATTRIBUTE(dmi_cooling_device_t, nominal_speed, INT, {
         .code   = "nominal-speed",
         .name   = "Nominal speed",
         .unit   = "rpm"
-    },
-    {
-        DMI_ATTRIBUTE(dmi_cooling_device_t, description, STRING),
+    }),
+    DMI_ATTRIBUTE(dmi_cooling_device_t, description, STRING, {
         .code   = "description",
         .name   = "Description"
-    },
+    }),
     DMI_ATTRIBUTE_NULL
 };
 

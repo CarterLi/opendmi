@@ -11,7 +11,7 @@
 
 #include <opendmi/types.h>
 #include <opendmi/version.h>
-#include <opendmi/model/attribute.h>
+#include <opendmi/attribute.h>
 
 #ifndef DMI_TABLE_OPS_T
 #define DMI_TABLE_OPS_T

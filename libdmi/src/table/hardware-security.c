@@ -36,30 +36,26 @@ static const dmi_name_t dmi_hardware_security_status_names[] =
 
 const dmi_attribute_spec_t dmi_hardware_security_attrs[] =
 {
-    {
-        DMI_ATTRIBUTE(dmi_hardware_security_t, front_panel_reset, ENUM),
+    DMI_ATTRIBUTE(dmi_hardware_security_t, front_panel_reset, ENUM, {
         .code   = "front-panel-reset",
         .name   = "Front panel reset status",
         .values = dmi_hardware_security_status_names
-    },
-    {
-        DMI_ATTRIBUTE(dmi_hardware_security_t, admin_password, ENUM),
+    }),
+    DMI_ATTRIBUTE(dmi_hardware_security_t, admin_password, ENUM, {
         .code   = "admin-password",
         .name   = "Administrator password status",
         .values = dmi_hardware_security_status_names
-    },
-    {
-        DMI_ATTRIBUTE(dmi_hardware_security_t, keyboard_password, ENUM),
+    }),
+    DMI_ATTRIBUTE(dmi_hardware_security_t, keyboard_password, ENUM, {
         .code   = "keyboard-password",
         .name   = "Keyboard password status",
         .values = dmi_hardware_security_status_names
-    },
-    {
-        DMI_ATTRIBUTE(dmi_hardware_security_t, poweron_password, ENUM),
+    }),
+    DMI_ATTRIBUTE(dmi_hardware_security_t, poweron_password, ENUM, {
         .code   = "poweron-password",
         .name   = "Power-on password status",
         .values = dmi_hardware_security_status_names
-    },
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
