@@ -10,6 +10,7 @@ add_library(dmi-object OBJECT
     src/context.c
     src/entry.c
     src/table.c
+    src/attribute.c
     src/registry.c
     src/table/additional-info.c
     src/table/baseboard.c
@@ -97,3 +98,7 @@ add_test(NAME bswap32 COMMAND bswap32-test)
 add_executable(bswap64-test test/bswap64.c)
 target_link_libraries(bswap64-test dmi-shared)
 add_test(NAME bswap64 COMMAND bswap64-test)
+
+add_executable(ipow-test test/ipow.c)
+target_link_libraries(ipow-test dmi-shared)
+add_test(NAME ipow COMMAND ipow-test)

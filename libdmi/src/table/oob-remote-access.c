@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/oob-remote-access.h>
 
-const dmi_attribute_spec_t dmi_oob_remote_access_attrs[] =
+const dmi_attribute_t dmi_oob_remote_access_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

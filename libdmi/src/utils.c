@@ -105,6 +105,28 @@ uint64_t dmi_bswap64_compat(uint64_t value)
     return value;
 }
 
+int dmi_ipow(int x, int n)
+{
+    int y = 1;
+
+    if (n < 0) {
+        x = 1 / x;
+        n = -n;
+    }
+
+    if (n == 0)
+        return y;
+
+    while (n > 1) {
+        if (n % 2)
+            y *= x, n--;
+
+        x *= x, n /= 2;
+    }
+
+    return x * y;
+}
+
 dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength)
 {
     if ((context == nullptr) || (path == nullptr) || (plength == nullptr)) {

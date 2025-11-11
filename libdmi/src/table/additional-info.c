@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/additional-info.h>
 
-const dmi_attribute_spec_t dmi_additional_info_attrs[] =
+const dmi_attribute_t dmi_additional_info_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

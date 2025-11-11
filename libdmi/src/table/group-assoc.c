@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/group-assoc.h>
 
-const dmi_attribute_spec_t dmi_group_assoc_attrs[] =
+const dmi_attribute_t dmi_group_assoc_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

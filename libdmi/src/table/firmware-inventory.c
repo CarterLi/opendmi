@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/firmware-inventory.h>
 
-const dmi_attribute_spec_t dmi_firmware_inventory_attrs[] =
+const dmi_attribute_t dmi_firmware_inventory_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

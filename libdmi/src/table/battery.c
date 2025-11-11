@@ -52,7 +52,7 @@ const dmi_name_t dmi_battery_chemistry_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_battery_attrs[] =
+const dmi_attribute_t dmi_battery_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

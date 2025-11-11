@@ -8,7 +8,7 @@
 
 #include <opendmi/table/memory-array-addr.h>
 
-const dmi_attribute_spec_t dmi_memory_array_addr_attrs[] =
+const dmi_attribute_t dmi_memory_array_addr_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_memory_array_addr_t, starting_addr, SIZE, {
         .code   = "starting-address",
@@ -28,7 +28,7 @@ const dmi_attribute_spec_t dmi_memory_array_addr_attrs[] =
         .code   = "array-handle",
         .name   = "Memory array handle"
     }),
-    DMI_ATTRIBUTE(dmi_memory_array_addr_t, partition_width, INT, {
+    DMI_ATTRIBUTE(dmi_memory_array_addr_t, partition_width, INTEGER, {
         .code   = "partition-width",
         .name   = "Partition width"
     }),

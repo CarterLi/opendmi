@@ -8,11 +8,10 @@
 
 #include <opendmi/table/temperature-probe.h>
 
-const char *dmi_temperature_value_format(const void *value_ptr);
-const char *dmi_temperature_resolution_format(const void *value_ptr);
-const char *dmi_temperature_accuracy_format(const void *value_ptr);
-
-const dmi_attribute_spec_t dmi_temperature_probe_attrs[] =
+/**
+ * @brief Temperature probe attributes.
+ */
+const dmi_attribute_t dmi_temperature_probe_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_temperature_probe_t, description, STRING, {
         .code   = "description",
@@ -28,46 +27,46 @@ const dmi_attribute_spec_t dmi_temperature_probe_attrs[] =
         .name   = "Status",
         .values = dmi_status_names
     }),
-    DMI_ATTRIBUTE(dmi_temperature_probe_t, max_value, INT, {
-        .code      = "max-value",
-        .name      = "Maximum value",
-        .unit      = "°C",
-        .to_string = dmi_temperature_value_format
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, max_value, DECIMAL, {
+        .code  = "max-value",
+        .name  = "Maximum value",
+        .scale = 1,
+        .unit  = "°C"
     }),
-    DMI_ATTRIBUTE(dmi_temperature_probe_t, min_value, INT, {
-        .code      = "min-value",
-        .name      = "Minimum value",
-        .unit      = "°C",
-        .to_string = dmi_temperature_value_format
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, min_value, DECIMAL, {
+        .code  = "min-value",
+        .name  = "Minimum value",
+        .scale = 1,
+        .unit  = "°C"
     }),
-    DMI_ATTRIBUTE(dmi_temperature_probe_t, resolution, INT, {
-        .code      = "resolution",
-        .name      = "Resolution",
-        .unit      = "°C",
-        .to_string = dmi_temperature_resolution_format
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, resolution, DECIMAL, {
+        .code  = "resolution",
+        .name  = "Resolution",
+        .scale = 3,
+        .unit  = "°C"
     }),
-    DMI_ATTRIBUTE(dmi_temperature_probe_t, tolerance, INT, {
-        .code      = "tolerance",
-        .name      = "Tolerance",
-        .unit      = "°C",
-        .to_string = dmi_temperature_value_format
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, tolerance, DECIMAL, {
+        .code  = "tolerance",
+        .name  = "Tolerance",
+        .scale = 1,
+        .unit  = "°C"
     }),
-    DMI_ATTRIBUTE(dmi_temperature_probe_t, accuracy, INT, {
-        .code      = "accuracy",
-        .name      = "Accuracy",
-        .to_string = dmi_temperature_accuracy_format
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, accuracy, DECIMAL, {
+        .code  = "accuracy",
+        .name  = "Accuracy",
+        .scale = 2,
+        .unit  = "°C"
     }),
-    /*
-    {
-        .code = "oem-defined",
-        .name = "OEM-defined"
-    },
-    */
-    DMI_ATTRIBUTE(dmi_temperature_probe_t, nom_value, INT, {
-        .code      = "nom-value",
-        .name      = "Nominal value",
-        .unit      = "°C",
-        .to_string = dmi_temperature_value_format,
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, oem_defined, INTEGER, {
+        .code  = "oem-defined",
+        .name  = "OEM-defined",
+        .flags = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_temperature_probe_t, nom_value, DECIMAL, {
+        .code  = "nom-value",
+        .name  = "Nominal value",
+        .scale = 1,
+        .unit  = "°C"
     }),
     DMI_ATTRIBUTE_NULL
 };
@@ -84,34 +83,3 @@ const dmi_table_spec_t dmi_temperature_probe_table =
         .deallocator = (dmi_table_deallocator_t)dmi_probe_destroy
     }
 };
-
-const char *dmi_temperature_value_format(const void *value_ptr)
-{
-    static char str[16];
-
-    int value = *(const int *)value_ptr;
-    snprintf(str, sizeof(str), "%d.%01d", value / 10, value % 10);
-
-    return str;
-}
-
-const char *dmi_temperature_resolution_format(const void *value_ptr)
-{
-    static char str[16];
-
-    int value = *(const int *)value_ptr;
-    snprintf(str, sizeof(str), "%d.%03d", value / 1000, value % 1000);
-
-    return str;
-
-}
-
-const char *dmi_temperature_accuracy_format(const void *value_ptr)
-{
-    static char str[16];
-
-    int value = *(const int *)value_ptr;
-    snprintf(str, sizeof(str), "%d.%02d", value / 100, value % 100);
-
-    return str;
-}

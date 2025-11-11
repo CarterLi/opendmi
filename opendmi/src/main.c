@@ -248,64 +248,24 @@ static void print_table(const dmi_table_t *table)
 
 static void print_table_attrs(const dmi_table_t *table)
 {
-    const char *str;
-    int num;
+    char *str;
     const dmi_table_spec_t *spec = table->spec;
-    const dmi_attribute_spec_t *attr = nullptr;
+    const dmi_attribute_t *attr = nullptr;
 
     for (attr = spec->attributes; attr->params.name; attr++) {
         const dmi_data_t *ptr = (dmi_data_t *)table->info + attr->offset;
 
+        str = dmi_attribute_format(attr, ptr);
+        if (!str)
+            continue;
+
         printf("\t%s: ", attr->params.name);
+        if (attr->params.unit)
+            printf("%s %s\n", str, attr->params.unit);
+        else
+            printf("%s\n", str);
 
-        switch (attr->type) {
-        case DMI_ATTRIBUTE_TYPE_HANDLE:
-            printf("0x%04X", *(dmi_handle_t *)ptr);
-            break;
-
-        case DMI_ATTRIBUTE_TYPE_STRING:
-            str = *(const char **)ptr;
-            printf("%s", str ? str : "<unspecified>");
-            break;
-
-        case DMI_ATTRIBUTE_TYPE_ENUM:
-            str = dmi_name_lookup(attr->params.values, *(int *)ptr);
-            printf("%s", str ? str : "<invalid>");
-            break;
-
-        case DMI_ATTRIBUTE_TYPE_INT:
-            num = *(int *)ptr;
-            if (num != INT_MIN) {
-                if (attr->params.to_string) {
-                    if (attr->params.unit)
-                        printf("%s %s", attr->params.to_string(ptr), attr->params.unit);
-                    else
-                        printf("%s", attr->params.to_string(ptr));
-                } else {
-                    if (attr->params.unit)
-                        printf("%d %s", *(int *)ptr, attr->params.unit);
-                    else
-                        printf("%d", *(int *)ptr);
-                }
-            } else {
-                printf("<unknown>");
-            }
-            break;
-
-        case DMI_ATTRIBUTE_TYPE_SIZE:
-            bool is_64bit = (table->context->entry_version >= DMI_VERSION(3, 0, 0));
-
-            if (attr->params.format == DMI_ATTRIBUTE_FORMAT_HEX)
-                printf(is_64bit ? "0x%016llX" : "0x%08llX", *(uint64_t *)ptr);
-            else
-                printf("%lld", *(uint64_t *)ptr);
-            break;
-
-        default:
-            break;
-        }
-
-        printf("\n");
+        free(str);
     }
 }
 

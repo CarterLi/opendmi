@@ -482,7 +482,7 @@ static const dmi_name_t dmi_processor_upgrade_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_processor_attrs[] =
+const dmi_attribute_t dmi_processor_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };
@@ -498,7 +498,7 @@ const dmi_table_spec_t dmi_processor_table =
     .attributes    = dmi_processor_attrs
 };
 
-const dmi_attribute_spec_t dmi_processor_ex_attrs[] =
+const dmi_attribute_t dmi_processor_ex_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

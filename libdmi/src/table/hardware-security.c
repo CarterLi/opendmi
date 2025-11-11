@@ -34,7 +34,7 @@ static const dmi_name_t dmi_hardware_security_status_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_hardware_security_attrs[] =
+const dmi_attribute_t dmi_hardware_security_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_hardware_security_t, front_panel_reset, ENUM, {
         .code   = "front-panel-reset",

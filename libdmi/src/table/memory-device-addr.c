@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/memory-device-addr.h>
 
-const dmi_attribute_spec_t dmi_memory_device_addr_attrs[] =
+const dmi_attribute_t dmi_memory_device_addr_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

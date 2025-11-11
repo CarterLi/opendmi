@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/system-reset.h>
 
-const dmi_attribute_spec_t dmi_system_reset_attrs[] =
+const dmi_attribute_t dmi_system_reset_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

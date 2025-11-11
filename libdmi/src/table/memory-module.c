@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/memory-module.h>
 
-const dmi_attribute_spec_t dmi_memory_module_attrs[] =
+const dmi_attribute_t dmi_memory_module_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

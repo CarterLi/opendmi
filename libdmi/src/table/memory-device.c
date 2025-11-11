@@ -327,7 +327,7 @@ static const dmi_name_t dmi_memory_device_technology_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_memory_device_attrs[] =
+const dmi_attribute_t dmi_memory_device_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

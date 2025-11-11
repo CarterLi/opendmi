@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/mgmt-controller.h>
 
-const dmi_attribute_spec_t dmi_mgmt_controller_host_if_attrs[] =
+const dmi_attribute_t dmi_mgmt_controller_host_if_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

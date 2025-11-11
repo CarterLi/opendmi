@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/system-event-log.h>
 
-const dmi_attribute_spec_t dmi_system_event_log_attrs[] =
+const dmi_attribute_t dmi_system_event_log_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

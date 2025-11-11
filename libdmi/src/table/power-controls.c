@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/power-controls.h>
 
-const dmi_attribute_spec_t dmi_power_controls_attrs[] =
+const dmi_attribute_t dmi_power_controls_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

@@ -107,7 +107,7 @@ static const dmi_name_t dmi_mgmt_device_address_type_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_mgmt_device_attrs[] =
+const dmi_attribute_t dmi_mgmt_device_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };
@@ -122,7 +122,7 @@ const dmi_table_spec_t dmi_mgmt_device_table =
     .attributes  = dmi_mgmt_device_attrs
 };
 
-const dmi_attribute_spec_t dmi_mgmt_device_component_attrs[] =
+const dmi_attribute_t dmi_mgmt_device_component_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };
@@ -137,7 +137,7 @@ const dmi_table_spec_t dmi_mgmt_device_component_table =
     .attributes  = dmi_mgmt_device_component_attrs
 };
 
-const dmi_attribute_spec_t dmi_mgmt_device_threshold_attrs[] =
+const dmi_attribute_t dmi_mgmt_device_threshold_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/string-property.h>
 
-const dmi_attribute_spec_t dmi_string_property_attrs[] =
+const dmi_attribute_t dmi_string_property_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

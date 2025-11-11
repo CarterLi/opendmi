@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/oem-strings.h>
 
-const dmi_attribute_spec_t dmi_oem_strings_attrs[] =
+const dmi_attribute_t dmi_oem_strings_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

@@ -127,7 +127,7 @@ static const dmi_name_t dmi_memory_array_usage_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_memory_array_attrs[] =
+const dmi_attribute_t dmi_memory_array_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_memory_array_t, location, ENUM, {
         .code   = "location",
@@ -152,7 +152,7 @@ const dmi_attribute_spec_t dmi_memory_array_attrs[] =
         .code = "error-information",
         .name = "Memory error information handle"
     }),
-    DMI_ATTRIBUTE(dmi_memory_array_t, device_count, INT, {
+    DMI_ATTRIBUTE(dmi_memory_array_t, device_count, INTEGER, {
         .code = "device-count",
         .name = "Number of memory devices"
     }),

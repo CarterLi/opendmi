@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/firmware-language.h>
 
-const dmi_attribute_spec_t dmi_firmware_language_attrs[] =
+const dmi_attribute_t dmi_firmware_language_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

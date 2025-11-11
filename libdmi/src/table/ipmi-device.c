@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/ipmi-device.h>
 
-const dmi_attribute_spec_t dmi_ipmi_device_attrs[] =
+const dmi_attribute_t dmi_ipmi_device_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/current-probe.h>
 
-const dmi_attribute_spec_t dmi_current_probe_attrs[] =
+const dmi_attribute_t dmi_current_probe_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_current_probe_t, description, STRING, {
         .code   = "description",
@@ -22,38 +22,45 @@ const dmi_attribute_spec_t dmi_current_probe_attrs[] =
         .name   = "Status",
         .values = dmi_status_names
     }),
-    DMI_ATTRIBUTE(dmi_current_probe_t, max_value, INT, {
+    DMI_ATTRIBUTE(dmi_current_probe_t, max_value, DECIMAL, {
         .code   = "max-value",
         .name   = "Maximum value",
+        .scale  = 1,
         .unit   = "mA"
     }),
-    DMI_ATTRIBUTE(dmi_current_probe_t, min_value, INT, {
+    DMI_ATTRIBUTE(dmi_current_probe_t, min_value, DECIMAL, {
         .code   = "min-value",
         .name   = "Minimum value",
+        .scale  = 1,
         .unit   = "mA"
     }),
-    DMI_ATTRIBUTE(dmi_current_probe_t, resolution, INT, {
+    DMI_ATTRIBUTE(dmi_current_probe_t, resolution, DECIMAL, {
         .code   = "resolution",
         .name   = "Resolution",
-    }),
-    DMI_ATTRIBUTE(dmi_current_probe_t, tolerance, INT, {
-        .code   = "tolerance",
-        .name   = "Tolerance",
+        .scale  = 3,
         .unit   = "mA"
     }),
-    DMI_ATTRIBUTE(dmi_current_probe_t, accuracy, INT, {
-        .code   = "accuracy",
-        .name   = "Accuracy"
+    DMI_ATTRIBUTE(dmi_current_probe_t, tolerance, DECIMAL, {
+        .code   = "tolerance",
+        .name   = "Tolerance",
+        .scale  = 1,
+        .unit   = "mA"
     }),
-    /*
-    {
-        .code = "oem-defined",
-        .name = "OEM-defined"
-    },
-    */
-    DMI_ATTRIBUTE(dmi_current_probe_t, nom_value, INT, {
+    DMI_ATTRIBUTE(dmi_current_probe_t, accuracy, DECIMAL, {
+        .code   = "accuracy",
+        .name   = "Accuracy",
+        .scale  = 2,
+        .unit   = "mA"
+    }),
+    DMI_ATTRIBUTE(dmi_current_probe_t, oem_defined, INTEGER, {
+        .code   = "oem-defined",
+        .name   = "OEM-defined",
+        .flags  = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_current_probe_t, nom_value, DECIMAL, {
         .code   = "nom-value",
         .name   = "Nominal value",
+        .scale  = 1,
         .unit   = "mA"
     }),
     DMI_ATTRIBUTE_NULL

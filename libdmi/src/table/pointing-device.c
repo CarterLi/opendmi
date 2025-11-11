@@ -129,7 +129,7 @@ static const dmi_name_t dmi_pointing_device_interface_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_pointing_device_attrs[] =
+const dmi_attribute_t dmi_pointing_device_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_pointing_device_t, type, ENUM, {
         .code   = "type",
@@ -141,7 +141,7 @@ const dmi_attribute_spec_t dmi_pointing_device_attrs[] =
         .name   = "Interface type",
         .values = dmi_pointing_device_interface_names
     }),
-    DMI_ATTRIBUTE(dmi_pointing_device_t, button_count, INT, {
+    DMI_ATTRIBUTE(dmi_pointing_device_t, button_count, INTEGER, {
         .code   = "button-count",
         .name   = "Button count"
     }),

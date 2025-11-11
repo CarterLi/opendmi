@@ -52,7 +52,7 @@ static const dmi_name_t dmi_power_supply_type_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_power_supply_attrs[] =
+const dmi_attribute_t dmi_power_supply_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

@@ -167,13 +167,13 @@ static const dmi_name_t dmi_cache_location_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_cache_attrs[] =
+const dmi_attribute_t dmi_cache_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_cache_t, socket, STRING, {
         .code = "socket-designator",
         .name = "Socket designator"
     }),
-    DMI_ATTRIBUTE(dmi_cache_t, level, INT, {
+    DMI_ATTRIBUTE(dmi_cache_t, level, INTEGER, {
         .code = "level",
         .name = "Cache level"
     }),
@@ -212,7 +212,7 @@ const dmi_attribute_spec_t dmi_cache_attrs[] =
         .code = "current-sram",
         .name = "Current SRAM type"
     }),
-    DMI_ATTRIBUTE(dmi_cache_t, speed, INT, {
+    DMI_ATTRIBUTE(dmi_cache_t, speed, INTEGER, {
         .code = "speed",
         .name = "Cache speed",
         .unit = "ns"

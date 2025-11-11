@@ -207,7 +207,7 @@ static const dmi_name_t dmi_port_type_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_port_attrs[] =
+const dmi_attribute_t dmi_port_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

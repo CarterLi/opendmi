@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/bis-entry-point.h>
 
-const dmi_attribute_spec_t dmi_bis_entry_point_attrs[] =
+const dmi_attribute_t dmi_bis_entry_point_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

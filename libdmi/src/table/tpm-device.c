@@ -6,7 +6,7 @@
 //
 #include <opendmi/table/tpm-device.h>
 
-const dmi_attribute_spec_t dmi_tpm_device_attrs[] =
+const dmi_attribute_t dmi_tpm_device_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

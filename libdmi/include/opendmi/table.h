@@ -108,7 +108,7 @@ struct dmi_table_spec
     /**
      * @brief Table attributes specification.
      */
-    const dmi_attribute_spec_t *attributes;
+    const dmi_attribute_t *attributes;
 
     /**
      * @brief Table operation handlers.

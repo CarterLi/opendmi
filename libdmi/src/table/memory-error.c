@@ -137,7 +137,7 @@ static const dmi_name_t dmi_memory_error_operation_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_memory_error_32_attrs[] =
+const dmi_attribute_t dmi_memory_error_32_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };
@@ -152,7 +152,7 @@ const dmi_table_spec_t dmi_memory_error_32_table =
     .attributes  = dmi_memory_error_32_attrs
 };
 
-const dmi_attribute_spec_t dmi_memory_error_64_attrs[] =
+const dmi_attribute_t dmi_memory_error_64_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

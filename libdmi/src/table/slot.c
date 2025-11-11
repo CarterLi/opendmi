@@ -512,7 +512,7 @@ static const dmi_name_t dmi_slot_usage_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_slot_attrs[] =
+const dmi_attribute_t dmi_slot_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

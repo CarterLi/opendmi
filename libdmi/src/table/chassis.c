@@ -227,7 +227,7 @@ static const dmi_name_t dmi_chassis_state_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_spec_t dmi_chassis_attrs[] =
+const dmi_attribute_t dmi_chassis_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };

@@ -7,7 +7,7 @@
 #include <opendmi/table/firmware.h>
 #include <opendmi/utils.h>
 
-const dmi_attribute_spec_t dmi_firmware_attrs[] =
+const dmi_attribute_t dmi_firmware_attrs[] =
 {
     DMI_ATTRIBUTE_NULL
 };
