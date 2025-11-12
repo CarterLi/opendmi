@@ -1,7 +1,5 @@
 project(opendmi-libdmi)
 
-include(CTest)
-
 add_library(dmi-object OBJECT
     src/name.c
     src/utils.c

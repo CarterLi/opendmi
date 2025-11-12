@@ -31,6 +31,8 @@ else()
     endif()
 endif()
 
+include(CTest)
+
 add_subdirectory(libdmi)
 add_subdirectory(libdmi++)
 add_subdirectory(opendmi)
