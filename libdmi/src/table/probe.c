@@ -11,7 +11,7 @@
 #include <opendmi/utils.h>
 #include <opendmi/table/probe.h>
 
-static int dmi_probe_decode_value(dmi_word_t value);
+static short dmi_probe_decode_value(dmi_word_t value);
 
 const dmi_name_t dmi_probe_location_names[] =
 {
@@ -120,19 +120,19 @@ dmi_probe_t * dmi_probe_decode(dmi_table_t *table)
     if (table->body_length > 0x14)
         info->nom_value = dmi_probe_decode_value(data->nom_value);
     else
-        info->nom_value = INT_MIN;
+        info->nom_value = SHRT_MIN;
 
     return info;
 }
 
-static int dmi_probe_decode_value(dmi_word_t value)
+static short dmi_probe_decode_value(dmi_word_t value)
 {
     value = dmi_decode_word(value);
 
     if (value == DMI_PROBE_VALUE_UNKNOWN)
-        return INT_MIN;
+        return SHRT_MIN;
 
-    return (int)(int16_t)value;
+    return (int16_t)value;
 }
 
 void dmi_probe_destroy(dmi_probe_t *info)

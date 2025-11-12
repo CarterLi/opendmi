@@ -137,33 +137,33 @@ struct dmi_probe
 
     /**
      * @brief Maximum value readable by this probe. If the value is unknown,
-     * the field is set to `INT_MIN`.
+     * the field is set to `SHRT_MIN`.
      */
-    int max_value;
+    short max_value;
 
     /**
      * @brief Minimum value readable by this probe. If the value is unknown,
-     * the field is set to `INT_MIN`.
+     * the field is set to `SHRT_MIN`.
      */
-    int min_value;
+    short min_value;
 
     /**
      * @brief Resolution for the probe's reading. If the value is unknown,
-     * the field is set to `INT_MIN`.
+     * the field is set to `SHRT_MIN`.
      */
-    int resolution;
+    short resolution;
 
     /**
      * @brief Tolerance for reading from this probe. If the value is unknown,
-     * the field is set to `INT_MIN`.
+     * the field is set to `SHRT_MIN`.
      */
-    int tolerance;
+    short tolerance;
 
     /**
      * @brief Accuracy for reading from this probe. If the value is unknown,
-     * the field is set to `INT_MIN`.
+     * the field is set to `SHRT_MIN`.
      */
-    int accuracy;
+    short accuracy;
 
     /**
      * @brief OEM- or firmware vendor-specific information.
@@ -172,9 +172,9 @@ struct dmi_probe
 
     /**
      * @brief Nominal value for the probe’s reading. If the value is unknown,
-     * the field is set to `INT_MIN`.
+     * the field is set to `SHRT_MIN`.
      */
-    int nom_value;
+    short nom_value;
 };
 
 extern const dmi_name_t dmi_probe_location_names[];

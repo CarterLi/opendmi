@@ -90,6 +90,11 @@ struct dmi_attribute_params
     unsigned int scale;
 
     /**
+     * @brief Pointer to unknown value, if applicable.
+     */
+    const void *unknown;
+
+    /**
      * @brief Flags.
      */
     unsigned int flags;
@@ -132,6 +137,7 @@ struct dmi_attribute
 
 __BEGIN_DECLS
 
+bool dmi_attribute_unknown(const dmi_attribute_t *attr, const void *value);
 char *dmi_attribute_format(const dmi_attribute_t *attr, const void *value);
 
 __END_DECLS

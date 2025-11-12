@@ -68,6 +68,19 @@ static const dmi_attribute_ops_t dmi_attribute_type_ops[] =
     }
 };
 
+bool dmi_attribute_unknown(const dmi_attribute_t *attr, const void *value)
+{
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    if (attr->params.unknown) {
+        if (memcmp(value, attr->params.unknown, attr->size) == 0)
+            return true;
+    }
+
+    return false;
+}
+
 char *dmi_attribute_format(const dmi_attribute_t *attr, const void *value)
 {
     const dmi_attribute_ops_t *ops;
@@ -199,24 +212,24 @@ static char *dmi_attribute_format_decimal(const dmi_attribute_t *attr, const voi
         return dmi_attribute_format_integer(attr, value);
 
     int64_t src;
-    if (attr->size == sizeof(uint8_t))
-        src = *(uint8_t *)value;
-    else if (attr->size == sizeof(uint16_t))
-        src = *(uint16_t *)value;
-    else if (attr->size == sizeof(uint32_t))
-        src = *(uint32_t *)value;
-    else if (attr->size == sizeof(uint64_t))
-        src = *(uint64_t *)value;
+    if (attr->size == sizeof(int8_t))
+        src = *(int8_t *)value;
+    else if (attr->size == sizeof(int16_t))
+        src = *(int16_t *)value;
+    else if (attr->size == sizeof(int32_t))
+        src = *(int32_t *)value;
+    else if (attr->size == sizeof(int64_t))
+        src = *(int64_t *)value;
     else
         return nullptr;
 
     unsigned int factor = dmi_ipow(10, attr->params.scale);
 
     if (attr->params.flags & DMI_ATTRIBUTE_FLAG_SIGNED) {
-        snprintf(fmt, sizeof(fmt), "%%d.%%0%du", attr->params.scale);
+        snprintf(fmt, sizeof(fmt), "%%lld.%%0%dllu", attr->params.scale);
         rv = asprintf(&str, fmt, src / factor, llabs(src) % factor);
     } else {
-        snprintf(fmt, sizeof(fmt), "%%u.%%0%du", attr->params.scale);
+        snprintf(fmt, sizeof(fmt), "%%llu.%%0%dllu", attr->params.scale);
         rv = asprintf(&str, fmt, (uint64_t)src / factor, (uint64_t)src % factor);
     }
 

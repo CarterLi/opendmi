@@ -255,17 +255,24 @@ static void print_table_attrs(const dmi_table_t *table)
     for (attr = spec->attributes; attr->params.name; attr++) {
         const dmi_data_t *ptr = (dmi_data_t *)table->info + attr->offset;
 
-        str = dmi_attribute_format(attr, ptr);
-        if (!str)
-            continue;
-
         printf("\t%s: ", attr->params.name);
-        if (attr->params.unit)
-            printf("%s %s\n", str, attr->params.unit);
-        else
-            printf("%s\n", str);
 
-        free(str);
+        if (!dmi_attribute_unknown(attr, ptr)) {
+            str = dmi_attribute_format(attr, ptr);
+            if (!str) {
+                printf("<error>\n");
+                continue;
+            }
+
+            if (attr->params.unit)
+                printf("%s %s\n", str, attr->params.unit);
+            else
+                printf("%s\n", str);
+
+            free(str);
+        } else {
+            printf("<unknown>\n");
+        }
     }
 }
 
