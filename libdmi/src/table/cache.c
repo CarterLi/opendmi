@@ -10,6 +10,7 @@
 
 #include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
 #include <opendmi/table/cache.h>
 
 static const dmi_name_t dmi_cache_type_names[] =
@@ -289,9 +290,9 @@ void dmi_cache_info_destroy(struct dmi_cache *info)
     free(info);
 }
 
-size_t dmi_cache_size(dmi_cache_size_t value)
+dmi_size_t dmi_cache_size(dmi_cache_size_t value)
 {
-    size_t size = value & 0x7FFFU;
+    dmi_size_t size = value & 0x7FFFU;
 
     if (value & 0x8000U)
         size <<= 16; // Granularity is 64 Kb
@@ -301,9 +302,9 @@ size_t dmi_cache_size(dmi_cache_size_t value)
     return size;
 }
 
-size_t dmi_cache_size_ex(dmi_cache_size_ex_t value)
+dmi_size_t dmi_cache_size_ex(dmi_cache_size_ex_t value)
 {
-    size_t size = value & 0x7FFFFFFFU;
+    dmi_size_t size = value & 0x7FFFFFFFU;
 
     if (value & 0x80000000U)
         size <<= 16; // Granularity is 64 Kb
@@ -343,8 +344,8 @@ struct dmi_cache *dmi_cache_info_decode(dmi_table_t *table)
     info->location            = data->config.location;
     info->socketed            = data->config.socketed;
     info->enabled             = data->config.enabled;
-    info->maximum_size        = dmi_cache_size(data->maximum_size);
-    info->installed_size      = dmi_cache_size(data->installed_size);
+    info->maximum_size        = dmi_cache_size(dmi_decode_word(data->maximum_size));
+    info->installed_size      = dmi_cache_size(dmi_decode_word(data->installed_size));
     info->supported_sram_type = data->supported_sram_type;
     info->current_sram_type   = data->current_sram_type;
 
@@ -359,9 +360,9 @@ struct dmi_cache *dmi_cache_info_decode(dmi_table_t *table)
     // SMBIOS 3.1+
     if (data->header.length >= 0x13) {
         if (data->maximum_size == 0xFFFFU)
-            info->maximum_size = dmi_cache_size_ex(data->maximum_size_ex);
+            info->maximum_size = dmi_cache_size_ex(dmi_decode_dword(data->maximum_size_ex));
         if (data->installed_size == 0xFFFU)
-            info->installed_size = dmi_cache_size_ex(data->installed_size_ex);
+            info->installed_size = dmi_cache_size_ex(dmi_decode_dword(data->installed_size_ex));
     }
 
     return info;
