@@ -69,7 +69,7 @@ static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute_
         if (session->service == MACH_PORT_NULL) {
             dmi_error(context, "Apple SMBIOS service is not reachable");
             dmi_set_error(context, DMI_ERROR_SERVICE_UNAVAILABLE);
-            return EXIT_FAILURE;
+            break;
         }
 
         success = true;

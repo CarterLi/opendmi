@@ -38,12 +38,12 @@ endif()
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     add_compile_options(-g -fno-omit-frame-pointer)
 
-    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
-       "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
-        add_compile_options(--analyze -Xanalyzer -analyzer-output=text)
-    elseif("${CMALE_CXX_COMPILER_ID}" STREQUAL "GNU")
-        add_compile_options(-fanalyzer)
-    endif()
+#   if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
+#      "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+#       add_compile_options(--analyze -Xanalyzer -analyzer-output=text)
+#   elseif("${CMALE_CXX_COMPILER_ID}" STREQUAL "GNU")
+#       add_compile_options(-fanalyzer)
+#   endif()
 else()
     add_compile_options(-O2)
     add_compile_definitions(NDEBUG)
