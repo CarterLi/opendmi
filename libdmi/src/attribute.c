@@ -223,7 +223,7 @@ static char *dmi_attribute_format_decimal(const dmi_attribute_t *attr, const voi
     else
         return nullptr;
 
-    unsigned int factor = dmi_ipow(10, attr->params.scale);
+    unsigned int factor = dmi_ipow32(10, attr->params.scale);
 
     if (attr->params.flags & DMI_ATTRIBUTE_FLAG_SIGNED) {
         snprintf(fmt, sizeof(fmt), "%%lld.%%0%dllu", attr->params.scale);

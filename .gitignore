@@ -2,8 +2,11 @@
 Makefile
 CMakeFiles
 CMakeCache.txt
+Testing
 *.cmake
+*.tcl
 *.a
 *.so
 *.dylib
 *.log
+*-test

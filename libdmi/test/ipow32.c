@@ -11,9 +11,9 @@
 
 struct test_vector
 {
-    int x;
-    int n;
-    int result;
+    uint32_t value;
+    unsigned int factor;
+    uint32_t result;
 };
 
 struct test_vector test_data[] =
@@ -58,7 +58,7 @@ struct test_vector test_data[] =
 int main(void)
 {
     for (unsigned i = 0; i < DMI_ARRAY_SIZE(test_data); i++) {
-        if (dmi_ipow(test_data[i].x, test_data[i].n) != test_data[i].result)
+        if (dmi_ipow32(test_data[i].value, test_data[i].factor) != test_data[i].result)
             return EXIT_FAILURE;
     }
 

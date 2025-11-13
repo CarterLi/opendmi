@@ -113,6 +113,10 @@ add_executable(decode-bcd-test test/decode-bcd.c)
 target_link_libraries(decode-bcd-test dmi-shared)
 add_test(NAME decode-bcd COMMAND decode-bcd-test)
 
-add_executable(ipow-test test/ipow.c)
-target_link_libraries(ipow-test dmi-shared)
-add_test(NAME ipow COMMAND ipow-test)
+add_executable(ipow32-test test/ipow32.c)
+target_link_libraries(ipow32-test dmi-shared)
+add_test(NAME ipow32 COMMAND ipow32-test)
+
+add_executable(ipow64-test test/ipow64.c)
+target_link_libraries(ipow64-test dmi-shared)
+add_test(NAME ipow64 COMMAND ipow64-test)

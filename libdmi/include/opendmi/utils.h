@@ -24,7 +24,8 @@ uint32_t dmi_bswap32_compat(uint32_t value);
 uint64_t dmi_bswap64(uint64_t value);
 uint64_t dmi_bswap64_compat(uint64_t value);
 
-int dmi_ipow(int x, int n);
+uint32_t dmi_ipow32(uint32_t value, unsigned int factor);
+uint64_t dmi_ipow64(uint64_t value, unsigned int factor);
 
 uint64_t dmi_decode_bcd(const dmi_byte_t *value, size_t length);
 

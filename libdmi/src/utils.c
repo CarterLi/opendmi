@@ -105,26 +105,38 @@ uint64_t dmi_bswap64_compat(uint64_t value)
     return value;
 }
 
-int dmi_ipow(int x, int n)
+uint32_t dmi_ipow32(uint32_t value, unsigned int factor)
 {
-    int y = 1;
+    uint32_t result = 1;
 
-    if (n < 0) {
-        x = 1 / x;
-        n = -n;
+    if (factor == 0)
+        return result;
+
+    while (factor > 1) {
+        if (factor % 2)
+            result *= value, factor--;
+
+        value *= value, factor /= 2;
     }
 
-    if (n == 0)
-        return y;
+    return value * result;
+}
 
-    while (n > 1) {
-        if (n % 2)
-            y *= x, n--;
+uint64_t dmi_ipow64(uint64_t value, unsigned int factor)
+{
+    uint64_t result = 1;
 
-        x *= x, n /= 2;
+    if (factor == 0)
+        return result;
+
+    while (factor > 1) {
+        if (factor % 2)
+            result *= value, factor--;
+
+        value *= value, factor /= 2;
     }
 
-    return x * y;
+    return value * result;
 }
 
 uint64_t dmi_decode_bcd(const dmi_byte_t *value, size_t length)
