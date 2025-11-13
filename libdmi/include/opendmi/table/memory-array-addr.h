@@ -66,7 +66,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_handle_t array_handle;
+    dmi_handle_t memory_array_handle;
 
     /**
      * @brief Number of memory devices that form a single row of memory for the
@@ -110,8 +110,8 @@ struct dmi_memory_array_addr
     dmi_size_t starting_addr;
     dmi_size_t ending_addr;
     dmi_size_t range_size;
-    dmi_handle_t array_handle;
-    dmi_memory_array_t *array;
+    dmi_handle_t memory_array_handle;
+    dmi_memory_array_t *memory_array;
     int partition_width;
 };
 

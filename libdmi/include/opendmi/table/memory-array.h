@@ -12,16 +12,6 @@
 #include <opendmi/table.h>
 #include <opendmi/table/common.h>
 
-#ifndef DMI_MEMORY_ARRAY_DATA_T
-#define DMI_MEMORY_ARRAY_DATA_T
-typedef struct dmi_memory_array_data dmi_memory_array_data_t;
-#endif // !DMI_MEMORY_ARRAY_DATA_T
-
-#ifndef DMI_MEMORY_ARRAY_T
-#define DMI_MEMORY_ARRAY_T
-typedef struct dmi_memory_array dmi_memory_array_t;
-#endif // !DMI_MEMORY_ARRAY_T
-
 /**
  * @brief Memory array location values.
  */
@@ -114,7 +104,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_handle_t error_handle;
+    dmi_handle_t error_info_handle;
 
     /**
      * @brief Number of slots or sockets available for memory devices in this
@@ -140,18 +130,63 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
     dmi_qword_t maximum_capacity_ex;
 };
 
+#ifndef DMI_MEMORY_ARRAY_DATA_T
+#define DMI_MEMORY_ARRAY_DATA_T
+typedef struct dmi_memory_array_data dmi_memory_array_data_t;
+#endif // !DMI_MEMORY_ARRAY_DATA_T
+
 /**
  * @brief Physical memory array table.
  */
 struct dmi_memory_array
 {
+    /**
+     * @brief Physical location of the memory array, whether on the system
+     * board or an add-in board.
+     */
     dmi_memory_array_location_t location;
+
+    /**
+     * @brief Function for which the array is used.
+     */
     dmi_memory_array_usage_t usage;
+
+    /**
+     * @brief Primary hardware error correction or detection method supported
+     * by this memory array.
+     */
     dmi_ecc_type_t ecc_type;
-    dmi_handle_t error_handle;
-    int device_count;
+
+    /**
+     * @brief Maximum memory capacity, in bytes, for this array.
+     */
     dmi_size_t maximum_capacity;
+
+    /**
+     * @brief Handle, or instance number, associated with any error that was
+     * previously detected for the array.
+     *
+     * If the system does not provide the error information structure, the
+     * field contains 0xFFFE. Otherwise, the field contains either 0xFFFF (if
+     * no error was detected) or the handle of the error-information structure.
+     */
+    dmi_handle_t error_info_handle;
+
+    /**
+     * @brief @brief Number of slots or sockets available for memory devices in this
+     * array.
+     *
+     * This value represents the number of memory device structures that
+     * compose this memory array. Each memory device has a reference to the
+     * "owning" memory array.
+     */
+    unsigned int device_count;
 };
+
+#ifndef DMI_MEMORY_ARRAY_T
+#define DMI_MEMORY_ARRAY_T
+typedef struct dmi_memory_array dmi_memory_array_t;
+#endif // !DMI_MEMORY_ARRAY_T
 
 /**
  * @brief Physical memory array table specification.
@@ -162,6 +197,9 @@ __BEGIN_DECLS
 
 const char *dmi_memory_array_location_name(enum dmi_memory_array_location value);
 const char *dmi_memory_array_usage_name(enum dmi_memory_array_usage value);
+
+dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table);
+void dmi_memory_array_destroy(dmi_memory_array_t *info);
 
 __END_DECLS
 

@@ -4,8 +4,11 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/memory-array.h>
+#include <stdlib.h>
+
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
+#include <opendmi/table/memory-array.h>
 
 static const dmi_name_t dmi_memory_array_location_names[] =
 {
@@ -148,7 +151,7 @@ const dmi_attribute_t dmi_memory_array_attrs[] =
         .code = "maximum-capacity",
         .name = "Maximum capacity"
     }),
-    DMI_ATTRIBUTE(dmi_memory_array_t, error_handle, HANDLE, {
+    DMI_ATTRIBUTE(dmi_memory_array_t, error_info_handle, HANDLE, {
         .code = "error-information",
         .name = "Memory error information handle"
     }),
@@ -166,7 +169,11 @@ const dmi_table_spec_t dmi_memory_array_table =
     .type        = DMI_TYPE_MEMORY_ARRAY,
     .min_version = DMI_VERSION(2, 1, 0),
     .min_length  = 0x0F,
-    .attributes  = dmi_memory_array_attrs
+    .attributes  = dmi_memory_array_attrs,
+    .handlers    = {
+        .decoder     = (dmi_table_decoder_t)dmi_memory_array_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_memory_array_destroy
+    }
 };
 
 const char *dmi_memory_array_location_name(enum dmi_memory_array_location value)
@@ -177,4 +184,35 @@ const char *dmi_memory_array_location_name(enum dmi_memory_array_location value)
 const char *dmi_memory_array_usage_name(enum dmi_memory_array_usage value)
 {
     return dmi_name_lookup(dmi_memory_array_usage_names, value);
+}
+
+dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table)
+{
+    dmi_memory_array_t *info = nullptr;
+    dmi_memory_array_data_t *data = dmi_cast(data, table->data);
+    dmi_dword_t maximum_capacity;
+
+    info = calloc(1, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    info->location = data->location;
+    info->usage    = data->usage;
+    info->ecc_type = data->ecc_type;
+
+    maximum_capacity = dmi_decode_dword(data->maximum_capacity);
+    if ((table->body_length >= 0x0F) && (maximum_capacity & 0x80000000))
+        info->maximum_capacity = dmi_decode_qword(data->maximum_capacity_ex);
+    else
+        info->maximum_capacity  = (dmi_size_t)(maximum_capacity & 0x7FFFFFFFU) << 10;
+
+    info->error_info_handle = dmi_decode_word(data->error_info_handle);
+    info->device_count      = dmi_decode_word(data->device_count);
+
+    return info;
+}
+
+void dmi_memory_array_destroy(dmi_memory_array_t *info)
+{
+    free(info);
 }

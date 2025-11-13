@@ -241,12 +241,40 @@ static char *dmi_attribute_format_decimal(const dmi_attribute_t *attr, const voi
 
 static char *dmi_attribute_format_size(const dmi_attribute_t *attr, const void *value)
 {
+    static const char *units[] = {
+        "bytes", "KiB", "MiB", "GiB", "TiB", "PiB", nullptr
+    };
+
+    int rv;
+    dmi_size_t size;
+    unsigned int i;
+    char *str;
+
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    // TODO: Implement size formatting
+    if (attr->size == sizeof(uint8_t))
+        size = *(uint8_t *)value;
+    else if (attr->size == sizeof(uint16_t))
+        size = *(uint16_t *)value;
+    else if (attr->size == sizeof(uint32_t))
+        size = *(uint32_t *)value;
+    else if (attr->size == sizeof(uint64_t))
+        size = *(uint64_t *)value;
+    else
+        return nullptr;
 
-    return dmi_attribute_format_integer(attr, value);
+    for (i = 0; units[i]; i++) {
+        if ((size < 1024) || (size % 1024 != 0))
+            break;
+        size >>= 10;
+    }
+
+    rv = asprintf(&str, "%" PRIu64 " %s", size, units[i]);
+    if (rv < 0)
+        return nullptr;
+
+    return str;
 }
 
 static char *dmi_attribute_format_address(const dmi_attribute_t *attr, const void *value)
