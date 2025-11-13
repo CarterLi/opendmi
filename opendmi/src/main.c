@@ -35,7 +35,7 @@ struct dmi_config
     char *output_path;
 };
 
-static bool parse_args(int argc, char *argv[], dmi_config_t *config, int *rv);
+static bool parse_args(int argc, char *argv[], int *rv);
 
 static void show_version(void);
 static void show_usage(const char *proc);
@@ -51,22 +51,22 @@ static void print_hex_data(const void *data, size_t length);
 
 static void log_error(dmi_context_t *context, dmi_log_level_t level, const char *format, va_list args);
 
+dmi_config_t config =
+{
+    .command       = DMI_COMMAND_DUMP_TABLES,
+    .memory_device = nullptr,
+    .quiet         = false,
+    .dump          = false,
+    .input_path    = nullptr,
+    .output_path   = nullptr
+};
+
 int main(int argc, char *argv[])
 {
-    dmi_config_t config =
-    {
-        .command       = DMI_COMMAND_DUMP_TABLES,
-        .memory_device = nullptr,
-        .quiet         = false,
-        .dump          = false,
-        .input_path    = nullptr,
-        .output_path  = nullptr
-    };
-
     dmi_context_t *context;
 
     int rv = EXIT_SUCCESS;
-    if (!parse_args(argc, argv, &config, &rv))
+    if (!parse_args(argc, argv, &rv))
         return rv;
 
     argc -= optind;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
-static bool parse_args(int argc, char *argv[], dmi_config_t *config, int *rv)
+static bool parse_args(int argc, char *argv[], int *rv)
 {
     static struct option long_options[] =
     {
@@ -138,33 +138,33 @@ static bool parse_args(int argc, char *argv[], dmi_config_t *config, int *rv)
 
         switch (opt) {
         case 'd':
-            config->memory_device = optarg;
+            config.memory_device = optarg;
             break;
 
         case 'q':
-            config->quiet = true;
+            config.quiet = true;
             break;
         
         case 's':
             if (optarg == nullptr)
-                config->command = DMI_COMMAND_LIST_KEYWORDS;
+                config.command = DMI_COMMAND_LIST_KEYWORDS;
             break;
 
         case 't':
             if (optarg == nullptr)
-                config->command = DMI_COMMAND_LIST_TYPES;
+                config.command = DMI_COMMAND_LIST_TYPES;
             break;
 
         case 'u':
-            config->dump = true;
+            config.dump = true;
             break;
 
         case 'o':
-            config->output_path = optarg;
+            config.output_path = optarg;
             break;
 
         case 'i':
-            config->input_path = optarg;
+            config.input_path = optarg;
             break;
 
         case 'v':
@@ -238,7 +238,7 @@ static void print_table(const dmi_table_t *table)
            table->total_length);
     printf("%s\n", dmi_table_name(table));
 
-    if (table->info)
+    if (table->info && !config.dump)
         print_table_attrs(table);
     else
         print_table_dump(table);
