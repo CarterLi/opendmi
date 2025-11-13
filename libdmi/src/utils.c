@@ -127,6 +127,25 @@ int dmi_ipow(int x, int n)
     return x * y;
 }
 
+uint64_t dmi_decode_bcd(const dmi_byte_t *value, size_t length)
+{
+    uint64_t result = 0;
+    uint64_t factor = 1;
+
+    assert(value != nullptr);
+    assert(length > 0);
+
+    while (length > 0) {
+        result += (*value & 0x0F) * factor;
+        result += ((*value & 0xF0) >> 4) * factor * 10;
+        factor *= 100;
+
+        length--, value++;
+    }
+
+    return result;
+}
+
 dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength)
 {
     if ((context == nullptr) || (path == nullptr) || (plength == nullptr)) {

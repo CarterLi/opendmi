@@ -26,6 +26,8 @@ uint64_t dmi_bswap64_compat(uint64_t value);
 
 int dmi_ipow(int x, int n);
 
+uint64_t dmi_decode_bcd(const dmi_byte_t *value, size_t length);
+
 dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength);
 
 __END_DECLS

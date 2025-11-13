@@ -97,6 +97,10 @@ add_executable(bswap64-test test/bswap64.c)
 target_link_libraries(bswap64-test dmi-shared)
 add_test(NAME bswap64 COMMAND bswap64-test)
 
+add_executable(decode-bcd-test test/decode-bcd.c)
+target_link_libraries(decode-bcd-test dmi-shared)
+add_test(NAME decode-bcd COMMAND decode-bcd-test)
+
 add_executable(ipow-test test/ipow.c)
 target_link_libraries(ipow-test dmi-shared)
 add_test(NAME ipow COMMAND ipow-test)
