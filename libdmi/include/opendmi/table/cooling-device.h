@@ -153,7 +153,7 @@ struct dmi_cooling_device
      * redundancy and that at least one other cooling device will be enumerated
      * with the same value.
      */
-    int group;
+    short group;
 
     /**
      * @brief OEM- or firmware vendor-specific information.
@@ -163,9 +163,9 @@ struct dmi_cooling_device
     /**
      * @brief Nominal value for the cooling device’s rotational speed, in
      * revolutions-per-minute (rpm). If the value is unknown or the cooling
-     * device is non-rotating, the field is set to `INT_MIN`
+     * device is non-rotating, the field is set to `SHRT_MIN`
      */
-    int nominal_speed;
+    short nominal_speed;
 
     /**
      * @brief Additional descriptive information about the cooling device or

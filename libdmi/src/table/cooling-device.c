@@ -91,16 +91,16 @@ const dmi_attribute_t dmi_cooling_device_attrs[] =
         .code   = "group",
         .name   = "Group"
     }),
-    /*
-    {
-        .code = "oem-defined",
-        .name = "OEM-defined"
-    },
-     */
+    DMI_ATTRIBUTE(dmi_cooling_device_t, oem_defined, INTEGER, {
+        .code    = "oem-defined",
+        .name    = "OEM-defined",
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+    }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, nominal_speed, INTEGER, {
-        .code   = "nominal-speed",
-        .name   = "Nominal speed",
-        .unit   = "rpm"
+        .code    = "nominal-speed",
+        .name    = "Nominal speed",
+        .unit    = "rpm",
+        .unknown = &(short){ SHRT_MIN }
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, description, STRING, {
         .code   = "description",
@@ -143,11 +143,13 @@ dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table)
     info->oem_defined  = dmi_decode_dword(data->oem_defined);
 
     if (table->body_length > 0x0C) {
-        info->nominal_speed = dmi_decode_word(data->nominal_speed);
-        if (info->nominal_speed == 0xFFFF)
-            info->nominal_speed = INT_MIN;
+        uint16_t nominal_speed = dmi_decode_word(data->nominal_speed);
+        if (nominal_speed != 0x8000)
+            info->nominal_speed = (short)(nominal_speed & 0x7FFF);
+        else
+            info->nominal_speed = SHRT_MIN;
     } else {
-        info->nominal_speed = INT_MIN;
+        info->nominal_speed = SHRT_MIN;
     }
 
     if (table->body_length >= 0x0F)
