@@ -305,6 +305,5 @@ static char *dmi_attribute_format_uuid(const dmi_attribute_t *attr, const void *
     if (rv < 0)
         return nullptr;
 
-
-    return nullptr;
+    return str;
 }
