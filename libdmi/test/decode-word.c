@@ -1,0 +1,33 @@
+//
+// OpenDMI: Cross-platform DMI/SMBIOS framework
+// Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+//
+// SPDX-License-Identifier: BSD-3-Clause
+//
+#include <stdlib.h>
+#include <stdbool.h>
+
+#include <opendmi/utils.h>
+
+struct test_vector
+{
+    uint8_t  value[2];
+    uint16_t result;
+};
+
+struct test_vector test_data[] =
+{
+    { { 0x00, 0x00 }, 0x0000U },
+    { { 0xFF, 0xFF }, 0xFFFFU },
+    { { 0x34, 0x12 }, 0x1234U }
+};
+
+int main(void)
+{
+    for (unsigned i = 0; i < DMI_ARRAY_SIZE(test_data); i++) {
+        if (dmi_decode_word(*(dmi_word_t *)test_data[i].value) != test_data[i].result)
+            return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}

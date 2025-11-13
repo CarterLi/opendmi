@@ -89,13 +89,25 @@ add_executable(bswap16-test test/bswap16.c)
 target_link_libraries(bswap16-test dmi-shared)
 add_test(NAME bswap16 COMMAND bswap16-test)
 
+add_executable(decode-word-test test/decode-word.c)
+target_link_libraries(decode-word-test dmi-shared)
+add_test(NAME decode-word COMMAND decode-word-test)
+
 add_executable(bswap32-test test/bswap32.c)
 target_link_libraries(bswap32-test dmi-shared)
 add_test(NAME bswap32 COMMAND bswap32-test)
 
+add_executable(decode-dword-test test/decode-dword.c)
+target_link_libraries(decode-dword-test dmi-shared)
+add_test(NAME decode-dword COMMAND decode-dword-test)
+
 add_executable(bswap64-test test/bswap64.c)
 target_link_libraries(bswap64-test dmi-shared)
 add_test(NAME bswap64 COMMAND bswap64-test)
+
+add_executable(decode-qword-test test/decode-qword.c)
+target_link_libraries(decode-qword-test dmi-shared)
+add_test(NAME decode-qword COMMAND decode-qword-test)
 
 add_executable(decode-bcd-test test/decode-bcd.c)
 target_link_libraries(decode-bcd-test dmi-shared)
