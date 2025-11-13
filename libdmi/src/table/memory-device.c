@@ -4,8 +4,12 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/memory-device.h>
+#include <stdlib.h>
+#include <limits.h>
+
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
+#include <opendmi/table/memory-device.h>
 
 static const dmi_name_t dmi_memory_device_type_names[] =
 {
@@ -329,6 +333,187 @@ static const dmi_name_t dmi_memory_device_technology_names[] =
 
 const dmi_attribute_t dmi_memory_device_attrs[] =
 {
+    DMI_ATTRIBUTE(dmi_memory_device_t, memory_array_handle, HANDLE, {
+        .code    = "memory-array-handle",
+        .name    = "Memory array handle",
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, error_info_handle, HANDLE, {
+        .code    = "error-info-handle",
+        .name    = "Memory error handle"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, total_width, INTEGER, {
+        .code    = "total-width",
+        .name    = "Total width",
+        .unit    = "bits",
+        .unknown = &(unsigned short){ USHRT_MAX }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, data_width, INTEGER, {
+        .code    = "data-width",
+        .name    = "Data width",
+        .unit    = "bits",
+        .unknown = &(unsigned short){ USHRT_MAX }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, size, SIZE, {
+        .code    = "size",
+        .name    = "Size",
+        .unknown = &(dmi_size_t){ UINT64_MAX }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, form_factor, ENUM, {
+        .code    = "form-factor",
+        .name    = "Form-factor",
+        .values  = dmi_memory_device_form_factor_names
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, device_set, INTEGER, {
+        .code    = "device-set",
+        .name    = "Device set",
+        .unknown = &(unsigned short){ USHRT_MAX }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, device_locator, STRING, {
+        .code    = "device-locator",
+        .name    = "Device locator"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, bank_locator, STRING, {
+        .code    = "bank-locator",
+        .name    = "Bank locator"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, memory_type, ENUM, {
+        .code    = "memory-type",
+        .name    = "Memory type",
+        .values  = dmi_memory_device_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, maximum_speed, INTEGER, {
+        .code    = "maximum-speed",
+        .name    = "Maximum-speed",
+        .unit    = "MT/s",
+        .unknown = &(unsigned long){ 0 }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, manufacturer, STRING, {
+        .code    = "manufacturer",
+        .name    = "Manufacturer"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, serial_number, STRING, {
+        .code    = "serial-number",
+        .name    = "Serial number"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, asset_tag, STRING, {
+        .code    = "asset-tag",
+        .name    = "Asset tag"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, part_number, STRING, {
+        .code    = "part-number",
+        .name    = "Part number"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, rank, INTEGER, {
+        .code    = "rank",
+        .name    = "Rank",
+        .unknown = &(unsigned short){ 0 }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, configured_speed, INTEGER, {
+        .code    = "configured-speed",
+        .name    = "Configured speed",
+        .unit    = "MT/s",
+        .unknown = &(unsigned long){ 0 }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, minimum_voltage, INTEGER, {
+        .code    = "minimum-voltage",
+        .name    = "Minimum voltage",
+        .unit    = "mV",
+        .unknown = &(unsigned short){ 0 }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, maximum_voltage, INTEGER, {
+        .code    = "maximum-voltage",
+        .name    = "Maximum voltage",
+        .unit    = "mV",
+        .unknown = &(unsigned short){ 0 }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, configured_voltage, INTEGER, {
+        .code    = "configured-voltage",
+        .name    = "Configured voltage",
+        .unit    = "mV",
+        .unknown = &(unsigned short){ 0 }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, memory_technology, ENUM, {
+        .code    = "memory-technology",
+        .name    = "Memory technology",
+        .values  = dmi_memory_device_technology_names
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, memory_mode_caps, INTEGER, {
+        .code    = "memory-mode-caps",
+        .name    = "Memory operating mode capabilities",
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, firmware_version, STRING, {
+        .code    = "firmware-version",
+        .name    = "Firmware version"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, module_manufacturer_id, INTEGER, {
+        .code    = "module-manufacturer-id",
+        .name    = "Module manufacturer ID",
+        .unknown = &(uint16_t){ 0x0000U },
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, module_product_id, INTEGER, {
+        .code    = "module-product-id",
+        .name    = "Module product ID",
+        .unknown = &(uint16_t){ 0x0000U },
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, controller_manufacturer_id, INTEGER, {
+        .code    = "controller-manufacturer-id",
+        .name    = "Memory subsystem controller manufacturer ID",
+        .unknown = &(uint16_t){ 0x0000U },
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, controller_product_id, INTEGER, {
+        .code    = "controller-product-id",
+        .name    = "Memory subsystem controller product ID",
+        .unknown = &(uint16_t){ 0x0000U },
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, non_volatile_size, SIZE, {
+        .code    = "non-volatile-size",
+        .name    = "Non-volatile size",
+        .unknown = &(dmi_size_t){ UINT64_MAX }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, volatile_size, SIZE, {
+        .code    = "volatile-size",
+        .name    = "Volatile size",
+        .unknown = &(dmi_size_t){ UINT64_MAX }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, cache_size, SIZE, {
+        .code    = "cache-size",
+        .name    = "Cache size",
+        .unknown = &(dmi_size_t){ UINT64_MAX }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, logical_size, SIZE, {
+        .code    = "logical-size",
+        .name    = "Logical size",
+        .unknown = &(dmi_size_t){ UINT64_MAX }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, pmic0_manufacturer_id, INTEGER, {
+        .code    = "pmi0-manufacturer-id",
+        .name    = "PMIC0 manufacturer ID",
+        .unknown = &(uint16_t){ 0x0000U },
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, pmic0_revision_number, INTEGER, {
+        .code    = "pmic0-revision-number",
+        .name    = "PMIC0 revision number",
+        .unknown = &(uint16_t){ 0xFF00U },
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, rcd_manufacturer_id, INTEGER, {
+        .code    = "rcd-manufacturer-id",
+        .name    = "RCD manufacturer ID",
+        .unknown = &(uint16_t){ 0x0000U },
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, rcd_revision_number, INTEGER, {
+        .code    = "rcd-revision-number",
+        .name    = "RCD revision number",
+        .unknown = &(uint16_t){ 0xFF00U },
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
@@ -338,7 +523,11 @@ const dmi_table_spec_t dmi_memory_device_table =
     .name       = "Memory device",
     .type       = DMI_TYPE_MEMORY_DEVICE,
     .min_length = 0x15,
-    .attributes = dmi_memory_device_attrs
+    .attributes = dmi_memory_device_attrs,
+    .handlers   = {
+        .decoder     = (dmi_table_decoder_t)dmi_memory_device_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_memory_device_destroy
+    }
 };
 
 const char *dmi_memory_device_type_name(enum dmi_memory_device_type value)
@@ -354,4 +543,130 @@ const char *dmi_memory_device_form_factor_name(enum dmi_memory_device_form_facto
 const char *dmi_memory_device_technology_name(enum dmi_memory_device_technology value)
 {
     return dmi_name_lookup(dmi_memory_device_technology_names, value);
+}
+
+dmi_size_t dmi_memory_device_size(dmi_memory_device_size_t value)
+{
+    dmi_size_t size = value & 0x7FFFU;
+
+    if (value & 0x8000U)
+        size <<= 10; // Granularity is 1 Kb
+    else
+        size <<= 20; // Granularity is 1 Mb
+
+    return size;
+}
+
+dmi_size_t dmi_memory_device_size_ex(dmi_memory_device_size_ex_t value)
+{
+    return (value & 0x7FFFFFFFU) << 20; // Granularity is 1 Mb
+}
+
+dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table)
+{
+    dmi_memory_device_t *info = nullptr;
+    dmi_memory_device_data_t *data = dmi_cast(data, table->data);
+
+    info = calloc(1, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    info->memory_array_handle = dmi_decode_word(data->memory_array_handle);
+    info->error_info_handle   = dmi_decode_word(data->error_info_handle);
+
+    info->total_width = dmi_decode_word(data->total_width);
+    if (info->total_width == 0xFFFFU)
+        info->total_width = USHRT_MAX;
+
+    info->data_width = dmi_decode_word(data->data_width);
+    if (info->data_width == 0xFFFFU)
+        info->data_width = USHRT_MAX;
+
+    if (data->size != 0xFFFF)
+        info->size = dmi_memory_device_size(dmi_decode_word(data->size));
+    else
+        info->size = UINT64_MAX;
+
+    info->form_factor = data->form_factor;
+
+    if (data->device_set != 0xFF)
+        info->device_set = data->device_set;
+    else
+        info->device_set = USHRT_MAX;
+
+    info->device_locator            = dmi_table_string(table, data->device_locator);
+    info->bank_locator              = dmi_table_string(table, data->bank_locator);
+    info->memory_type               = data->memory_type;
+    info->memory_type_detail._value = dmi_decode_word(data->memory_type_detail);
+
+    // SMBIOS 2.3 features
+    if (table->body_length >= 0x15) {
+        info->maximum_speed = dmi_decode_word(data->maximum_speed);
+
+        info->manufacturer  = dmi_table_string(table, data->manufacturer);
+        info->serial_number = dmi_table_string(table, data->serial_number);
+        info->asset_tag     = dmi_table_string(table, data->asset_tag);
+        info->part_number   = dmi_table_string(table, data->part_number);
+    }
+
+    // SMBIOS 2.6 features
+    if (table->body_length >= 0x1B) {
+        info->rank = data->rank;
+    }
+
+    // SMBIOS 2.7 features
+    if (table->body_length >= 0x1C) {
+        if (data->size == 0x7FFFU)
+            info->size = dmi_memory_device_size_ex(dmi_decode_dword(data->size));
+
+        info->configured_speed = dmi_decode_word(data->configured_speed);
+    }
+
+    // SMBIOS 2.8 features
+    if (table->body_length >= 0x22) {
+        info->minimum_voltage    = dmi_decode_word(data->minimum_voltage);
+        info->maximum_voltage    = dmi_decode_word(data->maximum_voltage);
+        info->configured_voltage = dmi_decode_word(data->configured_voltage);
+    }
+
+    // SMBIOS 3.2 features
+    if (table->body_length >= 0x28) {
+        info->memory_technology = data->memory_technology;
+        info->memory_mode_caps  = dmi_decode_word(data->memory_mode_caps);
+
+        info->firmware_version = dmi_table_string(table, data->firmware_version);
+
+        info->module_manufacturer_id     = dmi_decode_word(data->module_manufacturer_id);
+        info->module_product_id          = dmi_decode_word(data->module_product_id);
+        info->controller_manufacturer_id = dmi_decode_word(data->controller_manufacturer_id);
+        info->controller_product_id      = dmi_decode_word(data->controller_product_id);
+
+        info->non_volatile_size = dmi_decode_qword(data->non_volatile_size);
+        info->volatile_size     = dmi_decode_qword(data->volatile_size);
+        info->cache_size        = dmi_decode_qword(data->cache_size);
+        info->logical_size      = dmi_decode_qword(data->logical_size);
+    }
+
+    // SMBIOS 3.3 features
+    if (table->body_length >= 0x54) {
+        if (data->maximum_speed == 0xFFFFU)
+            info->maximum_speed = dmi_decode_dword(data->maximum_speed_ex);
+        if (data->configured_speed == 0xFFFFU)
+            info->configured_speed = dmi_decode_dword(data->configured_speed_ex);
+    }
+
+    // SMBIOS 3.7 features
+    if (table->body_length >= 0x5C) {
+        info->pmic0_manufacturer_id = dmi_decode_word(data->pmic0_manufacturer_id);
+        info->pmic0_revision_number = dmi_decode_word(data->pmic0_revision_number);
+        info->rcd_manufacturer_id   = dmi_decode_word(data->rcd_manufacturer_id);
+        info->rcd_revision_number   = dmi_decode_word(data->rcd_revision_number);
+    }
+
+    return info;
+}
+
+void dmi_memory_device_destroy(dmi_memory_device_t *info)
+{
+    free(info);
 }

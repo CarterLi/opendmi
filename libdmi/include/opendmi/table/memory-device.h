@@ -11,6 +11,11 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_MEMORY_DEVICE_TYPE_DETAIL_T
+#define DMI_MEMORY_DEVICE_TYPE_DETAIL_T
+typedef union dmi_memory_device_type_detail dmi_memory_device_type_detail_t;
+#endif // !DMI_MEMORY_DEVICE_TYPE_DETAIL_T
+
 #ifndef DMI_MEMORY_DEVICE_DATA_T
 #define DMI_MEMORY_DEVICE_DATA_T
 typedef struct dmi_memory_device_data dmi_memory_device_data_t;
@@ -20,6 +25,9 @@ typedef struct dmi_memory_device_data dmi_memory_device_data_t;
 #define DMI_MEMORY_DEVICE_T
 typedef struct dmi_memory_device dmi_memory_device_t;
 #endif // !DMI_MEMORY_DEVICE_T
+
+typedef uint16_t dmi_memory_device_size_t;
+typedef uint32_t dmi_memory_device_size_ex_t;
 
 /**
  * @brief Memory device types.
@@ -104,32 +112,42 @@ typedef enum dmi_memory_device_technology
     DMI_MEMORY_DEVICE_TECHNOLOGY_MRDIMM   = 0x08, ///< MRDIMM (deprecated)
 } dmi_memory_device_technology_t;
 
+/**
+ * @brief Memory device type details.
+ */
 DMI_PACKED_UNION(dmi_memory_device_type_detail)
 {
-    dmi_word_t raw_value;
+    dmi_word_t _value;
 
     DMI_PACKED_STRUCT()
     {
-        bool reserved : 1;
-        bool other : 1;
-        bool unknown : 1;
-        bool fast_paged : 1;
-        bool static_column : 1;
-        bool pseudo_static : 1;
-        bool rambus : 1;
-        bool synchronous: 1;
-        bool cmos : 1;
-        bool edo : 1;
-        bool window_dram : 1;
-        bool cache_dram : 1;
-        bool non_volatile : 1;
-        bool registered : 1;
-        bool unbuffered : 1;
-        bool lrdimm : 1;
+        bool reserved      : 1; ///< Reserved
+        bool other         : 1; ///< Other
+        bool unknown       : 1; ///< Unknown
+        bool fast_paged    : 1; ///< Fast-paged
+        bool static_column : 1; ///< Static column
+        bool pseudo_static : 1; ///< Pseudo-static
+        bool rambus        : 1; ///< RAMBUS
+        bool synchronous   : 1; ///< Synchronous
+        bool cmos          : 1; ///< CMOS
+        bool edo           : 1; ///< EDO
+        bool window_dram   : 1; ///< Window DRAM
+        bool cache_dram    : 1; ///< Cache DRAM
+        bool non_volatile  : 1; ///< Non-volatile
+        bool registered    : 1; ///< Registered (buffered)
+        bool unbuffered    : 1; ///< Unbuffered (unregistered)
+        bool lrdimm        : 1; ///< LRDIMM
     };
 };
 
 /**
+ * @brief Memory device table (type 17).
+ *
+ * This structure describes a single memory device that is part of a larger
+ * physical memory array (type 16) structure. If a system includes memory-device
+ * sockets, the SMBIOS implementation includes a memory device structure
+ * instance for each slot, whether the socket is currently populated.
+ *
  * @since SMBIOS 2.1
  */
 DMI_PACKED_STRUCT(dmi_memory_device_data)
@@ -145,7 +163,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_handle_t mem_array_handle;
+    dmi_handle_t memory_array_handle;
 
     /**
      * @brief Handle, or instance number, associated with any error that was
@@ -156,7 +174,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_handle_t mem_error_handle;
+    dmi_handle_t error_info_handle;
 
     /**
      * @brief Total width, in bits, of this memory device, including any check
@@ -194,14 +212,14 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_word_t size;
+    dmi_memory_device_size_t size;
 
     /**
      * @brief Implementation form factor for this memory device.
      *
      * @since SMBIOS 2.1
      */
-    enum dmi_memory_device_form_factor form_factor : 8;
+    dmi_byte_t form_factor;
 
     /**
      * @brief Identifies when the memory device is one of a set of memory
@@ -238,14 +256,14 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    enum dmi_memory_device_type memory_type : 8;
+    uint8_t memory_type;
 
     /**
      * @brief Additional detail on the memory device type.
      *
      * @since SMBIOS 2.1
      */
-    union dmi_memory_device_type_detail memory_type_detail;
+    dmi_word_t memory_type_detail;
 
     /**
      * @brief Identifies the maximum capable speed of the device, in
@@ -288,12 +306,14 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      */
     dmi_string_t part_number;
 
-    /**
-     * @brief Memory device attributes.
-     *
-     * @since SMBIOS 2.6
-     */
-    dmi_byte_t attributes;
+    DMI_PACKED_STRUCT()
+    {
+        /**
+         * @brief Rank. Zero means unknown rank information.
+         * @since SMBIOS 2.6
+         */
+        uint8_t rank : 3;
+    };
 
     /**
      * @brief Extended size of the memory device (complements the size field
@@ -301,7 +321,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.7
      */
-    dmi_dword_t size_ex;
+    dmi_memory_device_size_ex_t size_ex;
 
     /**
      * @brief Identifies the configured speed of the memory device, in
@@ -312,7 +332,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.7
      */
-    dmi_word_t conf_speed;
+    dmi_word_t configured_speed;
 
     /**
      * @brief Minimum operating voltage for this device, in millivolts. If the
@@ -320,7 +340,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.8
      */
-    dmi_word_t min_voltage;
+    dmi_word_t minimum_voltage;
 
     /**
      * @brief Maximum operating voltage for this device, in millivolts. If the
@@ -328,7 +348,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.8
      */
-    dmi_word_t max_voltage;
+    dmi_word_t maximum_voltage;
 
     /**
      * @brief Configured voltage for this device, in millivolts. If the value
@@ -336,7 +356,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.8
      */
-    dmi_word_t conf_voltage;
+    dmi_word_t configured_voltage;
 
     /**
      * @brief Memory technology type for this memory device.
@@ -378,7 +398,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.2
      */
-    dmi_word_t memory_subsys_ctrl_manufacturer_id;
+    dmi_word_t controller_manufacturer_id;
 
     /**
      * @brief The two-byte memory subsystem controller product ID found in the
@@ -386,7 +406,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.2
      */
-    dmi_word_t memory_subsys_ctrl_product_id;
+    dmi_word_t controller_product_id;
 
     /**
      * @brief Size of the non-volatile portion of the memory device in bytes,
@@ -429,7 +449,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.3
      */
-    dmi_dword_t max_speed_ex;
+    dmi_dword_t maximum_speed_ex;
 
     /**
      * @brief Extended configured memory speed of the memory device (complements
@@ -438,7 +458,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.3
      */
-    dmi_dword_t conf_speed_ex;
+    dmi_dword_t configured_speed_ex;
 
     /**
      * @brief The two-byte PMIC0 manufacturer ID found in the SPD of this
@@ -465,11 +485,55 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
     dmi_word_t rcd_manufacturer_id;
 
     /**
-     * @brief The RCD 0 Revision Number found in the SPD of this memory device.
+     * @brief The RCD Revision Number found in the SPD of this memory device.
      *
      * @since SMBIOS 3.7
      */
     dmi_word_t rcd_revision_number;
+};
+
+struct dmi_memory_device
+{
+    /**
+     * @brief Handle, or instance number, associated with the physical
+     * memory array to which this device belongs.
+     */
+    dmi_handle_t memory_array_handle;
+    dmi_handle_t error_info_handle;
+    unsigned short total_width;
+    unsigned short data_width;
+    dmi_size_t size;
+    dmi_memory_device_form_factor_t form_factor;
+    unsigned short device_set;
+    const char *device_locator;
+    const char *bank_locator;
+    dmi_memory_device_type_t memory_type;
+    dmi_memory_device_type_detail_t memory_type_detail;
+    unsigned long maximum_speed;
+    const char *manufacturer;
+    const char *serial_number;
+    const char *asset_tag;
+    const char *part_number;
+    unsigned short rank;
+    unsigned long configured_speed;
+    unsigned short minimum_voltage;
+    unsigned short maximum_voltage;
+    unsigned short configured_voltage;
+    dmi_memory_device_technology_t memory_technology;
+    uint16_t memory_mode_caps;
+    const char *firmware_version;
+    uint16_t module_manufacturer_id;
+    uint16_t module_product_id;
+    uint16_t controller_manufacturer_id;
+    uint16_t controller_product_id;
+    dmi_size_t non_volatile_size;
+    dmi_size_t volatile_size;
+    dmi_size_t cache_size;
+    dmi_size_t logical_size;
+    uint16_t pmic0_manufacturer_id;
+    uint16_t pmic0_revision_number;
+    uint16_t rcd_manufacturer_id;
+    uint16_t rcd_revision_number;
 };
 
 /**
@@ -482,6 +546,12 @@ __BEGIN_DECLS
 const char *dmi_memory_device_type_name(enum dmi_memory_device_type value);
 const char *dmi_memory_device_form_factor_name(enum dmi_memory_device_form_factor value);
 const char *dmi_memory_device_technology_name(enum dmi_memory_device_technology value);
+
+dmi_size_t dmi_memory_device_size(dmi_memory_device_size_t value);
+dmi_size_t dmi_memory_device_size_ex(dmi_memory_device_size_ex_t value);
+
+dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table);
+void dmi_memory_device_destroy(dmi_memory_device_t *info);
 
 __END_DECLS
 
