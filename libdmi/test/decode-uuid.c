@@ -1,0 +1,74 @@
+//
+// OpenDMI: Cross-platform DMI/SMBIOS framework
+// Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+//
+// SPDX-License-Identifier: BSD-3-Clause
+//
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#include <opendmi/utils.h>
+
+struct test_vector
+{
+    uint8_t    value[16];
+    dmi_uuid_t result;
+};
+
+struct test_vector test_data[] =
+{
+    {
+        .value = {
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+        },
+        .result = {
+            .time_low                  = 0x00000000U,
+            .time_mid                  = 0x0000U,
+            .time_hi_and_version       = 0x0000U,
+            .clock_seq_hi_and_reserved = 0x00U,
+            .clock_seq_low             = 0x00U,
+            .node                      = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+        }
+    },
+    {
+        .value = {
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+        },
+        .result = {
+            .time_low                  = 0xFFFFFFFFU,
+            .time_mid                  = 0xFFFFU,
+            .time_hi_and_version       = 0xFFFFU,
+            .clock_seq_hi_and_reserved = 0xFFU,
+            .clock_seq_low             = 0xFFU,
+            .node                      = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
+        }
+    },
+    {
+        .value = {
+            0x33, 0x22, 0x11, 0x00, 0x55, 0x44, 0x77, 0x66,
+            0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF
+        },
+        .result = {
+            .time_low                  = 0x00112233U,
+            .time_mid                  = 0x4455U,
+            .time_hi_and_version       = 0x6677U,
+            .clock_seq_hi_and_reserved = 0x88U,
+            .clock_seq_low             = 0x99U,
+            .node                      = { 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF }
+        }
+    }
+};
+
+int main(void)
+{
+    for (unsigned i = 0; i < DMI_ARRAY_SIZE(test_data); i++) {
+        dmi_uuid_t uuid = dmi_decode_uuid(test_data[i].value);
+        if (memcmp(uuid._value, test_data[i].result._value, sizeof(uuid)) != 0)
+            return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}

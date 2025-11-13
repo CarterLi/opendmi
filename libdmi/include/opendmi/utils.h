@@ -29,6 +29,8 @@ uint64_t dmi_ipow64(uint64_t value, unsigned int factor);
 
 uint64_t dmi_decode_bcd(const dmi_byte_t *value, size_t length);
 
+dmi_uuid_t dmi_decode_uuid(const dmi_byte_t value[16]);
+
 dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength);
 
 __END_DECLS

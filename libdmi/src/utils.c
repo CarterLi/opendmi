@@ -8,6 +8,7 @@
 #include <sys/mman.h>
 
 #include <unistd.h>
+#include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -156,6 +157,19 @@ uint64_t dmi_decode_bcd(const dmi_byte_t *value, size_t length)
     }
 
     return result;
+}
+
+dmi_uuid_t dmi_decode_uuid(const dmi_byte_t value[16])
+{
+    dmi_uuid_t uuid;
+
+    memcpy(uuid._value, value, sizeof(uuid._value));
+
+    uuid.time_low            = dmi_decode_dword(uuid.time_low);
+    uuid.time_mid            = dmi_decode_word(uuid.time_mid);
+    uuid.time_hi_and_version = dmi_decode_word(uuid.time_hi_and_version);
+
+    return uuid;
 }
 
 dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength)

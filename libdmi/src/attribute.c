@@ -288,10 +288,23 @@ static char *dmi_attribute_format_set(const dmi_attribute_t *attr, const void *v
 
 static char *dmi_attribute_format_uuid(const dmi_attribute_t *attr, const void *value)
 {
+    int rv = 0;
+    char *str = nullptr;
+
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    // TODO: Implement UUID formatting
+    dmi_uuid_t *uuid = (dmi_uuid_t *)value;
+
+    rv = asprintf(&str, "%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X",
+                  uuid->time_low, uuid->time_mid, uuid->time_hi_and_version,
+                  uuid->clock_seq_hi_and_reserved, uuid->clock_seq_low,
+                  uuid->node[0], uuid->node[1], uuid->node[2],
+                  uuid->node[3], uuid->node[4], uuid->node[5]);
+
+    if (rv < 0)
+        return nullptr;
+
 
     return nullptr;
 }

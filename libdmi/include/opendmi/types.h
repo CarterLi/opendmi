@@ -72,6 +72,55 @@ typedef dmi_byte_t dmi_string_t;
  */
 typedef uint64_t dmi_size_t;
 
+#ifndef DMI_UUID_T
+#define DMI_UUID_T
+typedef union dmi_uuid dmi_uuid_t;
+#endif // !DMI_UUID_T
+
+/**
+ * DMI UUID type.
+ */
+DMI_PACKED_UNION(dmi_uuid)
+{
+    /**
+     * @brief Raw value;
+     */
+    dmi_byte_t _value[16];
+
+    DMI_PACKED_STRUCT()
+    {
+        /**
+         * @brief Low field of the timestamp.
+         */
+        dmi_dword_t time_low;
+
+        /**
+         * @brief Middle field of the timestamp.
+         */
+        dmi_word_t time_mid;
+
+        /**
+         * @brief High field of the timestamp multiplexed with the version number.
+         */
+        dmi_word_t time_hi_and_version;
+
+        /**
+         * @brief High field of the clock sequence multiplexed with the variant.
+         */
+        dmi_byte_t clock_seq_hi_and_reserved;
+
+        /**
+         * @brief Low field of the clock sequence.
+         */
+        dmi_byte_t clock_seq_low;
+
+        /**
+         * @brief Spatially unique node identifier.
+         */
+        dmi_byte_t node[6];
+    };
+};
+
 /**
  * @brief DMI structure types identifiers. Types 0 through 127 (7Fh) are
  * reserved for and defined by this specification. Types 128 through 256 (0x80
