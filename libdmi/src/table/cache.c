@@ -170,7 +170,7 @@ static const dmi_name_t dmi_cache_location_names[] =
 
 const dmi_attribute_t dmi_cache_attrs[] =
 {
-    DMI_ATTRIBUTE(dmi_cache_t, socket, STRING, {
+    DMI_ATTRIBUTE(dmi_cache_t, socket_designator, STRING, {
         .code = "socket-designator",
         .name = "Socket designator"
     }),
@@ -183,8 +183,9 @@ const dmi_attribute_t dmi_cache_attrs[] =
         .name = "Socketed",
     }),
     DMI_ATTRIBUTE(dmi_cache_t, location, ENUM, {
-        .code = "location",
-        .name = "Location (relative to CPU module)",
+        .code   = "location",
+        .name   = "Location",
+        .values = dmi_cache_location_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, enabled, BOOL, {
         .code = "enabled",
@@ -197,30 +198,29 @@ const dmi_attribute_t dmi_cache_attrs[] =
     }),
     DMI_ATTRIBUTE(dmi_cache_t, maximum_size, SIZE, {
         .code = "maximum-size",
-        .name = "Maximum cache size",
-        .unit = "KiB"
+        .name = "Maximum cache size"
     }),
     DMI_ATTRIBUTE(dmi_cache_t, installed_size, SIZE, {
         .code = "installed-size",
-        .name = "Installed cache size",
-        .unit = "KiB"
+        .name = "Installed cache size"
     }),
-    DMI_ATTRIBUTE(dmi_cache_t, supported_sram_type, SET, {
+    DMI_ATTRIBUTE(dmi_cache_t, supported_sram, SET, {
         .code = "supported-sram",
         .name = "Supported SRAM type"
     }),
-    DMI_ATTRIBUTE(dmi_cache_t, current_sram_type, SET, {
+    DMI_ATTRIBUTE(dmi_cache_t, current_sram, SET, {
         .code = "current-sram",
         .name = "Current SRAM type"
     }),
     DMI_ATTRIBUTE(dmi_cache_t, speed, INTEGER, {
-        .code = "speed",
-        .name = "Cache speed",
-        .unit = "ns"
+        .code   = "speed",
+        .name   = "Cache speed",
+        .unit   = "ns"
     }),
     DMI_ATTRIBUTE(dmi_cache_t, ecc_type, ENUM, {
-        .code = "ecc-type",
-        .name = "Error correction type",
+        .code   = "ecc-type",
+        .name   = "Error correction type",
+        .values = dmi_ecc_type_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, type, ENUM, {
         .code   = "type",
@@ -241,7 +241,11 @@ const dmi_table_spec_t dmi_cache_table =
     .name       = "Cache information",
     .type       = DMI_TYPE_CACHE,
     .min_length = 0x0F,
-    .attributes = dmi_cache_attrs
+    .attributes = dmi_cache_attrs,
+    .handlers   = {
+        .decoder     = (dmi_table_decoder_t)dmi_cache_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_cache_destroy
+    }
 };
 
 const char *dmi_cache_type_name(dmi_cache_type_t value)
@@ -282,15 +286,7 @@ struct dmi_cache *dmi_cache_info_create(struct dmi_cache_data *table)
     return info;
 }
 
-void dmi_cache_info_destroy(struct dmi_cache *info)
-{
-    if (!info)
-        return;
-
-    free(info);
-}
-
-dmi_size_t dmi_cache_size(dmi_cache_size_t value)
+dmi_size_t dmi_cache_size(dmi_word_t value)
 {
     dmi_size_t size = value & 0x7FFFU;
 
@@ -302,7 +298,7 @@ dmi_size_t dmi_cache_size(dmi_cache_size_t value)
     return size;
 }
 
-dmi_size_t dmi_cache_size_ex(dmi_cache_size_ex_t value)
+dmi_size_t dmi_cache_size_ex(dmi_dword_t value)
 {
     dmi_size_t size = value & 0x7FFFFFFFU;
 
@@ -314,7 +310,7 @@ dmi_size_t dmi_cache_size_ex(dmi_cache_size_ex_t value)
     return size;
 }
 
-struct dmi_cache *dmi_cache_info_decode(dmi_table_t *table)
+dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
 {
     struct dmi_cache *info;
     struct dmi_cache_data *data;
@@ -337,19 +333,25 @@ struct dmi_cache *dmi_cache_info_decode(dmi_table_t *table)
 
     data = dmi_cast(data, table->data);
 
-    // SMBIOS 2.0+
-    info->socket              = dmi_table_string(table, data->socket);
-    info->level               = data->config.level;
-    info->mode                = data->config.mode;
-    info->location            = data->config.location;
-    info->socketed            = data->config.socketed;
-    info->enabled             = data->config.enabled;
-    info->maximum_size        = dmi_cache_size(dmi_decode_word(data->maximum_size));
-    info->installed_size      = dmi_cache_size(dmi_decode_word(data->installed_size));
-    info->supported_sram_type = data->supported_sram_type;
-    info->current_sram_type   = data->current_sram_type;
+    // SMBIOS 2.0 features
+    info->socket_designator  = dmi_table_string(table, data->socket_designator);
 
-    // SMBIOS 2.1+
+    dmi_cache_config_t config = {
+        ._value = dmi_decode_word(data->config)
+    };
+
+    info->level               = config.level + 1;
+    info->mode                = config.mode;
+    info->location            = config.location;
+    info->socketed            = config.socketed;
+    info->enabled             = config.enabled;
+
+    info->maximum_size          = dmi_cache_size(dmi_decode_word(data->maximum_size));
+    info->installed_size        = dmi_cache_size(dmi_decode_word(data->installed_size));
+    info->supported_sram._value = dmi_decode_word(data->supported_sram);
+    info->current_sram._value   = dmi_decode_word(data->current_sram);
+
+    // SMBIOS 2.1 features
     if (data->header.length >= 0x0F) {
         info->type          = data->type;
         info->associativity = data->associativity;
@@ -357,7 +359,7 @@ struct dmi_cache *dmi_cache_info_decode(dmi_table_t *table)
         info->ecc_type      = data->ecc_type;
     }
 
-    // SMBIOS 3.1+
+    // SMBIOS 3.1 features
     if (data->header.length >= 0x13) {
         if (data->maximum_size == 0xFFFFU)
             info->maximum_size = dmi_cache_size_ex(dmi_decode_dword(data->maximum_size_ex));
@@ -368,10 +370,7 @@ struct dmi_cache *dmi_cache_info_decode(dmi_table_t *table)
     return info;
 }
 
-void dmi_cache_info_free(struct dmi_cache *info)
+void dmi_cache_destroy(dmi_cache_t *info)
 {
-    if (info == nullptr)
-        return;
-
     free(info);
 }

@@ -15,19 +15,6 @@
 #include <opendmi/table.h>
 #include <opendmi/table/common.h>
 
-#ifndef DMI_CACHE_DATA_T
-#define DMI_CACHE_DATA_T
-typedef struct dmi_cache_data dmi_cache_data_t;
-#endif // !DMI_CACHE_DATA_T
-
-#ifndef DMI_CACHE_T
-#define DMI_CACHE_T
-typedef struct dmi_cache dmi_cache_t;
-#endif // !DMI_CACHE_T
-
-typedef uint16_t dmi_cache_size_t;
-typedef uint32_t dmi_cache_size_ex_t;
-
 /**
  * @brief Cache types.
  */
@@ -86,39 +73,52 @@ typedef enum dmi_cache_location
 /**
  * @brief Cache configuration.
  */
-DMI_PACKED_STRUCT(dmi_cache_config)
+DMI_PACKED_UNION(dmi_cache_config)
 {
     /**
-     * @brief Cache Level – 1 through 8. For example, an L1 cache would use
-     * value 0x0 and an L3 cache would use 0x2.
+     * @brief Raw value.
      */
-    dmi_byte_t level : 3;
+    dmi_word_t _value;
 
-    /**
-     * @brief Socketed cache flag (e.g., cache on a stick).
-     */
-    bool socketed : 1;
+    DMI_PACKED_STRUCT()
+    {
+        /**
+         * @brief Cache Level – 1 through 8. For example, an L1 cache would use
+         * value 0x0 and an L3 cache would use 0x2.
+         */
+        dmi_byte_t level : 3;
 
-    /**
-     * @brief Reserved.
-     */
-    dmi_byte_t reserved : 1;
+        /**
+         * @brief Socketed cache flag (e.g., cache on a stick).
+         */
+        bool socketed : 1;
 
-    /**
-     * @brief Location, relative to the CPU module.
-     */
-    dmi_cache_location_t location : 2;
+        /**
+         * @brief Reserved.
+         */
+        dmi_byte_t reserved : 1;
 
-    /**
-     * @brief Enable flag (at boot time).
-     */
-    bool enabled : 1;
+        /**
+         * @brief Location, relative to the CPU module.
+         */
+        dmi_cache_location_t location : 2;
 
-    /**
-     * @brief Operational mode.
-     */
-    dmi_cache_mode_t mode : 2;
+        /**
+         * @brief Enable flag (at boot time).
+         */
+        bool enabled : 1;
+
+        /**
+         * @brief Operational mode.
+         */
+        dmi_cache_mode_t mode : 2;
+    };
 };
+
+#ifndef DMI_CACHE_CONFIG_T
+#define DMI_CACHE_CONFIG_T
+typedef union dmi_cache_config dmi_cache_config_t;
+#endif // !DMI_CACHE_CONFIG_T
 
 /**
  * @brief Cache SRAM type.
@@ -128,7 +128,7 @@ DMI_PACKED_UNION(dmi_cache_sram_type)
     /**
      * @brief Encoded type value.
      */
-    dmi_word_t type;
+    dmi_word_t _value;
 
     DMI_PACKED_STRUCT()
     {
@@ -139,10 +139,13 @@ DMI_PACKED_UNION(dmi_cache_sram_type)
         bool pipeline_burst : 1; ///< Pipeline burst
         bool synchonous     : 1; ///< Synchronous
         bool asynchronous   : 1; ///< Asynchronous
-
-        uint16_t reserved : 9; ///< Reserved, must be zero
     };
 };
+
+#ifndef DMI_CACHE_SRAM_TYPE_T
+#define DMI_CACHE_SRAM_TYPE_T
+typedef union dmi_cache_sram_type dmi_cache_sram_type_t;
+#endif // !DMI_CACHE_SRAM_TYPE_T
 
 /**
  * @brief Cache information table (type 7).
@@ -164,37 +167,37 @@ DMI_PACKED_STRUCT(dmi_cache_data)
      * @brief String number for reference designation, e.g. "CACHE1", 0.
      * @since SMBIOS 2.0
      */
-    dmi_string_t socket;
+    dmi_string_t socket_designator;
 
     /**
      * @brief Cache configuration.
      * @since SMBIOS 2.0
      */
-    struct dmi_cache_config config;
+    dmi_word_t config;
 
     /**
      * @brief Maximum cache size that can be installed.
      * @since SMBIOS 2.0
      */
-    dmi_cache_size_t maximum_size;
+    dmi_word_t maximum_size;
 
     /**
      * @brief Installed cache size, set to 0 if no cache is installed.
      * @since SMBIOS 2.0
      */
-    dmi_cache_size_t installed_size;
+    dmi_word_t installed_size;
 
     /**
      * @brief Supported SRAM type.
      * @since SMBIOS 2.0
      */
-    union dmi_cache_sram_type supported_sram_type;
+    dmi_word_t supported_sram;
 
     /**
      * @brief Current SRAM type.
      * @since SMBIOS 2.0
      */
-    union dmi_cache_sram_type current_sram_type;
+    dmi_word_t current_sram;
 
     /**
      * @brief Cache module speed, in nanoseconds. The value is 0 if the speed
@@ -208,33 +211,38 @@ DMI_PACKED_STRUCT(dmi_cache_data)
      * @brief Error-correction scheme supported by this cache component.
      * @since SMBIOS 2.1
      */
-    dmi_ecc_type_t ecc_type;
+    dmi_byte_t ecc_type;
 
     /**
      * @brief Logical type of cache.
      * @since SMBIOS 2.1
      */
-    dmi_cache_type_t type;
+    dmi_byte_t type;
 
     /**
      * @brief Associativity of the cache.
      * @since SMBIOS 2.1
      */
-    dmi_cache_assoc_t associativity;
+    dmi_byte_t associativity;
 
     /**
      * @brief Maximum cache size that can be installed (for caches larger than
      * 2047 MiB).
      * @since SMBIOS 3.1
      */
-    dmi_cache_size_ex_t maximum_size_ex;
+    dmi_dword_t maximum_size_ex;
 
     /**
      * @brief Installed cache size (for caches larget than 2047 MiB).
      * @since SMBIOS 3.1
      */
-    dmi_cache_size_ex_t installed_size_ex;
+    dmi_dword_t installed_size_ex;
 };
+
+#ifndef DMI_CACHE_DATA_T
+#define DMI_CACHE_DATA_T
+typedef struct dmi_cache_data dmi_cache_data_t;
+#endif // !DMI_CACHE_DATA_T
 
 /**
  * @brief Decoded cache information.
@@ -244,27 +252,12 @@ struct dmi_cache
     /**
      * @brief Socket designator.
      */
-    const char *socket;
+    const char *socket_designator;
 
     /**
      * @brief Cache level, 1 to 8.
      */
-    unsigned int level;
-
-    /**
-     * @brief Logical type of cache.
-     */
-    dmi_cache_type_t type;
-
-    /**
-     * @brief Operational mode.
-     */
-    dmi_cache_mode_t mode;
-
-    /**
-     * @brief Location, relative to the CPU module.
-     */
-    enum dmi_cache_location location;
+    unsigned short level;
 
     /**
      * @brief Socketed cache flag (e.g., cache on a stick).
@@ -272,9 +265,19 @@ struct dmi_cache
     bool socketed;
 
     /**
+     * @brief Location, relative to the CPU module.
+     */
+    dmi_cache_location_t location;
+
+    /**
      * @brief Enable flag (at boot time).
      */
     bool enabled;
+
+    /**
+     * @brief Operational mode.
+     */
+    dmi_cache_mode_t mode;
 
     /**
      * @brief Maximum cache size that can be installed, in bytes.
@@ -289,12 +292,12 @@ struct dmi_cache
     /**
      * @brief Supported SRAM type.
      */
-    union dmi_cache_sram_type supported_sram_type;
+    dmi_cache_sram_type_t supported_sram;
 
     /**
      * @brief Current SRAM type.
      */
-    union dmi_cache_sram_type current_sram_type;
+    dmi_cache_sram_type_t current_sram;
 
     /**
      * @brief Cache module speed, in nanoseconds. The value is 0 if the speed
@@ -308,10 +311,20 @@ struct dmi_cache
     dmi_ecc_type_t ecc_type;
 
     /**
+     * @brief Logical type of cache.
+     */
+    dmi_cache_type_t type;
+
+    /**
      * @brief Associativity of the cache.
      */
     dmi_cache_assoc_t associativity;
 };
+
+#ifndef DMI_CACHE_T
+#define DMI_CACHE_T
+typedef struct dmi_cache dmi_cache_t;
+#endif // !DMI_CACHE_T
 
 /**
  * @brief Cache information table specification.
@@ -325,11 +338,11 @@ const char *dmi_cache_mode_name(dmi_cache_mode_t value);
 const char *dmi_cache_assoc_name(dmi_cache_assoc_t value);
 const char *dmi_cache_location_name(dmi_cache_location_t value);
 
-dmi_size_t dmi_cache_size(dmi_cache_size_t value);
-dmi_size_t dmi_cache_size_ex(dmi_cache_size_ex_t value);
+dmi_size_t dmi_cache_size(dmi_word_t value);
+dmi_size_t dmi_cache_size_ex(dmi_dword_t value);
 
-struct dmi_cache *dmi_cache_info_decode(dmi_table_t *table);
-void dmi_cache_info_free(struct dmi_cache *info);
+dmi_cache_t *dmi_cache_decode(const dmi_table_t *table);
+void dmi_cache_destroy(dmi_cache_t *info);
 
 __END_DECLS
 
