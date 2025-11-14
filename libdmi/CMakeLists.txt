@@ -124,3 +124,11 @@ add_test(NAME ipow32 COMMAND ipow32-test)
 add_executable(ipow64-test test/ipow64.c)
 target_link_libraries(ipow64-test dmi-shared)
 add_test(NAME ipow64 COMMAND ipow64-test)
+
+add_executable(cache-size-test test/cache-size.c)
+target_link_libraries(cache-size-test dmi-shared)
+add_test(NAME cache-size COMMAND cache-size-test)
+
+add_executable(cache-size-ex-test test/cache-size-ex.c)
+target_link_libraries(cache-size-ex-test dmi-shared)
+add_test(NAME cache-size-ex COMMAND cache-size-ex-test)
