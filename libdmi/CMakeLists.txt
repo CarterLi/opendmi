@@ -39,7 +39,7 @@ add_library(dmi-object OBJECT
     src/table/onboard-device.c
     src/table/oob-remote-access.c
     src/table/pointing-device.c
-    src/table/port.c
+    src/table/port-connector.c
     src/table/power-controls.c
     src/table/power-supply.c
     src/table/probe.c

@@ -39,7 +39,7 @@
 #include <opendmi/table/onboard-device.h>
 #include <opendmi/table/oob-remote-access.h>
 #include <opendmi/table/pointing-device.h>
-#include <opendmi/table/port.h>
+#include <opendmi/table/port-connector.h>
 #include <opendmi/table/power-controls.h>
 #include <opendmi/table/power-supply.h>
 #include <opendmi/table/probe.h>
@@ -118,7 +118,7 @@ static const dmi_table_spec_t *dmi_table_specs[] =
     [DMI_TYPE_MEMORY_CONTROLLER]       = &dmi_memory_controller_table,
     [DMI_TYPE_MEMORY_MODULE]           = &dmi_memory_module_table,
     [DMI_TYPE_CACHE]                   = &dmi_cache_table,
-    [DMI_TYPE_PORT_CONNECTOR]          = &dmi_port_table,
+    [DMI_TYPE_PORT_CONNECTOR]          = &dmi_port_connector_table,
     [DMI_TYPE_SYSTEM_SLOTS]            = &dmi_slot_table,
     [DMI_TYPE_ONBOARD_DEVICE]          = &dmi_onboard_device_table,
     [DMI_TYPE_OEM_STRINGS]             = &dmi_oem_strings_table,

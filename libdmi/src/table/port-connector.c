@@ -7,217 +7,217 @@
 #include <stdlib.h>
 
 #include <opendmi/name.h>
-#include <opendmi/table/port.h>
+#include <opendmi/table/port-connector.h>
 
-static const dmi_name_t dmi_port_connector_names[] =
+static const dmi_name_t dmi_connector_type_names[] =
 {
     {
-        .id   = DMI_PORT_CONNECTOR_NONE,
+        .id   = DMI_CONNECTOR_TYPE_NONE,
         .code = "none",
         .name = "None"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_IEEE_1284_B,
+        .id   = DMI_CONNECTOR_TYPE_IEEE_1284_B,
         .code = "ieee-1284-b",
         .name = "Centronics"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_IEEE_1284_C,
+        .id   = DMI_CONNECTOR_TYPE_IEEE_1284_C,
         .code = "ieee-1284-c",
         .name = "Mini-Centronics"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_PROPRIETARY,
+        .id   = DMI_CONNECTOR_TYPE_PROPRIETARY,
         .code = "proprietary",
         .name = "Proprietary"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_DB_25_M,
+        .id   = DMI_CONNECTOR_TYPE_DB_25_M,
         .code = "db-25-m",
         .name = "DB-25 pin male"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_DB_25_F,
+        .id   = DMI_CONNECTOR_TYPE_DB_25_F,
         .code = "db-25-f",
         .name = "DB-25 pin female"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_DB_15_M,
+        .id   = DMI_CONNECTOR_TYPE_DB_15_M,
         .code = "db-15-m",
         .name = "DB-15 pin male"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_DB_15_F,
+        .id   = DMI_CONNECTOR_TYPE_DB_15_F,
         .code = "db-15-f",
         .name = "DB-15 pin female"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_DB_9_M,
+        .id   = DMI_CONNECTOR_TYPE_DB_9_M,
         .code = "db-9-m",
         .name = "DB-9 pin male"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_DB_9_F,
+        .id   = DMI_CONNECTOR_TYPE_DB_9_F,
         .code = "db-9-f",
         .name = "DB-9 pin female"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_RJ_11,
+        .id   = DMI_CONNECTOR_TYPE_RJ_11,
         .code = "rj-11",
         .name = "RJ-11"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_RJ_45,
+        .id   = DMI_CONNECTOR_TYPE_RJ_45,
         .code = "rj-45",
         .name = "RJ-45"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_MINI_SCSI_50PIN,
+        .id   = DMI_CONNECTOR_TYPE_MINI_SCSI_50PIN,
         .code = "mini-scsi-50pin",
         .name = "50-pin MiniSCSI"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_MINI_DIN,
+        .id   = DMI_CONNECTOR_TYPE_MINI_DIN,
         .code = "mini-din",
         .name = "Mini-DIN"
     },
     {
-        .id = DMI_PORT_CONNECTOR_MICRO_DIN,
+        .id = DMI_CONNECTOR_TYPE_MICRO_DIN,
         .code = "micro-din",
         .name = "Micro-DIN"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_PS2,
+        .id   = DMI_CONNECTOR_TYPE_PS2,
         .code = "ps-2",
         .name = "PS/2"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_INFRARED,
+        .id   = DMI_CONNECTOR_TYPE_INFRARED,
         .code = "infrared",
         .name = "Infrared"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_HP_HIL,
+        .id   = DMI_CONNECTOR_TYPE_HP_HIL,
         .code = "hp-hil",
         .name = "HP-HIL"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_ACCESS_BUS,
+        .id   = DMI_CONNECTOR_TYPE_ACCESS_BUS,
         .code = "access-bus",
         .name = "Access Bus (USB)"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_SSA_SCSI,
+        .id   = DMI_CONNECTOR_TYPE_SSA_SCSI,
         .code = "ssa-scsi",
         .name = "SSA SCSI"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_CIRCULAR_DIN_8_M,
+        .id   = DMI_CONNECTOR_TYPE_CIRCULAR_DIN_8_M,
         .code = "circular-din-8-m",
         .name = "Circular DIN-8 male"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_CIRCULAR_DIN_8_F,
+        .id   = DMI_CONNECTOR_TYPE_CIRCULAR_DIN_8_F,
         .code = "circular-din-8-f",
         .name = "Circular DIN-8 female"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_ONBOARD_IDE,
+        .id   = DMI_CONNECTOR_TYPE_ONBOARD_IDE,
         .code = "onboard-ide",
         .name = "On Board IDE"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_ONBOARD_FLOPPY,
+        .id   = DMI_CONNECTOR_TYPE_ONBOARD_FLOPPY,
         .code = "onboard-floppy",
         .name = "On Board Floppy"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_DIL_9PIN,
+        .id   = DMI_CONNECTOR_TYPE_DIL_9PIN,
         .code = "dil-9pin",
         .name = "9-pin Dual Inline (pin 10 cut)"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_DIL_25PIN,
+        .id   = DMI_CONNECTOR_TYPE_DIL_25PIN,
         .code = "dil-25-pin",
         .name = "25-pin Dual Inline (pin 26 cut)"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_DIL_50PIN,
+        .id   = DMI_CONNECTOR_TYPE_DIL_50PIN,
         .code = "dil-50pin",
         .name = "50-pin Dual Inline"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_DIL_68PIN,
+        .id   = DMI_CONNECTOR_TYPE_DIL_68PIN,
         .code = "dil-68pin",
         .name = "68-pin Dual Inline"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_ONBOARD_SOUND,
+        .id   = DMI_CONNECTOR_TYPE_ONBOARD_SOUND,
         .code = "onboard-sound",
         .name = "On Board Sound Input from CD-ROM"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_IEEE_1284_C_14,
+        .id   = DMI_CONNECTOR_TYPE_IEEE_1284_C_14,
         .code = "ieee-1284-c-14",
         .name = "Mini-Centronics Type-14"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_IEEE_1284_C_26,
+        .id   = DMI_CONNECTOR_TYPE_IEEE_1284_C_26,
         .code = "ieee-1284-c-26",
         .name = "Mini-Centronics Type-26"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_MINI_JACK,
+        .id   = DMI_CONNECTOR_TYPE_MINI_JACK,
         .code = "mini-jack",
         .name = "Mini-jack (headphones)"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_BNC,
+        .id   = DMI_CONNECTOR_TYPE_BNC,
         .code = "bnc",
         .name = "BNC"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_IEEE_1394,
+        .id   = DMI_CONNECTOR_TYPE_IEEE_1394,
         .code = "ieee-1394",
         .name = "IEEE 1394"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_SAS_SATA,
+        .id   = DMI_CONNECTOR_TYPE_SAS_SATA,
         .code = "sas-sata",
         .name = "SAS/SATA Plug Receptacle"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_USB_C,
+        .id   = DMI_CONNECTOR_TYPE_USB_C,
         .code = "usb-c",
         .name = "USB Type-C Receptacle"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_PC_98,
+        .id   = DMI_CONNECTOR_TYPE_PC_98,
         .code = "pc-98",
         .name = "PC-98"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_PC_98_HIRESO,
+        .id   = DMI_CONNECTOR_TYPE_PC_98_HIRESO,
         .code = "pc-98-hireso",
         .name = "PC-98 Hireso"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_PC_H98,
+        .id   = DMI_CONNECTOR_TYPE_PC_H98,
         .code = "pc-h98",
         .name = "PC-H98"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_PC_98_NOTE,
+        .id   = DMI_CONNECTOR_TYPE_PC_98_NOTE,
         .code = "pc-98-note",
         .name = "PC-98 Note"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_PC_98_FULL,
+        .id   = DMI_CONNECTOR_TYPE_PC_98_FULL,
         .code = "pc-98-full",
         .name = "PC-98 Full"
     },
     {
-        .id   = DMI_PORT_CONNECTOR_OTHER,
+        .id   = DMI_CONNECTOR_TYPE_OTHER,
         .code = "other",
         .name = "Other"
     },
@@ -424,27 +424,27 @@ static const dmi_name_t dmi_port_type_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_t dmi_port_attrs[] =
+const dmi_attribute_t dmi_port_connector_attrs[] =
 {
-    DMI_ATTRIBUTE(dmi_port_t, internal_designator, STRING, {
+    DMI_ATTRIBUTE(dmi_port_connector_t, internal_designator, STRING, {
         .code   = "internal-designator",
         .name   = "Internal reference designator"
     }),
-    DMI_ATTRIBUTE(dmi_port_t, internal_connector, ENUM, {
+    DMI_ATTRIBUTE(dmi_port_connector_t, internal_connector, ENUM, {
         .code   = "internal-connector",
         .name   = "Internal connector type",
-        .values = dmi_port_connector_names
+        .values = dmi_connector_type_names
     }),
-    DMI_ATTRIBUTE(dmi_port_t, external_designator, STRING, {
+    DMI_ATTRIBUTE(dmi_port_connector_t, external_designator, STRING, {
         .code   = "external-designator",
         .name   = "External reference designator"
     }),
-    DMI_ATTRIBUTE(dmi_port_t, external_connector, ENUM, {
+    DMI_ATTRIBUTE(dmi_port_connector_t, external_connector, ENUM, {
         .code   = "external-connector",
         .name   = "External connector type",
-        .values = dmi_port_connector_names
+        .values = dmi_connector_type_names
     }),
-    DMI_ATTRIBUTE(dmi_port_t, type, ENUM, {
+    DMI_ATTRIBUTE(dmi_port_connector_t, port_type, ENUM, {
         .code   = "port-type",
         .name   = "Port type",
         .values = dmi_port_type_names
@@ -452,22 +452,22 @@ const dmi_attribute_t dmi_port_attrs[] =
     DMI_ATTRIBUTE_NULL
 };
 
-const dmi_table_spec_t dmi_port_table =
+const dmi_table_spec_t dmi_port_connector_table =
 {
     .tag        = "port",
     .name       = "Port connector information",
     .type       = DMI_TYPE_PORT_CONNECTOR,
     .min_length = 0x09,
-    .attributes = dmi_port_attrs,
+    .attributes = dmi_port_connector_attrs,
     .handlers   = {
-        .decoder     = (dmi_table_decoder_t)dmi_port_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_port_destroy
+        .decoder     = (dmi_table_decoder_t)dmi_port_connector_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_port_connector_destroy
     }
 };
 
-const char *dmi_port_connector_name(dmi_port_connector_t value)
+const char *dmi_connector_type_name(dmi_connector_type_t value)
 {
-    return dmi_name_lookup(dmi_port_connector_names, value);
+    return dmi_name_lookup(dmi_connector_type_names, value);
 }
 
 const char *dmi_port_type_name(dmi_port_type_t value)
@@ -475,10 +475,10 @@ const char *dmi_port_type_name(dmi_port_type_t value)
     return dmi_name_lookup(dmi_port_type_names, value);
 }
 
-dmi_port_t *dmi_port_decode(const dmi_table_t *table)
+dmi_port_connector_t *dmi_port_connector_decode(const dmi_table_t *table)
 {
-    dmi_port_t *info = nullptr;
-    dmi_port_data_t *data = dmi_cast(data, table->data);
+    dmi_port_connector_t *info = nullptr;
+    dmi_port_connector_data_t *data = dmi_cast(data, table->data);
 
     info = calloc(1, sizeof(*info));
     if (!info)
@@ -488,12 +488,12 @@ dmi_port_t *dmi_port_decode(const dmi_table_t *table)
     info->internal_connector  = data->internal_connector;
     info->external_designator = dmi_table_string(table, data->external_designator);
     info->external_connector  = data->external_connector;
-    info->type                = data->type;
+    info->port_type           = data->port_type;
 
     return info;
 }
 
-void dmi_port_destroy(dmi_port_t *info)
+void dmi_port_connector_destroy(dmi_port_connector_t *info)
 {
     free(info);
 }
