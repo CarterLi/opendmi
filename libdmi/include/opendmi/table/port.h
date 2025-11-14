@@ -11,10 +11,56 @@
 
 #include <opendmi/table.h>
 
+typedef enum dmi_port_connector
+{
+    DMI_PORT_CONNECTOR_NONE             = 0x00, ///< None
+    DMI_PORT_CONNECTOR_IEEE_1284_B      = 0x01, ///< Centronics
+    DMI_PORT_CONNECTOR_IEEE_1284_C      = 0x02, ///< Mini-Centronics
+    DMI_PORT_CONNECTOR_PROPRIETARY      = 0x03, ///< Proprietary
+    DMI_PORT_CONNECTOR_DB_25_M          = 0x04, ///< DB-25 pin male
+    DMI_PORT_CONNECTOR_DB_25_F          = 0x05, ///< DB-25 pin female
+    DMI_PORT_CONNECTOR_DB_15_M          = 0x06, ///< DB-15 pin male
+    DMI_PORT_CONNECTOR_DB_15_F          = 0x07, ///< DB-15 pin female
+    DMI_PORT_CONNECTOR_DB_9_M           = 0x08, ///< DB-9 pin male
+    DMI_PORT_CONNECTOR_DB_9_F           = 0x09, ///< DB-9 pin female
+    DMI_PORT_CONNECTOR_RJ_11            = 0x0A, ///< RJ-11
+    DMI_PORT_CONNECTOR_RJ_45            = 0x0B, ///< RJ-45
+    DMI_PORT_CONNECTOR_MINI_SCSI_50PIN  = 0x0C, ///< 50-pin MiniSCSI
+    DMI_PORT_CONNECTOR_MINI_DIN         = 0x0D, ///< Mini-DIN
+    DMI_PORT_CONNECTOR_MICRO_DIN        = 0x0E, ///< Micro-DIN
+    DMI_PORT_CONNECTOR_PS2              = 0x0F, ///< PS/2
+    DMI_PORT_CONNECTOR_INFRARED         = 0x10, ///< Infrared
+    DMI_PORT_CONNECTOR_HP_HIL           = 0x11, ///< HP-HIL
+    DMI_PORT_CONNECTOR_ACCESS_BUS       = 0x12, ///< Access Bus (USB)
+    DMI_PORT_CONNECTOR_SSA_SCSI         = 0x13, ///< SSA SCSI
+    DMI_PORT_CONNECTOR_CIRCULAR_DIN_8_M = 0x14, ///< Circular DIN-8 male
+    DMI_PORT_CONNECTOR_CIRCULAR_DIN_8_F = 0x15, ///< Circular DIN-8 female
+    DMI_PORT_CONNECTOR_ONBOARD_IDE      = 0x16, ///< On Board IDE
+    DMI_PORT_CONNECTOR_ONBOARD_FLOPPY   = 0x17, ///< On Board Floppy
+    DMI_PORT_CONNECTOR_DIL_9PIN         = 0x18, ///< 9-pin Dual Inline (pin 10 cut)
+    DMI_PORT_CONNECTOR_DIL_25PIN        = 0x19, ///< 25-pin Dual Inline (pin 26 cut)
+    DMI_PORT_CONNECTOR_DIL_50PIN        = 0x1A, ///< 50-pin Dual Inline
+    DMI_PORT_CONNECTOR_DIL_68PIN        = 0x1B, ///< 68-pin Dual Inline
+    DMI_PORT_CONNECTOR_ONBOARD_SOUND    = 0x1C, ///< On Board Sound Input from CD-ROM
+    DMI_PORT_CONNECTOR_IEEE_1284_C_14   = 0x1D, ///< Mini-Centronics Type-14
+    DMI_PORT_CONNECTOR_IEEE_1284_C_26   = 0x1E, ///< Mini-Centronics Type-26
+    DMI_PORT_CONNECTOR_MINI_JACK        = 0x1F, ///< Mini-jack (headphones)
+    DMI_PORT_CONNECTOR_BNC              = 0x20, ///< BNC
+    DMI_PORT_CONNECTOR_IEEE_1394        = 0x21, ///< IEEE 1394
+    DMI_PORT_CONNECTOR_SAS_SATA         = 0x22, ///< SAS/SATA Plug Receptacle
+    DMI_PORT_CONNECTOR_USB_C            = 0x23, ///< USB Type-C Receptacle
+    DMI_PORT_CONNECTOR_PC_98            = 0xA0, ///< PC-98
+    DMI_PORT_CONNECTOR_PC_98_HIRESO     = 0xA1, ///< PC-98 Hireso
+    DMI_PORT_CONNECTOR_PC_H98           = 0xA2, ///< PC-H98
+    DMI_PORT_CONNECTOR_PC_98_NOTE       = 0xA3, ///< PC-98 Note
+    DMI_PORT_CONNECTOR_PC_98_FULL       = 0xA4, ///< PC-98 Full
+    DMI_PORT_CONNECTOR_OTHER            = 0xFF, ///< Other
+} dmi_port_connector_t;
+
 /**
  * @brief Port types
  */
-enum dmi_port_type
+typedef enum dmi_port_type
 {
     DMI_PORT_TYPE_NONE             = 0x00, ///< None
     DMI_PORT_TYPE_PARALLEL_XT_AT   = 0x01, ///< Parallel XT/AT compatible
@@ -55,7 +101,88 @@ enum dmi_port_type
     DMI_PORT_TYPE_8251             = 0xA0, ///< 8251 compatible
     DMI_PORT_TYPE_8251_FIFO        = 0xA1, ///< 8251 FIFO compatible
     DMI_PORT_TYPE_OTHER            = 0xFF, ///< Other
+} dmi_port_type_t;
+
+/**
+ * @brief Port connector information table (type 8).
+ */
+DMI_PACKED_STRUCT(dmi_port_data)
+{
+    /**
+     * @brief DMI table header.
+     */
+    dmi_header_t header;
+
+    /**
+     * @brief String number for internal reference designator, that is,
+     * internal to the system enclosure. Example: "J101".
+     */
+    dmi_string_t internal_designator;
+
+    /**
+     * @brief Internal connector type.
+     */
+    dmi_byte_t internal_connector;
+
+    /**
+     * @brief String number for the external reference designation, that is,
+     * external to the system enclosure. Example: "COM A".
+     */
+    dmi_string_t external_designator;
+
+    /**
+     * @brief External connector type.
+     */
+    dmi_byte_t external_connector;
+
+    /**
+     * @brief Port type.
+     */
+    dmi_byte_t type;
 };
+
+#ifndef DMI_PORT_DATA_T
+#define DMI_PORT_DATA_T
+typedef struct dmi_port_data dmi_port_data_t;
+#endif // !DMI_PORT_DATA_T
+
+/**
+ * @brief Port connector information.
+ */
+struct dmi_port
+{
+    /**
+     * @brief Internal reference designator, that is, internal to the system
+     * enclosure. Example: "J101".
+     */
+    const char *internal_designator;
+
+    /**
+     * @brief Internal connector type.
+     */
+    dmi_port_connector_t internal_connector;
+
+    /**
+     * @brief External reference designation external to the system enclosure.
+     * Example: "COM A".
+     */
+    const char *external_designator;
+
+    /**
+     * @brief External connector type.
+     */
+    dmi_port_connector_t external_connector;
+
+    /**
+     * @brief Port type.
+     */
+    dmi_port_type_t type;
+};
+
+#ifndef DMI_PORT_T
+#define DMI_PORT_T
+typedef struct dmi_port dmi_port_t;
+#endif // !DMI_PORT_T
 
 /**
  * @brief Port connector information table specification.
@@ -64,7 +191,11 @@ extern const dmi_table_spec_t dmi_port_table;
 
 __BEGIN_DECLS
 
-const char *dmi_port_type_name(enum dmi_port_type value);
+const char *dmi_port_connector_name(dmi_port_connector_t value);
+const char *dmi_port_type_name(dmi_port_type_t value);
+
+dmi_port_t *dmi_port_decode(const dmi_table_t *table);
+void dmi_port_destroy(dmi_port_t *info);
 
 __END_DECLS
 
