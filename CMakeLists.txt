@@ -49,7 +49,7 @@ else()
     add_compile_definitions(NDEBUG)
 endif()
 
-include(CTest)
+enable_testing()
 
 add_subdirectory(libdmi)
 add_subdirectory(libdmi++)
