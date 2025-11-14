@@ -46,6 +46,7 @@ static void list_types(dmi_context_t *context);
 static void print_all(dmi_context_t *context);
 static void print_table(const dmi_table_t *table);
 static void print_table_attrs(const dmi_table_t *table);
+static void print_table_attr_set(const dmi_attribute_t *attr, const void *value);
 static void print_table_dump(const dmi_table_t *table);
 static void print_hex_data(const void *data, size_t length);
 
@@ -270,9 +271,37 @@ static void print_table_attrs(const dmi_table_t *table)
                 printf("%s\n", str);
 
             free(str);
+
+            if (attr->type == DMI_ATTRIBUTE_TYPE_SET)
+                print_table_attr_set(attr, ptr);
         } else {
             printf("<unknown>\n");
         }
+    }
+}
+
+static void print_table_attr_set(const dmi_attribute_t *attr, const void *value)
+{
+    uint64_t mask;
+
+    if (attr->size == sizeof(int8_t))
+        mask = *(uint8_t *)value;
+    else if (attr->size == sizeof(uint16_t))
+        mask = *(uint16_t *)value;
+    else if (attr->size == sizeof(uint32_t))
+        mask = *(uint32_t *)value;
+    else if (attr->size == sizeof(uint64_t))
+        mask = *(uint64_t *)value;
+    else
+        return;
+
+    for (unsigned i = 0; i < attr->size * CHAR_BIT; i++) {
+        const char *name = dmi_name_lookup(attr->params.values, i);
+        if (!name)
+            continue;
+
+        bool flag = mask & (1 << i);
+        printf("\t\t%s: %s\n", name, flag ? "yes" : "no");
     }
 }
 

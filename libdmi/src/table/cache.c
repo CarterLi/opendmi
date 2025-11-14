@@ -168,6 +168,46 @@ static const dmi_name_t dmi_cache_location_names[] =
     DMI_NAME_NULL
 };
 
+static const dmi_name_t dmi_cache_sram_type_names[] =
+{
+    {
+        .id   = 0,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = 1,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = 2,
+        .code = "non-burst",
+        .name = "Non-burst"
+    },
+    {
+        .id   = 3,
+        .code = "burst",
+        .name = "Burst"
+    },
+    {
+        .id   = 4,
+        .code = "pipeline-burst",
+        .name = "Pipeline burst"
+    },
+    {
+        .id   = 5,
+        .code = "synchronous",
+        .name = "Synchronous"
+    },
+    {
+        .id   = 6,
+        .code = "asynchronous",
+        .name = "Asynchronous"
+    },
+    DMI_NAME_NULL
+};
+
 const dmi_attribute_t dmi_cache_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_cache_t, socket_designator, STRING, {
@@ -205,12 +245,14 @@ const dmi_attribute_t dmi_cache_attrs[] =
         .name = "Installed cache size"
     }),
     DMI_ATTRIBUTE(dmi_cache_t, supported_sram, SET, {
-        .code = "supported-sram",
-        .name = "Supported SRAM type"
+        .code   = "supported-sram",
+        .name   = "Supported SRAM type",
+        .values = dmi_cache_sram_type_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, current_sram, SET, {
-        .code = "current-sram",
-        .name = "Current SRAM type"
+        .code   = "current-sram",
+        .name   = "Current SRAM type",
+        .values = dmi_cache_sram_type_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, speed, INTEGER, {
         .code   = "speed",

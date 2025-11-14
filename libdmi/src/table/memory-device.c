@@ -186,6 +186,86 @@ static const dmi_name_t dmi_memory_device_type_names[] =
     DMI_NAME_NULL
 };
 
+static const dmi_name_t dmi_memory_device_type_detail_names[] =
+{
+    {
+        .id   = 1,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = 2,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = 3,
+        .code = "fast-paged",
+        .name = "Fast-paged"
+    },
+    {
+        .id   = 4,
+        .code = "static-column",
+        .name = "Static column"
+    },
+    {
+        .id   = 5,
+        .code = "pseudo-static",
+        .name = "Pseudo-static"
+    },
+    {
+        .id   = 6,
+        .code = "rambus",
+        .name = "RAMBUS"
+    },
+    {
+        .id   = 7,
+        .code = "synchronous",
+        .name = "Synchronous"
+    },
+    {
+        .id   = 8,
+        .code = "cmos",
+        .name = "CMOS"
+    },
+    {
+        .id   = 9,
+        .code = "edo",
+        .name = "EDO"
+    },
+    {
+        .id   = 10,
+        .code = "window-dram",
+        .name = "Window DRAM"
+    },
+    {
+        .id   = 11,
+        .code = "cache-dram",
+        .name = "Cache DRAM"
+    },
+    {
+        .id   = 12,
+        .code = "non-volatile",
+        .name = "Non-volatile"
+    },
+    {
+        .id   = 13,
+        .code = "registered",
+        .name = "Registered (buffered)"
+    },
+    {
+        .id   = 14,
+        .code = "unbuffered",
+        .name = "Unbuffered (unregistered)"
+    },
+    {
+        .id   = 15,
+        .code = "lrdimm",
+        .name = "LRDIMM"
+    },
+    DMI_NAME_NULL
+};
+
 static const dmi_name_t dmi_memory_device_form_factor_names[] =
 {
     {
@@ -381,6 +461,11 @@ const dmi_attribute_t dmi_memory_device_attrs[] =
         .name    = "Memory type",
         .values  = dmi_memory_device_type_names
     }),
+    DMI_ATTRIBUTE(dmi_memory_device_t, memory_type_detail, SET, {
+        .code   = "memory-type-details",
+        .name   = "Memory type details",
+        .values = dmi_memory_device_type_detail_names
+    }),
     DMI_ATTRIBUTE(dmi_memory_device_t, maximum_speed, INTEGER, {
         .code    = "maximum-speed",
         .name    = "Maximum-speed",
@@ -545,7 +630,7 @@ const char *dmi_memory_device_technology_name(enum dmi_memory_device_technology 
     return dmi_name_lookup(dmi_memory_device_technology_names, value);
 }
 
-dmi_size_t dmi_memory_device_size(dmi_memory_device_size_t value)
+dmi_size_t dmi_memory_device_size(dmi_word_t value)
 {
     dmi_size_t size = value & 0x7FFFU;
 
@@ -557,7 +642,7 @@ dmi_size_t dmi_memory_device_size(dmi_memory_device_size_t value)
     return size;
 }
 
-dmi_size_t dmi_memory_device_size_ex(dmi_memory_device_size_ex_t value)
+dmi_size_t dmi_memory_device_size_ex(dmi_dword_t value)
 {
     return (value & 0x7FFFFFFFU) << 20; // Granularity is 1 Mb
 }

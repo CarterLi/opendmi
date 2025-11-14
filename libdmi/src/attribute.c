@@ -133,7 +133,7 @@ static char *dmi_attribute_format_bool(const dmi_attribute_t *attr, const void *
     if (attr->params.values) {
         str = dmi_name_lookup(attr->params.values, *(bool *)value ? 1 : 0);
     } else {
-        str = *(bool *)value ? "true" : "false";
+        str = *(bool *)value ? "yes" : "no";
     }
 
     return strdup(str);
@@ -306,12 +306,30 @@ static char *dmi_attribute_format_enum(const dmi_attribute_t *attr, const void *
 
 static char *dmi_attribute_format_set(const dmi_attribute_t *attr, const void *value)
 {
+    uint64_t src;
+    const char *fmt;
+    int rv;
+    char *str;
+
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    // TODO: Implement set formatting
+    if (attr->size == sizeof(int8_t))
+        src = *(uint8_t *)value, fmt = "0x%02" PRIX64;
+    else if (attr->size == sizeof(uint16_t))
+        src = *(uint16_t *)value, fmt = "0x%04" PRIX64;
+    else if (attr->size == sizeof(uint32_t))
+        src = *(uint32_t *)value, fmt = "0x%08" PRIX64;
+    else if (attr->size == sizeof(uint64_t))
+        src = *(uint64_t *)value, fmt = "0x%016" PRIX64;
+    else
+        return nullptr;
 
-    return nullptr;
+    rv = asprintf(&str, fmt, src);
+    if (rv < 0)
+        return nullptr;
+
+    return str;
 }
 
 static char *dmi_attribute_format_uuid(const dmi_attribute_t *attr, const void *value)

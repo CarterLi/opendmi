@@ -11,24 +11,6 @@
 
 #include <opendmi/table.h>
 
-#ifndef DMI_MEMORY_DEVICE_TYPE_DETAIL_T
-#define DMI_MEMORY_DEVICE_TYPE_DETAIL_T
-typedef union dmi_memory_device_type_detail dmi_memory_device_type_detail_t;
-#endif // !DMI_MEMORY_DEVICE_TYPE_DETAIL_T
-
-#ifndef DMI_MEMORY_DEVICE_DATA_T
-#define DMI_MEMORY_DEVICE_DATA_T
-typedef struct dmi_memory_device_data dmi_memory_device_data_t;
-#endif // !DMI_MEMORY_DEVICE_DATA_T
-
-#ifndef DMI_MEMORY_DEVICE_T
-#define DMI_MEMORY_DEVICE_T
-typedef struct dmi_memory_device dmi_memory_device_t;
-#endif // !DMI_MEMORY_DEVICE_T
-
-typedef uint16_t dmi_memory_device_size_t;
-typedef uint32_t dmi_memory_device_size_ex_t;
-
 /**
  * @brief Memory device types.
  */
@@ -140,6 +122,11 @@ DMI_PACKED_UNION(dmi_memory_device_type_detail)
     };
 };
 
+#ifndef DMI_MEMORY_DEVICE_TYPE_DETAIL_T
+#define DMI_MEMORY_DEVICE_TYPE_DETAIL_T
+typedef union dmi_memory_device_type_detail dmi_memory_device_type_detail_t;
+#endif // !DMI_MEMORY_DEVICE_TYPE_DETAIL_T
+
 /**
  * @brief Memory device table (type 17).
  *
@@ -212,7 +199,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_memory_device_size_t size;
+    dmi_word_t size;
 
     /**
      * @brief Implementation form factor for this memory device.
@@ -321,7 +308,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.7
      */
-    dmi_memory_device_size_ex_t size_ex;
+    dmi_dword_t size_ex;
 
     /**
      * @brief Identifies the configured speed of the memory device, in
@@ -492,6 +479,11 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
     dmi_word_t rcd_revision_number;
 };
 
+#ifndef DMI_MEMORY_DEVICE_DATA_T
+#define DMI_MEMORY_DEVICE_DATA_T
+typedef struct dmi_memory_device_data dmi_memory_device_data_t;
+#endif // !DMI_MEMORY_DEVICE_DATA_T
+
 struct dmi_memory_device
 {
     /**
@@ -536,6 +528,11 @@ struct dmi_memory_device
     uint16_t rcd_revision_number;
 };
 
+#ifndef DMI_MEMORY_DEVICE_T
+#define DMI_MEMORY_DEVICE_T
+typedef struct dmi_memory_device dmi_memory_device_t;
+#endif // !DMI_MEMORY_DEVICE_T
+
 /**
  * @brief Memory device table specification.
  */
@@ -547,8 +544,8 @@ const char *dmi_memory_device_type_name(enum dmi_memory_device_type value);
 const char *dmi_memory_device_form_factor_name(enum dmi_memory_device_form_factor value);
 const char *dmi_memory_device_technology_name(enum dmi_memory_device_technology value);
 
-dmi_size_t dmi_memory_device_size(dmi_memory_device_size_t value);
-dmi_size_t dmi_memory_device_size_ex(dmi_memory_device_size_ex_t value);
+dmi_size_t dmi_memory_device_size(dmi_word_t value);
+dmi_size_t dmi_memory_device_size_ex(dmi_dword_t value);
 
 dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table);
 void dmi_memory_device_destroy(dmi_memory_device_t *info);
