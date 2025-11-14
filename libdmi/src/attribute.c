@@ -10,6 +10,7 @@
 #include <inttypes.h>
 #include <assert.h>
 
+#include <opendmi/version.h>
 #include <opendmi/attribute.h>
 #include <opendmi/utils.h>
 
@@ -22,6 +23,7 @@ static char *dmi_attribute_format_size(const dmi_attribute_t *attr, const void *
 static char *dmi_attribute_format_address(const dmi_attribute_t *attr, const void *value);
 static char *dmi_attribute_format_enum(const dmi_attribute_t *attr, const void *value);
 static char *dmi_attribute_format_set(const dmi_attribute_t *attr, const void *value);
+static char *dmi_attribute_format_version(const dmi_attribute_t *attr, const void *value);
 static char *dmi_attribute_format_uuid(const dmi_attribute_t *attr, const void *value);
 
 static const dmi_attribute_ops_t dmi_attribute_type_ops[] =
@@ -60,6 +62,10 @@ static const dmi_attribute_ops_t dmi_attribute_type_ops[] =
     },
     [DMI_ATTRIBUTE_TYPE_SET] = {
         .format = dmi_attribute_format_set,
+        .parse  = nullptr
+    },
+    [DMI_ATTRIBUTE_TYPE_VERSION] = {
+        .format = dmi_attribute_format_version,
         .parse  = nullptr
     },
     [DMI_ATTRIBUTE_TYPE_UUID] = {
@@ -314,18 +320,65 @@ static char *dmi_attribute_format_set(const dmi_attribute_t *attr, const void *v
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    if (attr->size == sizeof(int8_t))
+    switch (attr->size) {
+    case sizeof(int8_t):
         src = *(uint8_t *)value, fmt = "0x%02" PRIX64;
-    else if (attr->size == sizeof(uint16_t))
+        break;
+
+    case sizeof(uint16_t):
         src = *(uint16_t *)value, fmt = "0x%04" PRIX64;
-    else if (attr->size == sizeof(uint32_t))
+        break;
+
+    case sizeof(uint32_t):
         src = *(uint32_t *)value, fmt = "0x%08" PRIX64;
-    else if (attr->size == sizeof(uint64_t))
+        break;
+
+    case sizeof(uint64_t):
         src = *(uint64_t *)value, fmt = "0x%016" PRIX64;
-    else
+        break;
+
+    default:
         return nullptr;
+    }
 
     rv = asprintf(&str, fmt, src);
+    if (rv < 0)
+        return nullptr;
+
+    return str;
+}
+
+static char *dmi_attribute_format_version(const dmi_attribute_t *attr, const void *value)
+{
+    int rv = 0;
+    char *str = nullptr;
+
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    dmi_version_t version = *(dmi_version_t *)value;
+
+    unsigned major    = dmi_version_major(version);
+    unsigned minor    = dmi_version_minor(version);
+    unsigned revision = dmi_version_revision(version);
+
+    switch (attr->params.scale) {
+    case 1:
+        rv = asprintf(&str, "%u", major);
+        break;
+
+    case 2:
+        rv = asprintf(&str, "%u.%u", major, minor);
+        break;
+
+    case 3:
+        rv = asprintf(&str, "%u.%u.%u", major, minor, revision);
+        break;
+
+    default:
+        return nullptr;
+    }
+
     if (rv < 0)
         return nullptr;
 
