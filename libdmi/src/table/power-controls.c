@@ -4,10 +4,33 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <stdlib.h>
+
+#include <opendmi/utils.h>
 #include <opendmi/table/power-controls.h>
 
 const dmi_attribute_t dmi_power_controls_attrs[] =
 {
+    DMI_ATTRIBUTE(dmi_power_controls_t, poweron_month, INTEGER, {
+        .code = "poweron-month",
+        .name = "Next power-on month"
+    }),
+    DMI_ATTRIBUTE(dmi_power_controls_t, poweron_day, INTEGER, {
+        .code = "poweron-day",
+        .name = "Next power-on day of month"
+    }),
+    DMI_ATTRIBUTE(dmi_power_controls_t, poweron_hour, INTEGER, {
+        .code = "poweron-hour",
+        .name = "Next power-on hour"
+    }),
+    DMI_ATTRIBUTE(dmi_power_controls_t, poweron_minute, INTEGER, {
+        .code = "poweron-minute",
+        .name = "Next power-on minute"
+    }),
+    DMI_ATTRIBUTE(dmi_power_controls_t, poweron_second, INTEGER, {
+        .code = "poweron-second",
+        .name = "Next power-on second"
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
@@ -18,5 +41,32 @@ const dmi_table_spec_t dmi_power_controls_table =
     .type        = DMI_TYPE_POWER_CONTROLS,
     .min_version = DMI_VERSION(2, 2, 0),
     .min_length  = 0x09,
-    .attributes  = dmi_power_controls_attrs
+    .attributes  = dmi_power_controls_attrs,
+    .handlers    = {
+        .decoder     = (dmi_table_decoder_t)dmi_power_controls_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_power_controls_destroy
+    }
 };
+
+dmi_power_controls_t *dmi_power_controls_decode(const dmi_table_t *table)
+{
+    dmi_power_controls_t *info = nullptr;
+    dmi_power_controls_data_t *data = dmi_cast(data, table->data);
+
+    info = calloc(1, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    info->poweron_month  = dmi_decode_bcd(&data->poweron_month, sizeof(data->poweron_month));
+    info->poweron_day    = dmi_decode_bcd(&data->poweron_day, sizeof(data->poweron_day));
+    info->poweron_hour   = dmi_decode_bcd(&data->poweron_hour, sizeof(data->poweron_hour));
+    info->poweron_minute = dmi_decode_bcd(&data->poweron_minute, sizeof(data->poweron_minute));
+    info->poweron_second = dmi_decode_bcd(&data->poweron_second, sizeof(data->poweron_second));
+
+    return info;
+}
+
+void dmi_power_controls_destroy(dmi_power_controls_t *info)
+{
+    free(info);
+}
