@@ -32,6 +32,8 @@ add_library(dmi-object OBJECT
     src/table/memory-device.c
     src/table/memory-device-addr.c
     src/table/memory-error.c
+    src/table/memory-error-32.c
+    src/table/memory-error-64.c
     src/table/memory-module.c
     src/table/mgmt-controller.c
     src/table/mgmt-device.c

@@ -31,7 +31,8 @@
 #include <opendmi/table/memory-controller.h>
 #include <opendmi/table/memory-device.h>
 #include <opendmi/table/memory-device-addr.h>
-#include <opendmi/table/memory-error.h>
+#include <opendmi/table/memory-error-32.h>
+#include <opendmi/table/memory-error-64.h>
 #include <opendmi/table/memory-module.h>
 #include <opendmi/table/mgmt-controller.h>
 #include <opendmi/table/mgmt-device.h>

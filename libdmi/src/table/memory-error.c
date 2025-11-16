@@ -4,8 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <stdlib.h>
+
 #include <opendmi/table/memory-error.h>
-#include <opendmi/name.h>
 
 static const dmi_name_t dmi_memory_error_type_names[] =
 {
@@ -137,47 +138,59 @@ static const dmi_name_t dmi_memory_error_operation_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_t dmi_memory_error_32_attrs[] =
+const dmi_attribute_t dmi_memory_error_attrs[] =
 {
+    DMI_ATTRIBUTE(dmi_memory_error_t, type, ENUM, {
+        .code   = "type",
+        .name   = "Type",
+        .values = dmi_memory_error_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_memory_error_t, granularity, ENUM, {
+        .code   = "granularity",
+        .name   = "granularity",
+        .values = dmi_memory_error_granularity_names
+    }),
+    DMI_ATTRIBUTE(dmi_memory_error_t, operation, ENUM, {
+        .code   = "operation",
+        .name   = "operation",
+        .values = dmi_memory_error_operation_names
+    }),
+    DMI_ATTRIBUTE(dmi_memory_error_t, vendor_syndrome, INTEGER, {
+        .code   = "vendor-syndrome",
+        .name   = "vendor-syndrome",
+        .flags  = DMI_ATTRIBUTE_FORMAT_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_memory_error_t, array_addr, ADDRESS, {
+        .code = "array-addr",
+        .name = "Array-relative address"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_error_t, device_addr, ADDRESS, {
+        .code = "device-addr",
+        .name = "Device-relative address"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_error_t, resolution, SIZE, {
+        .code = "resolution",
+        .name = "Resolution"
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
-const dmi_table_spec_t dmi_memory_error_32_table =
-{
-    .tag         = "memory-error-32",
-    .name        = "32-bit memory error information",
-    .type        = DMI_TYPE_MEMORY_ERROR_32,
-    .min_version = DMI_VERSION(2, 1, 0),
-    .min_length  = 0x17,
-    .attributes  = dmi_memory_error_32_attrs
-};
-
-const dmi_attribute_t dmi_memory_error_64_attrs[] =
-{
-    DMI_ATTRIBUTE_NULL
-};
-
-const dmi_table_spec_t dmi_memory_error_64_table =
-{
-    .tag         = "memory-error-64",
-    .name        = "64-bit memory error information",
-    .type        = DMI_TYPE_MEMORY_ERROR_64,
-    .min_version = DMI_VERSION(2, 3, 0),
-    .min_length  = 0x1F,
-    .attributes  = dmi_memory_error_64_attrs
-};
-
-const char *dmi_memory_error_type_name(enum dmi_memory_error_type value)
+const char *dmi_memory_error_type_name(dmi_memory_error_type_t value)
 {
     return dmi_name_lookup(dmi_memory_error_type_names, value);
 }
 
-const char *dmi_memory_error_granularity_name(enum dmi_memory_error_granularity value)
+const char *dmi_memory_error_granularity_name(dmi_memory_error_granularity_t value)
 {
     return dmi_name_lookup(dmi_memory_error_granularity_names, value);
 }
 
-const char *dmi_memory_error_operation_name(enum dmi_memory_error_operation value)
+const char *dmi_memory_error_operation_name(dmi_memory_error_operation_t value)
 {
     return dmi_name_lookup(dmi_memory_error_operation_names, value);
+}
+
+void dmi_memory_error_destroy(dmi_memory_error_t *info)
+{
+    free(info);
 }
