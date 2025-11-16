@@ -89,8 +89,8 @@ const dmi_table_spec_t dmi_system_reset_table =
     .min_length = 0x0D,
     .attributes = dmi_system_reset_attrs,
     .handlers   = {
-        .decoder     = (dmi_table_decoder_t)dmi_system_reset_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_system_reset_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_system_reset_decode,
+        .free   = (dmi_table_free_fn_t)dmi_system_reset_free
     }
 };
 
@@ -124,7 +124,7 @@ dmi_system_reset_t *dmi_system_reset_decode(const dmi_table_t *table)
     return info;
 }
 
-void dmi_system_reset_destroy(dmi_system_reset_t *info)
+void dmi_system_reset_free(dmi_system_reset_t *info)
 {
     free(info);
 }

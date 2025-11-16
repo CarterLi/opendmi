@@ -24,7 +24,7 @@ typedef struct dmi_mgmt_device dmi_mgmt_device_t;
 /**
  * @brief Management device types.
  */
-enum dmi_mgmt_device_type
+typedef enum dmi_mgmt_device_type
 {
     DMI_MGMT_DEVICE_TYPE_OTHER           = 0x01, ///< Other
     DMI_MGMT_DEVICE_TYPE_UNKNOWN         = 0x02, ///< Unknown
@@ -39,19 +39,19 @@ enum dmi_mgmt_device_type
     DMI_MGMT_DEVICE_TYPE_GENESYS_GL518SM = 0x0B, ///< Genesys GL518SM
     DMI_MGMT_DEVICE_TYPE_WINBOND_W83781D = 0x0C, ///< Winbond W83781D
     DMI_MGMT_DEVICE_TYPE_HOLTEK_HT82H791 = 0x0D, ///< Holtek HT82H791
-};
+} dmi_mgmt_device_type_t;
 
 /**
  * @brief Management device address types.
  */
-enum dmi_mgmt_device_address_type
+typedef enum dmi_mgmt_device_addr_type
 {
-    DMI_MGMT_DEVICE_ADDRESS_TYPE_OTHER   = 0x01, ///< Other
-    DMI_MGMT_DEVICE_ADDRESS_TYPE_UNKNOWN = 0x02, ///< Unknown
-    DMI_MGMT_DEVICE_ADDRESS_TYPE_PORT    = 0x03, ///< I/O port
-    DMI_MGMT_DEVICE_ADDRESS_TYPE_MEMORY  = 0x04, ///< Memory
-    DMI_MGMT_DEVICE_ADDRESS_TYPE_SMBUS   = 0x05, ///< SMBus
-};
+    DMI_MGMT_DEVICE_ADDR_TYPE_OTHER   = 0x01, ///< Other
+    DMI_MGMT_DEVICE_ADDR_TYPE_UNKNOWN = 0x02, ///< Unknown
+    DMI_MGMT_DEVICE_ADDR_TYPE_PORT    = 0x03, ///< I/O port
+    DMI_MGMT_DEVICE_ADDR_TYPE_MEMORY  = 0x04, ///< Memory
+    DMI_MGMT_DEVICE_ADDR_TYPE_SMBUS   = 0x05, ///< SMBus
+} dmi_mgmt_device_addr_type_t;
 
 /**
  * @brief Management device table (type 34).
@@ -77,12 +77,12 @@ DMI_PACKED_STRUCT(dmi_mgmt_device_data)
     /**
      * @brief Address of the device.
      */
-    dmi_dword_t address;
+    dmi_dword_t addr;
 
     /**
      * @brief Type of addressing used to access the device.
      */
-    dmi_byte_t address_type;
+    dmi_byte_t addr_type;
 };
 
 /**
@@ -189,7 +189,7 @@ extern const dmi_table_spec_t dmi_mgmt_device_threshold_table;
 __BEGIN_DECLS
 
 const char *dmi_mgmt_device_type_name(enum dmi_mgmt_device_type value);
-const char *dmi_mgmt_device_address_type_name(enum dmi_mgmt_device_address_type value);
+const char *dmi_mgmt_device_addr_type_name(enum dmi_mgmt_device_addr_type value);
 
 __END_DECLS
 

@@ -33,9 +33,9 @@ typedef struct dmi_header dmi_header_t;
 typedef struct dmi_table dmi_table_t;
 #endif // !DMI_TABLE_T
 
-typedef bool (*dmi_table_validator_t)(dmi_table_t *table);
-typedef void *(*dmi_table_decoder_t)(dmi_table_t *table);
-typedef void (*dmi_table_deallocator_t)(void *info);
+typedef bool (*dmi_table_validate_fn_t)(dmi_table_t *table);
+typedef void *(*dmi_table_decode_fn_t)(dmi_table_t *table);
+typedef void (*dmi_table_free_fn_t)(void *info);
 
 /**
  * @brief DMI table operations.
@@ -45,17 +45,17 @@ struct dmi_table_ops
     /**
      * @brief Validation handler (optional).
      */
-    dmi_table_validator_t validator;
+    dmi_table_validate_fn_t validate;
 
     /**
      * @brief Decoding handler.
      */
-    dmi_table_decoder_t decoder;
+    dmi_table_decode_fn_t decode;
 
     /**
      * @brief Destroy handler.
      */
-    dmi_table_deallocator_t deallocator;
+    dmi_table_free_fn_t free;
 };
 
 /**

@@ -62,8 +62,8 @@ const dmi_name_t dmi_system_wakeup_type_names[] =
 
 const dmi_attribute_t dmi_system_attrs[] =
 {
-    DMI_ATTRIBUTE(dmi_system_t, manufacturer, STRING, {
-        .code = "manufacturer",
+    DMI_ATTRIBUTE(dmi_system_t, vendor, STRING, {
+        .code = "vendor",
         .name = "Manufacturer"
     }),
     DMI_ATTRIBUTE(dmi_system_t, product, STRING, {
@@ -109,8 +109,8 @@ const dmi_table_spec_t dmi_system_table =
     .min_length    = 0x8,
     .attributes    = dmi_system_attrs,
     .handlers      = {
-        .decoder     = (dmi_table_decoder_t)dmi_system_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_system_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_system_decode,
+        .free   = (dmi_table_free_fn_t)dmi_system_free
     }
 };
 
@@ -128,7 +128,7 @@ dmi_system_t *dmi_system_decode(const dmi_table_t *table)
     if (!info)
         return nullptr;
 
-    info->manufacturer  = dmi_table_string(table, data->manufacturer);
+    info->vendor        = dmi_table_string(table, data->vendor);
     info->product       = dmi_table_string(table, data->product);
     info->version       = dmi_table_string(table, data->version);
     info->serial_number = dmi_table_string(table, data->serial_number);
@@ -148,7 +148,7 @@ dmi_system_t *dmi_system_decode(const dmi_table_t *table)
     return info;
 }
 
-void dmi_system_destroy(dmi_system_t *info)
+void dmi_system_free(dmi_system_t *info)
 {
     free(info);
 }

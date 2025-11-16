@@ -43,8 +43,8 @@ const dmi_table_spec_t dmi_power_controls_table =
     .min_length  = 0x09,
     .attributes  = dmi_power_controls_attrs,
     .handlers    = {
-        .decoder     = (dmi_table_decoder_t)dmi_power_controls_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_power_controls_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_power_controls_decode,
+        .free   = (dmi_table_free_fn_t)dmi_power_controls_free
     }
 };
 
@@ -66,7 +66,7 @@ dmi_power_controls_t *dmi_power_controls_decode(const dmi_table_t *table)
     return info;
 }
 
-void dmi_power_controls_destroy(dmi_power_controls_t *info)
+void dmi_power_controls_free(dmi_power_controls_t *info)
 {
     free(info);
 }

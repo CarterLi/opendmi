@@ -301,8 +301,8 @@ const dmi_table_spec_t dmi_firmware_table =
     .min_length    = 0x12,
     .attributes    = dmi_firmware_attrs,
     .handlers      = {
-        .decoder     = (dmi_table_decoder_t)dmi_firmware_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_firmware_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_firmware_decode,
+        .free   = (dmi_table_free_fn_t)dmi_firmware_free
     }
 };
 
@@ -382,7 +382,7 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table)
     return info;
 }
 
-void dmi_firmware_destroy(dmi_firmware_t *info)
+void dmi_firmware_free(dmi_firmware_t *info)
 {
     free(info);
 }

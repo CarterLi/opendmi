@@ -111,7 +111,7 @@ extern const dmi_table_spec_t dmi_power_controls_table;
 __BEGIN_DECLS
 
 dmi_power_controls_t *dmi_power_controls_decode(const dmi_table_t *table);
-void dmi_power_controls_destroy(dmi_power_controls_t *info);
+void dmi_power_controls_free(dmi_power_controls_t *info);
 
 __END_DECLS
 

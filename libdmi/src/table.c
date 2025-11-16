@@ -76,8 +76,8 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
             break;
 
         // Decode information
-        if ((table->spec != nullptr) && (table->spec->handlers.decoder != nullptr)) {
-            table->info = table->spec->handlers.decoder(table);
+        if ((table->spec != nullptr) && (table->spec->handlers.decode != nullptr)) {
+            table->info = table->spec->handlers.decode(table);
             if (!table->info)
                 break;
         }
@@ -144,8 +144,8 @@ void dmi_table_destroy(dmi_table_t *table)
         return;
 
     if ((table->spec != nullptr) && (table->info != nullptr)) {
-        if (table->spec->handlers.deallocator)
-            table->spec->handlers.deallocator(table->info);
+        if (table->spec->handlers.free)
+            table->spec->handlers.free(table->info);
         else
             free(table->info);
     }

@@ -147,7 +147,7 @@ __BEGIN_DECLS
 
 bool dmi_memory_array_addr_validate(dmi_table_t *table);
 dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table);
-void dmi_memory_array_addr_destroy(dmi_memory_array_addr_t *info);
+void dmi_memory_array_addr_free(dmi_memory_array_addr_t *info);
 
 __END_DECLS
 

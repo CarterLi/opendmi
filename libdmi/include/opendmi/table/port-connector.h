@@ -195,7 +195,7 @@ const char *dmi_connector_type_name(dmi_connector_type_t value);
 const char *dmi_port_type_name(dmi_port_type_t value);
 
 dmi_port_connector_t *dmi_port_connector_decode(const dmi_table_t *table);
-void dmi_port_connector_destroy(dmi_port_connector_t *info);
+void dmi_port_connector_free(dmi_port_connector_t *info);
 
 __END_DECLS
 

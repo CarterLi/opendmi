@@ -97,7 +97,7 @@ struct dmi_chassis_data
      * @brief Manufacturer name.
      * @since SMBIOS 2.0
      */
-    dmi_string_t manufacturer;
+    dmi_string_t vendor;
 
     /**
      * @since SMBIOS 2.0

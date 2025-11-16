@@ -77,30 +77,30 @@ static const dmi_name_t dmi_mgmt_device_type_names[] =
     DMI_NAME_NULL
 };
 
-static const dmi_name_t dmi_mgmt_device_address_type_names[] =
+static const dmi_name_t dmi_mgmt_device_addr_type_names[] =
 {
     {
-        .id   = DMI_MGMT_DEVICE_ADDRESS_TYPE_OTHER,
+        .id   = DMI_MGMT_DEVICE_ADDR_TYPE_OTHER,
         .code = "other",
         .name = "Other"
     },
     {
-        .id   = DMI_MGMT_DEVICE_ADDRESS_TYPE_UNKNOWN,
+        .id   = DMI_MGMT_DEVICE_ADDR_TYPE_UNKNOWN,
         .code = "unknown",
         .name = "Unknown"
     },
     {
-        .id   = DMI_MGMT_DEVICE_ADDRESS_TYPE_PORT,
+        .id   = DMI_MGMT_DEVICE_ADDR_TYPE_PORT,
         .code = "port",
         .name = "I/O port"
     },
     {
-        .id   = DMI_MGMT_DEVICE_ADDRESS_TYPE_MEMORY,
+        .id   = DMI_MGMT_DEVICE_ADDR_TYPE_MEMORY,
         .code = "memory",
         .name = "Memory"
     },
     {
-        .id   = DMI_MGMT_DEVICE_ADDRESS_TYPE_SMBUS,
+        .id   = DMI_MGMT_DEVICE_ADDR_TYPE_SMBUS,
         .code = "smbus",
         .name = "SMBus"
     },
@@ -157,7 +157,7 @@ const char *dmi_mgmt_device_type_name(enum dmi_mgmt_device_type value)
     return dmi_name_lookup(dmi_mgmt_device_type_names, value);
 }
 
-const char *dmi_mgmt_device_address_type_name(enum dmi_mgmt_device_address_type value)
+const char *dmi_mgmt_device_addr_type_name(enum dmi_mgmt_device_addr_type value)
 {
-    return dmi_name_lookup(dmi_mgmt_device_address_type_names, value);
+    return dmi_name_lookup(dmi_mgmt_device_addr_type_names, value);
 }

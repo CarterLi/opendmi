@@ -18,8 +18,8 @@ const dmi_table_spec_t dmi_memory_error_64_table =
     .min_length  = 0x1F,
     .attributes  = dmi_memory_error_attrs,
     .handlers    = {
-        .decoder     = (dmi_table_decoder_t)dmi_memory_error_64_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_memory_error_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_memory_error_64_decode,
+        .free   = (dmi_table_free_fn_t)dmi_memory_error_free
     }
 };
 

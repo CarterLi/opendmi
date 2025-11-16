@@ -104,7 +104,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_handle_t error_info_handle;
+    dmi_handle_t error_handle;
 
     /**
      * @brief Number of slots or sockets available for memory devices in this
@@ -170,7 +170,7 @@ struct dmi_memory_array
      * field contains 0xFFFE. Otherwise, the field contains either 0xFFFF (if
      * no error was detected) or the handle of the error-information structure.
      */
-    dmi_handle_t error_info_handle;
+    dmi_handle_t error_handle;
 
     /**
      * @brief @brief Number of slots or sockets available for memory devices in this
@@ -199,7 +199,7 @@ const char *dmi_memory_array_location_name(enum dmi_memory_array_location value)
 const char *dmi_memory_array_usage_name(enum dmi_memory_array_usage value);
 
 dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table);
-void dmi_memory_array_destroy(dmi_memory_array_t *info);
+void dmi_memory_array_free(dmi_memory_array_t *info);
 
 __END_DECLS
 

@@ -107,20 +107,20 @@ dmi_probe_t * dmi_probe_decode(dmi_table_t *table)
     if (!info)
         return nullptr;
 
-    info->description = dmi_table_string(table, data->description);
-    info->location    = data->location;
-    info->status      = data->status;
-    info->max_value   = dmi_probe_decode_value(data->max_value);
-    info->min_value   = dmi_probe_decode_value(data->min_value);
-    info->resolution  = dmi_probe_decode_value(data->resolution);
-    info->tolerance   = dmi_probe_decode_value(data->tolerance);
-    info->accuracy    = dmi_probe_decode_value(data->accuracy);
-    info->oem_defined = dmi_decode_dword(data->oem_defined);
+    info->description   = dmi_table_string(table, data->description);
+    info->location      = data->location;
+    info->status        = data->status;
+    info->maximum_value = dmi_probe_decode_value(data->maximum_value);
+    info->minimum_value = dmi_probe_decode_value(data->minimum_value);
+    info->resolution    = dmi_probe_decode_value(data->resolution);
+    info->tolerance     = dmi_probe_decode_value(data->tolerance);
+    info->accuracy      = dmi_probe_decode_value(data->accuracy);
+    info->oem_defined   = dmi_decode_dword(data->oem_defined);
 
     if (table->body_length > 0x14)
-        info->nom_value = dmi_probe_decode_value(data->nom_value);
+        info->nominal_value = dmi_probe_decode_value(data->nominal_value);
     else
-        info->nom_value = SHRT_MIN;
+        info->nominal_value = SHRT_MIN;
 
     return info;
 }
@@ -135,7 +135,7 @@ static short dmi_probe_decode_value(dmi_word_t value)
     return (int16_t)value;
 }
 
-void dmi_probe_destroy(dmi_probe_t *info)
+void dmi_probe_free(dmi_probe_t *info)
 {
     free(info);
 }

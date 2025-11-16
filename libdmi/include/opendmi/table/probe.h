@@ -78,13 +78,13 @@ DMI_PACKED_STRUCT(dmi_probe_data)
      * @brief Maximum value readable by this probe. If the value is unknown,
      * the field is set to `0x8000`.
      */
-    dmi_word_t max_value;
+    dmi_word_t maximum_value;
 
     /**
      * @brief Minimum value readable by this probe. If the value is unknown,
      * the field is set to `0x8000`.
      */
-    dmi_word_t min_value;
+    dmi_word_t minimum_value;
 
     /**
      * @brief Resolution for the probe's reading. If the value is unknown,
@@ -114,7 +114,7 @@ DMI_PACKED_STRUCT(dmi_probe_data)
      * the field is set to `0x8000`. This field is present in the structure
      * only if the structure’s Length is larger than `0x14`.
      */
-    dmi_word_t nom_value;
+    dmi_word_t nominal_value;
 };
 
 struct dmi_probe
@@ -139,13 +139,13 @@ struct dmi_probe
      * @brief Maximum value readable by this probe. If the value is unknown,
      * the field is set to `SHRT_MIN`.
      */
-    short max_value;
+    short maximum_value;
 
     /**
      * @brief Minimum value readable by this probe. If the value is unknown,
      * the field is set to `SHRT_MIN`.
      */
-    short min_value;
+    short minimum_value;
 
     /**
      * @brief Resolution for the probe's reading. If the value is unknown,
@@ -174,7 +174,7 @@ struct dmi_probe
      * @brief Nominal value for the probe’s reading. If the value is unknown,
      * the field is set to `SHRT_MIN`.
      */
-    short nom_value;
+    short nominal_value;
 };
 
 extern const dmi_name_t dmi_probe_location_names[];
@@ -191,7 +191,7 @@ dmi_probe_t *dmi_probe_decode(dmi_table_t *table);
 /**
  * @internal
  */
-void dmi_probe_destroy(dmi_probe_t *info);
+void dmi_probe_free(dmi_probe_t *info);
 
 __END_DECLS
 

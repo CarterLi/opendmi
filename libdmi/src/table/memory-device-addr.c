@@ -59,8 +59,8 @@ const dmi_table_spec_t dmi_memory_device_addr_table =
     .min_length  = 0x13,
     .attributes  = dmi_memory_device_addr_attrs,
     .handlers    = {
-        .decoder     = (dmi_table_decoder_t)dmi_memory_device_addr_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_memory_device_addr_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_memory_device_addr_decode,
+        .free   = (dmi_table_free_fn_t)dmi_memory_device_addr_free
     }
 };
 
@@ -99,7 +99,7 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table
 return info;
 }
 
-void dmi_memory_device_addr_destroy(dmi_memory_device_addr_t *info)
+void dmi_memory_device_addr_free(dmi_memory_device_addr_t *info)
 {
     free(info);
 }

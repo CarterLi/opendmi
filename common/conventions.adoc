@@ -20,15 +20,27 @@ int atoi(const char *nptr)
 
 ## Header guards
 
-* Use `#pragma once` in header files to avoid duplicated includes.
+* Use `#pragma once` in addition to include guargs in header files to avoid duplicated includes.
 
 ## Naming
 
 * Use `snake_case` to name a multi-word variable or type.
+
 * Use `UPPER_SNAKE_CASE` for, and only for, preprocessor symbols and values of enumeration type.
+
 * Use typedef to create aliases for all struct types.
+
 * The names of type aliases should always end in `_t`.
+
+* Function pointer type aliases should always end in `_fn_t`.
+
 * Do not alias pointer types with `typedef`; we keep them explicit.
+
+* Name boolean variables with a verb phrase including a verb like `is_`,
+`has_`, or `want_` so that the intent of the variable is clear in
+expressions and conditionals.
+
+* Avoid magic numbers; define meaningful constants. Prefer C language symbols over preprocessor symbols, because the former are visible in a symbolic debugger like gdb.
 
 ## Abbreviations
 
@@ -38,7 +50,10 @@ int atoi(const char *nptr)
 * `attr` — Attribute
 * `info` — Information
 * `mem` — Memory
+* `op` — Operation
+* `ops` — Operations
 * `pos` — Position
+* `pwr` — Power
 * `sys` — System
 
 ### Prefixes

@@ -64,7 +64,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.1
      */
-    dmi_string_t manufacturer;
+    dmi_string_t vendor;
 
     /**
      * @brief Number of the string that identifies the date on which the
@@ -149,7 +149,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.1
      */
-    dmi_byte_t max_error;
+    dmi_byte_t maximum_error;
 
     /**
      * @brief 16-bit value that identifies the battery’s serial number.
@@ -202,7 +202,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
 struct dmi_battery
 {
     const char *location;
-    const char *manufacturer;
+    const char *vendor;
     const char *manufacture_date;
     const char *serial_number;
     const char *name;

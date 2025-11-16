@@ -175,7 +175,7 @@ DMI_PACKED_STRUCT(dmi_firmware_inventory_data)
     /**
      * @brief String number of the manufacturer or producer of this firmware.
      */
-    dmi_string_t manufacturer;
+    dmi_string_t vendor;
 
     /**
      * @brief String number of the lowest version to which this firmware can

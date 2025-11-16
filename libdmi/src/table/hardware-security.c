@@ -68,8 +68,8 @@ const dmi_table_spec_t dmi_hardware_security_table =
     .min_length  = 0x05,
     .attributes  = dmi_hardware_security_attrs,
     .handlers    = {
-        .decoder     = (dmi_table_decoder_t)dmi_hardware_security_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_hardware_security_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_hardware_security_decode,
+        .free   = (dmi_table_free_fn_t)dmi_hardware_security_free
     }
 };
 
@@ -95,7 +95,7 @@ dmi_hardware_security_t *dmi_hardware_security_decode(dmi_table_t *table)
     return info;
 }
 
-void dmi_hardware_security_destroy(dmi_hardware_security_t *info)
+void dmi_hardware_security_free(dmi_hardware_security_t *info)
 {
     free(info);
 }

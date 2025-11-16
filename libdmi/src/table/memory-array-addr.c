@@ -45,9 +45,9 @@ const dmi_table_spec_t dmi_memory_array_addr_table =
     .min_length  = 0x0F,
     .attributes  = dmi_memory_array_addr_attrs,
     .handlers    = {
-        .validator   = (dmi_table_validator_t)dmi_memory_array_addr_validate,
-        .decoder     = (dmi_table_decoder_t)dmi_memory_array_addr_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_memory_array_addr_destroy
+        .validate = (dmi_table_validate_fn_t)dmi_memory_array_addr_validate,
+        .decode   = (dmi_table_decode_fn_t)dmi_memory_array_addr_decode,
+        .free     = (dmi_table_free_fn_t)dmi_memory_array_addr_free
     }
 };
 
@@ -108,7 +108,7 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table)
     return info;
 }
 
-void dmi_memory_array_addr_destroy(dmi_memory_array_addr_t *info)
+void dmi_memory_array_addr_free(dmi_memory_array_addr_t *info)
 {
     free(info);
 }

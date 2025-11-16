@@ -285,8 +285,8 @@ const dmi_table_spec_t dmi_cache_table =
     .min_length = 0x0F,
     .attributes = dmi_cache_attrs,
     .handlers   = {
-        .decoder     = (dmi_table_decoder_t)dmi_cache_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_cache_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_cache_decode,
+        .free   = (dmi_table_free_fn_t)dmi_cache_free
     }
 };
 
@@ -382,11 +382,11 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
         ._value = dmi_decode_word(data->config)
     };
 
-    info->level               = config.level + 1;
-    info->mode                = config.mode;
-    info->location            = config.location;
-    info->socketed            = config.socketed;
-    info->enabled             = config.enabled;
+    info->level     = config.level + 1;
+    info->mode      = config.mode;
+    info->location  = config.location;
+    info->socketed  = config.socketed;
+    info->enabled   = config.enabled;
 
     info->maximum_size          = dmi_cache_size(dmi_decode_word(data->maximum_size));
     info->installed_size        = dmi_cache_size(dmi_decode_word(data->installed_size));
@@ -412,7 +412,7 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
     return info;
 }
 
-void dmi_cache_destroy(dmi_cache_t *info)
+void dmi_cache_free(dmi_cache_t *info)
 {
     free(info);
 }

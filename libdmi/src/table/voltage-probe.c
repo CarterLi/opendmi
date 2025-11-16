@@ -25,16 +25,16 @@ const dmi_attribute_t dmi_voltage_probe_attrs[] =
         .name    = "Status",
         .values  = dmi_status_names
     }),
-    DMI_ATTRIBUTE(dmi_voltage_probe_t, max_value, DECIMAL, {
-        .code    = "max-value",
+    DMI_ATTRIBUTE(dmi_voltage_probe_t, maximum_value, DECIMAL, {
+        .code    = "maximum-value",
         .name    = "Maximum value",
         .scale   = 1,
         .unit    = "mV",
         .unknown = &(short){ DMI_PROBE_VALUE_UNKNOWN },
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
-    DMI_ATTRIBUTE(dmi_voltage_probe_t, min_value, DECIMAL, {
-        .code    = "min-value",
+    DMI_ATTRIBUTE(dmi_voltage_probe_t, minimum_value, DECIMAL, {
+        .code    = "minimum-value",
         .name    = "Minimum value",
         .scale   = 1,
         .unit    = "mV",
@@ -70,8 +70,8 @@ const dmi_attribute_t dmi_voltage_probe_attrs[] =
         .name    = "OEM-defined",
         .flags   = DMI_ATTRIBUTE_FLAG_HEX
     }),
-    DMI_ATTRIBUTE(dmi_voltage_probe_t, nom_value, DECIMAL, {
-        .code    = "nom-value",
+    DMI_ATTRIBUTE(dmi_voltage_probe_t, nominal_value, DECIMAL, {
+        .code    = "nominal-value",
         .name    = "Nominal value",
         .scale   = 1,
         .unit    = "mV",
@@ -89,7 +89,7 @@ const dmi_table_spec_t dmi_voltage_probe_table =
     .min_length = 0x16,
     .attributes = dmi_voltage_probe_attrs,
     .handlers   = {
-        .decoder     = (dmi_table_decoder_t)dmi_probe_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_probe_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_probe_decode,
+        .free   = (dmi_table_free_fn_t)dmi_probe_free
     }
 };

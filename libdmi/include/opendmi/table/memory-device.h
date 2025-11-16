@@ -150,7 +150,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_handle_t memory_array_handle;
+    dmi_handle_t array_handle;
 
     /**
      * @brief Handle, or instance number, associated with any error that was
@@ -161,7 +161,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_handle_t error_info_handle;
+    dmi_handle_t error_handle;
 
     /**
      * @brief Total width, in bits, of this memory device, including any check
@@ -268,7 +268,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.3
      */
-    dmi_string_t manufacturer;
+    dmi_string_t vendor;
 
     /**
      * @brief String number for the serial number of this memory device. This
@@ -369,7 +369,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.2
      */
-    dmi_word_t module_manufacturer_id;
+    dmi_word_t module_vendor_id;
 
     /**
      * @brief The two-byte module product ID found in the SPD of this memory
@@ -385,7 +385,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.2
      */
-    dmi_word_t controller_manufacturer_id;
+    dmi_word_t controller_vendor_id;
 
     /**
      * @brief The two-byte memory subsystem controller product ID found in the
@@ -453,7 +453,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.7
      */
-    dmi_word_t pmic0_manufacturer_id;
+    dmi_word_t pmic0_vendor_id;
 
     /**
      * @brief The PMIC 0 Revision Number found in the SPD of this memory
@@ -461,7 +461,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.7
      */
-    dmi_word_t pmic0_revision_number;
+    dmi_word_t pmic0_revision;
 
     /**
      * @brief The two-byte RCD manufacturer ID found in the SPD of this memory
@@ -469,14 +469,14 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 3.7
      */
-    dmi_word_t rcd_manufacturer_id;
+    dmi_word_t rcd_vendor_id;
 
     /**
      * @brief The RCD Revision Number found in the SPD of this memory device.
      *
      * @since SMBIOS 3.7
      */
-    dmi_word_t rcd_revision_number;
+    dmi_word_t rcd_revision;
 };
 
 #ifndef DMI_MEMORY_DEVICE_DATA_T
@@ -490,8 +490,8 @@ struct dmi_memory_device
      * @brief Handle, or instance number, associated with the physical
      * memory array to which this device belongs.
      */
-    dmi_handle_t memory_array_handle;
-    dmi_handle_t error_info_handle;
+    dmi_handle_t array_handle;
+    dmi_handle_t error_handle;
     unsigned short total_width;
     unsigned short data_width;
     dmi_size_t size;
@@ -502,7 +502,7 @@ struct dmi_memory_device
     dmi_memory_device_type_t memory_type;
     dmi_memory_device_type_detail_t memory_type_detail;
     unsigned long maximum_speed;
-    const char *manufacturer;
+    const char *vendor;
     const char *serial_number;
     const char *asset_tag;
     const char *part_number;
@@ -514,18 +514,18 @@ struct dmi_memory_device
     dmi_memory_device_technology_t memory_technology;
     uint16_t memory_mode_caps;
     const char *firmware_version;
-    uint16_t module_manufacturer_id;
+    uint16_t module_vendor_id;
     uint16_t module_product_id;
-    uint16_t controller_manufacturer_id;
+    uint16_t controller_vendor_id;
     uint16_t controller_product_id;
     dmi_size_t non_volatile_size;
     dmi_size_t volatile_size;
     dmi_size_t cache_size;
     dmi_size_t logical_size;
-    uint16_t pmic0_manufacturer_id;
-    uint16_t pmic0_revision_number;
-    uint16_t rcd_manufacturer_id;
-    uint16_t rcd_revision_number;
+    uint16_t pmic0_vendor_id;
+    uint16_t pmic0_revision;
+    uint16_t rcd_vendor_id;
+    uint16_t rcd_revision;
 };
 
 #ifndef DMI_MEMORY_DEVICE_T
@@ -548,7 +548,7 @@ dmi_size_t dmi_memory_device_size(dmi_word_t value);
 dmi_size_t dmi_memory_device_size_ex(dmi_dword_t value);
 
 dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table);
-void dmi_memory_device_destroy(dmi_memory_device_t *info);
+void dmi_memory_device_free(dmi_memory_device_t *info);
 
 __END_DECLS
 

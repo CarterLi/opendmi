@@ -132,7 +132,7 @@ DMI_PACKED_STRUCT(dmi_power_supply_data)
      * @brief Number of the string that names the company that manufactured the
      * supply.
      */
-    dmi_string_t manufacturer;
+    dmi_string_t vendor;
 
     /**
      * @brief Number of the string that contains the serial number for the
@@ -160,7 +160,7 @@ DMI_PACKED_STRUCT(dmi_power_supply_data)
      * unknown. Note that the units specified by DMTF for this field are
      * milliwatts.
      */
-    dmi_word_t max_capacity;
+    dmi_word_t maximum_capacity;
 
     /**
      * @brief Power supply characteristics.
@@ -218,7 +218,7 @@ struct dmi_power_supply
     /**
      * @brief Power supply manufacturer name.
      */
-    const char *manufacturer;
+    const char *vendor;
 
     /**
      * @brief Serial number.
@@ -245,7 +245,7 @@ struct dmi_power_supply
      * unknown. Note that the units specified by DMTF for this field are
      * milliwatts.
      */
-    short max_capacity;
+    short maximum_capacity;
 
     /**
      * @brief Power supply is hot-replaceable.
@@ -312,7 +312,7 @@ const char *dmi_power_supply_type_name(dmi_power_supply_type_t value);
 const char *dmi_range_switching_type_name(dmi_range_switching_type_t value);
 
 dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table);
-void dmi_power_supply_destroy(dmi_power_supply_t *info);
+void dmi_power_supply_free(dmi_power_supply_t *info);
 
 __END_DECLS
 

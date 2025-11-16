@@ -48,7 +48,7 @@ DMI_PACKED_STRUCT(dmi_system_data)
      * @brief Manufacturer name.
      * @since SMBIOS 2.0
      */
-    dmi_string_t manufacturer;
+    dmi_string_t vendor;
 
     /**
      * @brief Product name.
@@ -117,7 +117,7 @@ struct dmi_system
     /**
      * @brief Manufacturer name.
      */
-    const char *manufacturer;
+    const char *vendor;
 
     /**
      * @brief Product name.
@@ -179,7 +179,7 @@ __BEGIN_DECLS
 const char *dmi_system_wakeup_type_name(dmi_system_wakeup_type_t value);
 
 dmi_system_t *dmi_system_decode(const dmi_table_t *table);
-void dmi_system_destroy(dmi_system_t *info);
+void dmi_system_free(dmi_system_t *info);
 
 __END_DECLS
 

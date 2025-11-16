@@ -112,7 +112,7 @@ DMI_PACKED_STRUCT(dmi_baseboard_data)
     /**
      * @brief Manufacturer name.
      */
-    dmi_string_t manufacturer;
+    dmi_string_t vendor;
 
     /**
      * @brief Product name.
@@ -172,7 +172,7 @@ DMI_PACKED_STRUCT(dmi_baseboard_data)
 
 struct dmi_baseboard
 {
-    char *manufacturer;
+    char *vendor;
     char *product;
     char *version;
     char *serial_number;

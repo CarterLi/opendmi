@@ -117,8 +117,8 @@ const dmi_table_spec_t dmi_cooling_device_table =
     .min_length = 0x0E,
     .attributes = dmi_cooling_device_attrs,
     .handlers   = {
-        .decoder     = (dmi_table_decoder_t)dmi_cooling_device_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_cooling_device_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_cooling_device_decode,
+        .free   = (dmi_table_free_fn_t)dmi_cooling_device_free
     }
 };
 
@@ -158,7 +158,7 @@ dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table)
     return info;
 }
 
-void dmi_cooling_device_destroy(dmi_cooling_device_t *info)
+void dmi_cooling_device_free(dmi_cooling_device_t *info)
 {
     free(info);
 }

@@ -342,7 +342,7 @@ dmi_size_t dmi_cache_size(dmi_word_t value);
 dmi_size_t dmi_cache_size_ex(dmi_dword_t value);
 
 dmi_cache_t *dmi_cache_decode(const dmi_table_t *table);
-void dmi_cache_destroy(dmi_cache_t *info);
+void dmi_cache_free(dmi_cache_t *info);
 
 __END_DECLS
 

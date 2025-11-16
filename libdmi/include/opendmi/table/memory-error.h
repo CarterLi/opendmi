@@ -119,7 +119,7 @@ const char *dmi_memory_error_type_name(dmi_memory_error_type_t value);
 const char *dmi_memory_error_granularity_name(dmi_memory_error_granularity_t value);
 const char *dmi_memory_error_operation_name(dmi_memory_error_operation_t value);
 
-void dmi_memory_error_destroy(dmi_memory_error_t *info);
+void dmi_memory_error_free(dmi_memory_error_t *info);
 
 __END_DECLS
 

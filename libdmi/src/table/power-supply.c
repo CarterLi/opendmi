@@ -105,8 +105,8 @@ static const dmi_attribute_t dmi_power_supply_attrs[] =
         .code    = "name",
         .name    = "Name"
     }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, manufacturer, STRING, {
-        .code    = "manufacturer",
+    DMI_ATTRIBUTE(dmi_power_supply_t, vendor, STRING, {
+        .code    = "vendor",
         .name    = "Manufacturer"
     }),
     DMI_ATTRIBUTE(dmi_power_supply_t, serial_number, STRING, {
@@ -125,8 +125,8 @@ static const dmi_attribute_t dmi_power_supply_attrs[] =
         .code    = "revision",
         .name    = "Revision"
     }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, max_capacity, INTEGER, {
-        .code    = "max-capacity",
+    DMI_ATTRIBUTE(dmi_power_supply_t, maximum_capacity, INTEGER, {
+        .code    = "maximum-capacity",
         .name    = "Maximum capacity",
         .unit    = "watts",
         .unknown = &(short){ SHRT_MIN },
@@ -183,8 +183,8 @@ const dmi_table_spec_t dmi_power_supply_table =
     .min_length  = 0x16,
     .attributes  = dmi_power_supply_attrs,
     .handlers    = {
-        .decoder     = (dmi_table_decoder_t)dmi_power_supply_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_power_supply_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_power_supply_decode,
+        .free   = (dmi_table_free_fn_t)dmi_power_supply_free
     }
 };
 
@@ -207,15 +207,15 @@ dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table)
     if (!info)
         return nullptr;
 
-    info->group         = data->group;
-    info->location      = dmi_table_string(table, data->location);
-    info->name          = dmi_table_string(table, data->name);
-    info->manufacturer  = dmi_table_string(table, data->manufacturer);
-    info->serial_number = dmi_table_string(table, data->serial_number);
-    info->asset_tag     = dmi_table_string(table, data->asset_tag);
-    info->part_number   = dmi_table_string(table, data->part_number);
-    info->revision      = dmi_table_string(table, data->revision);
-    info->max_capacity  = dmi_decode_word(data->max_capacity);
+    info->group            = data->group;
+    info->location         = dmi_table_string(table, data->location);
+    info->name             = dmi_table_string(table, data->name);
+    info->vendor           = dmi_table_string(table, data->vendor);
+    info->serial_number    = dmi_table_string(table, data->serial_number);
+    info->asset_tag        = dmi_table_string(table, data->asset_tag);
+    info->part_number      = dmi_table_string(table, data->part_number);
+    info->revision         = dmi_table_string(table, data->revision);
+    info->maximum_capacity = dmi_decode_word(data->maximum_capacity);
 
     dmi_power_supply_details_t details = {
         ._value = dmi_decode_word(data->characteristics)
@@ -235,7 +235,7 @@ dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table)
     return info;
 }
 
-void dmi_power_supply_destroy(dmi_power_supply_t *info)
+void dmi_power_supply_free(dmi_power_supply_t *info)
 {
     free(info);
 }

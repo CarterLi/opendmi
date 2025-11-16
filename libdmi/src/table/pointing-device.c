@@ -157,8 +157,8 @@ const dmi_table_spec_t dmi_pointing_device_table =
     .min_length  = 0x07,
     .attributes  = dmi_pointing_device_attrs,
     .handlers = {
-        .decoder     = (dmi_table_decoder_t)dmi_pointing_device_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_pointing_device_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_pointing_device_decode,
+        .free   = (dmi_table_free_fn_t)dmi_pointing_device_free
     }
 };
 
@@ -188,7 +188,7 @@ dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table)
     return info;
 }
 
-void dmi_pointing_device_destroy(dmi_pointing_device_t *info)
+void dmi_pointing_device_free(dmi_pointing_device_t *info)
 {
     free(info);
 }

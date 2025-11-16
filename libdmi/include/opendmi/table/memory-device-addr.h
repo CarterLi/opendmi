@@ -216,7 +216,7 @@ extern const dmi_table_spec_t dmi_memory_device_addr_table;
 __BEGIN_DECLS
 
 dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table);
-void dmi_memory_device_addr_destroy(dmi_memory_device_addr_t *info);
+void dmi_memory_device_addr_free(dmi_memory_device_addr_t *info);
 
 __END_DECLS
 

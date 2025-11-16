@@ -460,8 +460,8 @@ const dmi_table_spec_t dmi_port_connector_table =
     .min_length = 0x09,
     .attributes = dmi_port_connector_attrs,
     .handlers   = {
-        .decoder     = (dmi_table_decoder_t)dmi_port_connector_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_port_connector_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_port_connector_decode,
+        .free   = (dmi_table_free_fn_t)dmi_port_connector_free
     }
 };
 
@@ -493,7 +493,7 @@ dmi_port_connector_t *dmi_port_connector_decode(const dmi_table_t *table)
     return info;
 }
 
-void dmi_port_connector_destroy(dmi_port_connector_t *info)
+void dmi_port_connector_free(dmi_port_connector_t *info)
 {
     free(info);
 }

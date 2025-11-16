@@ -151,8 +151,8 @@ const dmi_attribute_t dmi_memory_array_attrs[] =
         .code = "maximum-capacity",
         .name = "Maximum capacity"
     }),
-    DMI_ATTRIBUTE(dmi_memory_array_t, error_info_handle, HANDLE, {
-        .code = "error-information",
+    DMI_ATTRIBUTE(dmi_memory_array_t, error_handle, HANDLE, {
+        .code = "error-handle",
         .name = "Memory error information handle"
     }),
     DMI_ATTRIBUTE(dmi_memory_array_t, device_count, INTEGER, {
@@ -171,8 +171,8 @@ const dmi_table_spec_t dmi_memory_array_table =
     .min_length  = 0x0F,
     .attributes  = dmi_memory_array_attrs,
     .handlers    = {
-        .decoder     = (dmi_table_decoder_t)dmi_memory_array_decode,
-        .deallocator = (dmi_table_deallocator_t)dmi_memory_array_destroy
+        .decode = (dmi_table_decode_fn_t)dmi_memory_array_decode,
+        .free   = (dmi_table_free_fn_t)dmi_memory_array_free
     }
 };
 
@@ -206,13 +206,13 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table)
     else
         info->maximum_capacity  = (dmi_size_t)(maximum_capacity & 0x7FFFFFFFU) << 10;
 
-    info->error_info_handle = dmi_decode_word(data->error_info_handle);
-    info->device_count      = dmi_decode_word(data->device_count);
+    info->error_handle = dmi_decode_word(data->error_handle);
+    info->device_count = dmi_decode_word(data->device_count);
 
     return info;
 }
 
-void dmi_memory_array_destroy(dmi_memory_array_t *info)
+void dmi_memory_array_free(dmi_memory_array_t *info)
 {
     free(info);
 }

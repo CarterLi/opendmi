@@ -182,7 +182,7 @@ DMI_PACKED_STRUCT(dmi_processor_data)
 
     enum dmi_processor_family family;
 
-    dmi_string_t manufacturer;
+    dmi_string_t vendor;
 
     dmi_qword_t raw_id;
 

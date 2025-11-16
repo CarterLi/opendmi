@@ -54,7 +54,7 @@ DMI_PACKED_STRUCT(dmi_dell_calling_interface_table)
     /**
      * @brief Command address.
      */
-    uint16_t command_address;
+    uint16_t command_addr;
 
     /**
      * @brief Command code.

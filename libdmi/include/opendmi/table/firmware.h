@@ -310,7 +310,7 @@ dmi_size_t dmi_firmware_rom_size(dmi_byte_t value);
 dmi_size_t dmi_firmware_rom_size_ex(dmi_word_t value);
 
 dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table);
-void dmi_firmware_destroy(dmi_firmware_t *info);
+void dmi_firmware_free(dmi_firmware_t *info);
 
 __END_DECLS
 
