@@ -11,13 +11,13 @@
 
 const dmi_attribute_t dmi_memory_array_addr_attrs[] =
 {
-    DMI_ATTRIBUTE(dmi_memory_array_addr_t, starting_addr, ADDRESS, {
-        .code   = "starting-address",
+    DMI_ATTRIBUTE(dmi_memory_array_addr_t, start_addr, ADDRESS, {
+        .code   = "start-addr",
         .name   = "Starting address",
         .format = DMI_ATTRIBUTE_FORMAT_HEX
     }),
-    DMI_ATTRIBUTE(dmi_memory_array_addr_t, ending_addr, ADDRESS, {
-        .code   = "ending-address",
+    DMI_ATTRIBUTE(dmi_memory_array_addr_t, end_addr, ADDRESS, {
+        .code   = "end-addr",
         .name   = "Ending address",
         .format = DMI_ATTRIBUTE_FORMAT_HEX
     }),
@@ -25,8 +25,8 @@ const dmi_attribute_t dmi_memory_array_addr_attrs[] =
         .code   = "range-size",
         .name   = "Range size"
     }),
-    DMI_ATTRIBUTE(dmi_memory_array_addr_t, memory_array_handle, HANDLE, {
-        .code   = "memory-array-handle",
+    DMI_ATTRIBUTE(dmi_memory_array_addr_t, array_handle, HANDLE, {
+        .code   = "array-handle",
         .name   = "Memory array handle"
     }),
     DMI_ATTRIBUTE(dmi_memory_array_addr_t, partition_width, INTEGER, {
@@ -55,24 +55,24 @@ bool dmi_memory_array_addr_validate(dmi_table_t *table)
 {
     dmi_memory_array_addr_data_t *data = dmi_cast(data, table->data);
 
-    if (data->starting_addr == 0xFFFFFFFFU) {
-        if (data->ending_addr != 0xFFFFFFFFU)
+    if (data->start_addr == 0xFFFFFFFFU) {
+        if (data->end_addr != 0xFFFFFFFFU)
             return false;
 
         if (table->total_length < 0x1F)
             return false;
-        if (data->ending_addr_ex <= data->starting_addr_ex)
+        if (data->end_addr_ex <= data->start_addr_ex)
             return false;
     } else {
-        if (data->ending_addr == 0xFFFFFFFFU)
+        if (data->end_addr == 0xFFFFFFFFU)
             return false;
-        if (data->ending_addr <= data->starting_addr)
+        if (data->end_addr <= data->start_addr)
             return false;            
 
         if (table->total_length >= 0x1F) {
-            if (data->starting_addr_ex != 0)
+            if (data->start_addr_ex != 0)
                 return false;
-            if (data->ending_addr_ex != 0)
+            if (data->end_addr_ex != 0)
                 return false;
         }
     }
@@ -89,21 +89,21 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table)
     if (!info)
         return nullptr;
 
-    if ((table->body_length >= 0x1F) && (data->starting_addr == 0xFFFFFFFFU)) {
-        info->starting_addr = dmi_decode_qword(data->starting_addr_ex);
-        info->ending_addr   = dmi_decode_qword(data->ending_addr_ex);
+    if ((table->body_length >= 0x1F) && (data->start_addr == 0xFFFFFFFFU)) {
+        info->start_addr = dmi_decode_qword(data->start_addr_ex);
+        info->end_addr   = dmi_decode_qword(data->end_addr_ex);
     } else {
-        info->starting_addr = dmi_decode_dword(data->starting_addr) << 10;
-        info->ending_addr   = dmi_decode_dword(data->ending_addr) << 10;
+        info->start_addr = dmi_decode_dword(data->start_addr) << 10;
+        info->end_addr   = dmi_decode_dword(data->end_addr) << 10;
     }
 
-    if (info->ending_addr > info->starting_addr)
-        info->range_size = info->ending_addr - info->starting_addr;
+    if (info->end_addr > info->start_addr)
+        info->range_size = info->end_addr - info->start_addr;
     else
-        info->range_size = info->starting_addr - info->ending_addr;
+        info->range_size = info->start_addr - info->end_addr;
 
-    info->memory_array_handle = dmi_decode_word(data->memory_array_handle);
-    info->partition_width     = data->partition_width;
+    info->array_handle    = dmi_decode_word(data->array_handle);
+    info->partition_width = data->partition_width;
 
     return info;
 }

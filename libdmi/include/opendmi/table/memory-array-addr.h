@@ -44,7 +44,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
      * 
      * @since SMBIOS 2.1
      */
-    dmi_dword_t starting_addr;
+    dmi_dword_t start_addr;
 
     /**
      * @brief Physical ending address of the last kibibyte of a range of
@@ -57,7 +57,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
      * 
      * @since SMBIOS 2.1
      */
-    dmi_dword_t ending_addr;
+    dmi_dword_t end_addr;
 
     /**
      * @brief Handle, or instance number, associated with the physical memory
@@ -66,7 +66,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_handle_t memory_array_handle;
+    dmi_handle_t array_handle;
 
     /**
      * @brief Number of memory devices that form a single row of memory for the
@@ -88,7 +88,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
      * 
      * @since SMBIOS 2.7
      */
-    dmi_qword_t starting_addr_ex;
+    dmi_qword_t start_addr_ex;
 
     /**
      * @brief Physical ending address, in bytes, of the last of a range of
@@ -102,16 +102,39 @@ DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
      *
      * @since SMBIOS 2.7
      */
-    dmi_qword_t ending_addr_ex;
+    dmi_qword_t end_addr_ex;
 };
 
 struct dmi_memory_array_addr
 {
-    dmi_size_t starting_addr;
-    dmi_size_t ending_addr;
+    /**
+     * @brief Physical address, in bytes, of a range of memory mapped to the
+     * specified physical memory array.
+     */
+    dmi_size_t start_addr;
+
+    /**
+     * @brief Physical ending address, in bytes, of the last of a range of
+     * addresses mapped to the specified physical memory array.
+     */
+    dmi_size_t end_addr;
+
+    /**
+     * @brief Address range size in bytes.
+     */
     dmi_size_t range_size;
-    dmi_handle_t memory_array_handle;
-    dmi_memory_array_t *memory_array;
+
+    /**
+     * @brief Handle, or instance number, associated with the physical memory
+     * array to which this address range is mapped. Multiple address ranges can
+     * be mapped to a single physical memory array.
+     */
+    dmi_handle_t array_handle;
+
+    /**
+     * @brief Number of memory devices that form a single row of memory for the
+     * address partition defined by this structure.
+     */
     int partition_width;
 };
 

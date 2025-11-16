@@ -34,7 +34,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_addr_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_dword_t starting_addr;
+    dmi_dword_t start_addr;
 
     /**
      * @brief Physical ending address of the last kibibyte of a range of
@@ -46,7 +46,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_addr_data)
      * 
      * @since SMBIOS 2.1
      */
-    dmi_dword_t ending_addr;
+    dmi_dword_t end_addr;
 
     /**
      * @brief Handle, or instance number, associated with the memory device
@@ -59,7 +59,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_addr_data)
 
     /**
      * @brief Handle, or instance number, associated with the memory array
-     * mapped Address structure to which this device address range is mapped.
+     * mapped address structure to which this device address range is mapped.
      * Multiple address ranges can be mapped to a single memory array mapped
      * address.
      *
@@ -75,7 +75,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_addr_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_byte_t partition_row_pos;
+    dmi_byte_t partition_pos;
 
     /**
      * @brief Position of the referenced memory device in an interleave. The
@@ -92,10 +92,10 @@ DMI_PACKED_STRUCT(dmi_memory_device_addr_data)
     dmi_byte_t interleave_pos;
 
     /**
-     * Maximum number of consecutive rows from the referenced memory device
-     * that are accessed in a single interleaved transfer. If the device is not
-     * part of an interleave, the field contains 0; if the interleave
-     * configuration is unknown, the value is '0xFF'.
+     * @brief Maximum number of consecutive rows from the referenced memory
+     * device that are accessed in a single interleaved transfer. If the device
+     * is not part of an interleave, the field contains 0; if the interleave
+     * configuration is unknown, the value is `0xFF`.
      *
      * Examples: If a device transfers two rows each time it is read, its
      * interleaved data depth is set to 2. If that device is 2:1 interleaved
@@ -104,7 +104,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_addr_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_byte_t interleave_data_depth;
+    dmi_byte_t interleave_depth;
 
     /**
      * @brief Physical address, in bytes, of a range of memory mapped to the
@@ -118,7 +118,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_addr_data)
      *
      * @since SMBIOS 2.7
      */
-    dmi_qword_t starting_addr_ex;
+    dmi_qword_t start_addr_ex;
 
     /**
      * @brief Physical ending address, in bytes, of the last of a range of
@@ -132,12 +132,92 @@ DMI_PACKED_STRUCT(dmi_memory_device_addr_data)
      *
      * @since SMBIOS 2.7
      */
-    dmi_qword_t ending_addr_ex;
+    dmi_qword_t end_addr_ex;
 };
+
+#ifndef DMI_MEMORY_DEVICE_ADDR_DATA_T
+#define DMI_MEMORY_DEVICE_ADDR_DATA_T
+typedef struct dmi_memory_device_addr_data dmi_memory_device_addr_data_t;
+#endif // !DMI_MEMORY_DEVICE_ADDR_DATA_T
+
+struct dmi_memory_device_addr
+{
+    /**
+     * @brief Physical address, in bytes, of a range of memory mapped to the
+     * referenced memory device.
+     */
+    dmi_size_t start_addr;
+
+    /**
+     * @brief Physical ending address, in bytes, of the last of a range of
+     * addresses mapped to the referenced memory device.
+     */
+    dmi_size_t end_addr;
+
+    /**
+     * @brief Address range size in bytes.
+     */
+    dmi_size_t range_size;
+
+    /**
+     * @brief Handle, or instance number, associated with the memory device
+     * structure to which this address range is mapped Multiple address ranges
+     * can be mapped to a single memory device.
+     */
+    dmi_handle_t device_handle;
+
+    /**
+     * @brief Handle, or instance number, associated with the memory array
+     * mapped address structure to which this device address range is mapped.
+     * Multiple address ranges can be mapped to a single memory array mapped
+     * address.
+     */
+    dmi_handle_t array_addr_handle;
+
+    /**
+     * @brief Position of the referenced memory device in a row of the address
+     * partition. For example, if two 8-bit devices form a 16-bit row, this
+     * field's value is either 1 or 2. The value 0 is reserved. If the position
+     * is unknown, the field contains `USHRT_MAX`.
+     */
+    unsigned short partition_pos;
+
+    /**
+     * @brief Position of the referenced memory device in an interleave. The
+     * value 0 indicates non-interleaved, 1 indicates first interleave
+     * position, 2 the second interleave position, and so on. If the position
+     * is unknown, the field contains `USHRT_MAX`.
+     *
+     * Examples: In a 2:1 interleave, the value 1 indicates the device in the
+     * "even" position. In a 4:1 interleave, the value 1 indicates the first
+     * of four possible positions.
+     */
+    unsigned short interleave_pos;
+
+    /**
+     * @brief Maximum number of consecutive rows from the referenced memory
+     * device that are accessed in a single interleaved transfer. If the device
+     * is not part of an interleave, the field contains 0; if the interleave
+     * configuration is unknown, the value is `USHRT_MAX`.
+     */
+    unsigned short interleave_depth;
+};
+
+#ifndef DMI_MEMORY_DEVICE_ADDR_T
+#define DMI_MEMORY_DEVICE_ADDR_T
+typedef struct dmi_memory_device_addr dmi_memory_device_addr_t;
+#endif // !DMI_MEMORY_DEVICE_ADDR_T
 
 /**
  * @brief Memory device mapped address table specification.
  */
 extern const dmi_table_spec_t dmi_memory_device_addr_table;
+
+__BEGIN_DECLS
+
+dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table);
+void dmi_memory_device_addr_destroy(dmi_memory_device_addr_t *info);
+
+__END_DECLS
 
 #endif // !OPENDMI_TABLE_MEMORY_DEVICE_ADDR_H

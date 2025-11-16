@@ -4,10 +4,49 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <stdlib.h>
+#include <limits.h>
+
+#include <opendmi/utils.h>
 #include <opendmi/table/memory-device-addr.h>
 
 const dmi_attribute_t dmi_memory_device_addr_attrs[] =
 {
+    DMI_ATTRIBUTE(dmi_memory_device_addr_t, start_addr, ADDRESS, {
+        .code = "start-addr",
+        .name = "Starting address"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_addr_t, end_addr, ADDRESS, {
+        .code = "end-addr",
+        .name = "Ending address"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_addr_t, range_size, SIZE, {
+        .code = "range-size",
+        .name = "Range size"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_addr_t, device_handle, HANDLE, {
+        .code = "device-handle",
+        .name = "Device handle"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_addr_t, array_addr_handle, HANDLE, {
+        .code = "array-addr-handle",
+        .name = "Array mapped address handle"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_addr_t, partition_pos, INTEGER, {
+        .code = "partition-pos",
+        .name = "Partition row position",
+        .unknown = &(unsigned short) { USHRT_MAX }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_addr_t, interleave_pos, INTEGER, {
+        .code = "interleave-pos",
+        .name = "Interleave position",
+        .unknown = &(unsigned short) { USHRT_MAX }
+    }),
+    DMI_ATTRIBUTE(dmi_memory_device_addr_t, interleave_depth, INTEGER, {
+        .code    = "interleave-depth",
+        .name    = "Interleave data depth",
+        .unknown = &(unsigned short) { USHRT_MAX }
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
@@ -18,5 +57,49 @@ const dmi_table_spec_t dmi_memory_device_addr_table =
     .type        = DMI_TYPE_MEMORY_DEVICE_ADDR,
     .min_version = DMI_VERSION(2, 1, 0),
     .min_length  = 0x13,
-    .attributes  = dmi_memory_device_addr_attrs
+    .attributes  = dmi_memory_device_addr_attrs,
+    .handlers    = {
+        .decoder     = (dmi_table_decoder_t)dmi_memory_device_addr_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_memory_device_addr_destroy
+    }
 };
+
+dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table)
+{
+    dmi_memory_device_addr_t *info = nullptr;
+    dmi_memory_device_addr_data_t *data = dmi_cast(data, table->data);
+
+    info = calloc(1, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    if ((table->body_length >= 0x13) && (data->start_addr == 0xFFFFFFFFU)) {
+        info->start_addr = dmi_decode_qword(data->start_addr_ex);
+        info->end_addr   = dmi_decode_qword(data->end_addr_ex);
+    } else {
+        info->start_addr = dmi_decode_dword(data->start_addr) << 10;
+        info->end_addr   = dmi_decode_dword(data->end_addr) << 10;
+    }
+
+    if (info->end_addr > info->start_addr)
+        info->range_size = info->end_addr - info->start_addr;
+    else
+        info->range_size = info->start_addr - info->end_addr;
+
+    info->device_handle     = dmi_decode_word(data->device_handle);
+    info->array_addr_handle = dmi_decode_word(data->array_addr_handle);
+
+    info->partition_pos    = data->partition_pos != 0xFFU ?
+                             data->partition_pos : USHRT_MAX;
+    info->interleave_pos   = data->interleave_pos != 0xFFU ?
+                             data->interleave_pos : USHRT_MAX;
+    info->interleave_depth = data->interleave_depth != 0xFFU ?
+                             data->interleave_depth : USHRT_MAX;
+
+return info;
+}
+
+void dmi_memory_device_addr_destroy(dmi_memory_device_addr_t *info)
+{
+    free(info);
+}
