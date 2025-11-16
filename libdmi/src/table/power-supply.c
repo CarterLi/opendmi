@@ -4,8 +4,12 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/power-supply.h>
+#include <stdlib.h>
+#include <limits.h>
+
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
+#include <opendmi/table/power-supply.h>
 
 static const dmi_name_t dmi_power_supply_type_names[] =
 {
@@ -52,8 +56,121 @@ static const dmi_name_t dmi_power_supply_type_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_attribute_t dmi_power_supply_attrs[] =
+static const dmi_name_t dmi_range_switching_type_names[] =
 {
+    {
+        .id   = DMI_RANGE_SWITCHING_TYPE_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_RANGE_SWITCHING_TYPE_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_RANGE_SWITCHING_TYPE_MANUAL,
+        .code = "manual",
+        .name = "Manual"
+    },
+    {
+        .id   = DMI_RANGE_SWITCHING_TYPE_AUTO,
+        .code = "auto",
+        .name = "Auto-switch"
+    },
+    {
+        .id   = DMI_RANGE_SWITCHING_TYPE_WIDE,
+        .code = "wide-range",
+        .name = "Wide range"
+    },
+    {
+        .id   = DMI_RANGE_SWITCHING_TYPE_NOT_APPLICABLE,
+        .code = "not-applicable",
+        .name = "Not applicable"
+    },
+    DMI_NAME_NULL
+};
+
+static const dmi_attribute_t dmi_power_supply_attrs[] =
+{
+    DMI_ATTRIBUTE(dmi_power_supply_t, group, INTEGER, {
+        .code    = "group",
+        .name    = "Power unit group"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, location, STRING, {
+        .code    = "location",
+        .name    = "Location"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, name, STRING, {
+        .code    = "name",
+        .name    = "Name"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, manufacturer, STRING, {
+        .code    = "manufacturer",
+        .name    = "Manufacturer"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, serial_number, STRING, {
+        .code    = "serial-number",
+        .name    = "Serial number"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, asset_tag, STRING, {
+        .code    = "asset-tag",
+        .name    = "Asset tag"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, part_number, STRING, {
+        .code    = "part-number",
+        .name    = "Part number"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, revision, STRING, {
+        .code    = "revision",
+        .name    = "Revision"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, max_capacity, INTEGER, {
+        .code    = "max-capacity",
+        .name    = "Maximum capacity",
+        .unit    = "watts",
+        .unknown = &(short){ SHRT_MIN },
+        .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, hot_swappable, BOOL, {
+        .code    = "hot-swappable",
+        .name    = "Hot-swappable"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, present, BOOL, {
+        .code    = "present",
+        .name    = "Present"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, unplugged, BOOL, {
+        .code    = "unplugged",
+        .name    = "Unplugged"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, range_switching, ENUM, {
+        .code    = "range-switching",
+        .name    = "Input voltage range switching",
+        .values  = dmi_range_switching_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, status, ENUM, {
+        .code    = "status",
+        .name    = "Status",
+        .values  = dmi_status_names
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, type, ENUM, {
+        .code    = "type",
+        .name    = "Type",
+        .values  = dmi_power_supply_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, voltage_probe_handle, HANDLE, {
+        .code    = "voltage-probe-handle",
+        .name    = "Input voltage probe handle"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, cooling_device_handle, HANDLE, {
+        .code    = "cooling-device-handle",
+        .name    = "Cooling device handle"
+    }),
+    DMI_ATTRIBUTE(dmi_power_supply_t, current_probe_handle, HANDLE, {
+        .code    = "current-probe-handle",
+        .name    = "Input current probe handle"
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
@@ -64,10 +181,61 @@ const dmi_table_spec_t dmi_power_supply_table =
     .type        = DMI_TYPE_POWER_SUPPLY,
     .min_version = DMI_VERSION(2, 3, 1),
     .min_length  = 0x16,
-    .attributes  = dmi_power_supply_attrs
+    .attributes  = dmi_power_supply_attrs,
+    .handlers    = {
+        .decoder     = (dmi_table_decoder_t)dmi_power_supply_decode,
+        .deallocator = (dmi_table_deallocator_t)dmi_power_supply_destroy
+    }
 };
 
 const char *dmi_power_supply_type_name(enum dmi_power_supply_type value)
 {
     return dmi_name_lookup(dmi_power_supply_type_names, value);
+}
+
+const char *dmi_range_switching_type_name(dmi_range_switching_type_t value)
+{
+    return dmi_name_lookup(dmi_range_switching_type_names, value);
+}
+
+dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table)
+{
+    dmi_power_supply_t *info = nullptr;
+    dmi_power_supply_data_t *data = dmi_cast(data, table->data);
+
+    info = calloc(1, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    info->group         = data->group;
+    info->location      = dmi_table_string(table, data->location);
+    info->name          = dmi_table_string(table, data->name);
+    info->manufacturer  = dmi_table_string(table, data->manufacturer);
+    info->serial_number = dmi_table_string(table, data->serial_number);
+    info->asset_tag     = dmi_table_string(table, data->asset_tag);
+    info->part_number   = dmi_table_string(table, data->part_number);
+    info->revision      = dmi_table_string(table, data->revision);
+    info->max_capacity  = dmi_decode_word(data->max_capacity);
+
+    dmi_power_supply_details_t details = {
+        ._value = dmi_decode_word(data->characteristics)
+    };
+
+    info->hot_swappable   = details.hot_swappable;
+    info->present         = details.present;
+    info->unplugged       = details.unplugged;
+    info->range_switching = details.range_switching;
+    info->status          = details.status;
+    info->type            = details.type;
+
+    info->voltage_probe_handle  = dmi_decode_word(data->voltage_probe_handle);
+    info->cooling_device_handle = dmi_decode_word(data->cooling_device_handle);
+    info->current_probe_handle  = dmi_decode_word(data->current_probe_handle);
+
+    return info;
+}
+
+void dmi_power_supply_destroy(dmi_power_supply_t *info)
+{
+    free(info);
 }
