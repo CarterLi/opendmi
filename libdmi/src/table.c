@@ -60,11 +60,11 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
 
     // Decode table header
     table->context     = context;
-    table->type        = header->type;
+    table->type        = dmi_value(header->type);
+    table->body_length = dmi_value(header->length);
+    table->handle      = dmi_value(header->handle);
     table->spec        = dmi_type_spec(context, table->type);
-    table->handle      = dmi_decode_word(header->handle);
     table->data        = data;
-    table->body_length = header->length;
 
     // Decode table data
     bool success = false;

@@ -90,11 +90,11 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table)
         return nullptr;
 
     if ((table->body_length >= 0x1F) && (data->start_addr == 0xFFFFFFFFU)) {
-        info->start_addr = dmi_decode_qword(data->start_addr_ex);
-        info->end_addr   = dmi_decode_qword(data->end_addr_ex);
+        info->start_addr = dmi_value(data->start_addr_ex);
+        info->end_addr   = dmi_value(data->end_addr_ex);
     } else {
-        info->start_addr = dmi_decode_dword(data->start_addr) << 10;
-        info->end_addr   = dmi_decode_dword(data->end_addr) << 10;
+        info->start_addr = dmi_value(data->start_addr) << 10;
+        info->end_addr   = dmi_value(data->end_addr) << 10;
     }
 
     if (info->end_addr > info->start_addr)
@@ -102,8 +102,8 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table)
     else
         info->range_size = info->start_addr - info->end_addr;
 
-    info->array_handle    = dmi_decode_word(data->array_handle);
-    info->partition_width = data->partition_width;
+    info->array_handle    = dmi_value(data->array_handle);
+    info->partition_width = dmi_value(data->partition_width);
 
     return info;
 }

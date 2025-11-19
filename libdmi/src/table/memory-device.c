@@ -656,19 +656,19 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table)
     if (!info)
         return nullptr;
 
-    info->array_handle = dmi_decode_word(data->array_handle);
-    info->error_handle = dmi_decode_word(data->error_handle);
+    info->array_handle = dmi_value(data->array_handle);
+    info->error_handle = dmi_value(data->error_handle);
 
-    info->total_width = dmi_decode_word(data->total_width);
+    info->total_width = dmi_value(data->total_width);
     if (info->total_width == 0xFFFFU)
         info->total_width = USHRT_MAX;
 
-    info->data_width = dmi_decode_word(data->data_width);
+    info->data_width = dmi_value(data->data_width);
     if (info->data_width == 0xFFFFU)
         info->data_width = USHRT_MAX;
 
     if (data->size != 0xFFFF)
-        info->size = dmi_memory_device_size(dmi_decode_word(data->size));
+        info->size = dmi_memory_device_size(dmi_value(data->size));
     else
         info->size = UINT64_MAX;
 
@@ -681,12 +681,12 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table)
 
     info->device_locator            = dmi_table_string(table, data->device_locator);
     info->bank_locator              = dmi_table_string(table, data->bank_locator);
-    info->memory_type               = data->memory_type;
-    info->memory_type_detail._value = dmi_decode_word(data->memory_type_detail);
+    info->memory_type               = dmi_value(data->memory_type);
+    info->memory_type_detail._value = dmi_value(data->memory_type_detail);
 
     // SMBIOS 2.3 features
     if (table->body_length >= 0x15) {
-        info->maximum_speed = dmi_decode_word(data->maximum_speed);
+        info->maximum_speed = dmi_value(data->maximum_speed);
         info->vendor        = dmi_table_string(table, data->vendor);
         info->serial_number = dmi_table_string(table, data->serial_number);
         info->asset_tag     = dmi_table_string(table, data->asset_tag);
@@ -701,50 +701,50 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table)
     // SMBIOS 2.7 features
     if (table->body_length >= 0x1C) {
         if (data->size == 0x7FFFU)
-            info->size = dmi_memory_device_size_ex(dmi_decode_dword(data->size));
+            info->size = dmi_memory_device_size_ex(dmi_value(data->size));
 
-        info->configured_speed = dmi_decode_word(data->configured_speed);
+        info->configured_speed = dmi_value(data->configured_speed);
     }
 
     // SMBIOS 2.8 features
     if (table->body_length >= 0x22) {
-        info->minimum_voltage    = dmi_decode_word(data->minimum_voltage);
-        info->maximum_voltage    = dmi_decode_word(data->maximum_voltage);
-        info->configured_voltage = dmi_decode_word(data->configured_voltage);
+        info->minimum_voltage    = dmi_value(data->minimum_voltage);
+        info->maximum_voltage    = dmi_value(data->maximum_voltage);
+        info->configured_voltage = dmi_value(data->configured_voltage);
     }
 
     // SMBIOS 3.2 features
     if (table->body_length >= 0x28) {
         info->memory_technology = data->memory_technology;
-        info->memory_mode_caps  = dmi_decode_word(data->memory_mode_caps);
+        info->memory_mode_caps  = dmi_value(data->memory_mode_caps);
 
         info->firmware_version = dmi_table_string(table, data->firmware_version);
 
-        info->module_vendor_id      = dmi_decode_word(data->module_vendor_id);
-        info->module_product_id     = dmi_decode_word(data->module_product_id);
-        info->controller_vendor_id  = dmi_decode_word(data->controller_vendor_id);
-        info->controller_product_id = dmi_decode_word(data->controller_product_id);
+        info->module_vendor_id      = dmi_value(data->module_vendor_id);
+        info->module_product_id     = dmi_value(data->module_product_id);
+        info->controller_vendor_id  = dmi_value(data->controller_vendor_id);
+        info->controller_product_id = dmi_value(data->controller_product_id);
 
-        info->non_volatile_size = dmi_decode_qword(data->non_volatile_size);
-        info->volatile_size     = dmi_decode_qword(data->volatile_size);
-        info->cache_size        = dmi_decode_qword(data->cache_size);
-        info->logical_size      = dmi_decode_qword(data->logical_size);
+        info->non_volatile_size = dmi_value(data->non_volatile_size);
+        info->volatile_size     = dmi_value(data->volatile_size);
+        info->cache_size        = dmi_value(data->cache_size);
+        info->logical_size      = dmi_value(data->logical_size);
     }
 
     // SMBIOS 3.3 features
     if (table->body_length >= 0x54) {
         if (data->maximum_speed == 0xFFFFU)
-            info->maximum_speed = dmi_decode_dword(data->maximum_speed_ex);
+            info->maximum_speed = dmi_value(data->maximum_speed_ex);
         if (data->configured_speed == 0xFFFFU)
-            info->configured_speed = dmi_decode_dword(data->configured_speed_ex);
+            info->configured_speed = dmi_value(data->configured_speed_ex);
     }
 
     // SMBIOS 3.7 features
     if (table->body_length >= 0x5C) {
-        info->pmic0_vendor_id = dmi_decode_word(data->pmic0_vendor_id);
-        info->pmic0_revision  = dmi_decode_word(data->pmic0_revision);
-        info->rcd_vendor_id   = dmi_decode_word(data->rcd_vendor_id);
-        info->rcd_revision    = dmi_decode_word(data->rcd_revision);
+        info->pmic0_vendor_id = dmi_value(data->pmic0_vendor_id);
+        info->pmic0_revision  = dmi_value(data->pmic0_revision);
+        info->rcd_vendor_id   = dmi_value(data->rcd_vendor_id);
+        info->rcd_revision    = dmi_value(data->rcd_revision);
     }
 
     return info;

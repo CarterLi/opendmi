@@ -11,7 +11,7 @@
 #include <opendmi/utils.h>
 #include <opendmi/table/probe.h>
 
-static short dmi_probe_decode_value(dmi_word_t value);
+static short dmi_probe_value(dmi_word_t value);
 
 const dmi_name_t dmi_probe_location_names[] =
 {
@@ -108,26 +108,26 @@ dmi_probe_t * dmi_probe_decode(dmi_table_t *table)
         return nullptr;
 
     info->description   = dmi_table_string(table, data->description);
-    info->location      = data->location;
-    info->status        = data->status;
-    info->maximum_value = dmi_probe_decode_value(data->maximum_value);
-    info->minimum_value = dmi_probe_decode_value(data->minimum_value);
-    info->resolution    = dmi_probe_decode_value(data->resolution);
-    info->tolerance     = dmi_probe_decode_value(data->tolerance);
-    info->accuracy      = dmi_probe_decode_value(data->accuracy);
-    info->oem_defined   = dmi_decode_dword(data->oem_defined);
+    info->location      = dmi_value(data->location);
+    info->status        = dmi_value(data->status);
+    info->maximum_value = dmi_probe_value(data->maximum_value);
+    info->minimum_value = dmi_probe_value(data->minimum_value);
+    info->resolution    = dmi_probe_value(data->resolution);
+    info->tolerance     = dmi_probe_value(data->tolerance);
+    info->accuracy      = dmi_probe_value(data->accuracy);
+    info->oem_defined   = dmi_value(data->oem_defined);
 
     if (table->body_length > 0x14)
-        info->nominal_value = dmi_probe_decode_value(data->nominal_value);
+        info->nominal_value = dmi_probe_value(data->nominal_value);
     else
         info->nominal_value = SHRT_MIN;
 
     return info;
 }
 
-static short dmi_probe_decode_value(dmi_word_t value)
+static short dmi_probe_value(dmi_word_t value)
 {
-    value = dmi_decode_word(value);
+    value = dmi_value(value);
 
     if (value == DMI_PROBE_VALUE_UNKNOWN)
         return SHRT_MIN;

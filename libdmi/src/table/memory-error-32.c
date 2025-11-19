@@ -32,13 +32,13 @@ dmi_memory_error_t *dmi_memory_error_32_decode(const dmi_table_t *table)
     if (!info)
         return nullptr;
 
-    info->type            = data->type;
-    info->granularity     = data->granularity;
-    info->operation       = data->operation;
-    info->vendor_syndrome = dmi_decode_dword(data->vendor_syndrome);
-    info->array_addr      = dmi_decode_dword(data->array_addr);
-    info->device_addr     = dmi_decode_dword(data->device_addr);
-    info->resolution      = dmi_decode_dword(data->resolution);
+    info->type            = dmi_value(data->type);
+    info->granularity     = dmi_value(data->granularity);
+    info->operation       = dmi_value(data->operation);
+    info->vendor_syndrome = dmi_value(data->vendor_syndrome);
+    info->array_addr      = dmi_value(data->array_addr);
+    info->device_addr     = dmi_value(data->device_addr);
+    info->resolution      = dmi_value(data->resolution);
 
     return info;
 }

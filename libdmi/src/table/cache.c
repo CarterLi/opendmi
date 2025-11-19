@@ -376,10 +376,10 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
     data = dmi_cast(data, table->data);
 
     // SMBIOS 2.0 features
-    info->socket_designator  = dmi_table_string(table, data->socket_designator);
+    info->socket_designator = dmi_table_string(table, data->socket_designator);
 
     dmi_cache_config_t config = {
-        ._value = dmi_decode_word(data->config)
+        ._value = dmi_value(data->config)
     };
 
     info->level     = config.level + 1;
@@ -388,10 +388,10 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
     info->socketed  = config.socketed;
     info->enabled   = config.enabled;
 
-    info->maximum_size          = dmi_cache_size(dmi_decode_word(data->maximum_size));
-    info->installed_size        = dmi_cache_size(dmi_decode_word(data->installed_size));
-    info->supported_sram._value = dmi_decode_word(data->supported_sram);
-    info->current_sram._value   = dmi_decode_word(data->current_sram);
+    info->maximum_size          = dmi_cache_size(dmi_value(data->maximum_size));
+    info->installed_size        = dmi_cache_size(dmi_value(data->installed_size));
+    info->supported_sram._value = dmi_value(data->supported_sram);
+    info->current_sram._value   = dmi_value(data->current_sram);
 
     // SMBIOS 2.1 features
     if (data->header.length >= 0x0F) {
@@ -404,9 +404,9 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
     // SMBIOS 3.1 features
     if (data->header.length >= 0x13) {
         if (data->maximum_size == 0xFFFFU)
-            info->maximum_size = dmi_cache_size_ex(dmi_decode_dword(data->maximum_size_ex));
+            info->maximum_size = dmi_cache_size_ex(dmi_value(data->maximum_size_ex));
         if (data->installed_size == 0xFFFU)
-            info->installed_size = dmi_cache_size_ex(dmi_decode_dword(data->installed_size_ex));
+            info->installed_size = dmi_cache_size_ex(dmi_value(data->installed_size_ex));
     }
 
     return info;

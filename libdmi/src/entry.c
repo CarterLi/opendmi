@@ -112,18 +112,19 @@ static bool dmi_entry_decode_legacy(dmi_context_t *context,
     }
 
     // Decode SMBIOS version
-    if ((entry->version != 0) && (context->smbios_version == 0)) {
-        uint8_t major = (entry->version & 0xF0) >> 4;
-        uint8_t minor = (entry->version & 0x0F);
+    dmi_byte_t entry_version = dmi_value(entry->version);
+    if ((entry_version != 0) && (context->smbios_version == 0)) {
+        uint8_t major = (entry_version & 0xF0) >> 4;
+        uint8_t minor = (entry_version & 0x0F);
 
         context->smbios_version = dmi_version(minor, major, 0);
     }
 
     // Decode table area parameters
-    context->table_count         = dmi_decode_word(entry->table_count);
-    context->table_area_addr     = dmi_decode_dword(entry->table_area_addr);
-    context->table_area_max_size = dmi_decode_word(entry->table_area_size);
-    context->table_area_size     = dmi_decode_word(entry->table_area_size);
+    context->table_count         = dmi_value(entry->table_count);
+    context->table_area_addr     = dmi_value(entry->table_area_addr);
+    context->table_area_max_size = dmi_value(entry->table_area_size);
+    context->table_area_size     = dmi_value(entry->table_area_size);
 
     return true;
 }
@@ -205,8 +206,8 @@ static bool dmi_entry_decode_v30(dmi_context_t *context,
                                           entry->revision);
 
     // Decode table parameters
-    context->table_area_addr     = dmi_decode_qword(entry->table_area_addr);
-    context->table_area_max_size = dmi_decode_dword(entry->table_area_max_size);
+    context->table_area_addr     = dmi_value(entry->table_area_addr);
+    context->table_area_max_size = dmi_value(entry->table_area_max_size);
 
     return true;
 }

@@ -74,11 +74,11 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table
         return nullptr;
 
     if ((table->body_length >= 0x13) && (data->start_addr == 0xFFFFFFFFU)) {
-        info->start_addr = dmi_decode_qword(data->start_addr_ex);
-        info->end_addr   = dmi_decode_qword(data->end_addr_ex);
+        info->start_addr = dmi_value(data->start_addr_ex);
+        info->end_addr   = dmi_value(data->end_addr_ex);
     } else {
-        info->start_addr = dmi_decode_dword(data->start_addr) << 10;
-        info->end_addr   = dmi_decode_dword(data->end_addr) << 10;
+        info->start_addr = dmi_value(data->start_addr) << 10;
+        info->end_addr   = dmi_value(data->end_addr) << 10;
     }
 
     if (info->end_addr > info->start_addr)
@@ -86,8 +86,8 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table
     else
         info->range_size = info->start_addr - info->end_addr;
 
-    info->device_handle     = dmi_decode_word(data->device_handle);
-    info->array_addr_handle = dmi_decode_word(data->array_addr_handle);
+    info->device_handle     = dmi_value(data->device_handle);
+    info->array_addr_handle = dmi_value(data->array_addr_handle);
 
     info->partition_pos    = data->partition_pos != 0xFFU ?
                              data->partition_pos : USHRT_MAX;

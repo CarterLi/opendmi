@@ -215,10 +215,10 @@ dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table)
     info->asset_tag        = dmi_table_string(table, data->asset_tag);
     info->part_number      = dmi_table_string(table, data->part_number);
     info->revision         = dmi_table_string(table, data->revision);
-    info->maximum_capacity = dmi_decode_word(data->maximum_capacity);
+    info->maximum_capacity = dmi_value(data->maximum_capacity);
 
     dmi_power_supply_details_t details = {
-        ._value = dmi_decode_word(data->characteristics)
+        ._value = dmi_value(data->characteristics)
     };
 
     info->hot_swappable   = details.hot_swappable;
@@ -228,9 +228,9 @@ dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table)
     info->status          = details.status;
     info->type            = details.type;
 
-    info->voltage_probe_handle  = dmi_decode_word(data->voltage_probe_handle);
-    info->cooling_device_handle = dmi_decode_word(data->cooling_device_handle);
-    info->current_probe_handle  = dmi_decode_word(data->current_probe_handle);
+    info->voltage_probe_handle  = dmi_value(data->voltage_probe_handle);
+    info->cooling_device_handle = dmi_value(data->cooling_device_handle);
+    info->current_probe_handle  = dmi_value(data->current_probe_handle);
 
     return info;
 }

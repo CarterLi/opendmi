@@ -116,10 +116,11 @@ dmi_system_reset_t *dmi_system_reset_decode(const dmi_table_t *table)
     info->boot_on_watchdog = caps.boot_on_watchdog;
     info->boot_on_limit    = caps.boot_on_limit;
     info->watchdog_present = caps.watchdog_present;
-    info->reset_count      = dmi_decode_word(data->reset_count);
-    info->reset_limit      = dmi_decode_word(data->reset_limit);
-    info->timer_interval   = dmi_decode_word(data->timer_inverval);
-    info->timeout          = dmi_decode_word(data->timeout);
+
+    info->reset_count    = dmi_value(data->reset_count);
+    info->reset_limit    = dmi_value(data->reset_limit);
+    info->timer_interval = dmi_value(data->timer_inverval);
+    info->timeout        = dmi_value(data->timeout);
 
     return info;
 }

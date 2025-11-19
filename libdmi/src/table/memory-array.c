@@ -200,14 +200,14 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table)
     info->usage    = data->usage;
     info->ecc_type = data->ecc_type;
 
-    maximum_capacity = dmi_decode_dword(data->maximum_capacity);
+    maximum_capacity = dmi_value(data->maximum_capacity);
     if ((table->body_length >= 0x0F) && (maximum_capacity & 0x80000000))
-        info->maximum_capacity = dmi_decode_qword(data->maximum_capacity_ex);
+        info->maximum_capacity = dmi_value(data->maximum_capacity_ex);
     else
         info->maximum_capacity  = (dmi_size_t)(maximum_capacity & 0x7FFFFFFFU) << 10;
 
-    info->error_handle = dmi_decode_word(data->error_handle);
-    info->device_count = dmi_decode_word(data->device_count);
+    info->error_handle = dmi_value(data->error_handle);
+    info->device_count = dmi_value(data->device_count);
 
     return info;
 }

@@ -136,14 +136,14 @@ dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table)
     if (!info)
         return nullptr;
 
-    info->probe_handle = dmi_decode_word(data->probe_handle);
-    info->type         = data->type;
-    info->status       = data->status;
-    info->group        = data->group;
-    info->oem_defined  = dmi_decode_dword(data->oem_defined);
+    info->probe_handle = dmi_value(data->probe_handle);
+    info->type         = dmi_value(data->type);
+    info->status       = dmi_value(data->status);
+    info->group        = dmi_value(data->group);
+    info->oem_defined  = dmi_value(data->oem_defined);
 
     if (table->body_length > 0x0C) {
-        uint16_t nominal_speed = dmi_decode_word(data->nominal_speed);
+        uint16_t nominal_speed = dmi_value(data->nominal_speed);
         if (nominal_speed != 0x8000)
             info->nominal_speed = (short)(nominal_speed & 0x7FFF);
         else

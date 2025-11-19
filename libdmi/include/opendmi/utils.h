@@ -47,4 +47,10 @@ static inline uint64_t dmi_decode_qword(dmi_qword_t value) { return dmi_bswap64(
 #   error "Unsupported endianness"
 #endif
 
+#define dmi_value(value) _Generic((value),                              \
+                                  dmi_byte_t: (value),                  \
+                                  dmi_word_t:  dmi_decode_word(value),  \
+                                  dmi_dword_t: dmi_decode_dword(value), \
+                                  dmi_qword_t: dmi_decode_qword(value))
+
 #endif // !OPENDMI_UTILS_H

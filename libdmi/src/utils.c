@@ -165,9 +165,9 @@ dmi_uuid_t dmi_decode_uuid(const dmi_byte_t value[16])
 
     memcpy(uuid._value, value, sizeof(uuid._value));
 
-    uuid.time_low            = dmi_decode_dword(uuid.time_low);
-    uuid.time_mid            = dmi_decode_word(uuid.time_mid);
-    uuid.time_hi_and_version = dmi_decode_word(uuid.time_hi_and_version);
+    uuid.time_low            = dmi_value(uuid.time_low);
+    uuid.time_mid            = dmi_value(uuid.time_mid);
+    uuid.time_hi_and_version = dmi_value(uuid.time_hi_and_version);
 
     return uuid;
 }

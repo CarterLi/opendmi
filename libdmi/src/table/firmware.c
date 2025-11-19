@@ -336,14 +336,14 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table)
         return nullptr;
 
     dmi_firmware_features_t features = {
-        ._value = dmi_decode_qword(data->features)
+        ._value = dmi_value(data->features)
     };
 
     info->vendor       = dmi_table_string(table, data->vendor);
     info->version      = dmi_table_string(table, data->version);
-    info->bios_segment = dmi_decode_word(data->bios_segment);
+    info->bios_segment = dmi_value(data->bios_segment);
     info->release_date = dmi_table_string(table, data->release_date);
-    info->rom_size     = dmi_firmware_rom_size(data->rom_size);
+    info->rom_size     = dmi_firmware_rom_size(dmi_value(data->rom_size));
     info->features     = features;
 
     // SMBIOS 2.1: Extra feature bits
@@ -360,14 +360,14 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table)
     if (table->body_length >= 0x14) {
         if (data->platform_release_major != 0xFFU) {
             info->platform_version = dmi_version(data->platform_release_major,
-                                                data->platform_release_minor, 0);
+                                                 data->platform_release_minor, 0);
         } else {
             info->platform_version = DMI_VERSION_NONE;
         }
 
         if (data->controller_release_major != 0xFFU) {
             info->controller_version = dmi_version(data->controller_release_major,
-                                                data->controller_release_minor, 0);
+                                                   data->controller_release_minor, 0);
         } else {
             info->controller_version = DMI_VERSION_NONE;
         }
@@ -376,7 +376,7 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table)
     // SMBIOS 3.1 features
     if (table->body_length >= 0x18) {
         if (data->rom_size == 0xFFU)
-            info->rom_size = dmi_firmware_rom_size_ex(dmi_decode_word(data->rom_size_ex));
+            info->rom_size = dmi_firmware_rom_size_ex(dmi_value(data->rom_size_ex));
     }
 
     return info;
