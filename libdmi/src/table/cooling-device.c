@@ -137,10 +137,15 @@ dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table)
         return nullptr;
 
     info->probe_handle = dmi_value(data->probe_handle);
-    info->type         = dmi_value(data->type);
-    info->status       = dmi_value(data->status);
-    info->group        = dmi_value(data->group);
-    info->oem_defined  = dmi_value(data->oem_defined);
+
+    dmi_cooling_device_details_t details = {
+        ._value = dmi_value(data->details)
+    };
+
+    info->type        = details.type;
+    info->status      = details.status;
+    info->group       = dmi_value(data->group);
+    info->oem_defined = dmi_value(data->oem_defined);
 
     if (table->body_length > 0x0C) {
         uint16_t nominal_speed = dmi_value(data->nominal_speed);

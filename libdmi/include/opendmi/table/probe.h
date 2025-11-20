@@ -14,16 +14,6 @@
 
 #define DMI_PROBE_VALUE_UNKNOWN ((dmi_word_t)0x8000U)
 
-#ifndef DMI_PROBE_DATA_T
-#define DMI_PROBE_DATA_T
-typedef struct dmi_probe_data dmi_probe_data_t;
-#endif // !DMI_PROBE_DATA_T
-
-#ifndef DMI_PROBE_T
-#define DMI_PROBE_T
-typedef struct dmi_probe dmi_probe_t;
-#endif // !DMI_PROBE_T
-
 /**
  * @brief Probe locations.
  */
@@ -47,6 +37,34 @@ typedef enum dmi_probe_location
 } dmi_probe_location_t;
 
 /**
+ * @brief Probe location and status details.
+ */
+DMI_PACKED_UNION(dmi_probe_details)
+{
+    /**
+     * @brief Raw value.
+     */
+    dmi_type_t _value;
+
+    DMI_PACKED_STRUCT() {
+        /**
+         * @brief Physical location.
+         */
+        dmi_byte_t location : 5;
+
+        /**
+         * @brief Status.
+         */
+        dmi_byte_t status : 3;
+    };
+};
+
+#ifndef DMI_PROBE_DETAILS_T
+#define DMI_PROBE_DETAILS_T
+typedef union dmi_probe_details dmi_probe_details_t;
+#endif // !DMI_PROBE_DETAILS_T
+
+/**
  * @brief Probe table.
  */
 DMI_PACKED_STRUCT(dmi_probe_data)
@@ -62,17 +80,10 @@ DMI_PACKED_STRUCT(dmi_probe_data)
      */
     dmi_string_t description;
 
-    DMI_PACKED_STRUCT() {
-        /**
-         * @brief Physical location.
-         */
-        dmi_byte_t location : 5;
-
-        /**
-         * @brief Status.
-         */
-        dmi_byte_t status : 3;
-    };
+    /**
+     * @brief Location and status details.
+     */
+    dmi_byte_t details;
 
     /**
      * @brief Maximum value readable by this probe. If the value is unknown,
@@ -116,6 +127,11 @@ DMI_PACKED_STRUCT(dmi_probe_data)
      */
     dmi_word_t nominal_value;
 };
+
+#ifndef DMI_PROBE_DATA_T
+#define DMI_PROBE_DATA_T
+typedef struct dmi_probe_data dmi_probe_data_t;
+#endif // !DMI_PROBE_DATA_T
 
 struct dmi_probe
 {
@@ -176,6 +192,11 @@ struct dmi_probe
      */
     short nominal_value;
 };
+
+#ifndef DMI_PROBE_T
+#define DMI_PROBE_T
+typedef struct dmi_probe dmi_probe_t;
+#endif // !DMI_PROBE_T
 
 extern const dmi_name_t dmi_probe_location_names[];
 

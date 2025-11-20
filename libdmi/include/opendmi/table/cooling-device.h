@@ -12,16 +12,6 @@
 #include <opendmi/table.h>
 #include <opendmi/table/common.h>
 
-#ifndef DMI_COOLING_DEVICE_DATA_T
-#define DMI_COOLING_DEVICE_DATA_T
-typedef struct dmi_cooling_device_data dmi_cooling_device_data_t;
-#endif // !DMI_COOLING_DEVICE_DATA_T
-
-#ifndef DMI_COOLING_DEVICE_T
-#define DMI_COOLING_DEVICE_T
-typedef struct dmi_cooling_device dmi_cooling_device_t;
-#endif // !DMI_COOLING_DEVICE_T
-
 /**
  * @brief Cooling device types.
  */
@@ -39,6 +29,39 @@ typedef enum dmi_cooling_device_type
     DMI_COOLING_DEVICE_TYPE_ACTIVE_COOLING           = 0x10, ///< Active cooling
     DMI_COOLING_DEVICE_TYPE_PASSIVE_COOLING          = 0x11, ///< Passive cooling
 } dmi_cooling_device_type_t;
+
+/**
+ * @brief Cooling device type and status details.
+ */
+DMI_PACKED_UNION(dmi_cooling_device_details)
+{
+    /**
+     * @brief Raw value.
+     */
+    dmi_byte_t _value;
+
+    DMI_PACKED_STRUCT()
+    {
+        /**
+         * @brief Cooling device type.
+         * 
+         * @since SMBIOS 2.2
+         */
+        dmi_cooling_device_type_t type : 5;
+
+        /**
+         * @brief Cooling device status.
+         * 
+         * @since SMBIOS 2.2
+         */
+        dmi_status_t status : 3;
+    };
+};
+
+#ifndef DMI_COOLING_DEVICE_DETAILS_T
+#define DMI_COOLING_DEVICE_DETAILS_T
+typedef union dmi_cooling_device_details dmi_cooling_device_details_t;
+#endif // !DMI_COOLING_DEVICE_DETAILS_T
 
 /**
  * @brief Cooling device table.
@@ -63,22 +86,10 @@ DMI_PACKED_STRUCT(dmi_cooling_device_data)
      */
     dmi_handle_t probe_handle;
 
-    DMI_PACKED_STRUCT()
-    {
-        /**
-         * @brief Cooling device type.
-         * 
-         * @since SMBIOS 2.2
-         */
-        dmi_cooling_device_type_t type : 5;
-
-        /**
-         * @brief Cooling device status.
-         * 
-         * @since SMBIOS 2.2
-         */
-        dmi_status_t status : 3;
-    };
+    /**
+     * @brief Type and status details.
+     */
+    dmi_byte_t details;
 
     /**
      * @brief Cooling unit group to which this cooling device is associated.
@@ -125,6 +136,11 @@ DMI_PACKED_STRUCT(dmi_cooling_device_data)
      */
     dmi_string_t description;
 };
+
+#ifndef DMI_COOLING_DEVICE_DATA_T
+#define DMI_COOLING_DEVICE_DATA_T
+typedef struct dmi_cooling_device_data dmi_cooling_device_data_t;
+#endif // !DMI_COOLING_DEVICE_DATA_T
 
 struct dmi_cooling_device
 {
@@ -173,6 +189,11 @@ struct dmi_cooling_device
      */
     const char *description;
 };
+
+#ifndef DMI_COOLING_DEVICE_T
+#define DMI_COOLING_DEVICE_T
+typedef struct dmi_cooling_device dmi_cooling_device_t;
+#endif // !DMI_COOLING_DEVICE_T
 
 /**
  * @brief Cooling device table specification.

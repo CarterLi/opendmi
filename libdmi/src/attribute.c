@@ -111,6 +111,8 @@ static char *dmi_attribute_format_handle(const dmi_attribute_t *attr, const void
     assert(attr != nullptr);
     assert(value != nullptr);
 
+    (void)attr;
+
     if (asprintf(&str, "0x%04" PRIX16, *(dmi_handle_t *)value) < 0)
         return nullptr;
 
@@ -121,6 +123,8 @@ static char *dmi_attribute_format_string(const dmi_attribute_t *attr, const void
 {
     assert(attr != nullptr);
     assert(value != nullptr);
+
+    (void)attr;
 
     const char *str = *(const char **)value;
     if (!str)
@@ -392,6 +396,8 @@ static char *dmi_attribute_format_uuid(const dmi_attribute_t *attr, const void *
 
     assert(attr != nullptr);
     assert(value != nullptr);
+
+    (void)attr;
 
     dmi_uuid_t *uuid = (dmi_uuid_t *)value;
 

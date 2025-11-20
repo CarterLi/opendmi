@@ -62,6 +62,7 @@ add_library(dmi-object OBJECT
     src/backend/dump.c)
 
 target_include_directories(dmi-object PUBLIC include)
+target_compile_options(dmi-object PRIVATE -fPIC)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_sources(dmi-object PRIVATE src/backend/linux.c)

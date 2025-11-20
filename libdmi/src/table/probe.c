@@ -107,9 +107,14 @@ dmi_probe_t * dmi_probe_decode(dmi_table_t *table)
     if (!info)
         return nullptr;
 
-    info->description   = dmi_table_string(table, data->description);
-    info->location      = dmi_value(data->location);
-    info->status        = dmi_value(data->status);
+    info->description = dmi_table_string(table, data->description);
+
+    dmi_probe_details_t details = {
+        ._value = dmi_value(data->details)
+    };
+
+    info->location      = details.location;
+    info->status        = details.status;
     info->maximum_value = dmi_probe_value(data->maximum_value);
     info->minimum_value = dmi_probe_value(data->minimum_value);
     info->resolution    = dmi_probe_value(data->resolution);
