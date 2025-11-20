@@ -149,8 +149,8 @@ dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table)
 
     if (table->body_length > 0x0C) {
         uint16_t nominal_speed = dmi_value(data->nominal_speed);
-        if (nominal_speed != 0x8000)
-            info->nominal_speed = (short)(nominal_speed & 0x7FFF);
+        if (nominal_speed != 0x8000u)
+            info->nominal_speed = (short)(nominal_speed & 0x7FFFu);
         else
             info->nominal_speed = SHRT_MIN;
     } else {

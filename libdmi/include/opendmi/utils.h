@@ -31,9 +31,16 @@ uint64_t dmi_decode_bcd(const dmi_byte_t *value, size_t length);
 
 dmi_uuid_t dmi_decode_uuid(const dmi_byte_t value[16]);
 
+int dmi_asprintf(char **strp, const char *fmt, ...);
+int dmi_vasprintf(char **strp, const char *fmt, va_list ap);
+
+#if !defined(_WIN32)
 dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength);
+#endif // !defined(_WIN32)
 
 __END_DECLS
+
+static inline uint8_t dmi_decode_byte(dmi_byte_t value) { return value; }
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 static inline uint16_t dmi_decode_word(dmi_word_t value)   { return value; }
@@ -47,10 +54,11 @@ static inline uint64_t dmi_decode_qword(dmi_qword_t value) { return dmi_bswap64(
 #   error "Unsupported endianness"
 #endif
 
-#define dmi_value(value) _Generic((value),                              \
-                                  dmi_byte_t: (value),                  \
-                                  dmi_word_t:  dmi_decode_word(value),  \
-                                  dmi_dword_t: dmi_decode_dword(value), \
-                                  dmi_qword_t: dmi_decode_qword(value))
+#define dmi_value(value) (_Generic((value),                       \
+                                   dmi_qword_t: dmi_decode_qword, \
+                                   dmi_dword_t: dmi_decode_dword, \
+                                   dmi_word_t:  dmi_decode_word,  \
+                                   dmi_byte_t:  dmi_decode_byte   \
+                                  )(value))
 
 #endif // !OPENDMI_UTILS_H

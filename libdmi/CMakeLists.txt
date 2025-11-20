@@ -1,6 +1,11 @@
 project(opendmi-libdmi)
 
-add_library(dmi-object OBJECT
+configure_file(
+    ${PROJECT_SOURCE_DIR}/src/config.h.in
+    ${PROJECT_SOURCE_DIR}/src/config.h
+    USE_SOURCE_PERMISSIONS)
+
+set(LIBDMI_SOURCES
     src/name.c
     src/utils.c
     src/error.c
@@ -59,24 +64,26 @@ add_library(dmi-object OBJECT
     src/extension/apple.c
     src/extension/dell.c
     src/extension/intel.c
-    src/backend/dump.c)
-
-target_include_directories(dmi-object PUBLIC include)
-target_compile_options(dmi-object PRIVATE -fPIC)
+    src/backend/dump.c
+)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    target_sources(dmi-object PRIVATE src/backend/linux.c)
+    list(APPEND LIBDMI_SOURCES src/backend/linux.c)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     find_library(COREFOUNDATION_LIB CoreFoundation)
     find_library(IOKIT_LIB IOKit)
     list(APPEND LIBDMI_LIBRARIES ${COREFOUNDATION_LIB} ${IOKIT_LIB})
 
-    target_sources(dmi-object PRIVATE src/backend/darwin.c)
+    list(APPEND LIBDMI_SOURCES src/backend/darwin.c)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
-    target_sources(dmi-object PRIVATE src/backend/freebsd.c)
+    list(APPEND LIBDMI_SOURCES src/backend/freebsd.c)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    target_sources(dmi-object PRIVATE src/backend/windows.c)
+    list(APPEND LIBDMI_SOURCES src/backend/windows.c)
 endif ()
+
+add_library(dmi-object OBJECT ${LIBDMI_SOURCES})
+target_include_directories(dmi-object PUBLIC include)
+target_compile_options(dmi-object PRIVATE -fPIC)
 
 add_library(dmi-static STATIC $<TARGET_OBJECTS:dmi-object>)
 target_include_directories(dmi-static INTERFACE include)

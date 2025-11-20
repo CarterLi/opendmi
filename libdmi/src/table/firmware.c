@@ -347,7 +347,7 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table)
     info->features     = features;
 
     // SMBIOS 2.1: Extra feature bits
-    unsigned extra = table->body_length - 0x12;
+    size_t extra = table->body_length - 0x12;
     dmi_firmware_features_ex_t features_ex = {
         ._value = {
             extra > 0 ? data->features_ex[0] : 0,

@@ -21,7 +21,8 @@ set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 
 if(MSVC)
-    add_compile_options(PRIVATE /W4)
+    add_compile_options(PRIVATE /std:c11 /W4)
+    add_compile_definitions(_CRT_NONSTDC_NO_DEPRECATE)
 else()
     add_compile_options(-Wall -Wextra -pedantic)
 
@@ -48,6 +49,11 @@ else()
     add_compile_options(-O2)
     add_compile_definitions(NDEBUG)
 endif()
+
+include(CheckIncludeFile)
+
+check_include_file(sys/mman.h HAVE_SYS_MMAN_H)
+check_include_file(unistd.h HAVE_UNISTD_H)
 
 enable_testing()
 

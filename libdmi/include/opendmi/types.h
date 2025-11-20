@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdarg.h>
 
 #include <opendmi/defs.h>
 

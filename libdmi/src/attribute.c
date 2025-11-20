@@ -113,7 +113,7 @@ static char *dmi_attribute_format_handle(const dmi_attribute_t *attr, const void
 
     (void)attr;
 
-    if (asprintf(&str, "0x%04" PRIX16, *(dmi_handle_t *)value) < 0)
+    if (dmi_asprintf(&str, "0x%04" PRIX16, *(dmi_handle_t *)value) < 0)
         return nullptr;
 
     return str;
@@ -166,7 +166,7 @@ static char *dmi_attribute_format_integer(const dmi_attribute_t *attr, const voi
             fmt = "0x%" PRIX8;
         else
             fmt = "%" PRIu8;
-        rv = asprintf(&str, fmt, *(int8_t *)value);
+        rv = dmi_asprintf(&str, fmt, *(int8_t *)value);
         break;
 
     case sizeof(int16_t):
@@ -176,7 +176,7 @@ static char *dmi_attribute_format_integer(const dmi_attribute_t *attr, const voi
             fmt = "0x%" PRIX16;
         else
             fmt = "%" PRIu16;
-        rv = asprintf(&str, fmt, *(int16_t *)value);
+        rv = dmi_asprintf(&str, fmt, *(int16_t *)value);
         break;
 
     case sizeof(int32_t):
@@ -186,7 +186,7 @@ static char *dmi_attribute_format_integer(const dmi_attribute_t *attr, const voi
             fmt = "0x%" PRIX32;
         else
             fmt = "%" PRIu32;
-        rv = asprintf(&str, fmt, *(int32_t *)value);
+        rv = dmi_asprintf(&str, fmt, *(int32_t *)value);
         break;
 
     case sizeof(int64_t):
@@ -196,7 +196,7 @@ static char *dmi_attribute_format_integer(const dmi_attribute_t *attr, const voi
             fmt = "0x%" PRIX64;
         else
             fmt = "%" PRIu64;
-        rv = asprintf(&str, fmt, *(int32_t *)value);
+        rv = dmi_asprintf(&str, fmt, *(int32_t *)value);
         break;
 
     default:
@@ -237,10 +237,10 @@ static char *dmi_attribute_format_decimal(const dmi_attribute_t *attr, const voi
 
     if (attr->params.flags & DMI_ATTRIBUTE_FLAG_SIGNED) {
         snprintf(fmt, sizeof(fmt), "%%lld.%%0%dllu", attr->params.scale);
-        rv = asprintf(&str, fmt, src / factor, llabs(src) % factor);
+        rv = dmi_asprintf(&str, fmt, src / factor, llabs(src) % factor);
     } else {
         snprintf(fmt, sizeof(fmt), "%%llu.%%0%dllu", attr->params.scale);
-        rv = asprintf(&str, fmt, (uint64_t)src / factor, (uint64_t)src % factor);
+        rv = dmi_asprintf(&str, fmt, (uint64_t)src / factor, (uint64_t)src % factor);
     }
 
     if (rv < 0)
@@ -280,7 +280,7 @@ static char *dmi_attribute_format_size(const dmi_attribute_t *attr, const void *
         size >>= 10;
     }
 
-    rv = asprintf(&str, "%" PRIu64 " %s", size, units[i]);
+    rv = dmi_asprintf(&str, "%" PRIu64 " %s", size, units[i]);
     if (rv < 0)
         return nullptr;
 
@@ -345,7 +345,7 @@ static char *dmi_attribute_format_set(const dmi_attribute_t *attr, const void *v
         return nullptr;
     }
 
-    rv = asprintf(&str, fmt, src);
+    rv = dmi_asprintf(&str, fmt, src);
     if (rv < 0)
         return nullptr;
 
@@ -368,15 +368,15 @@ static char *dmi_attribute_format_version(const dmi_attribute_t *attr, const voi
 
     switch (attr->params.scale) {
     case 1:
-        rv = asprintf(&str, "%u", major);
+        rv = dmi_asprintf(&str, "%u", major);
         break;
 
     case 2:
-        rv = asprintf(&str, "%u.%u", major, minor);
+        rv = dmi_asprintf(&str, "%u.%u", major, minor);
         break;
 
     case 3:
-        rv = asprintf(&str, "%u.%u.%u", major, minor, revision);
+        rv = dmi_asprintf(&str, "%u.%u.%u", major, minor, revision);
         break;
 
     default:
@@ -401,11 +401,11 @@ static char *dmi_attribute_format_uuid(const dmi_attribute_t *attr, const void *
 
     dmi_uuid_t *uuid = (dmi_uuid_t *)value;
 
-    rv = asprintf(&str, "%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X",
-                  uuid->time_low, uuid->time_mid, uuid->time_hi_and_version,
-                  uuid->clock_seq_hi_and_reserved, uuid->clock_seq_low,
-                  uuid->node[0], uuid->node[1], uuid->node[2],
-                  uuid->node[3], uuid->node[4], uuid->node[5]);
+    rv = dmi_asprintf(&str, "%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X",
+                      uuid->time_low, uuid->time_mid, uuid->time_hi_and_version,
+                      uuid->clock_seq_hi_and_reserved, uuid->clock_seq_low,
+                      uuid->node[0], uuid->node[1], uuid->node[2],
+                      uuid->node[3], uuid->node[4], uuid->node[5]);
 
     if (rv < 0)
         return nullptr;

@@ -1,0 +1,13 @@
+//
+// OpenDMI: Cross-platform DMI/SMBIOS framework
+// Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+//
+// SPDX-License-Identifier: BSD-3-Clause
+//
+#ifndef OPENDMI_CONFIG_H
+#define OPENDMI_CONFIG_H
+
+#cmakedefine HAVE_SYS_MMAN_H
+#cmakedefine HAVE_UNISTD_H
+
+#endif // !OPENDMI_CONFIG_H

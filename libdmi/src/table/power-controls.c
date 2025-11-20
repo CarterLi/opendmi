@@ -57,11 +57,16 @@ dmi_power_controls_t *dmi_power_controls_decode(const dmi_table_t *table)
     if (!info)
         return nullptr;
 
-    info->poweron_month  = dmi_decode_bcd(&data->poweron_month, sizeof(data->poweron_month));
-    info->poweron_day    = dmi_decode_bcd(&data->poweron_day, sizeof(data->poweron_day));
-    info->poweron_hour   = dmi_decode_bcd(&data->poweron_hour, sizeof(data->poweron_hour));
-    info->poweron_minute = dmi_decode_bcd(&data->poweron_minute, sizeof(data->poweron_minute));
-    info->poweron_second = dmi_decode_bcd(&data->poweron_second, sizeof(data->poweron_second));
+    info->poweron_month  = dmi_cast(info->poweron_month,
+                                    dmi_decode_bcd(&data->poweron_month, sizeof(data->poweron_month)));
+    info->poweron_day    = dmi_cast(info->poweron_day,
+                                    dmi_decode_bcd(&data->poweron_day, sizeof(data->poweron_day)));
+    info->poweron_hour   = dmi_cast(info->poweron_hour,
+                                    dmi_decode_bcd(&data->poweron_hour, sizeof(data->poweron_hour)));
+    info->poweron_minute = dmi_cast(info->poweron_minute,
+                                    dmi_decode_bcd(&data->poweron_minute, sizeof(data->poweron_minute)));
+    info->poweron_second = dmi_cast(info->poweron_second,
+                                    dmi_decode_bcd(&data->poweron_second, sizeof(data->poweron_second)));
 
     return info;
 }

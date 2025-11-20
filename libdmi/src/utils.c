@@ -4,12 +4,21 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <sys/stat.h>
-#include <sys/mman.h>
+#include "config.h"
 
+#include <sys/stat.h>
+
+#ifdef HAVE_SYS_MMAN_H
+#include <sys/mman.h>
+#endif // HAVE_SYS_MMAN_H
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif // HAVE_UNISTD_H
+
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <assert.h>
@@ -172,6 +181,52 @@ dmi_uuid_t dmi_decode_uuid(const dmi_byte_t value[16])
     return uuid;
 }
 
+int dmi_asprintf(char **strp, const char *fmt, ...)
+{
+    int rv;
+    va_list ap;
+
+    va_start(ap, fmt);
+    rv = dmi_vasprintf(strp, fmt, ap);
+    va_end(ap);
+
+    return rv;
+}
+
+int dmi_vasprintf(char **strp, const char *fmt, va_list ap)
+{
+    int rv;
+
+#if defined(_WIN32)
+    // _vscprintf tells you how big the buffer needs to be
+    int len = _vscprintf(fmt, ap);
+    if (len < 0)
+        return -1;
+
+    size_t size = (size_t)len + 1;
+    char *str = malloc(size);
+    if (!str) {
+        *strp = nullptr;
+        return -1;
+    }
+
+    // vsprintf_s is the "secure" version of vsprintf
+    rv = vsprintf_s(str, size, fmt, ap);
+    if (rv < 0) {
+        free(str);
+        *strp = nullptr;
+        return -1;
+    }
+
+    *strp = str;
+#else // !defined(_WIN32)
+    rv = vasprintf(strp, fmt, ap);
+#endif // !defined(_WIN32)
+
+    return rv;
+}
+
+#if !defined(_WIN32)
 dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength)
 {
     if ((context == nullptr) || (path == nullptr) || (plength == nullptr)) {
@@ -210,3 +265,4 @@ dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *pleng
 
     return data;
 }
+#endif // !defined(_WIN32)

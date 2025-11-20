@@ -26,18 +26,18 @@ DMI_PACKED_STRUCT(dmi_memory_error_64_data)
      * @brief Type of error that is associated with the current status reported
      * for the memory array or device.
      */
-    enum dmi_memory_error_type type : 8;
+    dmi_byte_t type;
 
     /**
      * @brief Granularity (for example, device versus partition) to which the
      * error can be resolved.
      */
-    enum dmi_memory_error_granularity granularity : 8;
+    dmi_byte_t granularity;
 
     /**
      * @brief Memory access operation that caused the error.
      */
-    enum dmi_memory_error_operation operation : 8;
+    dmi_byte_t operation;
 
     /**
      * @brief Vendor-specific ECC syndrome or CRC data associated with the
