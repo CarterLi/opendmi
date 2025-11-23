@@ -36,6 +36,8 @@
 #include <opendmi/table/memory-module.h>
 #include <opendmi/table/mgmt-controller.h>
 #include <opendmi/table/mgmt-device.h>
+#include <opendmi/table/mgmt-device-component.h>
+#include <opendmi/table/mgmt-device-threshold.h>
 #include <opendmi/table/oem-strings.h>
 #include <opendmi/table/onboard-device.h>
 #include <opendmi/table/oob-remote-access.h>

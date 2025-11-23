@@ -42,6 +42,8 @@ set(LIBDMI_SOURCES
     src/table/memory-module.c
     src/table/mgmt-controller.c
     src/table/mgmt-device.c
+    src/table/mgmt-device-component.c
+    src/table/mgmt-device-threshold.c
     src/table/oem-strings.c
     src/table/onboard-device.c
     src/table/oob-remote-access.c
