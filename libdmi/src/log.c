@@ -21,7 +21,7 @@ void dmi_log(dmi_context_t *context, dmi_log_level_t level, const char *fmt, ...
 {
     va_list args;
 
-    if ((context == nullptr) || (context->logger == nullptr))
+    if ((context == nullptr) or (context->logger == nullptr))
         return;
 
     va_start(args, fmt);
@@ -31,7 +31,7 @@ void dmi_log(dmi_context_t *context, dmi_log_level_t level, const char *fmt, ...
 
 const char *dmi_log_level_name(dmi_log_level_t level)
 {
-    if ((level < 0) || (level >= __DMI_LOG_LEVEL_COUNT) || (dmi_log_level_names[level] == nullptr))
+    if ((level < 0) or (level >= __DMI_LOG_LEVEL_COUNT) or (dmi_log_level_names[level] == nullptr))
         return "UNKNOWN";
 
     return dmi_log_level_names[level];

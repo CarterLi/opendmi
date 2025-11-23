@@ -112,7 +112,7 @@ static bool dmi_registry_build(dmi_registry_t *registry)
     const dmi_data_t *ptr = context->table_data;
 
     bool success = false;
-    while ((context->table_count == 0) || (index < context->table_count)) {
+    while ((context->table_count == 0) or (index < context->table_count)) {
         dmi_table_t *table = nullptr;
 
         // Check table address

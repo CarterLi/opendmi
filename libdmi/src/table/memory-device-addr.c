@@ -73,7 +73,7 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table
     if (!info)
         return nullptr;
 
-    if ((table->body_length >= 0x13) && (data->start_addr == 0xFFFFFFFFU)) {
+    if ((table->body_length >= 0x13) and (data->start_addr == 0xFFFFFFFFU)) {
         info->start_addr = dmi_value(data->start_addr_ex);
         info->end_addr   = dmi_value(data->end_addr_ex);
     } else {

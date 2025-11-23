@@ -21,6 +21,8 @@
 #endif
 #endif // _WIN32
 
+#include <iso646.h>
+
 // Modern features support on MSVC
 #ifdef _MSC_VER
 

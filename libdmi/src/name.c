@@ -8,7 +8,7 @@
 
 const char *dmi_code_lookup(const dmi_name_t *dictionary, int id)
 {
-    if ((dictionary == nullptr) || (id < 0))
+    if ((dictionary == nullptr) or (id < 0))
         return nullptr;
 
     for (const dmi_name_t *entry = dictionary; entry->id >= 0; entry++) {
@@ -21,7 +21,7 @@ const char *dmi_code_lookup(const dmi_name_t *dictionary, int id)
 
 const char *dmi_name_lookup(const dmi_name_t *dictionary, int id)
 {
-    if ((dictionary == nullptr) || (id < 0))
+    if ((dictionary == nullptr) or (id < 0))
         return nullptr;
 
     for (const dmi_name_t *entry = dictionary; entry->id >= 0; entry++) {

@@ -229,7 +229,7 @@ int dmi_vasprintf(char **strp, const char *fmt, va_list ap)
 #if !defined(_WIN32)
 dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength)
 {
-    if ((context == nullptr) || (path == nullptr) || (plength == nullptr)) {
+    if ((context == nullptr) or (path == nullptr) or (plength == nullptr)) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return nullptr;
     }

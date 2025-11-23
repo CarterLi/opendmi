@@ -206,7 +206,7 @@ bool dmi_dump_load(dmi_context_t *context, const char *path)
 
 bool dmi_dump_save(dmi_context_t *context, const char *path)
 {
-    if ((context == nullptr) || (path == nullptr)) {
+    if ((context == nullptr) or (path == nullptr)) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
@@ -308,7 +308,7 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
         dmi_set_error(nullptr,  DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
-    if ((context->backend != nullptr) || (context->session != nullptr)) {
+    if ((context->backend != nullptr) or (context->session != nullptr)) {
         dmi_set_error(nullptr,  DMI_ERROR_INVALID_STATE);
         return false;
     }

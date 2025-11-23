@@ -39,7 +39,7 @@ dmi_backend_t dmi_dump_backend =
 
 static bool dmi_dump_open(dmi_context_t *context, const void *arg __attribute__((unused)))
 {
-    if ((context == nullptr) || (arg == nullptr)) {
+    if ((context == nullptr) or (arg == nullptr)) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }

@@ -73,7 +73,7 @@ static const dmi_entry_spec_t dmi_entry_specs[] =
 
 bool dmi_entry_decode(dmi_context_t *context, const void *data, size_t length)
 {
-    if ((context == nullptr) || (data == nullptr) || (length == 0)) {
+    if ((context == nullptr) or (data == nullptr) or (length == 0)) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
@@ -98,7 +98,7 @@ bool dmi_entry_decode(dmi_context_t *context, const void *data, size_t length)
 static bool dmi_entry_decode_legacy(dmi_context_t *context,
                                     const void *data, size_t length)
 {
-    if ((context == nullptr) || (data == nullptr) || (length < sizeof(dmi_entry_legacy_t))) {
+    if ((context == nullptr) or (data == nullptr) or (length < sizeof(dmi_entry_legacy_t))) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
@@ -113,7 +113,7 @@ static bool dmi_entry_decode_legacy(dmi_context_t *context,
 
     // Decode SMBIOS version
     dmi_byte_t entry_version = dmi_value(entry->version);
-    if ((entry_version != 0) && (context->smbios_version == 0)) {
+    if ((entry_version != 0) and (context->smbios_version == 0)) {
         uint8_t major = (entry_version & 0xF0) >> 4;
         uint8_t minor = (entry_version & 0x0F);
 
@@ -132,7 +132,7 @@ static bool dmi_entry_decode_legacy(dmi_context_t *context,
 static bool dmi_entry_decode_v21(dmi_context_t *context,
                                  const void *data, size_t length)
 {
-    if ((context == nullptr) || (data == nullptr) || (length < sizeof(dmi_entry_v21_t))) {
+    if ((context == nullptr) or (data == nullptr) or (length < sizeof(dmi_entry_v21_t))) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }
@@ -174,7 +174,7 @@ static bool dmi_entry_decode_v21(dmi_context_t *context,
 static bool dmi_entry_decode_v30(dmi_context_t *context,
                                  const void *data, size_t length)
 {
-    if ((context == nullptr) || (data == nullptr) || (length < sizeof(dmi_entry_v30_t))) {
+    if ((context == nullptr) or (data == nullptr) or (length < sizeof(dmi_entry_v30_t))) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
     }

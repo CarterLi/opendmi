@@ -201,7 +201,7 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table)
     info->ecc_type = data->ecc_type;
 
     maximum_capacity = dmi_value(data->maximum_capacity);
-    if ((table->body_length >= 0x0F) && (maximum_capacity & 0x80000000))
+    if ((table->body_length >= 0x0F) and (maximum_capacity & 0x80000000))
         info->maximum_capacity = dmi_value(data->maximum_capacity_ex);
     else
         info->maximum_capacity  = (dmi_size_t)(maximum_capacity & 0x7FFFFFFFU) << 10;

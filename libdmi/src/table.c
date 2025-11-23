@@ -25,7 +25,7 @@ static bool dmi_table_decode_strings(dmi_table_t *table);
 
 dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
 {
-    if ((context == nullptr) || (data == nullptr)) {
+    if ((context == nullptr) or (data == nullptr)) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return nullptr;
     }
@@ -76,7 +76,7 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
             break;
 
         // Decode information
-        if ((table->spec != nullptr) && (table->spec->handlers.decode != nullptr)) {
+        if ((table->spec != nullptr) and (table->spec->handlers.decode != nullptr)) {
             table->info = table->spec->handlers.decode(table);
             if (!table->info)
                 break;
@@ -130,7 +130,7 @@ const char *dmi_table_string(const dmi_table_t *table, dmi_string_t num)
         return nullptr;
     }
 
-    if (!num || (num > table->string_count)) {
+    if (!num or (num > table->string_count)) {
         dmi_set_error(table->context, DMI_ERROR_ENTRY_NOT_FOUND);
         return nullptr;
     }
@@ -143,7 +143,7 @@ void dmi_table_destroy(dmi_table_t *table)
     if (table == nullptr)
         return;
 
-    if ((table->spec != nullptr) && (table->info != nullptr)) {
+    if ((table->spec != nullptr) and (table->info != nullptr)) {
         if (table->spec->handlers.free)
             table->spec->handlers.free(table->info);
         else

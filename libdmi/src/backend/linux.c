@@ -104,7 +104,7 @@ static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__
 
 static dmi_data_t *dmi_linux_read_entry(dmi_context_t *context, size_t *plength)
 {
-    if ((context == nullptr) || (plength == nullptr)) {
+    if ((context == nullptr) or (plength == nullptr)) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return nullptr;
     }
@@ -122,7 +122,7 @@ static dmi_data_t *dmi_linux_read_entry(dmi_context_t *context, size_t *plength)
 
 static dmi_data_t *dmi_linux_read_tables(dmi_context_t *context, size_t *plength)
 {
-    if ((context == nullptr) || (plength == nullptr)) {
+    if ((context == nullptr) or (plength == nullptr)) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return nullptr;
     }

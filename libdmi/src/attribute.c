@@ -275,7 +275,7 @@ static char *dmi_attribute_format_size(const dmi_attribute_t *attr, const void *
         return nullptr;
 
     for (i = 0; units[i]; i++) {
-        if ((size < 1024) || (size % 1024 != 0))
+        if ((size < 1024) or (size % 1024 != 0))
             break;
         size >>= 10;
     }

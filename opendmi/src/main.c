@@ -240,7 +240,7 @@ static void print_table(const dmi_table_t *table)
            table->total_length);
     printf("%s\n", dmi_table_name(table));
 
-    if (table->info && !config.dump)
+    if (table->info and !config.dump)
         print_table_attrs(table);
     else
         print_table_dump(table);

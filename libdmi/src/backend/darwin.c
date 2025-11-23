@@ -128,7 +128,7 @@ static bool dmi_darwin_close(dmi_context_t *context)
 
 static dmi_data_t *dmi_darwin_read_data(dmi_context_t *context, CFStringRef key, size_t *plength)
 {
-    if ((context == nullptr) || (plength == nullptr)) {
+    if ((context == nullptr) or (plength == nullptr)) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return nullptr;
     }
