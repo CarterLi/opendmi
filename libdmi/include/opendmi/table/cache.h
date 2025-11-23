@@ -338,8 +338,8 @@ const char *dmi_cache_mode_name(dmi_cache_mode_t value);
 const char *dmi_cache_assoc_name(dmi_cache_assoc_t value);
 const char *dmi_cache_location_name(dmi_cache_location_t value);
 
-dmi_size_t dmi_cache_size(dmi_word_t value);
-dmi_size_t dmi_cache_size_ex(dmi_dword_t value);
+dmi_size_t dmi_cache_size(uint16_t value);
+dmi_size_t dmi_cache_size_ex(uint32_t value);
 
 dmi_cache_t *dmi_cache_decode(const dmi_table_t *table);
 void dmi_cache_free(dmi_cache_t *info);

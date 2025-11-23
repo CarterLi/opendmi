@@ -7,15 +7,15 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/cache.h>
+#include <opendmi/table/memory-device.h>
 
 int main(void)
 {
     for (unsigned i = 0; i < 31; i++) {
-        if (dmi_cache_size_ex(1u << i) != (dmi_size_t)(1u << i) * 1024)
+        if (dmi_memory_device_size_ex(1u << i) != (dmi_size_t)(1u << i) * 1048576)
             return EXIT_FAILURE;
 
-        if (dmi_cache_size_ex(0x80000000u | (1u << i)) != (dmi_size_t)(1u << i) * 65536)
+        if (dmi_memory_device_size_ex(0x80000000u | (1u << i)) != SIZE_MAX)
             return EXIT_FAILURE;
     }
 

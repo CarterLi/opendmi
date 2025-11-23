@@ -630,11 +630,11 @@ const char *dmi_memory_device_technology_name(enum dmi_memory_device_technology 
     return dmi_name_lookup(dmi_memory_device_technology_names, value);
 }
 
-dmi_size_t dmi_memory_device_size(dmi_word_t value)
+dmi_size_t dmi_memory_device_size(uint16_t value)
 {
-    dmi_size_t size = value & 0x7FFFU;
+    dmi_size_t size = value & 0x7FFFu;
 
-    if (value & 0x8000U)
+    if (value & 0x8000u)
         size <<= 10; // Granularity is 1 Kb
     else
         size <<= 20; // Granularity is 1 Mb
@@ -642,9 +642,12 @@ dmi_size_t dmi_memory_device_size(dmi_word_t value)
     return size;
 }
 
-dmi_size_t dmi_memory_device_size_ex(dmi_dword_t value)
+dmi_size_t dmi_memory_device_size_ex(uint32_t value)
 {
-    return (value & 0x7FFFFFFFU) << 20; // Granularity is 1 Mb
+    if (value & 0x80000000u)
+        return SIZE_MAX;
+
+    return (dmi_size_t)(value & 0x7FFFFFFFu) << 20; // Granularity is 1 Mb
 }
 
 dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table)
@@ -660,21 +663,21 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table)
     info->error_handle = dmi_value(data->error_handle);
 
     info->total_width = dmi_value(data->total_width);
-    if (info->total_width == 0xFFFFU)
+    if (info->total_width == 0xFFFFu)
         info->total_width = USHRT_MAX;
 
     info->data_width = dmi_value(data->data_width);
-    if (info->data_width == 0xFFFFU)
+    if (info->data_width == 0xFFFFu)
         info->data_width = USHRT_MAX;
 
-    if (data->size != 0xFFFF)
+    if (data->size != 0xFFFFu)
         info->size = dmi_memory_device_size(dmi_value(data->size));
     else
         info->size = UINT64_MAX;
 
     info->form_factor = data->form_factor;
 
-    if (data->device_set != 0xFF)
+    if (data->device_set != 0xFFu)
         info->device_set = data->device_set;
     else
         info->device_set = USHRT_MAX;
@@ -733,9 +736,9 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table)
 
     // SMBIOS 3.3 features
     if (table->body_length >= 0x54) {
-        if (data->maximum_speed == 0xFFFFU)
+        if (data->maximum_speed == 0xFFFFu)
             info->maximum_speed = dmi_value(data->maximum_speed_ex);
-        if (data->configured_speed == 0xFFFFU)
+        if (data->configured_speed == 0xFFFFu)
             info->configured_speed = dmi_value(data->configured_speed_ex);
     }
 

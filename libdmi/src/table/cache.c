@@ -328,7 +328,7 @@ struct dmi_cache *dmi_cache_info_create(struct dmi_cache_data *table)
     return info;
 }
 
-dmi_size_t dmi_cache_size(dmi_word_t value)
+dmi_size_t dmi_cache_size(uint16_t value)
 {
     dmi_size_t size = value & 0x7FFFU;
 
@@ -340,7 +340,7 @@ dmi_size_t dmi_cache_size(dmi_word_t value)
     return size;
 }
 
-dmi_size_t dmi_cache_size_ex(dmi_dword_t value)
+dmi_size_t dmi_cache_size_ex(uint32_t value)
 {
     dmi_size_t size = value & 0x7FFFFFFFU;
 

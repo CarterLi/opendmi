@@ -544,8 +544,8 @@ const char *dmi_memory_device_type_name(enum dmi_memory_device_type value);
 const char *dmi_memory_device_form_factor_name(enum dmi_memory_device_form_factor value);
 const char *dmi_memory_device_technology_name(enum dmi_memory_device_technology value);
 
-dmi_size_t dmi_memory_device_size(dmi_word_t value);
-dmi_size_t dmi_memory_device_size_ex(dmi_dword_t value);
+dmi_size_t dmi_memory_device_size(uint16_t value);
+dmi_size_t dmi_memory_device_size_ex(uint32_t value);
 
 dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table);
 void dmi_memory_device_free(dmi_memory_device_t *info);
