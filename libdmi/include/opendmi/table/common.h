@@ -22,6 +22,7 @@ typedef enum dmi_status
     DMI_STATUS_NON_CRITICAL    = 0x04, ///< Non-critical
     DMI_STATUS_CRITICAL        = 0x05, ///< Critical
     DMI_STATUS_NON_RECOVERABLE = 0x06, ///< Non-recoverable
+    __DMI_STATUS_COUNT
 } dmi_status_t;
 
 /**
@@ -36,6 +37,7 @@ typedef enum dmi_ecc_type
     DMI_ECC_TYPE_SINGLE_BIT = 0x05, ///< Single-bit ECC
     DMI_ECC_TYPE_MULTI_BIT  = 0x06, ///< Multi-bit ECC
     DMI_ECC_TYPE_CRC        = 0x07, ///< CRC
+    __DMI_ECC_TYPE_COUNT
 } dmi_ecc_type_t;
 
 extern const dmi_name_t dmi_status_names[];

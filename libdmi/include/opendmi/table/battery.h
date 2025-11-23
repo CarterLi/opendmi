@@ -34,6 +34,7 @@ typedef enum dmi_battery_chemistry
     DMI_BATTERY_CHEMISTRY_LI_ION    = 0x06, ///< Lithium-ion
     DMI_BATTERY_CHEMISTRY_ZN_AIR    = 0x07, ///< Zinc air
     DMI_BATTERY_CHEMISTRY_LI_PO     = 0x08, ///< Lithium polymer
+    __DMI_BATTERY_CHEMISTRY_COUNT
 } dmi_battery_chemistry_t;
 
 /**
