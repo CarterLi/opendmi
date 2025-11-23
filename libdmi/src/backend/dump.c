@@ -4,8 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <sys/mman.h>
-
 #include <string.h>
 #include <stdlib.h>
 
@@ -23,7 +21,7 @@ struct dmi_dump_session
     size_t data_size;
 };
 
-static bool dmi_dump_open(dmi_context_t *context, const void *arg __attribute__((unused)));
+static bool dmi_dump_open(dmi_context_t *context, const void *arg);
 static dmi_data_t *dmi_dump_read_entry(dmi_context_t *context, size_t *plength);
 static dmi_data_t *dmi_dump_read_tables(dmi_context_t *context, size_t *plength);
 static bool dmi_dump_close(dmi_context_t *context);
@@ -37,8 +35,10 @@ dmi_backend_t dmi_dump_backend =
     .close       = dmi_dump_close
 };
 
-static bool dmi_dump_open(dmi_context_t *context, const void *arg __attribute__((unused)))
+static bool dmi_dump_open(dmi_context_t *context, const void *arg)
 {
+    (void)arg;
+
     if ((context == nullptr) or (arg == nullptr)) {
         dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
         return false;
@@ -51,7 +51,7 @@ static bool dmi_dump_open(dmi_context_t *context, const void *arg __attribute__(
     }
     memset(session, 0, sizeof(dmi_dump_session_t));
 
-    session->data = dmi_file_map(context, (const char *)arg, &session->data_size);
+    session->data = dmi_file_read(context, (const char *)arg, &session->data_size);
     if (!session->data)
         return false;
     if (session->data_size < DMI_ENTRY_MAX_SIZE + sizeof(dmi_header_t))
@@ -85,7 +85,7 @@ static bool dmi_dump_close(dmi_context_t *context)
     dmi_dump_session_t *session = dmi_cast(session, context->session);
 
     if (session->data) {
-        munmap(session->data, session->data_size);
+        free(session->data);
         session->data = nullptr;
     }
 

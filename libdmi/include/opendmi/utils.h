@@ -34,6 +34,8 @@ dmi_uuid_t dmi_decode_uuid(const dmi_byte_t value[16]);
 int dmi_asprintf(char **strp, const char *fmt, ...);
 int dmi_vasprintf(char **strp, const char *fmt, va_list ap);
 
+dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plength);
+
 #if !defined(_WIN32)
 dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength);
 #endif // !defined(_WIN32)

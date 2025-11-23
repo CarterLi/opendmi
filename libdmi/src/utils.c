@@ -16,6 +16,14 @@
 #include <unistd.h>
 #endif // HAVE_UNISTD_H
 
+#ifdef HAVE_SHARE_H
+#include <share.h>
+#endif // !HAVE_SHARE_H
+
+#ifdef HAVE_IO_H
+#include <io.h>
+#endif // HAVE_IO_H
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -25,6 +33,16 @@
 
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
+
+#if defined(_WIN32)
+typedef struct _stat stat_t;
+
+#define fstat(fd, buf)      _fstat(fd, buf)
+#define read(fd, buf, size) _read(fd, buf, size)
+#define close(fd)           _close(fd)
+#else // !defined(_WIN32)
+typedef struct stat stat_t;
+#endif // !defined(_WIN32)
 
 bool dmi_checksum(const void *data, size_t length)
 {
@@ -226,6 +244,60 @@ int dmi_vasprintf(char **strp, const char *fmt, va_list ap)
     return rv;
 }
 
+dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plength)
+{
+    if ((context == nullptr) or (path == nullptr) or (plength == nullptr)) {
+        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
+        return nullptr;
+    }
+
+    int         fd   = -1;
+    dmi_data_t *data = nullptr;
+    stat_t      st;
+    ssize_t     nread;
+
+    bool success = false;
+    do {
+#if defined(_WIN32)
+        if (_sopen_s(&fd, path, _O_RDONLY, _SH_DENYNO, _S_IREAD) != 0)
+            break;
+#else
+        if ((fd = open(path, O_RDONLY)) < 0)
+            break;
+#endif
+ 
+        if (fstat(fd, &st) < 0)
+            break;
+
+        if ((data = malloc(st.st_size)) == nullptr)
+            break;
+
+    retry:
+        nread = read(fd, data, st.st_size);
+        if (nread < st.st_size) {
+            if ((nread < 0) and (errno == EINTR))
+                goto retry;
+            break;
+        }
+
+        *plength = st.st_size;
+        success = true;
+    } while (false);
+
+    if (fd >= 0)
+        close(fd);
+
+    if (!success) {
+        if (data)
+            free(data);
+        dmi_set_error(context, DMI_ERROR_SYSTEM);
+
+        return nullptr;
+    }
+
+    return data;
+}
+
 #if !defined(_WIN32)
 dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength)
 {
@@ -236,7 +308,7 @@ dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *pleng
 
     int         fd   = -1;
     dmi_data_t *data = nullptr;
-    struct stat st;
+    stat_t      st;
 
     bool success = false;
     do {

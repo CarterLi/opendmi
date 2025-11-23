@@ -15,6 +15,11 @@
 #include <stdbool.h>
 #include <stdarg.h>
 
+#if defined(_WIN32)
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#endif
+
 #include <opendmi/defs.h>
 
 #define dmi_cast(dst, expr) ((__typeof__(dst))(expr))

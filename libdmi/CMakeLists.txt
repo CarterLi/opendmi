@@ -85,10 +85,7 @@ endif ()
 
 add_library(dmi-object OBJECT ${LIBDMI_SOURCES})
 target_include_directories(dmi-object PUBLIC include)
-
-if (NOT MSVC)
 target_compile_options(dmi-object PRIVATE -fPIC)
-endif ()
 
 add_library(dmi-static STATIC $<TARGET_OBJECTS:dmi-object>)
 target_include_directories(dmi-static INTERFACE include)
