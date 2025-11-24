@@ -59,8 +59,8 @@ check_include_file(io.h HAVE_IO_H)
 
 enable_testing()
 
-add_subdirectory(libdmi)
-add_subdirectory(libdmi++)
+add_subdirectory(libopendmi)
+add_subdirectory(libopendmi++)
 add_subdirectory(opendmi)
 
 include(CPack)

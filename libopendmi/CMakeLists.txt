@@ -1,13 +1,13 @@
-project(opendmi-libdmi)
+project(opendmi-libopendmi)
 
 configure_file(
     ${PROJECT_SOURCE_DIR}/src/config.h.in
     ${PROJECT_SOURCE_DIR}/src/config.h
     USE_SOURCE_PERMISSIONS)
 
-add_library(dmi-object OBJECT)
-target_include_directories(dmi-object PUBLIC include)
-target_sources(dmi-object
+add_library(opendmi-object OBJECT)
+target_include_directories(opendmi-object PUBLIC include)
+target_sources(opendmi-object
     PRIVATE
         src/name.c
         src/utils.c
@@ -144,7 +144,7 @@ target_sources(dmi-object
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    target_sources(dmi-object
+    target_sources(opendmi-object
         PRIVATE
             src/backend/linux.c
         PUBLIC INTERFACE
@@ -157,7 +157,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     find_library(IOKIT_LIB IOKit)
     list(APPEND LIBDMI_LIBRARIES ${COREFOUNDATION_LIB} ${IOKIT_LIB})
 
-    target_sources(dmi-object
+    target_sources(opendmi-object
         PRIVATE
             src/backend/darwin.c
         PUBLIC INTERFACE
@@ -166,7 +166,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
                 FILES include/opendmi/backend/darwin.h
     )
 elseif (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
-    target_sources(dmi-object
+    target_sources(opendmi-object
         PRIVATE
             src/backend/freebsd.c
         PUBLIC INTERFACE
@@ -175,7 +175,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
                 FILES include/opendmi/backend/freebsd.h
     )
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    target_sources(dmi-object
+    target_sources(opendmi-object
         PRIVATE
             src/backend/windows.c
         PUBLIC INTERFACE
@@ -186,50 +186,50 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 endif ()
 
 if (NOT MSVC)
-target_compile_options(dmi-object PRIVATE -fPIC)
+target_compile_options(opendmi-object PRIVATE -fPIC)
 endif ()
 
-add_library(dmi-static STATIC $<TARGET_OBJECTS:dmi-object>)
-target_include_directories(dmi-static INTERFACE include)
-target_link_libraries(dmi-static PUBLIC ${LIBDMI_LIBRARIES})
-set_target_properties(dmi-static PROPERTIES OUTPUT_NAME dmi)
+add_library(opendmi-static STATIC $<TARGET_OBJECTS:opendmi-object>)
+target_include_directories(opendmi-static INTERFACE include)
+target_link_libraries(opendmi-static PUBLIC ${LIBDMI_LIBRARIES})
+set_target_properties(opendmi-static PROPERTIES OUTPUT_NAME opendmi)
 
-add_library(dmi-shared SHARED $<TARGET_OBJECTS:dmi-object>)
-target_include_directories(dmi-shared INTERFACE include)
-target_link_libraries(dmi-shared PUBLIC ${LIBDMI_LIBRARIES})
-set_target_properties(dmi-shared PROPERTIES OUTPUT_NAME dmi)
+add_library(opendmi-shared SHARED $<TARGET_OBJECTS:opendmi-object>)
+target_include_directories(opendmi-shared INTERFACE include)
+target_link_libraries(opendmi-shared PUBLIC ${LIBDMI_LIBRARIES})
+set_target_properties(opendmi-shared PROPERTIES OUTPUT_NAME opendmi)
 
-install(TARGETS dmi-object FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(TARGETS dmi-static ARCHIVE DESTINATION lib)
-install(TARGETS dmi-shared LIBRARY DESTINATION lib)
+install(TARGETS opendmi-object FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS opendmi-static ARCHIVE DESTINATION lib)
+install(TARGETS opendmi-shared LIBRARY DESTINATION lib)
 
-macro(libdmi_test name sources)
+macro(opendmi_test name sources)
 add_executable(${name}-test ${sources})
-target_link_libraries(${name}-test dmi-shared)
+target_link_libraries(${name}-test opendmi-shared)
 add_test(NAME ${name} COMMAND ${name}-test)
 endmacro()
 
-libdmi_test(bswap16 test/bswap16.c)
-libdmi_test(decode-word test/decode-word.c)
-libdmi_test(bswap32 test/bswap32.c)
-libdmi_test(decode-dword test/decode-dword.c)
-libdmi_test(bswap64 test/bswap64.c)
-libdmi_test(decode-qword test/decode-qword.c)
-libdmi_test(decode-bcd test/decode-bcd.c)
-libdmi_test(decode-uuid test/decode-uuid.c)
-libdmi_test(ipow32 test/ipow32.c)
-libdmi_test(ipow64 test/ipow64.c)
-libdmi_test(status-name test/status-name.c)
-libdmi_test(ecc-type-name test/ecc-type-name.c)
-libdmi_test(baseboard-type-name test/baseboard-type-name.c)
-libdmi_test(chassis-type-name test/chassis-type-name.c)
-libdmi_test(chassis-state-name test/chassis-state-name.c)
-libdmi_test(cache-type-name test/cache-type-name.c)
-libdmi_test(cache-mode-name test/cache-mode-name.c)
-libdmi_test(cache-assoc-name test/cache-assoc-name.c)
-libdmi_test(cache-location-name test/cache-location-name.c)
-libdmi_test(cache-size test/cache-size.c)
-libdmi_test(cache-size-ex test/cache-size-ex.c)
-libdmi_test(memory-device-size test/memory-device-size.c)
-libdmi_test(memory-device-size-ex test/memory-device-size-ex.c)
-libdmi_test(battery-chemistry-name test/battery-chemistry-name.c)
+opendmi_test(bswap16 test/bswap16.c)
+opendmi_test(decode-word test/decode-word.c)
+opendmi_test(bswap32 test/bswap32.c)
+opendmi_test(decode-dword test/decode-dword.c)
+opendmi_test(bswap64 test/bswap64.c)
+opendmi_test(decode-qword test/decode-qword.c)
+opendmi_test(decode-bcd test/decode-bcd.c)
+opendmi_test(decode-uuid test/decode-uuid.c)
+opendmi_test(ipow32 test/ipow32.c)
+opendmi_test(ipow64 test/ipow64.c)
+opendmi_test(status-name test/status-name.c)
+opendmi_test(ecc-type-name test/ecc-type-name.c)
+opendmi_test(baseboard-type-name test/baseboard-type-name.c)
+opendmi_test(chassis-type-name test/chassis-type-name.c)
+opendmi_test(chassis-state-name test/chassis-state-name.c)
+opendmi_test(cache-type-name test/cache-type-name.c)
+opendmi_test(cache-mode-name test/cache-mode-name.c)
+opendmi_test(cache-assoc-name test/cache-assoc-name.c)
+opendmi_test(cache-location-name test/cache-location-name.c)
+opendmi_test(cache-size test/cache-size.c)
+opendmi_test(cache-size-ex test/cache-size-ex.c)
+opendmi_test(memory-device-size test/memory-device-size.c)
+opendmi_test(memory-device-size-ex test/memory-device-size-ex.c)
+opendmi_test(battery-chemistry-name test/battery-chemistry-name.c)

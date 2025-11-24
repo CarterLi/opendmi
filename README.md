@@ -6,19 +6,29 @@ OpenDMI is a cross-platform, commercial-grade DMI/SMBIOS framework, focused on f
 
 * Platform-agnostic access to DMI/SMBIOS structures
 * Full SMBIOS support up to version 3.9
-* Bindings for C, C++, Python and Go languages
+* Bindings for C, C++, Python, Go and Rust languages
 * Modular extensions for handling OEM-specific structures
-* Shell interface compatible with `dmidecode`
 * JSON and XML output support for automation purposes
 * Works on Linux, MacOS, BSD and Windows platforms
 * Small footprint, no external dependencies
+
+## Components
+
+* `opendmi` - Command line tool to query DMI/SMBIOS data
+* `opendmi-dbus` - D-bus service providing access to DMI/SMBIOS data
+* `libopendmi` - C library providing direct interface to DMI/SMBIOS
+* `libopendmi-go` - Go bindings for `libopendmi`
+* `libopendmi-python` - Python bindings for `libopendmi`
+* `libopendmi-rust` - Rust bindings for `libopendmi`
+* `libopendmi++` - Pure C++ version of `libopendmi`
 
 ## Building
 
 ### Prerequisites
 
 * GCC, CLang or MSVC compiler
-* CMake 4.1 or newer
+* CMake 3.30 or newer
+* AsciiDoctor (used to generate documentation and man pages)
 
 ### Configuration
 

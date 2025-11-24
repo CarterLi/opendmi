@@ -1,1 +1,0 @@
-project(opendmi-libdmi++)
