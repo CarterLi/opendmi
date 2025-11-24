@@ -2,15 +2,17 @@
 
 OpenDMI is a cross-platform, commercial-grade DMI/SMBIOS framework, focused on functionality and ease of use. It provides direct access to all of the DMI/SMBIOS data, command line tools, bindings for major programming languages and even more.
 
+The project is under active development, see [ROADMAP](ROADMAP.md) and [CHANGELOG](CHANGELOG.md) for details.
+
 ## Highlights
 
-* Platform-agnostic access to DMI/SMBIOS structures
-* Full SMBIOS support up to version 3.9
-* Bindings for C, C++, Python, Go and Rust languages
-* Modular extensions for handling OEM-specific structures
-* JSON and XML output support for automation purposes
-* Works on Linux, MacOS, BSD and Windows platforms
-* Small footprint, no external dependencies
+* Platform-agnostic access to DMI/SMBIOS structures.
+* Full SMBIOS support up to version 3.9.
+* Bindings for C, C++, Python, Go and Rust languages.
+* Modular extensions for handling OEM-specific structures.
+* JSON and XML output support for automation purposes.
+* Works on Linux, MacOS, BSD and Windows platforms.
+* Small footprint, no external dependencies.
 
 ## Components
 
@@ -57,10 +59,9 @@ $ ctest
 
 ## Contributing
 
-The project is under active development. Please feel free to test it and create
-create bug reports or feature requests on GitHub. You can also help the project
-by sending SMBIOS dumps to the authors. To get the dump you can use the following
-command:
+Please feel free to test it and create create bug reports or feature requests
+on GitHub. You can also help the project by sending SMBIOS dumps to the
+authors. To get the dump you can use the following command:
 
 ```sh
 $ dmidecode --dump-bin <filename>

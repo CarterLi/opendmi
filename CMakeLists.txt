@@ -60,7 +60,11 @@ check_include_file(io.h HAVE_IO_H)
 enable_testing()
 
 add_subdirectory(libopendmi)
+add_subdirectory(libopendmi-go)
+add_subdirectory(libopendmi-python)
+add_subdirectory(libopendmi-rust)
 add_subdirectory(libopendmi++)
 add_subdirectory(opendmi)
+add_subdirectory(opendmi-dbus)
 
 include(CPack)
