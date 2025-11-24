@@ -24,7 +24,7 @@ The project is under active development, see [ROADMAP](ROADMAP.md) and [CHANGELO
 * `libopendmi-rust` - Rust bindings for `libopendmi`
 * `libopendmi++` - Pure C++ version of `libopendmi`
 
-## Building
+## Building from sources
 
 ### Prerequisites
 
@@ -32,20 +32,28 @@ The project is under active development, see [ROADMAP](ROADMAP.md) and [CHANGELO
 * CMake 3.30 or newer
 * AsciiDoctor (used to generate documentation and man pages)
 
-### Configuration
+### Configuring
 
-Use the following command to configure build:
+Use the following command to configure OpenDMI build:
 
 ```sh
-$ cmake .
+$ cmake -B build
 ```
 
-This produces a debug build by default. Optimisation isn't enabled, and debug
+This produces a debug build by default. Optimization isn't enabled, and debug
 assertions are included. Pass `-DCMAKE_BUILD_TYPE=Release` to `cmake` to
 configure a release build:
 
 ```sh
-$ cmake -DCMAKE_BUILD_TYPE=Release .
+$ cmake -B build -DCMAKE_BUILD_TYPE=Release
+```
+
+### Building
+
+Use the following command to build OpenDMI:
+
+```sh
+$ cmake --build build
 ```
 
 ### Testing
