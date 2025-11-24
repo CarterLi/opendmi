@@ -26,8 +26,8 @@ typedef struct dmi_attribute_params dmi_attribute_params_t;
 typedef struct dmi_attribute_ops dmi_attribute_ops_t;
 #endif // !DMI_ATTRIBUTE_OPS_T
 
-typedef char *(*dmi_attribute_formatter_t)(const dmi_attribute_t *attr, const void *value);
-typedef void (*dmi_attribute_parser_t)(const dmi_attribute_t *attr);
+typedef char *(*dmi_attribute_format_fn_t)(const dmi_attribute_t *attr, const void *value);
+typedef void (*dmi_attribute_parse_fn_t)(const dmi_attribute_t *attr);
 
 typedef enum dmi_attribute_type
 {
@@ -52,11 +52,11 @@ typedef enum dmi_attribute_flag
     DMI_ATTRIBUTE_FLAG_BCD    = 0x04
 } dmi_attribute_flag_t;
 
-typedef enum dmi_attribute_format
+struct dmi_attribute_ops
 {
-    DMI_ATTRIBUTE_FORMAT_NONE,
-    DMI_ATTRIBUTE_FORMAT_HEX
-} dmi_attribute_format_t;
+    dmi_attribute_format_fn_t format;
+    dmi_attribute_parse_fn_t parse;
+};
 
 /**
  * @brief Attribute parameters.
@@ -72,11 +72,6 @@ struct dmi_attribute_params
      * @brief Printable name, used to identify the attribute when printing.
      */
     char *name;
-
-    /**
-     * @brief Output format.
-     */
-    dmi_attribute_format_t format;
 
     /**
      * @brief Measurement units. Valid only for integer or decimal values,
@@ -104,12 +99,6 @@ struct dmi_attribute_params
      * @brief Enumeration or boolean value names.
      */
     const dmi_name_t *values;
-};
-
-struct dmi_attribute_ops
-{
-    dmi_attribute_formatter_t format;
-    dmi_attribute_parser_t parse;
 };
 
 struct dmi_attribute

@@ -13,13 +13,11 @@ const dmi_attribute_t dmi_memory_array_addr_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_memory_array_addr_t, start_addr, ADDRESS, {
         .code   = "start-addr",
-        .name   = "Starting address",
-        .format = DMI_ATTRIBUTE_FORMAT_HEX
+        .name   = "Starting address"
     }),
     DMI_ATTRIBUTE(dmi_memory_array_addr_t, end_addr, ADDRESS, {
-        .code   = "end-addr",
-        .name   = "Ending address",
-        .format = DMI_ATTRIBUTE_FORMAT_HEX
+        .code  = "end-addr",
+        .name  = "Ending address"
     }),
     DMI_ATTRIBUTE(dmi_memory_array_addr_t, range_size, SIZE, {
         .code   = "range-size",

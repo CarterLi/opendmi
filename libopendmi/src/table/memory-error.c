@@ -158,19 +158,19 @@ const dmi_attribute_t dmi_memory_error_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_error_t, vendor_syndrome, INTEGER, {
         .code   = "vendor-syndrome",
         .name   = "vendor-syndrome",
-        .flags  = DMI_ATTRIBUTE_FORMAT_HEX
+        .flags  = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_memory_error_t, array_addr, ADDRESS, {
-        .code = "array-addr",
-        .name = "Array-relative address"
+        .code   = "array-addr",
+        .name   = "Array-relative address"
     }),
     DMI_ATTRIBUTE(dmi_memory_error_t, device_addr, ADDRESS, {
-        .code = "device-addr",
-        .name = "Device-relative address"
+        .code   = "device-addr",
+        .name   = "Device-relative address"
     }),
     DMI_ATTRIBUTE(dmi_memory_error_t, resolution, SIZE, {
-        .code = "resolution",
-        .name = "Resolution"
+        .code   = "resolution",
+        .name   = "Resolution"
     }),
     DMI_ATTRIBUTE_NULL
 };
