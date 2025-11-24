@@ -11,16 +11,6 @@
 
 #include <opendmi/table.h>
 
-#ifndef DMI_MGMT_DEVICE_DATA_T
-#define DMI_MGMT_DEVICE_DATA_T
-typedef struct dmi_mgmt_device_data dmi_mgmt_device_data_t;
-#endif // !DMI_MGMT_DEVICE_DATA_T
-
-#ifndef DMI_MGMT_DEVICE_T
-#define DMI_MGMT_DEVICE_T
-typedef struct dmi_mgmt_device dmi_mgmt_device_t;
-#endif // !DMI_MGMT_DEVICE_T
-
 /**
  * @brief Management device types.
  */
@@ -85,6 +75,40 @@ DMI_PACKED_STRUCT(dmi_mgmt_device_data)
     dmi_byte_t addr_type;
 };
 
+#ifndef DMI_MGMT_DEVICE_DATA_T
+#define DMI_MGMT_DEVICE_DATA_T
+typedef struct dmi_mgmt_device_data dmi_mgmt_device_data_t;
+#endif // !DMI_MGMT_DEVICE_DATA_T
+
+struct dmi_mgmt_device
+{
+    /**
+     * @brief String that contains additional descriptive information about the
+     * device or its location.
+     */
+    const char *description;
+
+    /**
+     * @brief Type of the device.
+     */
+    dmi_mgmt_device_type_t type;
+
+    /**
+     * @brief Address of the device.
+     */
+    uint32_t addr;
+
+    /**
+     * @brief Type of addressing used to access the device.
+     */
+    dmi_mgmt_device_addr_type_t addr_type;
+};
+
+#ifndef DMI_MGMT_DEVICE_T
+#define DMI_MGMT_DEVICE_T
+typedef struct dmi_mgmt_device dmi_mgmt_device_t;
+#endif // !DMI_MGMT_DEVICE_T
+
 /**
  * @brief Management device table specification.
  */
@@ -94,6 +118,9 @@ __BEGIN_DECLS
 
 const char *dmi_mgmt_device_type_name(enum dmi_mgmt_device_type value);
 const char *dmi_mgmt_device_addr_type_name(enum dmi_mgmt_device_addr_type value);
+
+dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_table_t *table);
+void dmi_mgmt_device_free(dmi_mgmt_device_t *info);
 
 __END_DECLS
 

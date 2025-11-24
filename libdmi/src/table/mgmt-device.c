@@ -4,8 +4,11 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/mgmt-device.h>
+#include <stdlib.h>
+
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
+#include <opendmi/table/mgmt-device.h>
 
 static const dmi_name_t dmi_mgmt_device_type_names[] =
 {
@@ -109,6 +112,24 @@ static const dmi_name_t dmi_mgmt_device_addr_type_names[] =
 
 const dmi_attribute_t dmi_mgmt_device_attrs[] =
 {
+    DMI_ATTRIBUTE(dmi_mgmt_device_t, description, STRING, {
+        .code   = "description",
+        .name   = "Description"
+    }),
+    DMI_ATTRIBUTE(dmi_mgmt_device_t, type, ENUM, {
+        .code   = "type",
+        .name   = "Type",
+        .values = dmi_mgmt_device_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_mgmt_device_t, addr, ADDRESS, {
+        .code   = "address",
+        .name   = "Address"
+    }),
+    DMI_ATTRIBUTE(dmi_mgmt_device_t, addr_type, ENUM, {
+        .code   = "address-type",
+        .name   = "Address type",
+        .values = dmi_mgmt_device_addr_type_names
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
@@ -119,7 +140,11 @@ const dmi_table_spec_t dmi_mgmt_device_table =
     .type        = DMI_TYPE_MGMT_DEVICE,
     .min_version = DMI_VERSION(2, 3, 0),
     .min_length  = 0x0B,
-    .attributes  = dmi_mgmt_device_attrs
+    .attributes  = dmi_mgmt_device_attrs,
+    .handlers    = {
+        .decode = (dmi_table_decode_fn_t)dmi_mgmt_device_decode,
+        .free   = (dmi_table_free_fn_t)dmi_mgmt_device_free
+    }
 };
 
 const char *dmi_mgmt_device_type_name(enum dmi_mgmt_device_type value)
@@ -130,4 +155,26 @@ const char *dmi_mgmt_device_type_name(enum dmi_mgmt_device_type value)
 const char *dmi_mgmt_device_addr_type_name(enum dmi_mgmt_device_addr_type value)
 {
     return dmi_name_lookup(dmi_mgmt_device_addr_type_names, value);
+}
+
+dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_table_t *table)
+{
+    dmi_mgmt_device_t *info = nullptr;
+    const dmi_mgmt_device_data_t *data = dmi_cast(data, table->data);
+
+    info = calloc(1, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    info->description = dmi_table_string(table, data->description);
+    info->type        = dmi_value(data->type);
+    info->addr        = dmi_value(data->addr);
+    info->addr_type   = dmi_value(data->addr_type);
+
+    return info;
+}
+
+void dmi_mgmt_device_free(dmi_mgmt_device_t *info)
+{
+    free(info);
 }
