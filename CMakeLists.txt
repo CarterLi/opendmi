@@ -62,3 +62,5 @@ enable_testing()
 add_subdirectory(libdmi)
 add_subdirectory(libdmi++)
 add_subdirectory(opendmi)
+
+include(CPack)
