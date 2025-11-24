@@ -25,6 +25,7 @@ typedef enum dmi_cache_type
     DMI_CACHE_TYPE_INSTRUCTION = 0x03, ///< Instruction cache
     DMI_CACHE_TYPE_DATA        = 0x04, ///< Data cache
     DMI_CACHE_TYPE_UNIFIED     = 0x05, ///< Unified cache
+    __DMI_CACHE_TYPE_COUNT
 } dmi_cache_type_t;
 
 /**
@@ -36,6 +37,7 @@ typedef enum dmi_cache_mode
     DMI_CACHE_MODE_WRITE_BACK    = 0x01, ///< Write back
     DMI_CACHE_MODE_VARIABLE      = 0x02, ///< Varies with memory address
     DMI_CACHE_MODE_UNKNOWN       = 0x03, ///< Unknown
+    __DMI_CACHE_MODE_COUNT
 } dmi_cache_mode_t;
 
 /**
@@ -57,6 +59,7 @@ typedef enum dmi_cache_assoc
     DMI_CACHE_ASSOC_48WAY   = 0x0C, ///< 48-way set-associative
     DMI_CACHE_ASSOC_64WAY   = 0x0D, ///< 64-way set-associative
     DMI_CACHE_ASSOC_20WAY   = 0x0E, ///< 20-way set-associative
+    __DMI_CACHE_ASSOC_COUNT
 } dmi_cache_assoc_t;
 
 /**
@@ -68,6 +71,7 @@ typedef enum dmi_cache_location
     DMI_CACHE_LOCATION_EXTERNAL = 0x01, ///< External
     DMI_CACHE_LOCATION_RESERVED = 0x02, ///< Reserved
     DMI_CACHE_LOCATION_UNKNOWN  = 0x03, ///< Unknown
+    __DMI_CACHE_LOCATION_COUNT
 } dmi_cache_location_t;
 
 /**
