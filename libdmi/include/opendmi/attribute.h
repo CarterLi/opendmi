@@ -116,16 +116,27 @@ struct dmi_attribute
 {
     size_t offset;
     size_t size;
+    ssize_t counter;
     dmi_attribute_type_t type;
     dmi_attribute_params_t params;
 };
 
 #define DMI_ATTRIBUTE(_entity, _member, _type, ...)     \
     {                                                   \
-        .offset = dmi_member_offset(_entity, _member),  \
-        .size   = dmi_member_size(_entity, _member),    \
-        .type   = DMI_ATTRIBUTE_TYPE_ ## _type,         \
-        .params = __VA_ARGS__                           \
+        .offset  = dmi_member_offset(_entity, _member), \
+        .size    = dmi_member_size(_entity, _member),   \
+        .counter = -1,                                  \
+        .type    = DMI_ATTRIBUTE_TYPE_ ## _type,        \
+        .params  = __VA_ARGS__                          \
+    }
+
+#define DMI_ATTRIBUTE_ARRAY(_entity, _member, _counter, _type, ...) \
+    {                                                               \
+        .offset  = dmi_member_offset(_entity, _member),             \
+        .size    = dmi_element_size(_entity, _member),              \
+        .counter = offsetof(_entity, _counter),                     \
+        .type    = DMI_ATTRIBUTE_TYPE_ ## _type,                    \
+        .params  = __VA_ARGS__                                      \
     }
 
 #define DMI_ATTRIBUTE_NULL                   \

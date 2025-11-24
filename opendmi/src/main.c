@@ -47,6 +47,8 @@ static void list_types(dmi_context_t *context);
 static void print_all(dmi_context_t *context);
 static void print_table(const dmi_table_t *table);
 static void print_table_attrs(const dmi_table_t *table);
+static void print_table_attr_array(const dmi_attribute_t *attr, const dmi_data_t *info, const void *value);
+static void print_table_attr_value(const dmi_attribute_t *attr, const void *value);
 static void print_table_attr_set(const dmi_attribute_t *attr, const void *value);
 static void print_table_dump(const dmi_table_t *table);
 static void print_hex_data(const void *data, size_t length);
@@ -250,7 +252,6 @@ static void print_table(const dmi_table_t *table)
 
 static void print_table_attrs(const dmi_table_t *table)
 {
-    char *str;
     const dmi_table_spec_t *spec = table->spec;
     const dmi_attribute_t *attr = nullptr;
 
@@ -259,26 +260,50 @@ static void print_table_attrs(const dmi_table_t *table)
 
         printf("\t%s: ", attr->params.name);
 
-        if (!dmi_attribute_unknown(attr, ptr)) {
-            str = dmi_attribute_format(attr, ptr);
-            if (!str) {
-                printf("<error>\n");
-                continue;
-            }
-
-            if (attr->params.unit)
-                printf("%s %s\n", str, attr->params.unit);
-            else
-                printf("%s\n", str);
-
-            free(str);
-
-            if (attr->type == DMI_ATTRIBUTE_TYPE_SET)
-                print_table_attr_set(attr, ptr);
-        } else {
-            printf("<unknown>\n");
-        }
+        if (attr->counter < 0)
+            print_table_attr_value(attr, ptr);
+        else
+            print_table_attr_array(attr, table->info, ptr);
     }
+}
+
+static void print_table_attr_array(const dmi_attribute_t *attr, const dmi_data_t *info, const void *value)
+{
+    size_t count = *(size_t *)(info + attr->counter);
+
+    printf("%zu items\n", count);
+
+    const dmi_data_t *ptr = *(const dmi_data_t **)value;
+    for (size_t i = 0; i < count; i++, ptr += attr->size) {
+        printf("\t\t%zu: ", i);
+        print_table_attr_value(attr, ptr);
+    }
+}
+
+static void print_table_attr_value(const dmi_attribute_t *attr, const void *value)
+{
+    char *str;
+
+    if (dmi_attribute_unknown(attr, value)) {
+        printf("<unknown>\n");
+        return;
+    }
+
+    str = dmi_attribute_format(attr, value);
+    if (!str) {
+        printf("<error>\n");
+        return;
+    }
+
+    if (attr->params.unit)
+        printf("%s %s\n", str, attr->params.unit);
+    else
+        printf("%s\n", str);
+
+    free(str);
+
+    if (attr->type == DMI_ATTRIBUTE_TYPE_SET)
+        print_table_attr_set(attr, value);
 }
 
 static void print_table_attr_set(const dmi_attribute_t *attr, const void *value)

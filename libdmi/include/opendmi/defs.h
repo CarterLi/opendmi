@@ -65,6 +65,7 @@
 #endif // !thread_local && !__cplusplus
 
 #define dmi_member_size(type, member)   sizeof(((type *)0)->member)
+#define dmi_element_size(type, member)  sizeof(*((type *)0)->member)
 #define dmi_member_offset(type, member) offsetof(type, member)
 
 #endif // !OPENDMI_DEFS_H
