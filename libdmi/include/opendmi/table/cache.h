@@ -90,7 +90,7 @@ DMI_PACKED_UNION(dmi_cache_config)
          * @brief Cache Level – 1 through 8. For example, an L1 cache would use
          * value 0x0 and an L3 cache would use 0x2.
          */
-        dmi_byte_t level : 3;
+        dmi_word_t level : 3;
 
         /**
          * @brief Socketed cache flag (e.g., cache on a stick).
@@ -100,12 +100,12 @@ DMI_PACKED_UNION(dmi_cache_config)
         /**
          * @brief Reserved.
          */
-        dmi_byte_t reserved : 1;
+        dmi_word_t reserved : 1;
 
         /**
          * @brief Location, relative to the CPU module.
          */
-        dmi_cache_location_t location : 2;
+        dmi_word_t location : 2;
 
         /**
          * @brief Enable flag (at boot time).
@@ -115,7 +115,7 @@ DMI_PACKED_UNION(dmi_cache_config)
         /**
          * @brief Operational mode.
          */
-        dmi_cache_mode_t mode : 2;
+        dmi_word_t mode : 2;
     };
 };
 
