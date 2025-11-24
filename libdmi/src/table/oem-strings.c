@@ -46,7 +46,7 @@ dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_table_t *table)
 
     info->string_count = dmi_value(data->count);
 
-    info->strings = calloc(info->string_count + 1, sizeof(const char *));
+    info->strings = calloc(info->string_count, sizeof(const char *));
     if (!info->strings) {
         free(info);
         return nullptr;

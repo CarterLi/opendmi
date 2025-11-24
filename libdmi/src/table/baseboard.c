@@ -4,8 +4,11 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/baseboard.h>
+#include <stdlib.h>
+
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
+#include <opendmi/table/baseboard.h>
 
 static const dmi_name_t dmi_baseboard_type_names[] =
 {
@@ -79,6 +82,63 @@ static const dmi_name_t dmi_baseboard_type_names[] =
 
 const dmi_attribute_t dmi_baseboard_attrs[] =
 {
+    DMI_ATTRIBUTE(dmi_baseboard_t, vendor, STRING, {
+        .code   = "vendor",
+        .name   = "Vendor"
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, product, STRING, {
+        .code   = "product",
+        .name   = "Product"
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, version, STRING, {
+        .code   = "version",
+        .name   = "Version"
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, serial_number, STRING, {
+        .code   = "serial-number",
+        .name   = "Serial number"
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, asset_tag, STRING, {
+        .code   = "asset-tag",
+        .name   = "Asset tag"
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, is_hosting_board, BOOL, {
+        .code   = "is-hosting-board",
+        .name   = "Hosting board"
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, require_daughter_board, BOOL, {
+        .code   = "require-daugther-board",
+        .name   = "Require daugther board"
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, is_removable, BOOL, {
+        .code = "is-removable",
+        .name = "Removable"
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, is_replaceable, BOOL, {
+        .code = "is-replaceable",
+        .name = "Replaceable"
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, is_hot_swappable, BOOL, {
+        .code = "is-hot-swappable",
+        .name = "Hot-swappable"
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, location, STRING, {
+        .code = "location",
+        .name = "Location"
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, type, ENUM, {
+        .code   = "type",
+        .name   = "Type",
+        .values = dmi_baseboard_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_baseboard_t, children_count, INTEGER, {
+        .code   = "children-count",
+        .name   = "Children count"
+    }),
+    DMI_ATTRIBUTE_ARRAY(dmi_baseboard_t, children, children_count, HANDLE, {
+        .code   = "children",
+        .name   = "Children"
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
@@ -88,10 +148,62 @@ const dmi_table_spec_t dmi_baseboard_table =
     .name       = "Baseboard or module information",
     .type       = DMI_TYPE_BASEBOARD,
     .min_length = 0x0F,
-    .attributes = dmi_baseboard_attrs
+    .attributes = dmi_baseboard_attrs,
+    .handlers   = {
+        .decode = (dmi_table_decode_fn_t)dmi_baseboard_decode,
+        .free   = (dmi_table_free_fn_t)dmi_baseboard_free
+    }
 };
 
 const char *dmi_baseboard_type_name(enum dmi_baseboard_type value)
 {
     return dmi_name_lookup(dmi_baseboard_type_names, value);
+}
+
+dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table)
+{
+    dmi_baseboard_t *info = nullptr;
+    dmi_baseboard_data_t *data = dmi_cast(data, table->data);
+
+    info = calloc(1, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    info->vendor        = dmi_table_string(table, data->vendor);
+    info->product       = dmi_table_string(table, data->product);
+    info->version       = dmi_table_string(table, data->version);
+    info->serial_number = dmi_table_string(table, data->serial_number);
+    info->asset_tag     = dmi_table_string(table, data->asset_tag);
+
+    dmi_baseboard_features_t features = {
+        ._value = dmi_value(data->features)
+    };
+
+    info->is_hosting_board       = features.is_hosting_board;
+    info->require_daughter_board = features.require_daughter_board;
+    info->is_removable           = features.is_removable;
+    info->is_replaceable         = features.is_replaceable;
+    info->is_hot_swappable       = features.is_hot_swappable;
+
+    info->location       = dmi_table_string(table, data->location);
+    info->chassis_handle = dmi_value(data->chassis_handle);
+    info->type           = dmi_value(data->type);
+    info->children_count = dmi_value(data->children_count);
+
+    info->children = calloc(info->children_count, sizeof(dmi_handle_t));
+    if (!info->children) {
+        free(info);
+        return nullptr;
+    }
+
+    for (size_t i = 0; i < info->children_count; i++)
+        info->children[i] = dmi_value(data->children_handles[i]);
+
+    return info;
+}
+
+void dmi_baseboard_free(dmi_baseboard_t *info)
+{
+    free(info->children);
+    free(info);
 }

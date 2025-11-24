@@ -46,7 +46,7 @@ dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_table_t *table
 
     info->option_count = dmi_value(data->count);
 
-    info->options = calloc(info->option_count + 1, sizeof(const char *));
+    info->options = calloc(info->option_count, sizeof(const char *));
     if (!info->options) {
         free(info);
         return nullptr;
