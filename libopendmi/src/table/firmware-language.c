@@ -61,7 +61,7 @@ dmi_firmware_language_t *dmi_firmware_language_decode(const dmi_table_t *table)
     }
 
     for (size_t i = 0; i < info->language_count; i++) {
-        info->languages[i] = dmi_table_string(table, i + 1);
+        info->languages[i] = dmi_table_string(table, (dmi_string_t)(i + 1));
     }
 
     dmi_firmware_language_flags_t flags = {

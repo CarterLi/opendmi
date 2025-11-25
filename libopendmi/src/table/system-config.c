@@ -53,7 +53,7 @@ dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_table_t *table
     }
 
     for (size_t i = 0; i < info->option_count; i++) {
-        info->options[i] = dmi_table_string(table, i + 1);
+        info->options[i] = dmi_table_string(table, (dmi_string_t)(i + 1));
     }
 
     return info;

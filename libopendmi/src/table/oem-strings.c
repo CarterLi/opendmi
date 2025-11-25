@@ -53,7 +53,7 @@ dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_table_t *table)
     }
 
     for (size_t i = 0; i < info->string_count; i++) {
-        info->strings[i] = dmi_table_string(table, i + 1);
+        info->strings[i] = dmi_table_string(table, (dmi_string_t)(i + 1));
     }
 
     return info;
