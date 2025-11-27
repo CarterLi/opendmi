@@ -11,15 +11,21 @@
 
 #include <opendmi/table.h>
 
-#ifndef DMI_TPM_DEVICE_DATA_T
-#define DMI_TPM_DEVICE_DATA_T
-typedef struct dmi_tpm_device_data dmi_tpm_device_data_t;
-#endif // !DMI_TPM_DEVICE_DATA_T
-
 #ifndef DMI_TPM_DEVICE_T
 #define DMI_TPM_DEVICE_T
 typedef struct dmi_tpm_device dmi_tpm_device_t;
 #endif // !DMI_TPM_DEVICE_T
+
+
+#ifndef DMI_TPM_DEVICE_FEATURES_T
+#define DMI_TPM_DEVICE_FEATURES_T
+typedef union dmi_tpm_device_features dmi_tpm_device_features_t;
+#endif // !DMI_TPM_DEVICE_FEATURES_T
+
+#ifndef DMI_TPM_DEVICE_DATA_T
+#define DMI_TPM_DEVICE_DATA_T
+typedef struct dmi_tpm_device_data dmi_tpm_device_data_t;
+#endif // !DMI_TPM_DEVICE_DATA_T
 
 /**
  * @brief TPM device table (type 43).
@@ -74,7 +80,7 @@ DMI_PACKED_STRUCT(dmi_tpm_device_data)
     /**
      * @brief TPM device characteristics information.
      */
-    dmi_qword_t characteristics;
+    dmi_qword_t features;
 
     /**
      * @brief OEM- or firmware vendor-specific information.
@@ -83,8 +89,99 @@ DMI_PACKED_STRUCT(dmi_tpm_device_data)
 };
 
 /**
+ * @brief TPM device characteristics.
+ */
+DMI_PACKED_UNION(dmi_tpm_device_features)
+{
+    /**
+     * @brief Raw value.
+     */
+    uint64_t _value;
+
+    DMI_PACKED_STRUCT()
+    {
+        /**
+         * @brief Reserved for future use.
+         */
+        uint64_t reserved_1 : 2;
+
+        /**
+         * @brief TPM Device Characteristics are not supported.
+         */
+        bool is_unsupported : 1;
+
+        /**
+         * @brief Family configurable via firmware update. For example, switching
+         * between TPM 1.2 and TPM 2.0.
+         */
+        bool is_update_configurable : 1;
+
+        /**
+         * @brief Family configurable via platform software support, such as
+         * firmware setup. For example, switching between TPM 1.2 and TPM 2.0.
+         */
+        bool is_software_configurable : 1;
+
+        /**
+         * @brief Family configurable via OEM proprietary mechanism. For example,
+         * switching between TPM 1.2 and TPM 2.0.
+         */
+        bool is_proprietary_configurable : 1;
+
+        /**
+         * @brief Reserved for future use.
+         */
+        uint64_t reserved_2 : 58;
+    };
+};
+
+/**
+ * @brief TPM device.
+ */
+struct dmi_tpm_device
+{
+    /**
+     * @brief Vendor identifier, as defined by TCG Vendor ID (see CAP_VID in
+     * TCG Vendor ID Registry).
+     */
+    char vendor_id[5];
+
+    /**
+     * @brief TPM version supported by the TPM device.
+     */
+    dmi_version_t spec_version;
+
+    /**
+     * @brief TPM vendor-specific value for firmware version.
+     */
+    uint64_t firmware_version;
+
+    /**
+     * @brief descriptive information of the TPM device.
+     */
+    const char *description;
+
+    /**
+     * @brief TPM device characteristics information.
+     */
+    dmi_tpm_device_features_t features;
+
+    /**
+     * @brief OEM- or firmware vendor-specific information.
+     */
+    uint32_t oem_defined;
+};
+
+/**
  * @brief TPM device table specification.
  */
 extern const dmi_table_spec_t dmi_tpm_device_table;
+
+__BEGIN_DECLS
+
+dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_table_t *table);
+void dmi_tpm_device_free(dmi_tpm_device_t *info);
+
+__END_DECLS
 
 #endif // !OPENDMI_TABLE_TPM_DEVICE_H
