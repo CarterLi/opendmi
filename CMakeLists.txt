@@ -65,6 +65,9 @@ add_subdirectory(libopendmi-python)
 add_subdirectory(libopendmi-rust)
 add_subdirectory(libopendmi++)
 add_subdirectory(opendmi)
-add_subdirectory(opendmi-dbus)
+
+if (UNIX)
+    add_subdirectory(opendmi-dbus)
+endif ()
 
 include(CPack)
