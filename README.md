@@ -77,7 +77,8 @@ $ dmidecode --dump-bin <filename>
 
 ## Authors
 
-* [Dmitry Sednev](https://github.com/sdnvx) (<dmitry@sednev.ru>)
+* [Dmitry Sednev](https://github.com/sdnvx)
+* [Jorn](https://github.com/jornissimo)
 
 ## Licensing
 
