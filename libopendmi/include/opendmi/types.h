@@ -24,7 +24,8 @@ typedef SSIZE_T ssize_t;
 
 #define dmi_cast(dst, expr) ((__typeof__(dst))(expr))
 
-#define DMI_HANDLE_INVALID ((dmi_handle_t)0xFFFFU)
+#define DMI_HANDLE_INVALID     ((dmi_handle_t)0xFFFFu)
+#define DMI_HANDLE_UNSUPPORTED ((dmi_handle_t)0xFFFEu)
 
 /**
  * @brief Byte type for raw data and pointer arithmetics.
