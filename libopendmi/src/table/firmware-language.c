@@ -6,6 +6,7 @@
 //
 #include <stdlib.h>
 
+#include <opendmi/context.h>
 #include <opendmi/utils.h>
 #include <opendmi/table/firmware-language.h>
 
@@ -45,12 +46,25 @@ const dmi_table_spec_t dmi_firmware_language_table =
 
 dmi_firmware_language_t *dmi_firmware_language_decode(const dmi_table_t *table)
 {
-    dmi_firmware_language_t *info = nullptr;
-    dmi_firmware_language_data_t *data = dmi_cast(data, table->data);
+    dmi_firmware_language_t *info;
+    const dmi_firmware_language_data_t *data;
+
+    if (!table) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return nullptr;
+    }
+    if (table->type != DMI_TYPE_FIRMWARE_LANGUAGE) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return nullptr;
+    }
 
     info = calloc(1, sizeof(*info));
-    if (!info)
+    if (!info) {
+        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
+    }
+
+    data = dmi_cast(data, table->data);
 
     info->language_count = dmi_value(data->language_count);
 

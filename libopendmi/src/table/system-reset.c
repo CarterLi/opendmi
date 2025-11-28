@@ -8,6 +8,7 @@
 #include <limits.h>
 
 #include <opendmi/name.h>
+#include <opendmi/context.h>
 #include <opendmi/utils.h>
 #include <opendmi/table/system-reset.h>
 
@@ -101,12 +102,25 @@ const char *dmi_boot_option_name(dmi_boot_option_t value)
 
 dmi_system_reset_t *dmi_system_reset_decode(const dmi_table_t *table)
 {
-    dmi_system_reset_t *info = nullptr;
-    dmi_system_reset_data_t *data = dmi_cast(data, table->data);
+    dmi_system_reset_t *info;
+    const dmi_system_reset_data_t *data;
+
+    if (!table) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return nullptr;
+    }
+    if (table->type != DMI_TYPE_SYSTEM_RESET) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return nullptr;
+    }
 
     info = calloc(1, sizeof(*info));
-    if (!info)
+    if (!info) {
+        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
+    }
+
+    data = dmi_cast(data, table->data);
 
     dmi_system_reset_caps_t caps = {
         ._value = data->capabilities

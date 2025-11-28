@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #include <opendmi/name.h>
+#include <opendmi/context.h>
 #include <opendmi/table/port-connector.h>
 
 static const dmi_name_t dmi_connector_type_names[] =
@@ -477,12 +478,25 @@ const char *dmi_port_type_name(dmi_port_type_t value)
 
 dmi_port_connector_t *dmi_port_connector_decode(const dmi_table_t *table)
 {
-    dmi_port_connector_t *info = nullptr;
-    dmi_port_connector_data_t *data = dmi_cast(data, table->data);
+    dmi_port_connector_t *info;
+    const dmi_port_connector_data_t *data;
+
+    if (!table) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return nullptr;
+    }
+    if (table->type != DMI_TYPE_PORT_CONNECTOR) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return nullptr;
+    }
 
     info = calloc(1, sizeof(*info));
-    if (!info)
+    if (!info) {
+        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
+    }
+
+    data = dmi_cast(data, table->data);
 
     info->internal_designator = dmi_table_string(table, data->internal_designator);
     info->internal_connector  = data->internal_connector;

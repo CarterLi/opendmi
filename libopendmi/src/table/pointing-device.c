@@ -6,8 +6,9 @@
 //
 #include <stdlib.h>
 
-#include <opendmi/table/pointing-device.h>
 #include <opendmi/name.h>
+#include <opendmi/context.h>
+#include <opendmi/table/pointing-device.h>
 
 static const dmi_name_t dmi_pointing_device_type_names[] =
 {
@@ -174,12 +175,25 @@ const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t v
 
 dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table)
 {
-    dmi_pointing_device_t *info = nullptr;
-    dmi_pointing_device_data_t *data = dmi_cast(data, table->data);
+    dmi_pointing_device_t *info;
+    const dmi_pointing_device_data_t *data;
+
+    if (!table) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return nullptr;
+    }
+    if (table->type != DMI_TYPE_POINTING_DEVICE) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return nullptr;
+    }
 
     info = calloc(1, sizeof(*info));
-    if (!info)
+    if (!info) {
+        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
+    }
+
+    data = dmi_cast(data, table->data);
 
     info->type         = data->type;
     info->interface    = data->interface;

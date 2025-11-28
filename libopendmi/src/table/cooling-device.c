@@ -8,6 +8,7 @@
 #include <limits.h>
 
 #include <opendmi/name.h>
+#include <opendmi/context.h>
 #include <opendmi/utils.h>
 #include <opendmi/table/cooling-device.h>
 
@@ -129,12 +130,25 @@ const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value)
 
 dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table)
 {
-    dmi_cooling_device_t *info = nullptr;
-    dmi_cooling_device_data_t *data = dmi_cast(data, table->data);
+    dmi_cooling_device_t *info;
+    const dmi_cooling_device_data_t *data;
+
+    if (!table) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return nullptr;
+    }
+    if (table->type != DMI_TYPE_COOLING_DEVICE) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return nullptr;
+    }
 
     info = calloc(1, sizeof(*info));
-    if (!info)
+    if (!info) {
+        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
+    }
+
+    data = dmi_cast(data, table->data);
 
     info->probe_handle = dmi_value(data->probe_handle);
 

@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#include <opendmi/context.h>
 #include <opendmi/utils.h>
 #include <opendmi/table/memory-device-addr.h>
 
@@ -66,12 +67,25 @@ const dmi_table_spec_t dmi_memory_device_addr_table =
 
 dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table)
 {
-    dmi_memory_device_addr_t *info = nullptr;
-    dmi_memory_device_addr_data_t *data = dmi_cast(data, table->data);
+    dmi_memory_device_addr_t *info;
+    const dmi_memory_device_addr_data_t *data;
+
+    if (!table) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return nullptr;
+    }
+    if (table->type != DMI_TYPE_MEMORY_DEVICE_ADDR) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return nullptr;
+    }
 
     info = calloc(1, sizeof(*info));
-    if (!info)
+    if (!info) {
+        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
+    }
+
+    data = dmi_cast(data, table->data);
 
     if ((table->body_length >= 0x13) and (data->start_addr == 0xFFFFFFFFU)) {
         info->start_addr = dmi_value(data->start_addr_ex);

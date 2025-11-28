@@ -354,8 +354,8 @@ dmi_size_t dmi_cache_size_ex(uint32_t value)
 
 dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
 {
-    struct dmi_cache *info;
-    struct dmi_cache_data *data;
+    dmi_cache_t *info;
+    const dmi_cache_data_t *data;
 
     if (table == nullptr) {
         dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
@@ -366,12 +366,11 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
         return nullptr;
     }
 
-    info = malloc(sizeof(*info));
+    info = calloc(1, sizeof(*info));
     if (info == nullptr) {
         dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
-    memset(info, 0, sizeof(*info));
 
     data = dmi_cast(data, table->data);
 

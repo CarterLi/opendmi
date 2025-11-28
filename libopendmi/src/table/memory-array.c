@@ -6,6 +6,7 @@
 //
 #include <stdlib.h>
 
+#include <opendmi/context.h>
 #include <opendmi/name.h>
 #include <opendmi/utils.h>
 #include <opendmi/table/memory-array.h>
@@ -188,13 +189,26 @@ const char *dmi_memory_array_usage_name(enum dmi_memory_array_usage value)
 
 dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table)
 {
-    dmi_memory_array_t *info = nullptr;
-    dmi_memory_array_data_t *data = dmi_cast(data, table->data);
+    dmi_memory_array_t *info;
+    const dmi_memory_array_data_t *data;
     dmi_dword_t maximum_capacity;
 
-    info = calloc(1, sizeof(*info));
-    if (!info)
+    if (!table) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
         return nullptr;
+    }
+    if (table->type != DMI_TYPE_MEMORY_ARRAY) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return nullptr;
+    }
+
+    info = calloc(1, sizeof(*info));
+    if (!info) {
+        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+        return nullptr;
+    }
+
+    data = dmi_cast(data, table->data);
 
     info->location = data->location;
     info->usage    = data->usage;
