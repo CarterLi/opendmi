@@ -120,6 +120,7 @@ const dmi_table_spec_t dmi_cooling_device_table =
     .attributes = dmi_cooling_device_attrs,
     .handlers   = {
         .decode = (dmi_table_decode_fn_t)dmi_cooling_device_decode,
+        .link   = (dmi_table_link_fn_t)dmi_cooling_device_link,
         .free   = (dmi_table_free_fn_t)dmi_cooling_device_free
     }
 };
@@ -176,6 +177,32 @@ dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table)
         info->description = dmi_table_string(table, data->description);
 
     return info;
+}
+
+bool dmi_cooling_device_link(dmi_table_t *table)
+{
+    dmi_cooling_device_t *info;
+    dmi_registry_t *registry;
+
+    if (!table) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return false;
+    }
+    if (table->type != DMI_TYPE_COOLING_DEVICE) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return false;
+    }
+
+    info = dmi_cast(info, table->info);
+    registry = table->context->registry;
+
+    if (info->probe_handle != DMI_HANDLE_INVALID) {
+        info->probe = dmi_registry_get(registry, info->probe_handle);
+        if (!info->probe)
+            return false;
+    }
+
+    return true;
 }
 
 void dmi_cooling_device_free(dmi_cooling_device_t *info)
