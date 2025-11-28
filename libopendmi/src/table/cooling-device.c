@@ -10,6 +10,7 @@
 #include <opendmi/name.h>
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/cooling-device.h>
 
 static const dmi_name_t dmi_cooling_device_type_names[] =

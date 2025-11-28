@@ -71,16 +71,32 @@ struct dmi_mgmt_device_component
     dmi_handle_t device_handle;
 
     /**
+     * @brief Reference to the management device that contains this component.
+     */
+    dmi_table_t *device;
+
+    /**
      * @brief Handle, or instance number, of the probe or cooling device that
      * defines this component.
      */
     dmi_handle_t component_handle;
 
     /**
+     * @brief Reference to the probe or cooling device that defines this
+     * component.
+     */
+    dmi_table_t *component;
+
+    /**
      * @brief Handle, or instance number, associated with the device
      * thresholds.
      */
     dmi_handle_t threshold_handle;
+
+    /**
+     * @brief Reference to the device thresholds structure.
+     */
+    dmi_table_t *threshold;
 };
 
 /**
@@ -90,7 +106,19 @@ extern const dmi_table_spec_t dmi_mgmt_device_component_table;
 
 __BEGIN_DECLS
 
+/**
+ * @internal
+ */
 dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
+bool dmi_mgmt_device_component_link(dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_mgmt_device_component_free(dmi_mgmt_device_component_t *info);
 
 __END_DECLS

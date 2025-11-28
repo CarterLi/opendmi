@@ -35,6 +35,7 @@ typedef struct dmi_table dmi_table_t;
 
 typedef bool (*dmi_table_validate_fn_t)(dmi_table_t *table);
 typedef void *(*dmi_table_decode_fn_t)(dmi_table_t *table);
+typedef bool (*dmi_table_link_fn_t)(dmi_table_t *table);
 typedef void (*dmi_table_free_fn_t)(void *info);
 
 /**
@@ -51,6 +52,11 @@ struct dmi_table_ops
      * @brief Decoding handler.
      */
     dmi_table_decode_fn_t decode;
+
+    /**
+     * @brief Link handler.
+     */
+    dmi_table_link_fn_t link;
 
     /**
      * @brief Destroy handler.

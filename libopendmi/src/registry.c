@@ -19,6 +19,11 @@ static bool dmi_registry_build(dmi_registry_t *registry);
 /**
  * @internal
  */
+static bool dmi_registry_link(dmi_registry_t *registry);
+
+/**
+ * @internal
+ */
 static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table);
 
 dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity)
@@ -47,7 +52,12 @@ dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity)
             break;
         }
 
-        success = dmi_registry_build(registry);
+        if (!dmi_registry_build(registry))
+            break;
+        if (!dmi_registry_link(registry))
+            break;
+
+        success = true;
     } while (false);
 
     if (!success) {
@@ -107,11 +117,12 @@ void dmi_registry_destroy(dmi_registry_t *registry)
 
 static bool dmi_registry_build(dmi_registry_t *registry)
 {
+    bool success = false;
     size_t index = 0;
     dmi_context_t *context = registry->context;
     const dmi_data_t *ptr = context->table_data;
 
-    bool success = false;
+    // Scan table area
     while ((context->table_count == 0) or (index < context->table_count)) {
         dmi_table_t *table = nullptr;
 
@@ -146,6 +157,22 @@ static bool dmi_registry_build(dmi_registry_t *registry)
 
 exit:
     return success;
+}
+
+static bool dmi_registry_link(dmi_registry_t *registry)
+{
+    dmi_registry_entry_t *entry;
+
+    for (entry = registry->head; entry; entry = entry->seq_next) {
+        dmi_table_t *table = entry->table;
+
+        if (!table->spec->handlers.link)
+            continue;
+        if (!table->spec->handlers.link(table))
+            return false;
+    }
+
+    return true;
 }
 
 static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
