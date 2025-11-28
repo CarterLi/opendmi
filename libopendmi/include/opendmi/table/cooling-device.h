@@ -151,6 +151,11 @@ struct dmi_cooling_device
     dmi_handle_t probe_handle;
 
     /**
+     * @brief Reference to the temperature probe monitoring this cooling device.
+     */
+    dmi_table_t *probe;
+
+    /**
      * @brief Cooling device type.
      */
     dmi_cooling_device_type_t type;
@@ -204,7 +209,19 @@ __BEGIN_DECLS
 
 const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value);
 
+/**
+ * @internal
+ */
 dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table);
+
+/**
+ * @internal
+ */
+bool dmi_cooling_device_link(dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_cooling_device_free(dmi_cooling_device_t *info);
 
 __END_DECLS

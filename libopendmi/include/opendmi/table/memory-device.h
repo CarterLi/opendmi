@@ -161,7 +161,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_handle_t error_handle;
+    dmi_handle_t error_info_handle;
 
     /**
      * @brief Total width, in bits, of this memory device, including any check
@@ -491,7 +491,9 @@ struct dmi_memory_device
      * memory array to which this device belongs.
      */
     dmi_handle_t array_handle;
-    dmi_handle_t error_handle;
+    dmi_table_t *array;
+    dmi_handle_t error_info_handle;
+    dmi_table_t *error_info;
     unsigned short total_width;
     unsigned short data_width;
     dmi_size_t size;
@@ -547,7 +549,19 @@ const char *dmi_memory_device_technology_name(enum dmi_memory_device_technology 
 dmi_size_t dmi_memory_device_size(uint16_t value);
 dmi_size_t dmi_memory_device_size_ex(uint32_t value);
 
+/**
+ * @internal
+ */
 dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table);
+
+/**
+ * @internal
+ */
+bool dmi_memory_device_link(dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_memory_device_free(dmi_memory_device_t *info);
 
 __END_DECLS

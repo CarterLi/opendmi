@@ -419,8 +419,8 @@ const dmi_attribute_t dmi_memory_device_attrs[] =
         .code    = "array-handle",
         .name    = "Memory array handle",
     }),
-    DMI_ATTRIBUTE(dmi_memory_device_t, error_handle, HANDLE, {
-        .code    = "error-handle",
+    DMI_ATTRIBUTE(dmi_memory_device_t, error_info_handle, HANDLE, {
+        .code    = "error-info-handle",
         .name    = "Memory error information handle"
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, total_width, INTEGER, {
@@ -613,6 +613,7 @@ const dmi_table_spec_t dmi_memory_device_table =
     .attributes = dmi_memory_device_attrs,
     .handlers   = {
         .decode = (dmi_table_decode_fn_t)dmi_memory_device_decode,
+        .link   = (dmi_table_link_fn_t)dmi_memory_device_link,
         .free   = (dmi_table_free_fn_t)dmi_memory_device_free
     }
 };
@@ -674,8 +675,8 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table)
 
     data = dmi_cast(data, table->data);
 
-    info->array_handle = dmi_value(data->array_handle);
-    info->error_handle = dmi_value(data->error_handle);
+    info->array_handle      = dmi_value(data->array_handle);
+    info->error_info_handle = dmi_value(data->error_info_handle);
 
     info->total_width = dmi_value(data->total_width);
     if (info->total_width == 0xFFFFu)
@@ -766,6 +767,40 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table)
     }
 
     return info;
+}
+
+bool dmi_memory_device_link(dmi_table_t *table)
+{
+    dmi_memory_device_t *info;
+    dmi_registry_t *registry;
+
+    if (!table) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return false;
+    }
+    if (table->type != DMI_TYPE_MEMORY_DEVICE) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return false;
+    }
+
+    info = dmi_cast(info, table->info);
+    registry = table->context->registry;
+
+    if (info->array_handle != DMI_HANDLE_INVALID) {
+        info->array = dmi_registry_get(registry, info->array_handle);
+        if (!info->array)
+            return false;
+    }
+
+    if ((info->error_info_handle != DMI_HANDLE_INVALID) and
+        (info->error_info_handle != DMI_HANDLE_UNSUPPORTED))
+    {
+        info->error_info = dmi_registry_get(registry, info->error_info_handle);
+        if (!info->error_info)
+            return false;
+    }
+
+    return true;
 }
 
 void dmi_memory_device_free(dmi_memory_device_t *info)
