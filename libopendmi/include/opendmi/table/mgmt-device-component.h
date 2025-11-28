@@ -36,24 +36,63 @@ DMI_PACKED_STRUCT(dmi_mgmt_device_component_data)
      * @brief Handle, or instance number, of the management device that
      * contains this component.
      */
-    dmi_handle_t device;
+    dmi_handle_t device_handle;
 
     /**
      * @brief Handle, or instance number, of the probe or cooling device that
      * defines this component.
      */
-    dmi_handle_t component;
+    dmi_handle_t component_handle;
 
     /**
      * @brief Handle, or instance number, associated with the device
      * thresholds.
      */
-    dmi_handle_t threshold;
+    dmi_handle_t threshold_handle;
+};
+
+#ifndef DMI_MGMT_DEVICE_COMPONENT_T
+#define DMI_MGMT_DEVICE_COMPONENT_T
+typedef struct dmi_mgmt_device_component dmi_mgmt_device_component_t;
+#endif // !DMI_MGMT_DEVICE_COMPONENT_T
+
+struct dmi_mgmt_device_component
+{
+    /**
+     * @brief String that contains additional descriptive information about
+     * the component.
+     */
+    const char *description;
+
+    /**
+     * @brief Handle, or instance number, of the management device that
+     * contains this component.
+     */
+    dmi_handle_t device_handle;
+
+    /**
+     * @brief Handle, or instance number, of the probe or cooling device that
+     * defines this component.
+     */
+    dmi_handle_t component_handle;
+
+    /**
+     * @brief Handle, or instance number, associated with the device
+     * thresholds.
+     */
+    dmi_handle_t threshold_handle;
 };
 
 /**
  * @brief Manangement device component table specification.
  */
 extern const dmi_table_spec_t dmi_mgmt_device_component_table;
+
+__BEGIN_DECLS
+
+dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_table_t *table);
+void dmi_mgmt_device_component_free(dmi_mgmt_device_component_t *info);
+
+__END_DECLS
 
 #endif // !OPENDMI_TABLE_MGMT_DEVICE_COMPONENT_H
