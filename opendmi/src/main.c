@@ -48,6 +48,7 @@ static void print_all(dmi_context_t *context);
 static void print_table(const dmi_table_t *table);
 static void print_table_attrs(const dmi_table_t *table);
 static void print_table_attr_array(const dmi_attribute_t *attr, const dmi_data_t *info, const void *value);
+static void print_table_attr_struct(const dmi_attribute_t *attr, const void *value);
 static void print_table_attr_value(const dmi_attribute_t *attr, const void *value);
 static void print_table_attr_set(const dmi_attribute_t *attr, const void *value);
 static void print_table_dump(const dmi_table_t *table);
@@ -260,10 +261,14 @@ static void print_table_attrs(const dmi_table_t *table)
 
         printf("\t%s: ", attr->params.name);
 
-        if (attr->counter < 0)
-            print_table_attr_value(attr, ptr);
-        else
+        if (attr->counter < 0) {
+            if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT)
+                print_table_attr_struct(attr, ptr);
+            else
+                print_table_attr_value(attr, ptr);
+        } else {
             print_table_attr_array(attr, table->info, ptr);
+        }
     }
 }
 
@@ -274,9 +279,27 @@ static void print_table_attr_array(const dmi_attribute_t *attr, const dmi_data_t
     printf("%zu items\n", count);
 
     const dmi_data_t *ptr = *(const dmi_data_t **)value;
+
     for (size_t i = 0; i < count; i++, ptr += attr->size) {
         printf("\t\t%zu: ", i);
-        print_table_attr_value(attr, ptr);
+
+        if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT)
+            print_table_attr_struct(attr, ptr);
+        else
+            print_table_attr_value(attr, ptr);
+    }
+}
+
+static void print_table_attr_struct(const dmi_attribute_t *attr, const void *value)
+{
+    const dmi_attribute_t *child_attr = nullptr;
+
+    printf("\n");
+    for (child_attr = attr->params.attrs; child_attr->params.name; child_attr++) {
+        const dmi_data_t *ptr = (dmi_data_t *)value + child_attr->offset;
+
+        printf("\t\t\t%s: ", child_attr->params.name);
+        print_table_attr_value(child_attr, ptr);
     }
 }
 

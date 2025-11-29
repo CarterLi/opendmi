@@ -14,16 +14,6 @@
 /**
  * @internal
  */
-static bool dmi_registry_build(dmi_registry_t *registry);
-
-/**
- * @internal
- */
-static bool dmi_registry_link(dmi_registry_t *registry);
-
-/**
- * @internal
- */
 static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table);
 
 dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity)
@@ -51,11 +41,6 @@ dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity)
             dmi_set_error(registry->context, DMI_ERROR_OUT_OF_MEMORY);
             break;
         }
-
-        if (!dmi_registry_build(registry))
-            break;
-        if (!dmi_registry_link(registry))
-            break;
 
         success = true;
     } while (false);
@@ -115,7 +100,7 @@ void dmi_registry_destroy(dmi_registry_t *registry)
     free(registry);
 }
 
-static bool dmi_registry_build(dmi_registry_t *registry)
+bool dmi_registry_build(dmi_registry_t *registry)
 {
     bool success = false;
     size_t index = 0;
@@ -159,14 +144,14 @@ exit:
     return success;
 }
 
-static bool dmi_registry_link(dmi_registry_t *registry)
+bool dmi_registry_link(dmi_registry_t *registry)
 {
     dmi_registry_entry_t *entry;
 
     for (entry = registry->head; entry; entry = entry->seq_next) {
         dmi_table_t *table = entry->table;
 
-        if (!table->spec->handlers.link)
+        if (!table->spec or !table->spec->handlers.link)
             continue;
         if (!table->spec->handlers.link(table))
             return false;

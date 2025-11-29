@@ -100,6 +100,16 @@ __BEGIN_DECLS
 dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity);
 
 /**
+ * @internal
+ */
+bool dmi_registry_build(dmi_registry_t *registry);
+
+/**
+ * @internal
+ */
+bool dmi_registry_link(dmi_registry_t *registry);
+
+/**
  * @brief Get table from DMI registry.
  *
  * @param[in] registry DMI registry handle.

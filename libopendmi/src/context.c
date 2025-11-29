@@ -40,6 +40,7 @@
 #include <opendmi/table/mgmt-device-threshold.h>
 #include <opendmi/table/oem-strings.h>
 #include <opendmi/table/onboard-device.h>
+#include <opendmi/table/onboard-device-ex.h>
 #include <opendmi/table/oob-remote-access.h>
 #include <opendmi/table/pointing-device.h>
 #include <opendmi/table/port-connector.h>
@@ -357,11 +358,17 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
         if (!context->registry)
             break;
 
+        // Build and link registry
+        if (!dmi_registry_build(context->registry))
+            break;
+        if (!dmi_registry_link(context->registry))
+            break;
+
         success = true;
     } while (false);
 
     if (!success) {
-        dmi_error(context, "Unable to open DMI context");
+        dmi_error(context, "Unable to open DMI context: %s", dmi_error_message(context->last_error));
         dmi_set_error(context, context->last_error);
         dmi_close(context);
     }

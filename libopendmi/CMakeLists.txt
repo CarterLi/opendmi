@@ -49,6 +49,7 @@ target_sources(opendmi-object
         src/table/mgmt-device-threshold.c
         src/table/oem-strings.c
         src/table/onboard-device.c
+        src/table/onboard-device-ex.c
         src/table/oob-remote-access.c
         src/table/pointing-device.c
         src/table/port-connector.c

@@ -32,6 +32,7 @@ typedef void (*dmi_attribute_parse_fn_t)(const dmi_attribute_t *attr);
 typedef enum dmi_attribute_type
 {
     DMI_ATTRIBUTE_TYPE_NONE,
+    DMI_ATTRIBUTE_TYPE_STRUCT,
     DMI_ATTRIBUTE_TYPE_HANDLE,
     DMI_ATTRIBUTE_TYPE_STRING,
     DMI_ATTRIBUTE_TYPE_BOOL,
@@ -99,6 +100,11 @@ struct dmi_attribute_params
      * @brief Enumeration or boolean value names.
      */
     const dmi_name_t *values;
+
+    /**
+     * @brief Structure attribute descriptors.
+     */
+    const dmi_attribute_t *attrs;
 };
 
 struct dmi_attribute
