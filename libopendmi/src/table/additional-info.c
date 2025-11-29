@@ -13,7 +13,7 @@ const dmi_attribute_t dmi_additional_info_attrs[] =
 
 const dmi_table_spec_t dmi_additional_info_table =
 {
-    .tag         = "additional-info",
+    .code        = "additional-info",
     .name        = "Additional information",
     .type        = DMI_TYPE_ADDITIONAL_INFO,
     .min_version = DMI_VERSION(2, 6, 0),

@@ -136,7 +136,7 @@ const dmi_attribute_t dmi_mgmt_device_attrs[] =
 
 const dmi_table_spec_t dmi_mgmt_device_table =
 {
-    .tag         = "mgmt-device",
+    .code        = "mgmt-device",
     .name        = "Management device",
     .type        = DMI_TYPE_MGMT_DEVICE,
     .min_version = DMI_VERSION(2, 3, 0),

@@ -26,7 +26,7 @@ const dmi_attribute_t dmi_oem_strings_attrs[] =
 
 const dmi_table_spec_t dmi_oem_strings_table =
 {
-    .tag        = "oem-strings",
+    .code       = "oem-strings",
     .name       = "OEM strings",
     .type       = DMI_TYPE_OEM_STRINGS,
     .min_length = 0x05,

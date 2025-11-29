@@ -606,7 +606,7 @@ const dmi_attribute_t dmi_memory_device_attrs[] =
 
 const dmi_table_spec_t dmi_memory_device_table =
 {
-    .tag        = "memory-device",
+    .code       = "memory-device",
     .name       = "Memory device",
     .type       = DMI_TYPE_MEMORY_DEVICE,
     .min_length = 0x15,

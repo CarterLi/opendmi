@@ -37,7 +37,7 @@ const dmi_attribute_t dmi_power_controls_attrs[] =
 
 const dmi_table_spec_t dmi_power_controls_table =
 {
-    .tag         = "power-controls",
+    .code        = "power-controls",
     .name        = "System power controls",
     .type        = DMI_TYPE_POWER_CONTROLS,
     .min_version = DMI_VERSION(2, 2, 0),

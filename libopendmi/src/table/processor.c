@@ -489,7 +489,7 @@ const dmi_attribute_t dmi_processor_attrs[] =
 
 const dmi_table_spec_t dmi_processor_table =
 {
-    .tag           = "processor",
+    .code          = "processor",
     .name          = "Processor information",
     .type          = DMI_TYPE_PROCESSOR,
     .required_from = DMI_VERSION(2, 3, 0),
@@ -505,7 +505,7 @@ const dmi_attribute_t dmi_processor_ex_attrs[] =
 
 const dmi_table_spec_t dmi_processor_ex_table =
 {
-    .tag        = "processor-ex",
+    .code       = "processor-ex",
     .name       = "Processor additional information",
     .type       = DMI_TYPE_PROCESSOR_EX,
     .min_length = 0x06,

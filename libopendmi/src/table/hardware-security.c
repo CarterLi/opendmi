@@ -63,7 +63,7 @@ const dmi_attribute_t dmi_hardware_security_attrs[] =
 
 const dmi_table_spec_t dmi_hardware_security_table =
 {
-    .tag         = "hardware-security",
+    .code        = "hardware-security",
     .name        = "Hardware security",
     .type        = DMI_TYPE_HARDWARE_SECURITY,
     .min_version = DMI_VERSION(2, 2, 0),

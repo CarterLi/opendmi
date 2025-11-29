@@ -13,7 +13,7 @@
 
 const dmi_table_spec_t dmi_memory_error_32_table =
 {
-    .tag         = "memory-error-32",
+    .code        = "memory-error-32",
     .name        = "32-bit memory error information",
     .type        = DMI_TYPE_MEMORY_ERROR_32,
     .min_version = DMI_VERSION(2, 1, 0),

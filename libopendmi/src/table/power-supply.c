@@ -177,7 +177,7 @@ static const dmi_attribute_t dmi_power_supply_attrs[] =
 
 const dmi_table_spec_t dmi_power_supply_table =
 {
-    .tag         = "power-supply",
+    .code        = "power-supply",
     .name        = "System power supply",
     .type        = DMI_TYPE_POWER_SUPPLY,
     .min_version = DMI_VERSION(2, 3, 1),

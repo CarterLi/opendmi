@@ -13,7 +13,7 @@ const dmi_attribute_t dmi_system_event_log_attrs[] =
 
 const dmi_table_spec_t dmi_system_event_log_table =
 {
-    .tag         = "system-event-log",
+    .code        = "system-event-log",
     .name        = "System event log",
     .type        = DMI_TYPE_SYSTEM_EVENT_LOG,
     .min_version = DMI_VERSION(2, 0, 0),

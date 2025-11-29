@@ -96,14 +96,14 @@ static dmi_backend_t *dmi_backend = &DMI_BACKEND;
 
 static const dmi_table_spec_t dmi_inactive_table =
 {
-    .tag  = "inactive",
+    .code = "inactive",
     .name = "Inactive",
     .type = DMI_TYPE_INACTIVE
 };
 
 static const dmi_table_spec_t dmi_end_of_table =
 {
-    .tag  = "end-of-table",
+    .code = "end-of-table",
     .name = "End of table",
     .type = DMI_TYPE_END_OF_TABLE
 };

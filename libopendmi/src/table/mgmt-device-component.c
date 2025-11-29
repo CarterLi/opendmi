@@ -34,7 +34,7 @@ const dmi_attribute_t dmi_mgmt_device_component_attrs[] =
 
 const dmi_table_spec_t dmi_mgmt_device_component_table =
 {
-    .tag         = "mgmt-device-component",
+    .code        = "mgmt-device-component",
     .name        = "Management device component",
     .type        = DMI_TYPE_MGMT_DEVICE_COMPONENT,
     .min_version = DMI_VERSION(2, 3, 0),

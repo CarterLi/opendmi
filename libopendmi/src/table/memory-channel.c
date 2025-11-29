@@ -13,7 +13,7 @@ const dmi_attribute_t dmi_memory_channel_attrs[] =
 
 const dmi_table_spec_t dmi_memory_channel_table =
 {
-    .tag         = "memory-channel",
+    .code        = "memory-channel",
     .name        = "Memory channel",
     .type        = DMI_TYPE_MEMORY_CHANNEL,
     .min_version = DMI_VERSION(2, 3, 0),

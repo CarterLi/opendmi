@@ -13,7 +13,7 @@ const dmi_attribute_t dmi_system_boot_attrs[] =
 
 const dmi_table_spec_t dmi_system_boot_table =
 {
-    .tag           = "system-boot",
+    .code          = "system-boot",
     .name          = "System boot information",
     .type          = DMI_TYPE_SYSTEM_BOOT,
     .required_from = DMI_VERSION(2, 3, 0),

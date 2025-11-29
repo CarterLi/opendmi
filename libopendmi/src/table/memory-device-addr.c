@@ -53,7 +53,7 @@ const dmi_attribute_t dmi_memory_device_addr_attrs[] =
 
 const dmi_table_spec_t dmi_memory_device_addr_table =
 {
-    .tag         = "memory-device-address",
+    .code        = "memory-device-address",
     .name        = "Memory device mapped address",
     .type        = DMI_TYPE_MEMORY_DEVICE_ADDR,
     .min_version = DMI_VERSION(2, 1, 0),

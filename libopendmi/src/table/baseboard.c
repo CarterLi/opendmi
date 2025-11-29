@@ -145,7 +145,7 @@ const dmi_attribute_t dmi_baseboard_attrs[] =
 
 const dmi_table_spec_t dmi_baseboard_table =
 {
-    .tag        = "baseboard",
+    .code       = "baseboard",
     .name       = "Baseboard or module information",
     .type       = DMI_TYPE_BASEBOARD,
     .min_length = 0x0F,

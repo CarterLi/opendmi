@@ -49,7 +49,7 @@ const dmi_attribute_t dmi_mgmt_device_threshold_attrs[] =
 
 const dmi_table_spec_t dmi_mgmt_device_threshold_table =
 {
-    .tag         = "mgmt-device-threshold",
+    .code        = "mgmt-device-threshold",
     .name        = "Management device threshold data",
     .type        = DMI_TYPE_MGMT_DEVICE_THRESHOLD,
     .min_version = DMI_VERSION(2, 3, 0),

@@ -35,7 +35,7 @@ const dmi_attribute_t dmi_memory_module_attrs[] =
 
 const dmi_table_spec_t dmi_memory_module_table =
 {
-    .tag        = "memory-module",
+    .code       = "memory-module",
     .name       = "Memory module information",
     .type       = DMI_TYPE_MEMORY_MODULE,
     .min_length = 0x08,

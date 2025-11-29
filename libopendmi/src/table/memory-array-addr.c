@@ -37,7 +37,7 @@ const dmi_attribute_t dmi_memory_array_addr_attrs[] =
 
 const dmi_table_spec_t dmi_memory_array_addr_table =
 {
-    .tag         = "memory-array-address",
+    .code        = "memory-array-address",
     .name        = "Memory array mapped address",
     .type        = DMI_TYPE_MEMORY_ARRAY_ADDR,
     .min_version = DMI_VERSION(2, 1, 0),
