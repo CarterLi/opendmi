@@ -69,7 +69,7 @@ const dmi_attribute_t dmi_onboard_device_attrs[] =
 
 const dmi_table_spec_t dmi_onboard_device_table =
 {
-    .tag        = "onboard-device",
+    .code       = "onboard-device",
     .name       = "Onboard devices information",
     .type       = DMI_TYPE_ONBOARD_DEVICE,
     .min_length = 0x06,
@@ -84,7 +84,7 @@ const dmi_attribute_t dmi_onboard_device_ex_attrs[] =
 
 const dmi_table_spec_t dmi_onboard_device_ex_table =
 {
-    .tag         = "onboard-device-ex",
+    .code        = "onboard-device-ex",
     .name        = "Onboard devices extended information",
     .type        = DMI_TYPE_ONBOARD_DEVICE_EX,
     .min_version = DMI_VERSION(2, 6, 0),

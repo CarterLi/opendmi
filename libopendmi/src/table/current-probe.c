@@ -80,7 +80,7 @@ const dmi_attribute_t dmi_current_probe_attrs[] =
 
 const dmi_table_spec_t dmi_current_probe_table =
 {
-    .tag        = "current-probe",
+    .code       = "current-probe",
     .name       = "Electrical current probe",
     .type       = DMI_TYPE_CURRENT_PROBE,
     .min_length = 0x16,

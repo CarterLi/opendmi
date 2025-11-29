@@ -33,7 +33,7 @@ const dmi_attribute_t dmi_firmware_language_attrs[] =
 
 const dmi_table_spec_t dmi_firmware_language_table =
 {
-    .tag        = "firmware-language",
+    .code       = "firmware-language",
     .name       = "Firmware language information",
     .type       = DMI_TYPE_FIRMWARE_LANGUAGE,
     .min_length = 0x05,

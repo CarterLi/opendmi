@@ -13,7 +13,7 @@ const dmi_attribute_t dmi_string_property_attrs[] =
 
 const dmi_table_spec_t dmi_string_property_table =
 {
-    .tag         = "string-property",
+    .code        = "string-property",
     .name        = "String property",
     .type        = DMI_TYPE_STRING_PROPERTY,
     .min_version = DMI_VERSION(3, 5, 0),

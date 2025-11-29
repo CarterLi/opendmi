@@ -13,7 +13,7 @@ const dmi_attribute_t dmi_firmware_inventory_attrs[] =
 
 const dmi_table_spec_t dmi_firmware_inventory_table =
 {
-    .tag        = "firmware-inventory",
+    .code       = "firmware-inventory",
     .name       = "Firmware inventory information",
     .type       = DMI_TYPE_FIRMWARE_INVENTORY,
     .min_length = 0x18,

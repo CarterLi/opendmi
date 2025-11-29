@@ -30,7 +30,7 @@ const dmi_attribute_t dmi_group_assoc_attrs[] =
 
 const dmi_table_spec_t dmi_group_assoc_table =
 {
-    .tag        = "group-associations",
+    .code       = "group-associations",
     .name       = "Group associations",
     .type       = DMI_TYPE_GROUP_ASSOC,
     .min_length = 0x08,

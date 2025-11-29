@@ -13,7 +13,7 @@ const dmi_attribute_t dmi_ipmi_device_attrs[] =
 
 const dmi_table_spec_t dmi_ipmi_device_table =
 {
-    .tag         = "ipmi-device",
+    .code        = "ipmi-device",
     .name        = "IPMI device information",
     .type        = DMI_TYPE_IPMI_DEVICE,
     .min_length  = 0x12,

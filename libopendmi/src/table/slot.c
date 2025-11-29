@@ -519,7 +519,7 @@ const dmi_attribute_t dmi_slot_attrs[] =
 
 const dmi_table_spec_t dmi_slot_table =
 {
-    .tag        = "slot",
+    .code       = "slot",
     .name       = "System slots",
     .type       = DMI_TYPE_SYSTEM_SLOTS,
     .min_length = 0x0C,

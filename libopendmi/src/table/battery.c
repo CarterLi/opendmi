@@ -59,7 +59,7 @@ const dmi_attribute_t dmi_battery_attrs[] =
 
 const dmi_table_spec_t dmi_battery_table =
 {
-    .tag        = "portable-battery",
+    .code       = "portable-battery",
     .name       = "Portable battery",
     .type       = DMI_TYPE_PORTABLE_BATTERY,
     .min_length = 0x05,

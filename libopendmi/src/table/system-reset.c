@@ -84,7 +84,7 @@ static const dmi_attribute_t dmi_system_reset_attrs[] =
 
 const dmi_table_spec_t dmi_system_reset_table =
 {
-    .tag        = "system-reset",
+    .code       = "system-reset",
     .name       = "System reset",
     .type       = DMI_TYPE_SYSTEM_RESET,
     .min_length = 0x0D,

@@ -25,7 +25,7 @@ const dmi_attribute_t dmi_system_config_opts_attrs[] =
 
 const dmi_table_spec_t dmi_system_config_opts_table =
 {
-    .tag        = "system-config-options",
+    .code       = "system-config-options",
     .name       = "System configuration options",
     .type       = DMI_TYPE_SYSTEM_CONFIG_OPTIONS,
     .min_length = 0x05,

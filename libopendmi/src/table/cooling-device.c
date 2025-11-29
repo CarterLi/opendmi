@@ -113,7 +113,7 @@ const dmi_attribute_t dmi_cooling_device_attrs[] =
 
 const dmi_table_spec_t dmi_cooling_device_table =
 {
-    .tag        = "cooling-device",
+    .code       = "cooling-device",
     .name       = "Cooling device",
     .type       = DMI_TYPE_COOLING_DEVICE,
     .min_length = 0x0E,

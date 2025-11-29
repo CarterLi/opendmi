@@ -13,7 +13,7 @@ const dmi_attribute_t dmi_bis_entry_point_attrs[] =
 
 const dmi_table_spec_t dmi_bis_entry_point_table =
 {
-    .tag         = "bis-entry-point",
+    .code        = "bis-entry-point",
     .name        = "Boot Integrity Services (BIS) entry point",
     .type        = DMI_TYPE_BIS_ENTRY_POINT,
     .min_version = DMI_VERSION(2, 3, 0),

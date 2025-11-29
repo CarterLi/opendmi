@@ -221,7 +221,7 @@ static void list_types(dmi_context_t *context)
         if (spec == nullptr)
             continue;
 
-        printf(format, (int)spec->type, spec->tag, spec->name);
+        printf(format, (int)spec->type, spec->code, spec->name);
     }
 }
 

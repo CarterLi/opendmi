@@ -83,7 +83,7 @@ const dmi_attribute_t dmi_voltage_probe_attrs[] =
 
 const dmi_table_spec_t dmi_voltage_probe_table =
 {
-    .tag        = "voltage-probe",
+    .code       = "voltage-probe",
     .name       = "Voltage probe",
     .type       = DMI_TYPE_VOLTAGE_PROBE,
     .min_length = 0x16,

@@ -165,7 +165,7 @@ const dmi_attribute_t dmi_memory_array_attrs[] =
 
 const dmi_table_spec_t dmi_memory_array_table =
 {
-    .tag         = "memory-array",
+    .code        = "memory-array",
     .name        = "Physical memory array",
     .type        = DMI_TYPE_MEMORY_ARRAY,
     .min_version = DMI_VERSION(2, 1, 0),

@@ -67,7 +67,7 @@ static const dmi_attribute_t dmi_tpm_device_attrs[] =
 
 const dmi_table_spec_t dmi_tpm_device_table =
 {
-    .tag        = "tpm-device",
+    .code       = "tpm-device",
     .name       = "TPM device",
     .type       = DMI_TYPE_TPM_DEVICE,
     .min_length = 0x1F,

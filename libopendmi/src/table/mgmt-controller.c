@@ -13,7 +13,7 @@ const dmi_attribute_t dmi_mgmt_controller_host_if_attrs[] =
 
 const dmi_table_spec_t dmi_mgmt_controller_host_if_table =
 {
-    .tag         = "mgmt-controller-host-if",
+    .code        = "mgmt-controller-host-if",
     .name        = "Management controller host interface",
     .type        = DMI_TYPE_MGMT_CONTROLLER_HOST_IF,
     .min_length  = 0x06,

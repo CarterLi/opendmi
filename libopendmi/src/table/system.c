@@ -101,7 +101,7 @@ const dmi_attribute_t dmi_system_attrs[] =
 
 const dmi_table_spec_t dmi_system_table =
 {
-    .tag           = "system",
+    .code          = "system",
     .name          = "System information",
     .type          = DMI_TYPE_SYSTEM,
     .required_from = DMI_VERSION(2, 3, 0),

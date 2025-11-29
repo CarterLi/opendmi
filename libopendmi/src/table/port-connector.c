@@ -455,7 +455,7 @@ const dmi_attribute_t dmi_port_connector_attrs[] =
 
 const dmi_table_spec_t dmi_port_connector_table =
 {
-    .tag        = "port",
+    .code       = "port",
     .name       = "Port connector information",
     .type       = DMI_TYPE_PORT_CONNECTOR,
     .min_length = 0x09,

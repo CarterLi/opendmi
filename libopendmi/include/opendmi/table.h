@@ -70,12 +70,12 @@ struct dmi_table_ops
 struct dmi_table_spec
 {
     /**
-     * @brief Table tag.
+     * @brief Code name, used to identify the table during serialization.
      */
-    const char *tag;
+    const char *code;
 
     /**
-     * @brief Table name.
+     * @brief Printable name, used to identify the table when printing.
      */
     const char *name;
 

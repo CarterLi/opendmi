@@ -294,7 +294,7 @@ static const dmi_attribute_t dmi_firmware_attrs[] =
 
 const dmi_table_spec_t dmi_firmware_table =
 {
-    .tag           = "firmware",
+    .code          = "firmware",
     .name          = "Platform firmware information",
     .type          = DMI_TYPE_FIRMWARE,
     .required_from = DMI_VERSION(2, 3, 0),

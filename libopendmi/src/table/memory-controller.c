@@ -13,7 +13,7 @@ const dmi_attribute_t dmi_memory_controller_attrs[] =
 
 const dmi_table_spec_t dmi_memory_controller_table =
 {
-    .tag        = "memory-controller",
+    .code       = "memory-controller",
     .name       = "Memory controller information",
     .type       = DMI_TYPE_MEMORY_CONTROLLER,
     .min_length = 0x08,

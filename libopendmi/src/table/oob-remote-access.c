@@ -13,7 +13,7 @@ const dmi_attribute_t dmi_oob_remote_access_attrs[] =
 
 const dmi_table_spec_t dmi_oob_remote_access_table =
 {
-    .tag         = "oob-remote-access",
+    .code        = "oob-remote-access",
     .name        = "Out-of-band remote access",
     .type        = DMI_TYPE_OOB_REMOTE_ACCESS,
     .min_version = DMI_VERSION(2, 2, 0),

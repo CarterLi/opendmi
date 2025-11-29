@@ -234,7 +234,7 @@ const dmi_attribute_t dmi_chassis_attrs[] =
 
 const dmi_table_spec_t dmi_chassis_table =
 {
-    .tag           = "chassis",
+    .code          = "chassis",
     .name          = "System enclosure or chassis",
     .type          = DMI_TYPE_CHASSIS,
     .required_from = DMI_VERSION(2, 3, 0),

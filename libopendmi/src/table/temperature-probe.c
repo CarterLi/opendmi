@@ -85,7 +85,7 @@ const dmi_attribute_t dmi_temperature_probe_attrs[] =
 
 const dmi_table_spec_t dmi_temperature_probe_table =
 {
-    .tag        = "temperature-probe",
+    .code       = "temperature-probe",
     .name       = "Temperature probe",
     .type       = DMI_TYPE_TEMPERATURE_PROBE,
     .min_length = 0x16,

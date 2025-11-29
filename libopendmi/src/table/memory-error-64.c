@@ -13,7 +13,7 @@
 
 const dmi_table_spec_t dmi_memory_error_64_table =
 {
-    .tag         = "memory-error-64",
+    .code        = "memory-error-64",
     .name        = "64-bit memory error information",
     .type        = DMI_TYPE_MEMORY_ERROR_64,
     .min_version = DMI_VERSION(2, 3, 0),

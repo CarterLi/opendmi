@@ -151,7 +151,7 @@ const dmi_attribute_t dmi_pointing_device_attrs[] =
 
 const dmi_table_spec_t dmi_pointing_device_table =
 {
-    .tag         = "pointing-device",
+    .code        = "pointing-device",
     .name        = "Built-in pointing device",
     .type        = DMI_TYPE_POINTING_DEVICE,
     .min_version = DMI_VERSION(2, 1, 0),

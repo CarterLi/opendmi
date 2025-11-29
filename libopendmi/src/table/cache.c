@@ -279,7 +279,7 @@ const dmi_attribute_t dmi_cache_attrs[] =
 
 const dmi_table_spec_t dmi_cache_table =
 {
-    .tag        = "cache",
+    .code       = "cache",
     .name       = "Cache information",
     .type       = DMI_TYPE_CACHE,
     .min_length = 0x0F,
