@@ -152,22 +152,15 @@ dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_table_t *table)
     dmi_onboard_device_t *info;
     const dmi_onboard_device_data_t *data;
 
-    if (!table) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_ONBOARD_DEVICE));
+    if (!data)
         return nullptr;
-    }
-    if (table->type != DMI_TYPE_ONBOARD_DEVICE) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
-        return nullptr;
-    }
 
     info = calloc(1, sizeof(*info));
     if (!info) {
         dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
-
-    data = dmi_cast(data, table->data);
 
     info->instance_count = (table->body_length - sizeof(dmi_header_t)) /
                            sizeof(dmi_onboard_device_instance_data_t);

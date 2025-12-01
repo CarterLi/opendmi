@@ -73,22 +73,15 @@ dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_table_t *table)
     dmi_onboard_device_ex_t *info;
     const dmi_onboard_device_ex_data_t *data;
 
-    if (!table) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_ONBOARD_DEVICE_EX));
+    if (!data)
         return nullptr;
-    }
-    if (table->type != DMI_TYPE_ONBOARD_DEVICE_EX) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
-        return nullptr;
-    }
 
     info = calloc(1, sizeof(*info));
     if (!info) {
         dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
-
-    data = dmi_cast(data, table->data);
 
     info->designator = dmi_table_string(table, data->designator);
 

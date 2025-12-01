@@ -206,22 +206,15 @@ dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_table_t *table
     dmi_firmware_inventory_t *info;
     const dmi_firmware_inventory_data_t *data;
 
-    if (!table) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_FIRMWARE_INVENTORY));
+    if (!data)
         return nullptr;
-    }
-    if (table->type != DMI_TYPE_FIRMWARE_INVENTORY) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
-        return nullptr;
-    }
 
     info = calloc(1, sizeof(*info));
     if (!info) {
         dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
-
-    data = dmi_cast(data, table->data);
 
     info->name           = dmi_table_string(table, data->name);
     info->version        = dmi_table_string(table, data->version);

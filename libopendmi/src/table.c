@@ -123,6 +123,20 @@ const char *dmi_table_name(const dmi_table_t *table)
     return dmi_type_name(table->context, table->type);
 }
 
+const void *dmi_table_data(const dmi_table_t *table, dmi_type_t type)
+{
+    if (table == nullptr) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return nullptr;
+    }
+    if ((type != DMI_TYPE_INVALID) and (table->type != type)) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return nullptr;
+    }
+
+    return table->data;
+}
+
 const char *dmi_table_string(const dmi_table_t *table, dmi_string_t num)
 {
     if (table == nullptr) {

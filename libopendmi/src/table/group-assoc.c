@@ -46,22 +46,15 @@ dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_table_t *table)
     dmi_group_assoc_t *info;
     const dmi_group_assoc_data_t *data;
 
-    if (!table) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_GROUP_ASSOC));
+    if (!data)
         return nullptr;
-    }
-    if (table->type != DMI_TYPE_GROUP_ASSOC) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
-        return nullptr;
-    }
 
     info = calloc(1, sizeof(*info));
     if (!info) {
         dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
-
-    data = dmi_cast(data, table->data);
 
     info->group_name  = dmi_table_string(table, data->group_name);
     info->item_type   = dmi_value(data->item_type);

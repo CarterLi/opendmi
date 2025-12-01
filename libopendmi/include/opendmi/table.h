@@ -252,6 +252,11 @@ dmi_type_t dmi_table_type(const dmi_table_t *table);
 const char *dmi_table_name(const dmi_table_t *table);
 
 /**
+ * @brief Get pointer to data area of DMI table of the specified type.
+ */
+const void *dmi_table_data(const dmi_table_t *table, dmi_type_t type);
+
+/**
  * @brief Get DMI table string.
  *
  * @param[in] table DMI table handle.

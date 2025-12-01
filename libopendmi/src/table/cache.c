@@ -357,22 +357,15 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
     dmi_cache_t *info;
     const dmi_cache_data_t *data;
 
-    if (table == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_CACHE));
+    if (!data)
         return nullptr;
-    }
-    if (table->type != DMI_TYPE_CACHE) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
-        return nullptr;
-    }
 
     info = calloc(1, sizeof(*info));
     if (info == nullptr) {
         dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
-
-    data = dmi_cast(data, table->data);
 
     // SMBIOS 2.0 features
     info->socket_designator = dmi_table_string(table, data->socket_designator);

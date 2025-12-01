@@ -66,22 +66,15 @@ dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_table_t 
     dmi_mgmt_device_threshold_t *info;
     dmi_mgmt_device_threshold_data_t *data;
 
-    if (!table) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_MGMT_DEVICE_THRESHOLD));
+    if (!data)
         return nullptr;
-    }
-    if (table->type != DMI_TYPE_MGMT_DEVICE_THRESHOLD) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
-        return nullptr;
-    }
 
     info = calloc(1, sizeof(*info));
     if (!info) {
         dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
-
-    data = dmi_cast(data, table->data);
 
     info->lower_non_critical    = dmi_value(data->lower_non_critical);
     info->upper_non_critical    = dmi_value(data->upper_non_critical);

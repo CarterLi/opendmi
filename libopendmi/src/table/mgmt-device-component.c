@@ -49,24 +49,17 @@ const dmi_table_spec_t dmi_mgmt_device_component_table =
 dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_table_t *table)
 {
     dmi_mgmt_device_component_t *info;
-    dmi_mgmt_device_component_data_t *data;
+    const dmi_mgmt_device_component_data_t *data;
 
-    if (!table) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_MGMT_DEVICE_COMPONENT));
+    if (!data)
         return nullptr;
-    }
-    if (table->type != DMI_TYPE_MGMT_DEVICE_COMPONENT) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
-        return nullptr;
-    }
 
     info = calloc(1, sizeof(*info));
     if (!info) {
         dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
-
-    data = dmi_cast(data, table->data);
 
     info->description      = dmi_table_string(table, data->description);
     info->device_handle    = dmi_value(data->device_handle);
