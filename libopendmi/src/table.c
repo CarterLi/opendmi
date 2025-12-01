@@ -129,13 +129,12 @@ const char *dmi_table_string(const dmi_table_t *table, dmi_string_t num)
         dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
         return nullptr;
     }
-
-    if (!num or (num > table->string_count)) {
+    if (num > table->string_count) {
         dmi_set_error(table->context, DMI_ERROR_ENTRY_NOT_FOUND);
         return nullptr;
     }
 
-    return table->strings[num - 1];
+    return num > 0 ? table->strings[num - 1] : nullptr;
 }
 
 void dmi_table_destroy(dmi_table_t *table)
