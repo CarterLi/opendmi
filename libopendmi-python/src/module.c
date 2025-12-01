@@ -6,11 +6,13 @@
 //
 #include <Python.h>
 
+#include <opendmi/python/context.h>
+
 static PyMethodDef methods[] = {
      { nullptr, nullptr, 0, nullptr }
 };
 
-static struct PyModuleDef module = {
+static struct PyModuleDef module_def = {
     .m_base    = PyModuleDef_HEAD_INIT,
     .m_name    = "opendmi",
     .m_doc     = "OpenDMI module",
@@ -20,11 +22,27 @@ static struct PyModuleDef module = {
 
 PyMODINIT_FUNC PyInit_opendmi(void)
 {
-    PyObject *mod;
+    PyObject *module;
 
-    mod = PyModule_Create(&module);
-    if (!mod)
+    // Create module
+    module = PyModule_Create(&module_def);
+    if (!module)
         return nullptr;
 
-    return mod;
+    // Initialize module
+    bool success = false;
+    do {
+        if (PyModule_AddType(module, &Context_type) < 0)
+            break;
+
+        success = true;
+    } while (false);
+
+    // Handle errors
+    if (!success) {
+        PyState_RemoveModule(&module_def);
+        return nullptr;
+    }
+
+    return module;
 }
