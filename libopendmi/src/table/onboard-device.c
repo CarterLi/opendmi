@@ -4,8 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/name.h>
 #include <opendmi/utils.h>
@@ -156,19 +154,16 @@ dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->instance_count = (table->body_length - sizeof(dmi_header_t)) /
                            sizeof(dmi_onboard_device_instance_data_t);
 
-    info->instances = calloc(info->instance_count, sizeof(dmi_onboard_device_instance_t));
+    info->instances = dmi_alloc_array(table->context, sizeof(dmi_onboard_device_instance_t), info->instance_count);
     if (!info->instances) {
-        free(info);
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+        dmi_free(info);
         return nullptr;
     }
 
@@ -190,6 +185,6 @@ dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_table_t *table)
 
 void dmi_onboard_device_free(dmi_onboard_device_t *info)
 {
-    free(info->instances);
-    free(info);
+    dmi_free(info->instances);
+    dmi_free(info);
 }

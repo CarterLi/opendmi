@@ -4,11 +4,10 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
-#include <opendmi/name.h>
 #include <opendmi/context.h>
+#include <opendmi/name.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/baseboard.h>
 
 static const dmi_name_t dmi_baseboard_type_names[] =
@@ -170,11 +169,9 @@ dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->vendor        = dmi_table_string(table, data->vendor);
     info->product       = dmi_table_string(table, data->product);
@@ -197,9 +194,9 @@ dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table)
     info->type           = dmi_value(data->type);
     info->children_count = dmi_value(data->children_count);
 
-    info->children = calloc(info->children_count, sizeof(dmi_handle_t));
+    info->children = dmi_alloc_array(table->context, sizeof(dmi_handle_t), info->children_count);
     if (!info->children) {
-        free(info);
+        dmi_free(info);
         return nullptr;
     }
 
@@ -211,6 +208,6 @@ dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table)
 
 void dmi_baseboard_free(dmi_baseboard_t *info)
 {
-    free(info->children);
-    free(info);
+    dmi_free(info->children);
+    dmi_free(info);
 }

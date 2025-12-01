@@ -179,7 +179,14 @@ extern const dmi_table_spec_t dmi_tpm_device_table;
 
 __BEGIN_DECLS
 
+/**
+ * @internal
+ */
 dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_tpm_device_free(dmi_tpm_device_t *info);
 
 __END_DECLS

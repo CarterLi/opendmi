@@ -4,8 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
 
@@ -34,11 +32,9 @@ dmi_memory_error_t *dmi_memory_error_64_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->type            = dmi_value(data->type);
     info->granularity     = dmi_value(data->granularity);

@@ -219,7 +219,14 @@ extern const dmi_table_spec_t dmi_memory_module_table;
 
 __BEGIN_DECLS
 
+/**
+ * @internal
+ */
 dmi_memory_module_t *dmi_memory_module_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_memory_module_free(dmi_memory_module_t *info);
 
 __END_DECLS

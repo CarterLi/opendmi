@@ -60,7 +60,14 @@ extern const dmi_table_spec_t dmi_system_config_opts_table;
 
 __BEGIN_DECLS
 
+/**
+ * @internal
+ */
 dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_system_config_opts_free(dmi_system_config_opts_t *info);
 
 __END_DECLS

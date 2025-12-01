@@ -345,7 +345,14 @@ const char *dmi_cache_location_name(dmi_cache_location_t value);
 dmi_size_t dmi_cache_size(uint16_t value);
 dmi_size_t dmi_cache_size_ex(uint32_t value);
 
+/**
+ * @internal
+ */
 dmi_cache_t *dmi_cache_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_cache_free(dmi_cache_t *info);
 
 __END_DECLS

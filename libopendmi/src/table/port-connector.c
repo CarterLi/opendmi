@@ -4,10 +4,10 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
-#include <opendmi/name.h>
 #include <opendmi/context.h>
+#include <opendmi/name.h>
+#include <opendmi/utils.h>
+
 #include <opendmi/table/port-connector.h>
 
 static const dmi_name_t dmi_connector_type_names[] =
@@ -485,11 +485,9 @@ dmi_port_connector_t *dmi_port_connector_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->internal_designator = dmi_table_string(table, data->internal_designator);
     info->internal_connector  = data->internal_connector;
@@ -502,5 +500,5 @@ dmi_port_connector_t *dmi_port_connector_decode(const dmi_table_t *table)
 
 void dmi_port_connector_free(dmi_port_connector_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

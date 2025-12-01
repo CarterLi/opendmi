@@ -4,10 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/group-assoc.h>
 
 const dmi_attribute_t dmi_group_assoc_attrs[] =
@@ -50,11 +49,9 @@ dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->group_name  = dmi_table_string(table, data->group_name);
     info->item_type   = dmi_value(data->item_type);
@@ -65,5 +62,5 @@ dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_table_t *table)
 
 void dmi_group_assoc_free(dmi_group_assoc_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

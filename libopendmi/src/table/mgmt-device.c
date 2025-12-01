@@ -4,11 +4,10 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
-#include <opendmi/name.h>
 #include <opendmi/context.h>
+#include <opendmi/name.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/mgmt-device.h>
 
 static const dmi_name_t dmi_mgmt_device_type_names[] =
@@ -167,11 +166,9 @@ dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->description = dmi_table_string(table, data->description);
     info->type        = dmi_value(data->type);
@@ -183,5 +180,5 @@ dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_table_t *table)
 
 void dmi_mgmt_device_free(dmi_mgmt_device_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

@@ -9,12 +9,13 @@
 #endif // !__linux__
 
 #include <sys/mman.h>
-#include <stdlib.h>
+
 #include <stdio.h>
 #include <limits.h>
 
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/backend/linux.h>
 
 typedef struct dmi_linux_session dmi_linux_session_t;
@@ -73,11 +74,9 @@ static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__
         return false;
     }
 
-    session = calloc(1, sizeof(*session));
-    if (!session) {
-        dmi_set_error(context, DMI_ERROR_OUT_OF_MEMORY);
+    session = dmi_alloc(context, sizeof(*session));
+    if (!session)
         return false;
-    }
 
     do {
         char path[PATH_MAX];
@@ -167,5 +166,5 @@ static void dmi_linux_session_free(dmi_linux_session_t *session)
     if (session->tables)
         munmap(session->tables, session->tables_size);
 
-    free(session);
+    dmi_free(session);
 }

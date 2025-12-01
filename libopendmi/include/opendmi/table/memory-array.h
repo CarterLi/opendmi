@@ -198,7 +198,14 @@ __BEGIN_DECLS
 const char *dmi_memory_array_location_name(enum dmi_memory_array_location value);
 const char *dmi_memory_array_usage_name(enum dmi_memory_array_usage value);
 
+/**
+ * @internal
+ */
 dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_memory_array_free(dmi_memory_array_t *info);
 
 __END_DECLS

@@ -119,7 +119,14 @@ extern const dmi_table_spec_t dmi_firmware_language_table;
 
 __BEGIN_DECLS
 
+/**
+ * @internal
+ */
 dmi_firmware_language_t *dmi_firmware_language_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_firmware_language_free(dmi_firmware_language_t *info);
 
 __END_DECLS

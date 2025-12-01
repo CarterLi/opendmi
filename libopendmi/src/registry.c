@@ -5,11 +5,11 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <string.h>
-#include <stdlib.h>
 
 #include <opendmi/registry.h>
 #include <opendmi/context.h>
 #include <opendmi/table.h>
+#include <opendmi/utils.h>
 
 /**
  * @internal
@@ -23,24 +23,18 @@ dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity)
     if (!capacity)
         capacity = DMI_REGISTRY_CAPACITY;
 
-    registry = malloc(sizeof(*registry));
-    if (registry == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_OUT_OF_MEMORY);
+    registry = dmi_alloc(context, sizeof(*registry));
+    if (registry == nullptr)
         return nullptr;
-    }
-
-    memset(registry, 0, sizeof(*registry));
 
     registry->context  = context;
     registry->capacity = capacity;
 
     bool success = false;
     do {
-        registry->index = calloc(capacity, sizeof(dmi_registry_entry_t *));
-        if (!registry->index) {
-            dmi_set_error(registry->context, DMI_ERROR_OUT_OF_MEMORY);
+        registry->index = dmi_alloc_array(context, sizeof(dmi_registry_entry_t *), capacity);
+        if (!registry->index)
             break;
-        }
 
         success = true;
     } while (false);
@@ -88,16 +82,16 @@ void dmi_registry_destroy(dmi_registry_t *registry)
                 next = entry->next;
 
                 dmi_table_destroy(entry->table);
-                free(entry);
+                dmi_free(entry);
 
                 entry = next;
             }
         }
     
-        free(registry->index);
+        dmi_free(registry->index);
     }
 
-    free(registry);
+    dmi_free(registry);
 }
 
 bool dmi_registry_build(dmi_registry_t *registry)
@@ -167,11 +161,9 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
     dmi_registry_entry_t *last;
 
     // Allocate new entry
-    entry = malloc(sizeof(dmi_registry_entry_t));
-    if (entry == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_OUT_OF_MEMORY);
+    entry = dmi_alloc(registry->context, sizeof(dmi_registry_entry_t));
+    if (entry == nullptr)
         return false;
-    }
 
     // Initialize entry
     memset(entry, 0, sizeof(dmi_registry_entry_t));
@@ -186,7 +178,7 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
     } else {
         while (true) {
             if (last->table->handle == table->handle) {
-                free(entry);
+                dmi_free(entry);
                 dmi_set_error(nullptr, DMI_ERROR_DUPLICATE_ENTRY);
                 return false;
             }

@@ -119,7 +119,14 @@ __BEGIN_DECLS
 const char *dmi_mgmt_device_type_name(enum dmi_mgmt_device_type value);
 const char *dmi_mgmt_device_addr_type_name(enum dmi_mgmt_device_addr_type value);
 
+/**
+ * @internal
+ */
 dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_mgmt_device_free(dmi_mgmt_device_t *info);
 
 __END_DECLS

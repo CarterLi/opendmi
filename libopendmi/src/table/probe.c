@@ -4,11 +4,12 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
 #include <limits.h>
 
+#include <opendmi/context.h>
 #include <opendmi/name.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/probe.h>
 
 static short dmi_probe_value(dmi_word_t value);
@@ -103,7 +104,7 @@ dmi_probe_t * dmi_probe_decode(dmi_table_t *table)
     dmi_probe_t *info = nullptr;
     dmi_probe_data_t *data = dmi_cast(data, table->data);
 
-    info = calloc(1, sizeof(*info));
+    info = dmi_alloc(table->context, sizeof(*info));
     if (!info)
         return nullptr;
 
@@ -142,5 +143,5 @@ static short dmi_probe_value(dmi_word_t value)
 
 void dmi_probe_free(dmi_probe_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

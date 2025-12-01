@@ -114,7 +114,14 @@ __BEGIN_DECLS
 const char *dmi_pointing_device_type_name(dmi_pointing_device_type_t value);
 const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t value);
 
+/**
+ * @internal
+ */
 dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_pointing_device_free(dmi_pointing_device_t *info);
 
 __END_DECLS

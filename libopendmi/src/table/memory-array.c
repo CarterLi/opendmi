@@ -4,11 +4,10 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/name.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/memory-array.h>
 
 static const dmi_name_t dmi_memory_array_location_names[] =
@@ -197,11 +196,9 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->location = data->location;
     info->usage    = data->usage;
@@ -221,5 +218,5 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table)
 
 void dmi_memory_array_free(dmi_memory_array_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

@@ -84,12 +84,8 @@ static bool dmi_dump_close(dmi_context_t *context)
 {
     dmi_dump_session_t *session = dmi_cast(session, context->session);
 
-    if (session->data) {
-        free(session->data);
-        session->data = nullptr;
-    }
-
-    free(session);
+    dmi_free(session->data);
+    dmi_free(session);
 
     return true;
 }

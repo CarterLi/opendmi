@@ -183,7 +183,14 @@ __BEGIN_DECLS
 
 const char *dmi_boot_option_name(dmi_boot_option_t value);
 
+/**
+ * @internal
+ */
 dmi_system_reset_t *dmi_system_reset_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_system_reset_free(dmi_system_reset_t *info);
 
 __END_DECLS

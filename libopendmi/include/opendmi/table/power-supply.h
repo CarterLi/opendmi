@@ -311,7 +311,14 @@ __BEGIN_DECLS
 const char *dmi_power_supply_type_name(dmi_power_supply_type_t value);
 const char *dmi_range_switching_type_name(dmi_range_switching_type_t value);
 
+/**
+ * @internal
+ */
 dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_power_supply_free(dmi_power_supply_t *info);
 
 __END_DECLS

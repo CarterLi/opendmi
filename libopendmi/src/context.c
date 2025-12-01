@@ -5,11 +5,11 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <string.h>
-#include <stdlib.h>
 
 #include <opendmi/context.h>
 #include <opendmi/entry.h>
 #include <opendmi/table.h>
+#include <opendmi/utils.h>
 
 #include <opendmi/table/additional-info.h>
 #include <opendmi/table/baseboard.h>
@@ -170,19 +170,14 @@ dmi_context_t *dmi_create(void)
     dmi_context_t *context = nullptr;
 
     // Allocate context descriptor
-    context = malloc(sizeof(dmi_context_t));
-    if (context == nullptr) {
-        dmi_set_error(nullptr,  DMI_ERROR_OUT_OF_MEMORY);
+    context = dmi_alloc(nullptr, sizeof(dmi_context_t));
+    if (context == nullptr)
         return nullptr;
-    }
-
-    // Initialize context
-    memset(context, 0, sizeof(dmi_context_t));
 
     // Allocate type map
-    context->type_map = calloc(0x100, sizeof(dmi_table_spec_t *));
+    context->type_map = dmi_alloc_array(context, sizeof(dmi_table_spec_t *), 0x100);
     if (!context->type_map) {
-        free(context);
+        dmi_free(context);
         dmi_set_error(nullptr,  DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;    
     }
@@ -301,8 +296,8 @@ void dmi_destroy(dmi_context_t *context)
     // Close and free context
     dmi_close(context);
 
-    free(context->type_map);
-    free(context);
+    dmi_free(context->type_map);
+    dmi_free(context);
 }
 
 static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const void *arg)

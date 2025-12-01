@@ -4,7 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
 #include <limits.h>
 
 #include <opendmi/context.h>
@@ -662,11 +661,9 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->array_handle      = dmi_value(data->array_handle);
     info->error_info_handle = dmi_value(data->error_info_handle);
@@ -767,16 +764,10 @@ bool dmi_memory_device_link(dmi_table_t *table)
     dmi_memory_device_t *info;
     dmi_registry_t *registry;
 
-    if (!table) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    info = dmi_cast(info, dmi_table_info(table, DMI_TYPE_MEMORY_DEVICE));
+    if (!info)
         return false;
-    }
-    if (table->type != DMI_TYPE_MEMORY_DEVICE) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
-        return false;
-    }
 
-    info = dmi_cast(info, table->info);
     registry = table->context->registry;
 
     if (info->array_handle != DMI_HANDLE_INVALID) {
@@ -798,5 +789,5 @@ bool dmi_memory_device_link(dmi_table_t *table)
 
 void dmi_memory_device_free(dmi_memory_device_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

@@ -4,8 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/name.h>
 #include <opendmi/utils.h>
@@ -337,11 +335,9 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     dmi_firmware_features_t features = {
         ._value = dmi_value(data->features)
@@ -392,5 +388,5 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table)
 
 void dmi_firmware_free(dmi_firmware_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

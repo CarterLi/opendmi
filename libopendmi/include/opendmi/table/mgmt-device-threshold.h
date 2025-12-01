@@ -112,7 +112,14 @@ extern const dmi_table_spec_t dmi_mgmt_device_threshold_table;
 
 __BEGIN_DECLS
 
+/**
+ * @internal
+ */
 dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_mgmt_device_threshold_free(dmi_mgmt_device_threshold_t *info);
 
 __END_DECLS

@@ -4,10 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/system-config.h>
 
 const dmi_attribute_t dmi_system_config_opts_attrs[] =
@@ -45,17 +44,15 @@ dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_table_t *table
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->option_count = dmi_value(data->count);
 
-    info->options = calloc(info->option_count, sizeof(const char *));
+    info->options = dmi_alloc_array(table->context, sizeof(const char *), info->option_count);
     if (!info->options) {
-        free(info);
+        dmi_free(info);
         dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
@@ -69,6 +66,6 @@ dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_table_t *table
 
 void dmi_system_config_opts_free(dmi_system_config_opts_t *info)
 {
-    free(info->options);
-    free(info);
+    dmi_free(info->options);
+    dmi_free(info);
 }

@@ -4,7 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
 #include <limits.h>
 
 #include <opendmi/context.h>
@@ -70,11 +69,9 @@ dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_table_t 
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->lower_non_critical    = dmi_value(data->lower_non_critical);
     info->upper_non_critical    = dmi_value(data->upper_non_critical);
@@ -88,5 +85,5 @@ dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_table_t 
 
 void dmi_mgmt_device_threshold_free(dmi_mgmt_device_threshold_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

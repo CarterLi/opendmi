@@ -79,6 +79,9 @@ extern const dmi_table_spec_t dmi_memory_error_32_table;
 
 __BEGIN_DECLS
 
+/**
+ * @internal
+ */
 dmi_memory_error_t *dmi_memory_error_32_decode(const dmi_table_t *table);
 
 __END_DECLS

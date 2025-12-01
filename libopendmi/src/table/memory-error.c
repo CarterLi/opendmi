@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
+#include <opendmi/utils.h>
 
 #include <opendmi/table/memory-error.h>
 
@@ -192,5 +192,5 @@ const char *dmi_memory_error_operation_name(dmi_memory_error_operation_t value)
 
 void dmi_memory_error_free(dmi_memory_error_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

@@ -4,11 +4,10 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
-#include <opendmi/name.h>
 #include <opendmi/context.h>
+#include <opendmi/name.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/tpm-device.h>
 
 static const dmi_name_t dmi_tpm_device_feature_names[] =
@@ -87,11 +86,9 @@ dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     // Copy vendor identifier
     for (unsigned int i = 0; i < sizeof(data->vendor_id); i++)
@@ -126,5 +123,5 @@ dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_table_t *table)
 
 void dmi_tpm_device_free(dmi_tpm_device_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

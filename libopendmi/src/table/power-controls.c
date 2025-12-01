@@ -4,10 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/power-controls.h>
 
 const dmi_attribute_t dmi_power_controls_attrs[] =
@@ -58,11 +57,9 @@ dmi_power_controls_t *dmi_power_controls_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->poweron_month  = dmi_cast(info->poweron_month,
                                     dmi_decode_bcd(&data->poweron_month, sizeof(data->poweron_month)));
@@ -80,5 +77,5 @@ dmi_power_controls_t *dmi_power_controls_decode(const dmi_table_t *table)
 
 void dmi_power_controls_free(dmi_power_controls_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

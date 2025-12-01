@@ -110,7 +110,14 @@ extern const dmi_table_spec_t dmi_power_controls_table;
 
 __BEGIN_DECLS
 
+/**
+ * @internal
+ */
 dmi_power_controls_t *dmi_power_controls_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_power_controls_free(dmi_power_controls_t *info);
 
 __END_DECLS

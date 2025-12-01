@@ -4,11 +4,11 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
 #include <limits.h>
 
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/memory-device-addr.h>
 
 const dmi_attribute_t dmi_memory_device_addr_attrs[] =
@@ -74,11 +74,9 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     if ((table->body_length >= 0x13) and (data->start_addr == 0xFFFFFFFFU)) {
         info->start_addr = dmi_value(data->start_addr_ex);
@@ -103,10 +101,10 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table
     info->interleave_depth = data->interleave_depth != 0xFFU ?
                              data->interleave_depth : USHRT_MAX;
 
-return info;
+    return info;
 }
 
 void dmi_memory_device_addr_free(dmi_memory_device_addr_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

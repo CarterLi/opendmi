@@ -60,7 +60,14 @@ extern const dmi_table_spec_t dmi_oem_strings_table;
 
 __BEGIN_DECLS
 
+/**
+ * @internal
+ */
 dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_oem_strings_free(dmi_oem_strings_t *info);
 
 __END_DECLS

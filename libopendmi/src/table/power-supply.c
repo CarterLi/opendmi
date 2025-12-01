@@ -4,12 +4,12 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
 #include <limits.h>
 
-#include <opendmi/name.h>
 #include <opendmi/context.h>
+#include <opendmi/name.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/power-supply.h>
 
 static const dmi_name_t dmi_power_supply_type_names[] =
@@ -208,11 +208,9 @@ dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->group            = data->group;
     info->location         = dmi_table_string(table, data->location);
@@ -244,5 +242,5 @@ dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table)
 
 void dmi_power_supply_free(dmi_power_supply_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

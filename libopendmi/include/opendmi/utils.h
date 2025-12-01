@@ -13,6 +13,9 @@
 
 __BEGIN_DECLS
 
+void *dmi_alloc(dmi_context_t *context, size_t size);
+void dmi_free(void *ptr);
+
 bool dmi_checksum(const void *data, size_t length);
 
 uint16_t dmi_bswap16(uint16_t value);
@@ -41,6 +44,11 @@ dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *pleng
 #endif // !defined(_WIN32)
 
 __END_DECLS
+
+static inline void *dmi_alloc_array(dmi_context_t *context, size_t size, size_t count)
+{
+    return dmi_alloc(context, size * count);
+}
 
 static inline uint8_t dmi_decode_byte(dmi_byte_t value) { return value; }
 

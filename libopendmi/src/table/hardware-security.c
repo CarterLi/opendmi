@@ -4,10 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
 
 #include <opendmi/table/hardware-security.h>
 
@@ -89,11 +88,9 @@ dmi_hardware_security_t *dmi_hardware_security_decode(dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->front_panel_reset = data->settings.front_panel_reset;
     info->admin_password    = data->settings.admin_password;
@@ -105,5 +102,5 @@ dmi_hardware_security_t *dmi_hardware_security_decode(dmi_table_t *table)
 
 void dmi_hardware_security_free(dmi_hardware_security_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

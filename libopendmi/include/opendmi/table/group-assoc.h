@@ -76,7 +76,14 @@ extern const dmi_table_spec_t dmi_group_assoc_table;
 
 __BEGIN_DECLS
 
+/**
+ * @internal
+ */
 dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_group_assoc_free(dmi_group_assoc_t *info);
 
 __END_DECLS

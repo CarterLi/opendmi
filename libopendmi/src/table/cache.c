@@ -4,13 +4,10 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <string.h>
-#include <stdlib.h>
-#include <errno.h>
-
 #include <opendmi/context.h>
 #include <opendmi/name.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/cache.h>
 
 static const dmi_name_t dmi_cache_type_names[] =
@@ -310,24 +307,6 @@ const char *dmi_cache_location_name(dmi_cache_location_t value)
     return dmi_name_lookup(dmi_cache_location_names, value);
 }
 
-struct dmi_cache *dmi_cache_info_create(struct dmi_cache_data *table)
-{
-    struct dmi_cache *info;
-
-    if (!table) {
-        errno = EINVAL;
-        return nullptr;
-    }
-
-    info = malloc(sizeof(struct dmi_cache));
-    if (!info) {
-        errno = ENOMEM;
-        return nullptr;
-    }
-
-    return info;
-}
-
 dmi_size_t dmi_cache_size(uint16_t value)
 {
     dmi_size_t size = value & 0x7FFFU;
@@ -361,11 +340,9 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (info == nullptr) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (info == nullptr)
         return nullptr;
-    }
 
     // SMBIOS 2.0 features
     info->socket_designator = dmi_table_string(table, data->socket_designator);
@@ -406,5 +383,5 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
 
 void dmi_cache_free(dmi_cache_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

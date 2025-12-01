@@ -4,8 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/name.h>
 #include <opendmi/utils.h>
@@ -210,11 +208,9 @@ dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_table_t *table
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->name           = dmi_table_string(table, data->name);
     info->version        = dmi_table_string(table, data->version);
@@ -234,10 +230,9 @@ dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_table_t *table
     info->state           = dmi_value(data->state);
     info->component_count = dmi_value(data->component_count);
 
-    info->component_handles = calloc(info->component_count, sizeof(dmi_handle_t));
+    info->component_handles = dmi_alloc_array(table->context, sizeof(dmi_handle_t), info->component_count);
     if (!info->component_handles) {
-        free(info);
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+        dmi_free(info);
         return nullptr;
     }
 
@@ -250,7 +245,7 @@ dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_table_t *table
 
 void dmi_firmware_inventory_free(dmi_firmware_inventory_t *info)
 {
-    free(info->component_handles);
-    free(info->components);
-    free(info);
+    dmi_free(info->component_handles);
+    dmi_free(info->components);
+    dmi_free(info);
 }

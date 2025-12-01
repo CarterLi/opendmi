@@ -4,10 +4,10 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
-#include <opendmi/name.h>
 #include <opendmi/context.h>
+#include <opendmi/name.h>
+#include <opendmi/utils.h>
+
 #include <opendmi/table/pointing-device.h>
 
 static const dmi_name_t dmi_pointing_device_type_names[] =
@@ -182,11 +182,9 @@ dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->type         = data->type;
     info->interface    = data->interface;
@@ -197,5 +195,5 @@ dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table)
 
 void dmi_pointing_device_free(dmi_pointing_device_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

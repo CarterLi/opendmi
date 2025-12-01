@@ -14,6 +14,8 @@
 
 #include <opendmi/context.h>
 #include <opendmi/log.h>
+#include <opendmi/utils.h>
+
 #include <opendmi/backend/darwin.h>
 
 typedef struct dmi_darwin_session dmi_darwin_session_t;
@@ -76,7 +78,7 @@ static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute_
     } while (false);
 
     if (!success) {
-        free(session);
+        dmi_free(session);
         return false;
     }
 
@@ -108,20 +110,17 @@ static bool dmi_darwin_close(dmi_context_t *context)
 
     dmi_darwin_session_t *session = dmi_cast(session, context->session);
 
-    if (context->table_data != nullptr) {
-        free(context->table_data);
-        context->table_data = nullptr;
-    }
-    if (context->entry_data != nullptr) {
-        free(context->entry_data);
-        context->entry_data = nullptr;
-    }
-
     if (session->service != MACH_PORT_NULL)
         IOObjectRelease(session->service);
 
-    free(session);
-    context->backend = nullptr;
+    dmi_free(context->table_data);
+    dmi_free(context->entry_data);
+    dmi_free(session);
+
+    context->table_data = nullptr;
+    context->entry_data = nullptr;
+    context->session    = nullptr;
+    context->backend    = nullptr;
 
     return true;
 }
@@ -169,9 +168,7 @@ static dmi_data_t *dmi_darwin_read_data(dmi_context_t *context, CFStringRef key,
         CFRelease(ref);
     
     if (!success) {
-        if (data != nullptr)
-            free(data);
-
+        dmi_free(data);
         return nullptr;
     }
 

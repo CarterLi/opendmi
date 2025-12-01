@@ -4,10 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/memory-array-addr.h>
 
 const dmi_attribute_t dmi_memory_array_addr_attrs[] =
@@ -88,11 +87,9 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     if ((table->body_length >= 0x1F) and (data->start_addr == 0xFFFFFFFFU)) {
         info->start_addr = dmi_value(data->start_addr_ex);
@@ -115,5 +112,5 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table)
 
 void dmi_memory_array_addr_free(dmi_memory_array_addr_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

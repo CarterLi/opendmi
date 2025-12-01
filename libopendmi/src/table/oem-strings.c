@@ -4,8 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
 
@@ -46,17 +44,15 @@ dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_table_t *table)
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->string_count = dmi_value(data->count);
 
-    info->strings = calloc(info->string_count, sizeof(const char *));
+    info->strings = dmi_alloc_array(table->context, sizeof(const char *), info->string_count);
     if (!info->strings) {
-        free(info);
+        dmi_free(info);
         return nullptr;
     }
 
@@ -69,6 +65,6 @@ dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_table_t *table)
 
 void dmi_oem_strings_free(dmi_oem_strings_t *info)
 {
-    free(info->strings);
-    free(info);
+    dmi_free(info->strings);
+    dmi_free(info);
 }

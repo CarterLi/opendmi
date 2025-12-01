@@ -5,9 +5,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <string.h>
-#include <stdlib.h>
 #include <stdbool.h>
-#include <errno.h>
 
 #include <opendmi/context.h>
 #include <opendmi/table.h>
@@ -51,12 +49,9 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
     }
 
     // Allocate new table descriptor
-    table = malloc(sizeof(dmi_table_t));
-    if (table == nullptr) {
-        dmi_set_error(context, DMI_ERROR_OUT_OF_MEMORY);
+    table = dmi_alloc(context, sizeof(dmi_table_t));
+    if (table == nullptr)
         return nullptr;
-    }
-    memset(table, 0, sizeof(dmi_table_t));
 
     // Decode table header
     table->context     = context;
@@ -137,6 +132,20 @@ const void *dmi_table_data(const dmi_table_t *table, dmi_type_t type)
     return table->data;
 }
 
+const void *dmi_table_info(const dmi_table_t *table, dmi_type_t type)
+{
+    if (table == nullptr) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return nullptr;
+    }
+    if ((type != DMI_TYPE_INVALID) and (table->type != type)) {
+        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        return nullptr;
+    }
+
+    return table->info;
+}
+
 const char *dmi_table_string(const dmi_table_t *table, dmi_string_t num)
 {
     if (table == nullptr) {
@@ -160,13 +169,11 @@ void dmi_table_destroy(dmi_table_t *table)
         if (table->spec->handlers.free)
             table->spec->handlers.free(table->info);
         else
-            free(table->info);
+            dmi_free(table->info);
     }
 
-    if (table->strings != nullptr)
-        free(table->strings);
-
-    free(table);
+    dmi_free(table->strings);
+    dmi_free(table);
 }
 
 static bool dmi_table_decode_length(dmi_table_t *table)
@@ -227,11 +234,9 @@ static bool dmi_table_decode_strings(dmi_table_t *table)
     size_t      index = 0;
 
     // Allocate strings index
-    table->strings = calloc(table->string_count + 1, sizeof(const char *));
-    if (table->strings == nullptr) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    table->strings = dmi_alloc_array(table->context, sizeof(const char *), table->string_count + 1);
+    if (table->strings == nullptr)
         return false;
-    }
 
     // Fetch string pointers
     if (table->string_count > 0) {

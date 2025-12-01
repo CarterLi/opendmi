@@ -44,6 +44,25 @@ typedef struct _stat stat_t;
 typedef struct stat stat_t;
 #endif // !defined(_WIN32)
 
+void *dmi_alloc(dmi_context_t *context, size_t size)
+{
+    void *ptr;
+
+    ptr = calloc(1, size);
+    if (ptr == nullptr)
+        dmi_set_error(context, DMI_ERROR_OUT_OF_MEMORY);
+
+    return ptr;
+}
+
+void dmi_free(void *ptr)
+{
+    if (ptr == nullptr)
+        return;
+
+    free(ptr);
+}
+
 bool dmi_checksum(const void *data, size_t length)
 {
     if (data == nullptr) {

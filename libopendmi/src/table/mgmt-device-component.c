@@ -4,8 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <stdlib.h>
-
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
 
@@ -55,11 +53,9 @@ dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_table_t 
     if (!data)
         return nullptr;
 
-    info = calloc(1, sizeof(*info));
-    if (!info) {
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
         return nullptr;
-    }
 
     info->description      = dmi_table_string(table, data->description);
     info->device_handle    = dmi_value(data->device_handle);
@@ -74,16 +70,10 @@ bool dmi_mgmt_device_component_link(dmi_table_t *table)
     dmi_mgmt_device_component_t *info;
     dmi_registry_t *registry;
 
-    if (!table) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    info = dmi_cast(info, dmi_table_info(table, DMI_TYPE_MGMT_DEVICE_COMPONENT));
+    if (!info)
         return false;
-    }
-    if (table->type != DMI_TYPE_MGMT_DEVICE_COMPONENT) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
-        return false;
-    }
 
-    info     = dmi_cast(info, table->info);
     registry = table->context->registry;
 
     info->device = dmi_registry_get(registry, info->device_handle);
@@ -105,5 +95,5 @@ bool dmi_mgmt_device_component_link(dmi_table_t *table)
 
 void dmi_mgmt_device_component_free(dmi_mgmt_device_component_t *info)
 {
-    free(info);
+    dmi_free(info);
 }

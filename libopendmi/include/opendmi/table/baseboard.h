@@ -284,7 +284,14 @@ __BEGIN_DECLS
 
 const char *dmi_baseboard_type_name(enum dmi_baseboard_type value);
 
+/**
+ * @internal
+ */
 dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_baseboard_free(dmi_baseboard_t *info);
 
 __END_DECLS

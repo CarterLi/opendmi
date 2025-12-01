@@ -146,7 +146,15 @@ extern const dmi_table_spec_t dmi_memory_array_addr_table;
 __BEGIN_DECLS
 
 bool dmi_memory_array_addr_validate(dmi_table_t *table);
+
+/**
+ * @internal
+ */
 dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table);
+
+/**
+ * @internal
+ */
 void dmi_memory_array_addr_free(dmi_memory_array_addr_t *info);
 
 __END_DECLS
