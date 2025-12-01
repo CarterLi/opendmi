@@ -13,9 +13,7 @@ typedef struct
 
 static void Context_dealloc(Context *self)
 {
-    PyObject *obj = (PyObject *)self;
-
-    obj->ob_type->tp_free(obj);
+    Py_TYPE(self)->tp_free(self);
 }
 
 static PyObject *Context_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
@@ -50,40 +48,15 @@ static PyMethodDef Context_methods[] =
 };
 
 PyTypeObject Context_type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+    .ob_base           = PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name           = "opendmi.Context",
+    .tp_doc            = PyDoc_STR("OpenDMI context"),
     .tp_basicsize      = sizeof(Context),
     .tp_itemsize       = 0,
-    .tp_dealloc        = (destructor)Context_dealloc,
-    .tp_getattr        = 0,
-    .tp_setattr        = 0,
-    .tp_repr           = 0,
-    .tp_as_number      = 0,
-    .tp_as_sequence    = 0,
-    .tp_as_mapping     = 0,
-    .tp_hash           = 0,
-    .tp_call           = 0,
-    .tp_str            = 0,
-    .tp_getattro       = 0,
-    .tp_setattro       = 0,
-    .tp_as_buffer      = 0,
     .tp_flags          = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,
-    .tp_doc            = "OpenDMI context",
-    .tp_traverse       = 0,
-    .tp_clear          = 0,
-    .tp_richcompare    = 0,
-    .tp_weaklistoffset = 0,
-    .tp_iter           = 0,
-    .tp_iternext       = 0,
-    .tp_methods        = Context_methods,
-    .tp_members        = Context_members,
-    .tp_getset         = 0,
-    .tp_base           = 0,
-    .tp_dict           = 0,
-    .tp_descr_get      = 0,
-    .tp_descr_set      = 0,
-    .tp_dictoffset     = 0,
+    .tp_new            = (newfunc)Context_new,
     .tp_init           = (initproc)Context_init,
-    .tp_alloc          = 0,
-    .tp_new            = (newfunc)Context_new
+    .tp_dealloc        = (destructor)Context_dealloc,
+    .tp_members        = Context_members,
+    .tp_methods        = Context_methods
 };

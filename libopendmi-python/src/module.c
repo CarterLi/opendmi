@@ -8,41 +8,38 @@
 
 #include <opendmi/python/context.h>
 
-static PyMethodDef methods[] = {
+static int dmi_mod_exec(PyObject *module);
+
+static PyMethodDef dmi_methods[] = {
      { nullptr, nullptr, 0, nullptr }
 };
 
-static struct PyModuleDef module_def = {
+static PyModuleDef_Slot dmi_slots[] = {
+    { Py_mod_exec,                  (void *)dmi_mod_exec                       },
+    { Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED },
+    { 0, NULL}
+};
+
+static struct PyModuleDef dmi_module = {
     .m_base    = PyModuleDef_HEAD_INIT,
     .m_name    = "opendmi",
     .m_doc     = "OpenDMI module",
-    .m_size    = -1,
-    .m_methods = methods
+    .m_size    = 0,
+    .m_methods = dmi_methods,
+    .m_slots   = dmi_slots
 };
+
+static int dmi_mod_exec(PyObject *module)
+{
+    if (PyType_Ready(&Context_type) < 0)
+        return -1;
+    if (PyModule_AddObjectRef(module, "Context", (PyObject *)&Context_type) < 0)
+        return -1;
+
+    return 0;
+}
 
 PyMODINIT_FUNC PyInit_opendmi(void)
 {
-    PyObject *module;
-
-    // Create module
-    module = PyModule_Create(&module_def);
-    if (!module)
-        return nullptr;
-
-    // Initialize module
-    bool success = false;
-    do {
-        if (PyModule_AddType(module, &Context_type) < 0)
-            break;
-
-        success = true;
-    } while (false);
-
-    // Handle errors
-    if (!success) {
-        PyState_RemoveModule(&module_def);
-        return nullptr;
-    }
-
-    return module;
+    return PyModuleDef_Init(&dmi_module);
 }
