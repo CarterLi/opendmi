@@ -12,7 +12,7 @@
 
 #include <opendmi/table/onboard-device.h>
 
-static const dmi_name_t dmi_onboard_device_type_names[] =
+const dmi_name_t dmi_onboard_device_type_names[] =
 {
     {
         .id   = DMI_ONBOARD_DEVICE_TYPE_OTHER,
@@ -63,6 +63,36 @@ static const dmi_name_t dmi_onboard_device_type_names[] =
         .id   = DMI_ONBOARD_DEVICE_TYPE_SAS_CONTROLLER,
         .code = "sas-controller",
         .name = "SAS controller"
+    },
+    {
+        .id   = DMI_ONBOARD_DEVICE_TYPE_WIRELESS_LAN,
+        .code = "wireless lan",
+        .name = "Wireless LAN"
+    },
+    {
+        .id   = DMI_ONBOARD_DEVICE_TYPE_BLUETOOTH,
+        .code = "bluetooth",
+        .name = "Bluetooth"
+    },
+    {
+        .id   = DMI_ONBOARD_DEVICE_TYPE_WIRELESS_WAN,
+        .code = "wireless-wan",
+        .name = "Wireless WAN"
+    },
+    {
+        .id   = DMI_ONBOARD_DEVICE_TYPE_EMM_CONTROLLER,
+        .code = "emm-controller",
+        .name = "eMM controller"
+    },
+    {
+        .id   = DMI_ONBOARD_DEVICE_TYPE_NVME_CONTROLLER,
+        .code = "nvme-controller",
+        .name = "NVMe controller"
+    },
+    {
+        .id   = DMI_ONBOARD_DEVICE_TYPE_UFS_CONTROLLER,
+        .code = "ufs-controller",
+        .name = "UFS controller"
     },
     DMI_NAME_NULL
 };

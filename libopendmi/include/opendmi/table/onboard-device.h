@@ -26,6 +26,13 @@ typedef enum dmi_onboard_device_type
     DMI_ONBOARD_DEVICE_TYPE_PATA_CONTROLLER = 0x08, ///< PATA Controller
     DMI_ONBOARD_DEVICE_TYPE_SATA_CONTROLLER = 0x09, ///< SATA Controller
     DMI_ONBOARD_DEVICE_TYPE_SAS_CONTROLLER  = 0x0A, ///< SAS Controller
+    DMI_ONBOARD_DEVICE_TYPE_WIRELESS_LAN    = 0x0B, ///< Wireless LAN
+    DMI_ONBOARD_DEVICE_TYPE_BLUETOOTH       = 0x0C, ///< Bluetooth
+    DMI_ONBOARD_DEVICE_TYPE_WIRELESS_WAN    = 0x0D, ///< Wireless WAN
+    DMI_ONBOARD_DEVICE_TYPE_EMM_CONTROLLER  = 0x0E, ///< eMMC (Embedded multimedia controller)
+    DMI_ONBOARD_DEVICE_TYPE_NVME_CONTROLLER = 0x0F, ///< NVMe controller
+    DMI_ONBOARD_DEVICE_TYPE_UFS_CONTROLLER  = 0x10, ///< UFS controller
+    __DMI_ONBOARD_DEVICE_TYPE_COUNT
 } dmi_onboard_device_type_t;
 
 #ifndef DMI_ONBOARD_DEVICE_INSTANCE_DETAILS_T
@@ -146,6 +153,11 @@ struct dmi_onboard_device
      */
     dmi_onboard_device_instance_t *instances;
 };
+
+/**
+ * @brief Onboard device type names.
+ */
+extern const dmi_name_t dmi_onboard_device_type_names[];
 
 /**
  * @brief Onboard devices information table specification.
