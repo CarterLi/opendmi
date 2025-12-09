@@ -4,10 +4,69 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <opendmi/context.h>
+#include <opendmi/name.h>
+#include <opendmi/utils.h>
 #include <opendmi/table/memory-channel.h>
 
-const dmi_attribute_t dmi_memory_channel_attrs[] =
+static const dmi_name_t dmi_memory_channel_type_names[] =
 {
+    {
+        .id   = DMI_MEMORY_CHANNEL_TYPE_OTHER,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = DMI_MEMORY_CHANNEL_TYPE_UNKNOWN,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = DMI_MEMORY_CHANNEL_TYPE_RAMBUS,
+        .code = "rambus",
+        .name = "RamBus"
+    },
+    {
+        .id   = DMI_MEMORY_CHANNEL_TYPE_SYNCLINK,
+        .code = "synclink",
+        .name = "SyncLink"
+    },
+    DMI_NAME_NULL
+};
+
+static const dmi_attribute_t dmi_memory_device_channel_attrs[] =
+{
+    DMI_ATTRIBUTE(dmi_memory_channel_device_t, load, INTEGER, {
+        .code = "load",
+        .name = "Load"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_channel_device_t, handle, HANDLE, {
+        .code = "handle",
+        .name = "Handle"
+    }),
+    DMI_ATTRIBUTE_NULL
+};
+
+static const dmi_attribute_t dmi_memory_channel_attrs[] =
+{
+    DMI_ATTRIBUTE(dmi_memory_channel_t, type, ENUM, {
+        .code   = "type",
+        .name   = "Type",
+        .values = dmi_memory_channel_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_memory_channel_t, maximum_load, INTEGER, {
+        .code   = "maximum-load",
+        .name   = "Maximum load"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_channel_t, device_count, INTEGER, {
+        .code   = "device-count",
+        .name   = "Device count"
+    }),
+    DMI_ATTRIBUTE_ARRAY(dmi_memory_channel_t, devices, device_count, STRUCT, {
+        .code   = "devices",
+        .name   = "Devices",
+        .attrs  = dmi_memory_device_channel_attrs
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
@@ -18,5 +77,78 @@ const dmi_table_spec_t dmi_memory_channel_table =
     .type        = DMI_TYPE_MEMORY_CHANNEL,
     .min_version = DMI_VERSION(2, 3, 0),
     .min_length  = 0x0A,
-    .attributes  = dmi_memory_channel_attrs
+    .attributes  = dmi_memory_channel_attrs,
+    .handlers = {
+        .decode = (dmi_table_decode_fn_t)dmi_memory_channel_decode,
+        .link   = (dmi_table_link_fn_t)dmi_memory_channel_link,
+        .free   = (dmi_table_free_fn_t)dmi_memory_channel_free
+    }
 };
+
+const char *dmi_memory_channel_type_name(dmi_memory_channel_type_t value)
+{
+    return dmi_name_lookup(dmi_memory_channel_type_names, value);
+}
+
+dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_table_t *table)
+{
+    dmi_memory_channel_t *info;
+    const dmi_memory_channel_data_t *data;
+
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_MEMORY_CHANNEL));
+    if (!data)
+        return nullptr;
+
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    info->type         = dmi_value(data->type);
+    info->maximum_load = dmi_value(data->maximum_load);
+    info->device_count = dmi_value(data->device_count);
+
+    info->devices = dmi_alloc_array(table->context, sizeof(dmi_memory_channel_device_t),
+                                    info->device_count);
+    if (!info->devices) {
+        dmi_free(info);
+        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+        return nullptr;
+    }
+
+    for (size_t i = 0; i < info->device_count; i++) {
+        dmi_memory_channel_device_t *device = &info->devices[i];
+        const dmi_memory_channel_device_data_t *device_data = &data->devices[i];
+
+        device->load   = dmi_value(device_data->load);
+        device->handle = dmi_value(device_data->handle);
+    }
+
+    return info;
+}
+
+bool dmi_memory_channel_link(dmi_table_t *table)
+{
+    dmi_memory_channel_t *info;
+    dmi_registry_t *registry;
+
+    info = dmi_cast(info, dmi_table_info(table, DMI_TYPE_MEMORY_CHANNEL));
+    if (!info)
+        return false;
+
+    registry = table->context->registry;
+
+    for (size_t i = 0; i < info->device_count; i++) {
+        dmi_table_t *device = dmi_registry_get(registry, info->devices[i].handle);
+        if (!device)
+            return false;
+
+        info->devices[i].device = device;
+    }
+
+    return true;
+}
+
+void dmi_memory_channel_free(dmi_memory_channel_t *info)
+{
+    dmi_free(info);
+}

@@ -60,10 +60,41 @@ const dmi_table_spec_t dmi_memory_device_addr_table =
     .min_length  = 0x13,
     .attributes  = dmi_memory_device_addr_attrs,
     .handlers    = {
-        .decode = (dmi_table_decode_fn_t)dmi_memory_device_addr_decode,
-        .free   = (dmi_table_free_fn_t)dmi_memory_device_addr_free
+        .validate = (dmi_table_validate_fn_t)dmi_memory_device_addr_validate,
+        .decode   = (dmi_table_decode_fn_t)dmi_memory_device_addr_decode,
+        .link     = (dmi_table_link_fn_t)dmi_memory_device_addr_link,
+        .free     = (dmi_table_free_fn_t)dmi_memory_device_addr_free
     }
 };
+
+bool dmi_memory_device_addr_validate(const dmi_table_t *table)
+{
+    dmi_memory_device_addr_data_t *data = dmi_cast(data, table->data);
+
+    if (data->start_addr == 0xFFFFFFFFu) {
+        if (data->end_addr != 0xFFFFFFFFu)
+            return false;
+
+        if (table->total_length < 0x13)
+            return false;
+        if (data->end_addr_ex <= data->start_addr_ex)
+            return false;
+    } else {
+        if (data->end_addr == 0xFFFFFFFFu)
+            return false;
+        if (data->end_addr <= data->start_addr)
+            return false;
+
+        if (table->total_length >= 0x13) {
+            if (data->start_addr_ex != 0)
+                return false;
+            if (data->end_addr_ex != 0)
+                return false;
+        }
+    }
+
+    return true;
+}
 
 dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table)
 {
@@ -78,7 +109,7 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table
     if (!info)
         return nullptr;
 
-    if ((table->body_length >= 0x13) and (data->start_addr == 0xFFFFFFFFU)) {
+    if ((table->body_length >= 0x13) and (data->start_addr == 0xFFFFFFFFu)) {
         info->start_addr = dmi_value(data->start_addr_ex);
         info->end_addr   = dmi_value(data->end_addr_ex);
     } else {
@@ -102,6 +133,28 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table
                              data->interleave_depth : USHRT_MAX;
 
     return info;
+}
+
+bool dmi_memory_device_addr_link(dmi_table_t *table)
+{
+    dmi_memory_device_addr_t *info;
+    dmi_registry_t *registry;
+
+    info = dmi_cast(info, dmi_table_info(table, DMI_TYPE_MEMORY_DEVICE_ADDR));
+    if (!info)
+        return false;
+
+    registry = table->context->registry;
+
+    info->device = dmi_registry_get(registry, info->device_handle);
+    if (!info->device)
+        return false;
+
+    info->array_addr = dmi_registry_get(registry, info->array_addr_handle);
+    if (!info->array_addr)
+        return false;
+
+    return true;
 }
 
 void dmi_memory_device_addr_free(dmi_memory_device_addr_t *info)

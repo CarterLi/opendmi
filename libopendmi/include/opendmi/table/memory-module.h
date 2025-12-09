@@ -9,13 +9,37 @@
 
 #pragma once
 
+#include <opendmi/name.h>
 #include <opendmi/table.h>
+
+#ifndef DMI_MEMORY_MODULE_T
+#define DMI_MEMORY_MODULE_T
+typedef struct dmi_memory_module dmi_memory_module_t;
+#endif // !DMI_MEMORY_MODULE_T
+
+#ifndef DMI_MEMORY_MODULE_DATA_T
+#define DMI_MEMORY_MODULE_DATA_T
+typedef struct dmi_memory_module_data dmi_memory_module_data_t;
+#endif // !DMI_MEMORY_MODULE_DATA_T
+
+#ifndef DMI_MEMORY_MODULE_TYPE_T
+#define DMI_MEMORY_MODULE_TYPE_T
+typedef union dmi_memory_module_type dmi_memory_module_type_t;
+#endif // !DMI_MEMORY_MODULE_TYPE_T
+
+#ifndef DMI_MEMORY_MODULE_ERROR_T
+#define DMI_MEMORY_MODULE_ERROR_T
+typedef union dmi_memory_module_error dmi_memory_module_error_t;
+#endif // !DMI_MEMORY_MODULE_ERROR_T
 
 /**
  * @brief Memory module type details.
  */
 DMI_PACKED_UNION(dmi_memory_module_type)
 {
+    /**
+     * @brief Raw value.
+     */
     dmi_word_t _value;
 
     DMI_PACKED_STRUCT()
@@ -35,11 +59,6 @@ DMI_PACKED_UNION(dmi_memory_module_type)
         dmi_word_t reserved : 5;
     };
 };
-
-#ifndef DMI_MEMORY_MODULE_TYPE_T
-#define DMI_MEMORY_MODULE_TYPE_T
-typedef union dmi_memory_module_type dmi_memory_module_type_t;
-#endif // !DMI_MEMORY_MODULE_TYPE_T
 
 /**
  * @brief Memory module error status.
@@ -75,11 +94,6 @@ DMI_PACKED_UNION(dmi_memory_module_error)
         dmi_byte_t reserved : 5;
     };
 };
-
-#ifndef DMI_MEMORY_MODULE_ERROR_T
-#define DMI_MEMORY_MODULE_ERROR_T
-typedef union dmi_memory_module_error dmi_memory_module_error_t;
-#endif // !DMI_MEMORY_MODULE_ERROR_T
 
 /**
  * @brief Memory module information table (type 6, obsolete).
@@ -134,11 +148,6 @@ struct dmi_memory_module_data
      */
     dmi_byte_t error_status;
 };
-
-#ifndef DMI_MEMORY_MODULE_DATA_T
-#define DMI_MEMORY_MODULE_DATA_T
-typedef struct dmi_memory_module_data dmi_memory_module_data_t;
-#endif // !DMI_MEMORY_MODULE_DATA_T
 
 struct dmi_memory_module
 {
@@ -207,10 +216,7 @@ struct dmi_memory_module
     dmi_memory_module_error_t error_status;
 };
 
-#ifndef DMI_MEMORY_MODULE_T
-#define DMI_MEMORY_MODULE_T
-typedef struct dmi_memory_module dmi_memory_module_t;
-#endif // !DMI_MEMORY_MODULE_T
+extern const dmi_name_t dmi_memory_module_type_names[];
 
 /**
  * @brief Memory module information table specification.

@@ -167,12 +167,26 @@ struct dmi_memory_device_addr
     dmi_handle_t device_handle;
 
     /**
+     * @brief Reference to he memory device structure to which this address
+     * range is mapped Multiple address ranges can be mapped to a single memory
+     * device.
+     */
+    dmi_table_t *device;
+
+    /**
      * @brief Handle, or instance number, associated with the memory array
      * mapped address structure to which this device address range is mapped.
      * Multiple address ranges can be mapped to a single memory array mapped
      * address.
      */
     dmi_handle_t array_addr_handle;
+
+    /**
+     * @brief Reference to the memory array mapped address structure to which
+     * this device address range is mapped. Multiple address ranges can be
+     * mapped to a single memory array mapped address.
+     */
+    dmi_table_t *array_addr;
 
     /**
      * @brief Position of the referenced memory device in a row of the address
@@ -218,7 +232,17 @@ __BEGIN_DECLS
 /**
  * @internal
  */
+bool dmi_memory_device_addr_validate(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
 dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
+bool dmi_memory_device_addr_link(dmi_table_t *table);
 
 /**
  * @internal

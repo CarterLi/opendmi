@@ -256,10 +256,10 @@ const dmi_attribute_t dmi_cache_attrs[] =
         .name   = "Cache speed",
         .unit   = "ns"
     }),
-    DMI_ATTRIBUTE(dmi_cache_t, ecc_type, ENUM, {
-        .code   = "ecc-type",
+    DMI_ATTRIBUTE(dmi_cache_t, error_correction, ENUM, {
+        .code   = "error-correction",
         .name   = "Error correction type",
-        .values = dmi_ecc_type_names
+        .values = dmi_error_correct_type_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, type, ENUM, {
         .code   = "type",
@@ -364,10 +364,10 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
 
     // SMBIOS 2.1 features
     if (data->header.length >= 0x0F) {
-        info->type          = data->type;
-        info->associativity = data->associativity;
-        info->speed         = data->speed;
-        info->ecc_type      = data->ecc_type;
+        info->type             = dmi_value(data->type);
+        info->associativity    = dmi_value(data->associativity);
+        info->speed            = dmi_value(data->speed);
+        info->error_correction = dmi_value(data->error_correction);
     }
 
     // SMBIOS 3.1 features

@@ -132,6 +132,13 @@ struct dmi_memory_array_addr
     dmi_handle_t array_handle;
 
     /**
+     * @brief Reference to the physical memory array to which this address
+     * range is mapped. Multiple address ranges can be mapped to a single
+     * physical memory array.
+     */
+    dmi_table_t *array;
+
+    /**
      * @brief Number of memory devices that form a single row of memory for the
      * address partition defined by this structure.
      */
@@ -145,12 +152,20 @@ extern const dmi_table_spec_t dmi_memory_array_addr_table;
 
 __BEGIN_DECLS
 
-bool dmi_memory_array_addr_validate(dmi_table_t *table);
+/**
+ * @internal
+ */
+bool dmi_memory_array_addr_validate(const dmi_table_t *table);
 
 /**
  * @internal
  */
-dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table);
+dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
+bool dmi_memory_array_addr_link(dmi_table_t *table);
 
 /**
  * @internal

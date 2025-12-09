@@ -215,7 +215,7 @@ DMI_PACKED_STRUCT(dmi_cache_data)
      * @brief Error-correction scheme supported by this cache component.
      * @since SMBIOS 2.1
      */
-    dmi_byte_t ecc_type;
+    dmi_byte_t error_correction;
 
     /**
      * @brief Logical type of cache.
@@ -312,7 +312,7 @@ struct dmi_cache
     /**
      * @brief Error-correction scheme supported by this cache component.
      */
-    dmi_ecc_type_t ecc_type;
+    dmi_error_correct_type_t error_correction;
 
     /**
      * @brief Logical type of cache.

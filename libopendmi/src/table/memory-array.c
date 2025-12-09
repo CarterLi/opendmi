@@ -142,10 +142,10 @@ const dmi_attribute_t dmi_memory_array_attrs[] =
         .name   = "Use",
         .values = dmi_memory_array_usage_names
     }),
-    DMI_ATTRIBUTE(dmi_memory_array_t, ecc_type, ENUM, {
+    DMI_ATTRIBUTE(dmi_memory_array_t, error_correction, ENUM, {
         .code   = "error-correction",
         .name   = "Memory error correction",
-        .values = dmi_ecc_type_names
+        .values = dmi_error_correct_type_names
     }),
     DMI_ATTRIBUTE(dmi_memory_array_t, maximum_capacity, SIZE, {
         .code = "maximum-capacity",
@@ -200,9 +200,9 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table)
     if (!info)
         return nullptr;
 
-    info->location = data->location;
-    info->usage    = data->usage;
-    info->ecc_type = data->ecc_type;
+    info->location         = dmi_value(data->location);
+    info->usage            = dmi_value(data->usage);
+    info->error_correction = dmi_value(data->error_correction);
 
     maximum_capacity = dmi_value(data->maximum_capacity);
     if ((table->body_length >= 0x0F) and (maximum_capacity & 0x80000000))

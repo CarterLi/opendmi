@@ -80,7 +80,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
      *
      * @since SMBIOS 2.1
      */
-    dmi_byte_t ecc_type;
+    dmi_byte_t error_correction;
 
     /**
      * @brief Maximum memory capacity, in kibibytes, for this array.
@@ -155,7 +155,7 @@ struct dmi_memory_array
      * @brief Primary hardware error correction or detection method supported
      * by this memory array.
      */
-    dmi_ecc_type_t ecc_type;
+    dmi_error_correct_type_t error_correction;
 
     /**
      * @brief Maximum memory capacity, in bytes, for this array.

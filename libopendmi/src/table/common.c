@@ -41,40 +41,40 @@ const dmi_name_t dmi_status_names[] =
     DMI_NAME_NULL
 };
 
-const dmi_name_t dmi_ecc_type_names[] =
+const dmi_name_t dmi_error_correct_type_names[] =
 {
     {
-        .id   = DMI_ECC_TYPE_OTHER,
+        .id   = DMI_ERROR_CORRECT_TYPE_OTHER,
         .code = "other",
         .name = "Other"
     },
     {
-        .id   = DMI_ECC_TYPE_UNKNOWN,
+        .id   = DMI_ERROR_CORRECT_TYPE_UNKNOWN,
         .code = "unknown",
         .name = "Unknown" 
     },
     {
-        .id   = DMI_ECC_TYPE_NONE,
+        .id   = DMI_ERROR_CORRECT_TYPE_NONE,
         .code = "none",
         .name = "None" 
     },
     {
-        .id   = DMI_ECC_TYPE_PARITY,
+        .id   = DMI_ERROR_CORRECT_TYPE_PARITY,
         .code = "parity",
         .name = "Parity" 
     },
     {
-        .id   = DMI_ECC_TYPE_SINGLE_BIT,
+        .id   = DMI_ERROR_CORRECT_TYPE_SINGLE_BIT,
         .code = "single-bit",
         .name = "Single-bit ECC" 
     },
     {
-        .id   = DMI_ECC_TYPE_MULTI_BIT,
+        .id   = DMI_ERROR_CORRECT_TYPE_MULTI_BIT,
         .code = "multi-bit",
         .name = "Multi-bit ECC" 
     },
     {
-        .id   = DMI_ECC_TYPE_CRC,
+        .id   = DMI_ERROR_CORRECT_TYPE_CRC,
         .code = "crc",
         .name = "CRC"
     },
@@ -86,7 +86,7 @@ const char *dmi_status_name(dmi_status_t value)
     return dmi_name_lookup(dmi_status_names, value);
 }
 
-const char *dmi_ecc_type_name(dmi_ecc_type_t value)
+const char *dmi_error_correct_type_name(dmi_error_correct_type_t value)
 {
-    return dmi_name_lookup(dmi_ecc_type_names, value);
+    return dmi_name_lookup(dmi_error_correct_type_names, value);
 }

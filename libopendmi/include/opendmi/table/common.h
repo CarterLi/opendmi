@@ -28,25 +28,25 @@ typedef enum dmi_status
 /**
  * @brief Error correction types.
  */
-typedef enum dmi_ecc_type
+typedef enum dmi_error_correct_type
 {
-    DMI_ECC_TYPE_OTHER      = 0x01, ///< Other
-    DMI_ECC_TYPE_UNKNOWN    = 0x02, ///< Unknown
-    DMI_ECC_TYPE_NONE       = 0x03, ///< None
-    DMI_ECC_TYPE_PARITY     = 0x04, ///< Parity
-    DMI_ECC_TYPE_SINGLE_BIT = 0x05, ///< Single-bit ECC
-    DMI_ECC_TYPE_MULTI_BIT  = 0x06, ///< Multi-bit ECC
-    DMI_ECC_TYPE_CRC        = 0x07, ///< CRC
-    __DMI_ECC_TYPE_COUNT
-} dmi_ecc_type_t;
+    DMI_ERROR_CORRECT_TYPE_OTHER      = 0x01, ///< Other
+    DMI_ERROR_CORRECT_TYPE_UNKNOWN    = 0x02, ///< Unknown
+    DMI_ERROR_CORRECT_TYPE_NONE       = 0x03, ///< None
+    DMI_ERROR_CORRECT_TYPE_PARITY     = 0x04, ///< Parity
+    DMI_ERROR_CORRECT_TYPE_SINGLE_BIT = 0x05, ///< Single-bit ECC
+    DMI_ERROR_CORRECT_TYPE_MULTI_BIT  = 0x06, ///< Multi-bit ECC
+    DMI_ERROR_CORRECT_TYPE_CRC        = 0x07, ///< CRC
+    __DMI_ERROR_CORRECT_TYPE_COUNT
+} dmi_error_correct_type_t;
 
 extern const dmi_name_t dmi_status_names[];
-extern const dmi_name_t dmi_ecc_type_names[];
+extern const dmi_name_t dmi_error_correct_type_names[];
 
 __BEGIN_DECLS
 
-const char *dmi_status_name(enum dmi_status value);
-const char *dmi_ecc_type_name(enum dmi_ecc_type value);
+const char *dmi_status_name(dmi_status_t value);
+const char *dmi_error_correct_type_name(dmi_error_correct_type_t value);
 
 __END_DECLS
 

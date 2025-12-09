@@ -11,24 +11,127 @@
 
 #include <opendmi/table/memory-module.h>
 
+const dmi_name_t dmi_memory_module_type_names[] =
+{
+    {
+        .id   = 0,
+        .code = "other",
+        .name = "Other"
+    },
+    {
+        .id   = 1,
+        .code = "unknown",
+        .name = "Unknown"
+    },
+    {
+        .id   = 2,
+        .code = "standard",
+        .name = "Standard"
+    },
+    {
+        .id   = 3,
+        .code = "fpm",
+        .name = "Fast page mode"
+    },
+    {
+        .id   = 4,
+        .code = "edo",
+        .name = "EDO"
+    },
+    {
+        .id   = 5,
+        .code = "parity",
+        .name = "Parity"
+    },
+    {
+        .id   = 6,
+        .code = "ecc",
+        .name = "ECC"
+    },
+    {
+        .id   = 7,
+        .code = "simm",
+        .name = "SIMM"
+    },
+    {
+        .id   = 8,
+        .code = "dimm",
+        .name = "DIMM"
+    },
+    {
+        .id   = 9,
+        .code = "burst-edo",
+        .name = "Burst EDO"
+    },
+    {
+        .id   = 10,
+        .code = "sdram",
+        .name = "SDRAM"
+    },
+    DMI_NAME_NULL
+};
+
+const dmi_name_t dmi_memory_module_error_names[] =
+{
+    {
+        .id   = 0,
+        .code = "uncorrectable",
+        .name = "Uncorrectable"
+    },
+    {
+        .id   = 1,
+        .code = "correctable",
+        .name = "Correctable"
+    },
+    {
+        .id   = 2,
+        .code = "event-log",
+        .name = "Event log"
+    },
+    DMI_NAME_NULL
+};
+
 const dmi_attribute_t dmi_memory_module_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_memory_module_t, socket, STRING, {
-        .code = "socket",
-        .name = "Socket designator"
+        .code   = "socket",
+        .name   = "Socket designator"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_module_t, bank_connections, INTEGER, {
+        .code   = "bank-connections",
+        .name   = "Bank connections",
+        .flags  = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_memory_module_t, current_speed, INTEGER, {
-        .code = "current-speed",
-        .name = "Current speed",
-        .unit = "ns"
+        .code   = "current-speed",
+        .name   = "Current speed",
+        .unit   = "ns"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_module_t, current_type, SET, {
+        .code   = "current-type",
+        .name   = "Current type",
+        .values = dmi_memory_module_type_names
     }),
     DMI_ATTRIBUTE(dmi_memory_module_t, installed_size, SIZE, {
-        .code = "installed-size",
-        .name = "Installed size"
+        .code   = "installed-size",
+        .name   = "Installed size"
     }),
     DMI_ATTRIBUTE(dmi_memory_module_t, enabled_size, SIZE, {
-        .code = "enabled-size",
-        .name = "Enabled size"
+        .code   = "enabled-size",
+        .name   = "Enabled size"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_module_t, is_disabled, BOOL, {
+        .code   = "disabled",
+        .name   = "Disabled"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_module_t, bank_count, INTEGER, {
+        .code   = "bank-count",
+        .name   = "Bank count"
+    }),
+    DMI_ATTRIBUTE(dmi_memory_module_t, error_status, SET, {
+        .code   = "error-status",
+        .name   = "Error status",
+        .values = dmi_memory_module_error_names
     }),
     DMI_ATTRIBUTE_NULL
 };

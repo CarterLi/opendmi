@@ -45,11 +45,12 @@ const dmi_table_spec_t dmi_memory_array_addr_table =
     .handlers    = {
         .validate = (dmi_table_validate_fn_t)dmi_memory_array_addr_validate,
         .decode   = (dmi_table_decode_fn_t)dmi_memory_array_addr_decode,
+        .link     = (dmi_table_link_fn_t)dmi_memory_array_addr_link,
         .free     = (dmi_table_free_fn_t)dmi_memory_array_addr_free
     }
 };
 
-bool dmi_memory_array_addr_validate(dmi_table_t *table)
+bool dmi_memory_array_addr_validate(const dmi_table_t *table)
 {
     dmi_memory_array_addr_data_t *data = dmi_cast(data, table->data);
 
@@ -78,7 +79,7 @@ bool dmi_memory_array_addr_validate(dmi_table_t *table)
     return true;
 }
 
-dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table)
+dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_table_t *table)
 {
     dmi_memory_array_addr_t *info;
     const dmi_memory_array_addr_data_t *data;
@@ -108,6 +109,24 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(dmi_table_t *table)
     info->partition_width = dmi_value(data->partition_width);
 
     return info;
+}
+
+bool dmi_memory_array_addr_link(dmi_table_t *table)
+{
+    dmi_memory_array_addr_t *info;
+    dmi_registry_t *registry;
+
+    info = dmi_cast(info, dmi_table_info(table, DMI_TYPE_MEMORY_ARRAY_ADDR));
+    if (!info)
+        return false;
+
+    registry = table->context->registry;
+
+    info->array = dmi_registry_get(registry, info->array_handle);
+    if (!info->array)
+        return false;
+
+    return true;
 }
 
 void dmi_memory_array_addr_free(dmi_memory_array_addr_t *info)

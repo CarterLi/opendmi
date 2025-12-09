@@ -7,17 +7,17 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/common.h>
+#include <opendmi/table/memory-channel.h>
 
 int main(void)
 {
-    if (dmi_ecc_type_name(0) != nullptr)
+    if (dmi_memory_channel_type_name(0) != nullptr)
         return EXIT_FAILURE;
-    if (dmi_ecc_type_name(__DMI_ECC_TYPE_COUNT) != nullptr)
+    if (dmi_memory_channel_type_name(__DMI_MEMORY_CHANNEL_TYPE_COUNT) != nullptr)
         return EXIT_FAILURE;
 
-    for (int i = 1; i < __DMI_ECC_TYPE_COUNT; i++) {
-        if (dmi_ecc_type_name(i) == nullptr)
+    for (int i = 1; i < __DMI_MEMORY_CHANNEL_TYPE_COUNT; i++) {
+        if (dmi_memory_channel_type_name(i) == nullptr)
             return EXIT_FAILURE;
     }
 
