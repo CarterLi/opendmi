@@ -10,6 +10,7 @@
 #pragma once
 
 #include <opendmi/table.h>
+#include <opendmi/table/common.h>
 
 #ifndef DMI_CHASSIS_DATA_T
 #define DMI_CHASSIS_DATA_T
@@ -24,7 +25,7 @@ typedef struct dmi_chassis dmi_chassis_t;
 /**
  * @brief System enclosure or chassis types.
  */
-enum dmi_chassis_type
+typedef enum dmi_chassis_type
 {
     DMI_CHASSIS_TYPE_OTHER               = 0x01, ///< Other
     DMI_CHASSIS_TYPE_UNKNOWN             = 0x02, ///< Unknown
@@ -63,20 +64,52 @@ enum dmi_chassis_type
     DMI_CHASSIS_TYPE_MINI_PC             = 0x23, ///< Mini PC
     DMI_CHASSIS_TYPE_STICK_PC            = 0x24, ///< Stick PC
     __DMI_CHASSIS_TYPE_COUNT
+} dmi_chassis_type_t;
+
+typedef enum dmi_chassis_security_status
+{
+    DMI_CHASSIS_SECURITY_STATUS_OTHER          = 0x01, ///<  Other 
+    DMI_CHASSIS_SECURITY_STATUS_UNKNOWN        = 0x02, ///<  Unknown 
+    DMI_CHASSIS_SECURITY_STATUS_NONE           = 0x03, ///<  None 
+    DMI_CHASSIS_SECURITY_STATUS_EXT_IF_LOCKED  = 0x04, ///<  External interface locked out 
+    DMI_CHASSIS_SECURITY_STATUS_EXT_IF_ENABLED = 0x05, ///<  External interface enabled 
+} dmi_chassis_security_status_t;
+
+DMI_PACKED_UNION(dmi_chassis_type_data)
+{
+    /**
+     * @brief Raw value.
+     */
+    dmi_byte_t _value;
+
+    DMI_PACKED_STRUCT()
+    {
+        dmi_byte_t type : 7;
+        bool is_lock_present : 1;
+    };
 };
 
-/**
- * @brief System enclosure or chassis states.
- */
-enum dmi_chassis_state
+DMI_PACKED_STRUCT(dmi_chassis_element_data)
 {
-    DMI_CHASSIS_STATE_OTHER           = 0x01, ///< Other
-    DMI_CHASSIS_STATE_UNKNOWN         = 0x02, ///< Unknown
-    DMI_CHASSIS_STATE_SAFE            = 0x03, ///< Safe
-    DMI_CHASSIS_STATE_WARNING         = 0x04, ///< Warning
-    DMI_CHASSIS_STATE_CRITICAL        = 0x05, ///< Critical
-    DMI_CHASSIS_STATE_NON_RECOVERABLE = 0x06, ///< Non-recoverable
-    __DMI_CHASSIS_STATE_COUNT
+    /**
+     * @brief Specifies the type of element associated with this record.
+     */
+    dmi_byte_t type;
+
+    /**
+     * @brief Specifies the minimum number of the element type that can be 
+     * installed in the chassis for the chassis to properly operate, in the
+     * range 0 to 254. The value 255 (`0xFF`) is reserved for future definition
+     * by this specification.
+     */
+    dmi_byte_t minimum_count;
+
+    /**
+     * @brief Specifies the maximum number of the element type that can be 
+     * installed in the chassis, in the range 1 to 255. The value 0 is reserved
+     * for future definition by this specification.
+     */
+    dmi_byte_t maximum_count;
 };
 
 /**
@@ -93,7 +126,7 @@ enum dmi_chassis_state
  * 
  * @since SMBIOS 2.0
  */
-struct dmi_chassis_data
+DMI_PACKED_STRUCT(dmi_chassis_data)
 {
     /**
      * @brief Manufacturer name.
@@ -159,12 +192,104 @@ struct dmi_chassis_data
     /**
      * @since SMBIOS 2.3
      */
-    dmi_byte_t children_count;
+    dmi_byte_t element_count;
 
     /**
      * @since SMBIOS 2.3
      */
-    dmi_byte_t child_size;
+    dmi_byte_t element_size;
+};
+
+DMI_PACKED_STRUCT(dmi_chassis_extra)
+{
+    /**
+     * @brief Number of null-terminated string describing the chassis or
+     * enclosure SKU number.
+     */
+    dmi_byte_t sku_number;
+
+    /**
+     * @brief Rack type.
+     */
+    dmi_byte_t rack_type;
+
+    /**
+     * @brief Height of the enclosure based on the rack type.
+     */
+    dmi_byte_t rack_height;
+};
+
+struct dmi_chassis
+{
+    /**
+     * @brief Manufacturer name.
+     */
+    const char *vendor;
+
+    /**
+     * @since SMBIOS 2.0
+     */
+    dmi_byte_t type;
+
+    /**
+     * @brief Version.
+     */
+    const char *version;
+
+    /**
+     * @brief Serial number.
+     */
+    const char *serial_number;
+
+    /**
+     * @brief Asset tag.
+     */
+    const char *asset_tag;
+
+    /**
+     * @since SMBIOS 2.1
+     */
+    dmi_status_t bootup_state;
+
+    /**
+     * @since SMBIOS 2.1
+     */
+    dmi_status_t power_supply_state;
+
+    /**
+     * @since SMBIOS 2.1
+     */
+    dmi_status_t thermal_state;
+
+    /**
+     * @since SMBIOS 2.1
+     */
+    dmi_chassis_security_status_t security_status;
+
+    /**
+     * @since SMBIOS 2.3
+     */
+    uint32_t oem_defined;
+
+    /**
+     * @since SMBIOS 2.3
+     */
+    unsigned short height;
+
+    /**
+     * @since SMBIOS 2.3
+     */
+    unsigned short power_cord_count;
+
+    /**
+     * @since SMBIOS 2.3
+     */
+    size_t element_count;
+
+    /**
+     * @since SMBIOS 2.3
+     */
+    size_t element_size;
 };
 
 /**
@@ -174,8 +299,18 @@ extern const struct dmi_table_spec dmi_chassis_table;
 
 __BEGIN_DECLS
 
-const char *dmi_chassis_type_name(enum dmi_chassis_type value);
-const char *dmi_chassis_state_name(enum dmi_chassis_state value);
+const char *dmi_chassis_type_name(dmi_chassis_type_t value);
+const char *dmi_chassis_security_status_name(dmi_chassis_security_status_t value);
+
+/**
+ * @internal
+ */
+dmi_chassis_t *dmi_chassis_decode(const dmi_table_t *table);
+
+/**
+ * @internal
+ */
+void dmi_chassis_free(dmi_chassis_t *info);
 
 __END_DECLS
 

@@ -4,8 +4,11 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/chassis.h>
+#include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
+
+#include <opendmi/table/chassis.h>
 
 static const dmi_name_t dmi_chassis_type_names[] =
 {
@@ -192,37 +195,32 @@ static const dmi_name_t dmi_chassis_type_names[] =
     DMI_NAME_NULL
 };
 
-static const dmi_name_t dmi_chassis_state_names[] =
+static const dmi_name_t dmi_chassis_security_status_names[] =
 {
     {
-        .id   = DMI_CHASSIS_STATE_OTHER,
+        .id   = DMI_CHASSIS_SECURITY_STATUS_OTHER,
         .code = "other",
         .name = "Other"
     },
     {
-        .id   = DMI_CHASSIS_STATE_UNKNOWN,
+        .id   = DMI_CHASSIS_SECURITY_STATUS_UNKNOWN,
         .code = "unknown",
         .name = "Unknown"
     },
     {
-        .id   = DMI_CHASSIS_STATE_SAFE,
-        .code = "safe",
-        .name = "Safe"
+        .id   = DMI_CHASSIS_SECURITY_STATUS_NONE,
+        .code = "none",
+        .name = "None"
     },
     {
-        .id = DMI_CHASSIS_STATE_WARNING,
-        .code = "warning",
-        .name = "Warning"
+        .id   = DMI_CHASSIS_SECURITY_STATUS_EXT_IF_LOCKED,
+        .code = "ext-if-locked",
+        .name = "External interface locked"
     },
     {
-        .id   = DMI_CHASSIS_STATE_CRITICAL,
-        .code = "critical",
-        .name = "Critical"
-    },
-    {
-        .id   = DMI_CHASSIS_STATE_NON_RECOVERABLE,
-        .code = "non-recoverable",
-        .name = "Non-recoverable"
+        .id   = DMI_CHASSIS_SECURITY_STATUS_EXT_IF_ENABLED,
+        .code = "ext-if-enabled",
+        .name = "External interface enabled"
     },
     DMI_NAME_NULL
 };
@@ -244,12 +242,33 @@ const dmi_table_spec_t dmi_chassis_table =
     .attributes    = dmi_chassis_attrs
 };
 
-const char *dmi_chassis_type_name(enum dmi_chassis_type value)
+const char *dmi_chassis_type_name(dmi_chassis_type_t value)
 {
     return dmi_name_lookup(dmi_chassis_type_names, value);
 }
 
-const char *dmi_chassis_state_name(enum dmi_chassis_state value)
+const char *dmi_chassis_security_status_name(dmi_chassis_security_status_t value)
 {
-    return dmi_name_lookup(dmi_chassis_state_names, value);
+     return dmi_name_lookup(dmi_chassis_security_status_names, value);
+}
+
+dmi_chassis_t *dmi_chassis_decode(const dmi_table_t *table)
+{
+    dmi_chassis_t *info;
+    const dmi_chassis_data_t *data;
+
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_CHASSIS));
+    if (!data)
+        return nullptr;
+
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    return info;
+}
+
+void dmi_chassis_free(dmi_chassis_t *info)
+{
+    dmi_free(info);
 }
