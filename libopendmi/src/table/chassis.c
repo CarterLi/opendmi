@@ -4,8 +4,11 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/chassis.h>
+#include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
+
+#include <opendmi/table/chassis.h>
 
 static const dmi_name_t dmi_chassis_type_names[] =
 {
@@ -192,43 +195,157 @@ static const dmi_name_t dmi_chassis_type_names[] =
     DMI_NAME_NULL
 };
 
-static const dmi_name_t dmi_chassis_state_names[] =
+static const dmi_name_t dmi_chassis_security_status_names[] =
 {
     {
-        .id   = DMI_CHASSIS_STATE_OTHER,
+        .id   = DMI_CHASSIS_SECURITY_STATUS_OTHER,
         .code = "other",
         .name = "Other"
     },
     {
-        .id   = DMI_CHASSIS_STATE_UNKNOWN,
+        .id   = DMI_CHASSIS_SECURITY_STATUS_UNKNOWN,
         .code = "unknown",
         .name = "Unknown"
     },
     {
-        .id   = DMI_CHASSIS_STATE_SAFE,
-        .code = "safe",
-        .name = "Safe"
+        .id   = DMI_CHASSIS_SECURITY_STATUS_NONE,
+        .code = "none",
+        .name = "None"
     },
     {
-        .id = DMI_CHASSIS_STATE_WARNING,
-        .code = "warning",
-        .name = "Warning"
+        .id   = DMI_CHASSIS_SECURITY_STATUS_EXT_IF_LOCKED,
+        .code = "ext-if-locked",
+        .name = "External interface locked"
     },
     {
-        .id   = DMI_CHASSIS_STATE_CRITICAL,
-        .code = "critical",
-        .name = "Critical"
-    },
-    {
-        .id   = DMI_CHASSIS_STATE_NON_RECOVERABLE,
-        .code = "non-recoverable",
-        .name = "Non-recoverable"
+        .id   = DMI_CHASSIS_SECURITY_STATUS_EXT_IF_ENABLED,
+        .code = "ext-if-enabled",
+        .name = "External interface enabled"
     },
     DMI_NAME_NULL
 };
 
-const dmi_attribute_t dmi_chassis_attrs[] =
+static const dmi_name_t dmi_rack_type_names[] =
 {
+    {
+        .id   = DMI_RACK_TYPE_UNSPECIFIED,
+        .code = "unspecified",
+        .name = "Unspecified"
+    },
+    {
+        .id   = DMI_RACK_TYPE_OPEN,
+        .code = "open-rack",
+        .name = "Open Rack"
+    },
+    DMI_NAME_NULL
+};
+
+static const dmi_attribute_t dmi_chassis_element_attrs[] =
+{
+    // TODO: Add support for type attribute
+    DMI_ATTRIBUTE(dmi_chassis_element_t, board_type, ENUM, {
+        .code   = "board-type",
+        .name   = "Board type",
+        .values = dmi_baseboard_type_names,
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_element_t, minimum_count, INTEGER, {
+        .code = "minimum-count",
+        .name = "Minimum count"
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_element_t, maximum_count, INTEGER, {
+        .code = "maximum-count",
+        .name = "Maximum count"
+    }),
+    DMI_ATTRIBUTE_NULL
+};
+
+static const dmi_attribute_t dmi_chassis_attrs[] =
+{
+    DMI_ATTRIBUTE(dmi_chassis_t, vendor, STRING, {
+        .code   = "vendor",
+        .name   = "Vendor"
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, type, ENUM, {
+        .code   = "type",
+        .name   = "Type",
+        .values = dmi_chassis_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, is_lock_present, BOOL, {
+        .code   = "is-lock-present",
+        .name   = "Lock present"
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, version, STRING, {
+        .code   = "version",
+        .name   = "Version"
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, serial_number, STRING, {
+        .code   = "serial-number",
+        .name   = "Serial number"
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, asset_tag, STRING, {
+        .code   = "asset-tag",
+        .name   = "Asset tag"
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, bootup_state, ENUM, {
+        .code   = "bootup-state",
+        .name   = "Boot-up state",
+        .values = dmi_status_names
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, power_supply_state, ENUM, {
+        .code   = "power-supply-state",
+        .name   = "Power supply state",
+        .values = dmi_status_names
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, thermal_state, ENUM, {
+        .code   = "thermal-state",
+        .name   = "Thermal state",
+        .values = dmi_status_names
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, security_status, ENUM, {
+        .code   = "security-status",
+        .name   = "Security status",
+        .values = dmi_chassis_security_status_names
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, oem_defined, INTEGER, {
+        .code   = "oem-defined",
+        .name   = "OEM-defined",
+        .flags  = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, height, INTEGER, {
+        .code   = "height",
+        .name   = "Height",
+        .unit   = "U"
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, power_cord_count, INTEGER, {
+        .code   = "power-cord-count",
+        .name   = "Power cord count"
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, element_count, INTEGER, {
+        .code   = "element-count",
+        .name   = "Contained element count",
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, element_size, SIZE, {
+        .code   = "element-size",
+        .name   = "Contained element size"
+    }),
+    DMI_ATTRIBUTE_ARRAY(dmi_chassis_t, elements, element_count, STRUCT, {
+        .code   = "elements",
+        .name   = "Contained elements",
+        .attrs  = dmi_chassis_element_attrs
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, sku_number, STRING, {
+        .code   = "sku-number",
+        .name   = "SKU number"
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, rack_type, ENUM, {
+        .code   = "rack-type",
+        .name   = "Rack type",
+        .values = dmi_rack_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_chassis_t, rack_height, INTEGER, {
+        .code   = "rack-height",
+        .name   = "Rack height"
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
@@ -241,15 +358,97 @@ const dmi_table_spec_t dmi_chassis_table =
     .required_till = DMI_VERSION_NONE,
     .unique        = false,
     .min_length    = 0x09,
-    .attributes    = dmi_chassis_attrs
+    .attributes    = dmi_chassis_attrs,
+    .handlers      = {
+        .decode = (dmi_table_decode_fn_t)dmi_chassis_decode,
+        .free   = (dmi_table_free_fn_t)dmi_chassis_free
+    }
 };
 
-const char *dmi_chassis_type_name(enum dmi_chassis_type value)
+const char *dmi_chassis_type_name(dmi_chassis_type_t value)
 {
     return dmi_name_lookup(dmi_chassis_type_names, value);
 }
 
-const char *dmi_chassis_state_name(enum dmi_chassis_state value)
+const char *dmi_chassis_security_status_name(dmi_chassis_security_status_t value)
 {
-    return dmi_name_lookup(dmi_chassis_state_names, value);
+     return dmi_name_lookup(dmi_chassis_security_status_names, value);
+}
+
+dmi_chassis_t *dmi_chassis_decode(const dmi_table_t *table)
+{
+    dmi_chassis_t *info;
+    const dmi_chassis_data_t *data;
+    const dmi_data_t *element_ptr;
+
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_CHASSIS));
+    if (!data)
+        return nullptr;
+
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    dmi_chassis_type_data_t type = {
+        ._value = dmi_value(data->type)
+    };
+
+    info->vendor             = dmi_table_string(table,  data->vendor);
+    info->type               = type.type;
+    info->is_lock_present    = type.is_lock_present;
+    info->version            = dmi_table_string(table, data->version);
+    info->serial_number      = dmi_table_string(table, data->serial_number);
+    info->asset_tag          = dmi_table_string(table, data->asset_tag);
+    info->bootup_state       = dmi_value(data->bootup_state);
+    info->power_supply_state = dmi_value(data->power_supply_state);
+    info->thermal_state      = dmi_value(data->thermal_state);
+    info->security_status    = dmi_value(data->security_status);
+    info->oem_defined        = dmi_value(data->oem_defined);
+    info->height             = dmi_value(data->height);
+    info->power_cord_count   = dmi_value(data->power_cord_count);
+    info->element_count      = dmi_value(data->element_count);
+    info->element_size       = dmi_value(data->element_size);
+
+    info->elements = dmi_alloc_array(table->context, sizeof(dmi_chassis_element_t), info->element_count);
+    if (!info->elements) {
+        dmi_free(info);
+        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+        return nullptr;
+    }
+
+    element_ptr = table->data + sizeof(dmi_chassis_data_t);
+    for (size_t i = 0; i < info->element_count; i++) {
+        dmi_chassis_element_t *element = &info->elements[i];
+        const dmi_chassis_element_data_t *element_data = dmi_cast(element_data, element_ptr);
+
+        uint8_t element_type = dmi_value(element_data->type);
+        if (element_type & 0x80u) {
+            element->type = element_type & 0x7Fu;
+        } else {
+            element->type       = DMI_TYPE_INVALID;
+            element->board_type = element_type;
+        }
+
+        element->minimum_count = dmi_value(element_data->minimum_count);
+        element->maximum_count = dmi_value(element_data->maximum_count);
+
+        element_ptr += info->element_size;
+    }
+
+    // SMBIOS 3.9 features
+    if (table->body_length > (size_t)(element_ptr - table->data)) {
+        dmi_chassis_extra_t *extra = dmi_cast(extra, element_ptr);
+
+        info->sku_number  = dmi_table_string(table, extra->sku_number);
+        info->rack_type   = dmi_value(extra->rack_type);
+        info->rack_height = dmi_value(extra->rack_height);
+    }
+
+    return info;
+}
+
+void dmi_chassis_free(dmi_chassis_t *info)
+{
+    dmi_free(info->elements);
+    dmi_free(info);
 }
