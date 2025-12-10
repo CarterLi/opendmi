@@ -10,7 +10,7 @@
 
 #include <opendmi/table/baseboard.h>
 
-static const dmi_name_t dmi_baseboard_type_names[] =
+const dmi_name_t dmi_baseboard_type_names[] =
 {
     {
         .id   = DMI_BASEBOARD_TYPE_UNKNOWN,

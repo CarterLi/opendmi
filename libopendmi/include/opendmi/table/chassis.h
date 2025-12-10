@@ -9,18 +9,38 @@
 
 #pragma once
 
-#include <opendmi/table.h>
 #include <opendmi/table/common.h>
+#include <opendmi/table/baseboard.h>
+
+#ifndef DMI_CHASSIS_T
+#define DMI_CHASSIS_T
+typedef struct dmi_chassis dmi_chassis_t;
+#endif // !DMI_CHASSIS_T
 
 #ifndef DMI_CHASSIS_DATA_T
 #define DMI_CHASSIS_DATA_T
 typedef struct dmi_chassis_data dmi_chassis_data_t;
 #endif // !DMI_CHASSIS_DATA_T
 
-#ifndef DMI_CHASSIS_T
-#define DMI_CHASSIS_T
-typedef struct dmi_chassis dmi_chassis_t;
-#endif // !DMI_CHASSIS_T
+#ifndef DMI_CHASSIS_TYPE_DATA_T
+#define DMI_CHASSIS_TYPE_DATA_T
+typedef union dmi_chassis_type_data dmi_chassis_type_data_t;
+#endif // !DMI_CHASSIS_TYPE_DATA_T
+
+#ifndef DMI_CHASSIS_EXTRA_T
+#define DMI_CHASSIS_EXTRA_T
+typedef struct dmi_chassis_extra dmi_chassis_extra_t;
+#endif // !DMI_CHASSIS_EXTRA_T
+
+#ifndef DMI_CHASSIS_ELEMENT_T
+#define DMI_CHASSIS_ELEMENT_T
+typedef struct dmi_chassis_element dmi_chassis_element_t;
+#endif // !DMI_CHASSIS_ELEMENT_T
+
+#ifndef DMI_CHASSIS_ELEMENT_DATA_T
+#define DMI_CHASSIS_ELEMENT_DATA_T
+typedef struct dmi_chassis_element_data dmi_chassis_element_data_t;
+#endif // !DMI_CHASSIS_ELEMENT_DATA_T
 
 /**
  * @brief System enclosure or chassis types.
@@ -73,7 +93,15 @@ typedef enum dmi_chassis_security_status
     DMI_CHASSIS_SECURITY_STATUS_NONE           = 0x03, ///<  None 
     DMI_CHASSIS_SECURITY_STATUS_EXT_IF_LOCKED  = 0x04, ///<  External interface locked out 
     DMI_CHASSIS_SECURITY_STATUS_EXT_IF_ENABLED = 0x05, ///<  External interface enabled 
+    __DMI_CHASSIS_SECURITY_STATUS_COUNT
 } dmi_chassis_security_status_t;
+
+typedef enum dmi_rack_type
+{
+    DMI_RACK_TYPE_UNSPECIFIED = 0x00, ///< Unspecified
+    DMI_RACK_TYPE_OPEN        = 0x01, ///< Open Rack,
+    __DMI_RACK_TYPE_COUNT
+} dmi_rack_type_t;
 
 DMI_PACKED_UNION(dmi_chassis_type_data)
 {
@@ -226,10 +254,9 @@ struct dmi_chassis
      */
     const char *vendor;
 
-    /**
-     * @since SMBIOS 2.0
-     */
-    dmi_byte_t type;
+    dmi_chassis_type_t type;
+
+    bool is_lock_present;
 
     /**
      * @brief Version.
@@ -247,49 +274,94 @@ struct dmi_chassis
     const char *asset_tag;
 
     /**
-     * @since SMBIOS 2.1
+     * @since State of the enclosure when it was last booted.
      */
     dmi_status_t bootup_state;
 
     /**
-     * @since SMBIOS 2.1
+     * @since State of the enclosure’s power supply (or supplies) when last
+     * booted.
      */
     dmi_status_t power_supply_state;
 
     /**
-     * @since SMBIOS 2.1
+     * @since Thermal state of the enclosure when last booted.
      */
     dmi_status_t thermal_state;
 
     /**
-     * @since SMBIOS 2.1
+     * @since Physical security status of the enclosure when last booted.
      */
     dmi_chassis_security_status_t security_status;
 
     /**
-     * @since SMBIOS 2.3
+     * @since OEM- or firmware vendor-specific information.
      */
     uint32_t oem_defined;
 
     /**
-     * @since SMBIOS 2.3
+     * @since Height of the enclosure, in 'U's.
+     *
+     * A U is a standard unit of measure for the height of a rack or rack-
+     * mountable component and is equal to 1.75 inches or 4.445 cm. A value of
+     * `0x00` indicates that the enclosure height is unspecified. A value of
+     * `0xFF` indicates that the enclosure height is specified in `rack_height`
+     * field.
      */
     unsigned short height;
 
     /**
-     * @since SMBIOS 2.3
+     * @since Number of power cords associated with the enclosure or chassis.
+     * A value of `0x00` indicates that the number is unspecified.
      */
     unsigned short power_cord_count;
 
     /**
-     * @since SMBIOS 2.3
+     * @since Element count.
      */
     size_t element_count;
 
     /**
-     * @since SMBIOS 2.3
+     * @since Element data size;.
      */
     size_t element_size;
+
+    /**
+     * @brief Contained elements.
+     */
+    dmi_chassis_element_t *elements;
+
+    /**
+     * @brief SKU number.
+     */
+    const char *sku_number;
+
+    /**
+     * @brief Rack type.
+     */
+    dmi_rack_type_t rack_type;
+
+    /**
+     * @brief Rack height.
+     */
+    unsigned short rack_height;
+};
+
+struct dmi_chassis_element
+{
+    /**
+     * @brief SMBIOS structure type.
+     */
+    dmi_type_t type;
+
+    /**
+     * @brief Baseboard type.
+     */
+    dmi_baseboard_type_t board_type;
+
+    size_t minimum_count;
+
+    size_t maximum_count;
 };
 
 /**

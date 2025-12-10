@@ -275,10 +275,12 @@ struct dmi_baseboard
     dmi_handle_t *children;
 };
 
+extern const dmi_name_t dmi_baseboard_type_names[];
+
 /**
  * @brief Baseboard or module information table specification.
  */
-extern const struct dmi_table_spec dmi_baseboard_table;
+extern const dmi_table_spec_t dmi_baseboard_table;
 
 __BEGIN_DECLS
 
