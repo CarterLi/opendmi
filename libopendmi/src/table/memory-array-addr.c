@@ -131,7 +131,7 @@ bool dmi_memory_array_addr_link(dmi_table_t *table)
 
     info->array = dmi_registry_get(registry, info->array_handle);
     if (!info->array)
-        return false;
+        dmi_warning(table->context, "Memory array not found: 0x%04x", info->array_handle);
 
     return true;
 }

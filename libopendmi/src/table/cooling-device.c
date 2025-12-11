@@ -187,7 +187,7 @@ bool dmi_cooling_device_link(dmi_table_t *table)
     if (info->probe_handle != DMI_HANDLE_INVALID) {
         info->probe = dmi_registry_get(registry, info->probe_handle);
         if (!info->probe)
-            return false;
+            dmi_warning(table->context, "Temperature probe not found: 0x%04x", info->probe_handle);
     }
 
     return true;

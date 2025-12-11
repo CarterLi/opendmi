@@ -162,7 +162,7 @@ bool dmi_memory_device_addr_link(dmi_table_t *table)
 
     info->array_addr = dmi_registry_get(registry, info->array_addr_handle);
     if (!info->array_addr)
-        return false;
+        dmi_warning(table->context, "Memory array address not found: 0x%04x", info->array_addr_handle);
 
     return true;
 }

@@ -163,8 +163,20 @@ bool dmi_registry_link(dmi_registry_t *registry)
 
         if (!table->spec or !table->spec->handlers.link)
             continue;
-        if (!table->spec->handlers.link(table))
+
+        dmi_debug(registry->context, "%p: Handle 0x%04x, length %d, type %d (%s)",
+                  table->data,
+                  (unsigned)table->handle,
+                  (int)table->body_length,
+                  (int)table->type,
+                  dmi_type_name(registry->context, table->type));
+
+        if (!table->spec->handlers.link(table)) {
+            dmi_error_t error = dmi_get_error(registry->context);
+            dmi_error(registry->context, "Unable to link table: 0x%04x: %s",
+                      table->handle, dmi_error_message(error));
             return false;
+        }
     }
 
     return true;

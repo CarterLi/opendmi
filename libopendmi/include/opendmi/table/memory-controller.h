@@ -277,7 +277,7 @@ struct dmi_memory_controller
     /**
      * @brief Memory module slots count.
      */
-    unsigned short slot_count;
+    size_t slot_count;
 
     dmi_handle_t *module_handles;
 

@@ -795,7 +795,7 @@ bool dmi_memory_device_link(dmi_table_t *table)
     if (info->array_handle != DMI_HANDLE_INVALID) {
         info->array = dmi_registry_get(registry, info->array_handle);
         if (!info->array)
-            return false;
+            dmi_warning(table->context, "Memory array not found: 0x%04x", info->array_handle);
     }
 
     if ((info->error_info_handle != DMI_HANDLE_INVALID) and
@@ -803,7 +803,7 @@ bool dmi_memory_device_link(dmi_table_t *table)
     {
         info->error_info = dmi_registry_get(registry, info->error_info_handle);
         if (!info->error_info)
-            return false;
+            dmi_warning(table->context, "Memory error information not found: 0x%04x", info->error_info_handle);
     }
 
     return true;

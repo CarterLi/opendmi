@@ -90,7 +90,7 @@ bool dmi_mgmt_device_component_link(dmi_table_t *table)
     if (info->threshold_handle != DMI_HANDLE_INVALID) {
         info->threshold = dmi_registry_get(registry, info->threshold_handle);
         if (!info->threshold)
-            return false;
+            dmi_warning(table->context, "Threshold data not found: 0x%04x", info->threshold_handle);
     }
 
     return true;

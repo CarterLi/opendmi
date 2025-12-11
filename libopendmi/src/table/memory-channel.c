@@ -138,8 +138,10 @@ bool dmi_memory_channel_link(dmi_table_t *table)
 
     for (size_t i = 0; i < info->device_count; i++) {
         dmi_table_t *device = dmi_registry_get(registry, info->devices[i].handle);
-        if (!device)
-            return false;
+        if (!device) {
+            dmi_warning(table->context, "Memory device not found: 0x%04x", info->devices[i].handle);
+            continue;
+        }
 
         info->devices[i].device = device;
     }
