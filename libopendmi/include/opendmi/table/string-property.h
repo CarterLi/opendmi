@@ -11,9 +11,96 @@
 
 #include <opendmi/table.h>
 
+#ifndef DMI_STRING_PROPERTY_T
+#define DMI_STRING_PROPERTY_T
+typedef struct dmi_string_property dmi_string_property_t;
+#endif // !DMI_STRING_PROPERTY_T
+
+#ifndef DMI_STRING_PROPERTY_DATA_T
+#define DMI_STRING_PROPERTY_DATA_T
+typedef struct dmi_string_property_data dmi_string_property_data_t;
+#endif // !DMI_STRING_PROPERTY_DATA_T
+
+/**
+ * @brief String property table (type 46).
+ *
+ * This structure defines a string property for another structure. This allows
+ * adding string properties that are common to several structures without
+ * having to modify the definitions of these structures. Multiple type 46
+ * structures can add string properties to the same parent structure.
+ *
+ * @since SMBIOS 3.5
+ */
+DMI_PACKED_STRUCT(dmi_string_property_data)
+{
+    /**
+     * @brief SMBIOS structure header.
+     */
+    dmi_header_t header;
+
+    /**
+     * @brief Property identifier.
+     */
+    dmi_word_t ident;
+
+    /**
+     * @brief Property value.
+     */
+    dmi_string_t value;
+
+    /**
+     * @brief Handle corresponding to the structure this string property
+     * applies to.
+     */
+    dmi_handle_t parent_handle;
+};
+
+struct dmi_string_property
+{
+    /**
+     * @brief Property identifier.
+     */
+    uint16_t ident;
+
+    /**
+     * @brief Property value.
+     */
+    const char *value;
+
+    /**
+     * @brief Handle corresponding to the structure this string property
+     * applies to.
+     */
+    dmi_handle_t parent_handle;
+
+    /**
+     * @brief Pointer to the structure this string property applies to.
+     */
+    dmi_table_t *parent;
+};
+
 /**
  * @brief String property table specification.
  */
 extern const dmi_table_spec_t dmi_string_property_table;
+
+__BEGIN_DECLS
+
+/**
+ * @internal
+ */
+dmi_string_property_t *dmi_string_property_decode(const dmi_table_t *table, dmi_version_t *plevel);
+
+/**
+ * @internal
+ */
+bool dmi_string_property_link(dmi_table_t *table);
+
+/**
+ * @internal
+ */
+void dmi_string_property_free(dmi_string_property_t *info);
+
+__END_DECLS
 
 #endif // !OPENDMI_TABLE_STRING_PROPERTY_H
