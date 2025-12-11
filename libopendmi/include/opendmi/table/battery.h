@@ -26,6 +26,7 @@ typedef struct dmi_battery dmi_battery_t;
  */
 typedef enum dmi_battery_chemistry
 {
+    DMI_BATTERY_CHEMISTRY_UNSPEC    = 0x00, ///< Unspecified
     DMI_BATTERY_CHEMISTRY_OTHER     = 0x01, ///< Other
     DMI_BATTERY_CHEMISTRY_UNKNOWN   = 0x02, ///< Unknown
     DMI_BATTERY_CHEMISTRY_LEAD_ACID = 0x03, ///< Lead acid

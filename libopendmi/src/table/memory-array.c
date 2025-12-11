@@ -12,16 +12,9 @@
 
 static const dmi_name_t dmi_memory_array_location_names[] =
 {
-    {
-        .id   = DMI_MEMORY_ARRAY_LOCATION_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MEMORY_ARRAY_LOCATION_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MEMORY_ARRAY_LOCATION_UNSPEC),
+    DMI_NAME_OTHER(DMI_MEMORY_ARRAY_LOCATION_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MEMORY_ARRAY_LOCATION_UNKNOWN),
     {
         .id   = DMI_MEMORY_ARRAY_LOCATION_MOTHERBOARD,
         .code = "motherboard",
@@ -92,16 +85,9 @@ static const dmi_name_t dmi_memory_array_location_names[] =
 
 static const dmi_name_t dmi_memory_array_usage_names[] =
 {
-    {
-        .id   = DMI_MEMORY_ARRAY_USAGE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MEMORY_ARRAY_USAGE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MEMORY_ARRAY_USAGE_UNSPEC),
+    DMI_NAME_OTHER(DMI_MEMORY_ARRAY_USAGE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MEMORY_ARRAY_USAGE_UNKNOWN),
     {
         .id   = DMI_MEMORY_ARRAY_USAGE_SYSTEM,
         .code = "system",
@@ -133,31 +119,37 @@ static const dmi_name_t dmi_memory_array_usage_names[] =
 const dmi_attribute_t dmi_memory_array_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_memory_array_t, location, ENUM, {
-        .code   = "location",
-        .name   = "Location",
-        .values = dmi_memory_array_location_names
+        .code    = "location",
+        .name    = "Location",
+        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_ARRAY_LOCATION_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MEMORY_ARRAY_LOCATION_UNKNOWN),
+        .values  = dmi_memory_array_location_names
     }),
     DMI_ATTRIBUTE(dmi_memory_array_t, usage, ENUM, {
-        .code   = "use",
-        .name   = "Use",
-        .values = dmi_memory_array_usage_names
+        .code    = "use",
+        .name    = "Use",
+        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_ARRAY_USAGE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MEMORY_ARRAY_USAGE_UNKNOWN),
+        .values  = dmi_memory_array_usage_names
     }),
     DMI_ATTRIBUTE(dmi_memory_array_t, error_correction, ENUM, {
-        .code   = "error-correction",
-        .name   = "Memory error correction",
-        .values = dmi_error_correct_type_names
+        .code    = "error-correction",
+        .name    = "Memory error correction",
+        .unspec  = DMI_VALUE_PTR(DMI_ERROR_CORRECT_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_ERROR_CORRECT_TYPE_UNSPEC),
+        .values  = dmi_error_correct_type_names
     }),
     DMI_ATTRIBUTE(dmi_memory_array_t, maximum_capacity, SIZE, {
-        .code = "maximum-capacity",
-        .name = "Maximum capacity"
+        .code    = "maximum-capacity",
+        .name    = "Maximum capacity"
     }),
     DMI_ATTRIBUTE(dmi_memory_array_t, error_handle, HANDLE, {
-        .code = "error-handle",
-        .name = "Memory error information handle"
+        .code    = "error-handle",
+        .name    = "Memory error information handle"
     }),
     DMI_ATTRIBUTE(dmi_memory_array_t, device_count, INTEGER, {
-        .code = "device-count",
-        .name = "Number of memory devices"
+        .code    = "device-count",
+        .name    = "Number of memory devices"
     }),
     DMI_ATTRIBUTE_NULL
 };

@@ -17,6 +17,7 @@
  */
 typedef enum dmi_memory_array_location
 {
+    DMI_MEMORY_ARRAY_LOCATION_UNSPEC          = 0x00, ///< Unspecified
     DMI_MEMORY_ARRAY_LOCATION_OTHER           = 0x01, ///< Other
     DMI_MEMORY_ARRAY_LOCATION_UNKNOWN         = 0x02, ///< Unknown
     DMI_MEMORY_ARRAY_LOCATION_MOTHERBOARD     = 0x03, ///< System board or motherboard
@@ -26,12 +27,14 @@ typedef enum dmi_memory_array_location
     DMI_MEMORY_ARRAY_LOCATION_MCA             = 0x07, ///< MCA add-on card
     DMI_MEMORY_ARRAY_LOCATION_PCMCIA          = 0x08, ///< PCMCIA add-on card
     DMI_MEMORY_ARRAY_LOCATION_PROPRIETARY     = 0x09, ///< Proprietary add-on card
+    // Unassigned: 0x0A .. 0x9F
     DMI_MEMORY_ARRAY_LOCATION_NUBUS           = 0x0A, ///< NuBus
     DMI_MEMORY_ARRAY_LOCATION_PC_98_C20       = 0xA0, ///< PC-98/C20 add-on card
     DMI_MEMORY_ARRAY_LOCATION_PC_98_C24       = 0xA1, ///< PC-98/C24 add-on card
     DMI_MEMORY_ARRAY_LOCATION_PC_98_E         = 0xA2, ///< PC-98/E add-on card
     DMI_MEMORY_ARRAY_LOCATION_PC_98_LOCAL_BUS = 0xA3, ///< PC-98/Local bus add-on card
     DMI_MEMORY_ARRAY_LOCATION_CXL             = 0xA4, ///< CXL add-on card
+    __DMI_MEMORY_ARRAY_LOCATION_COUNT
 } dmi_memory_array_location_t;
 
 /**
@@ -39,6 +42,7 @@ typedef enum dmi_memory_array_location
  */
 typedef enum dmi_memory_array_usage
 {
+    DMI_MEMORY_ARRAY_USAGE_UNSPEC  = 0x00, ///< Unspecified
     DMI_MEMORY_ARRAY_USAGE_OTHER   = 0x01, ///< Other
     DMI_MEMORY_ARRAY_USAGE_UNKNOWN = 0x02, ///< Unknown
     DMI_MEMORY_ARRAY_USAGE_SYSTEM  = 0x03, ///< System memory
@@ -46,6 +50,7 @@ typedef enum dmi_memory_array_usage
     DMI_MEMORY_ARRAY_USAGE_FLASH   = 0x05, ///< Flash memory
     DMI_MEMORY_ARRAY_USAGE_NVRAM   = 0x06, ///< Non-volatile RAM
     DMI_MEMORY_ARRAY_USAGE_CACHE   = 0x07, ///< Cache memory
+    __DMI_MEMORY_ARRAY_USAGE_COUNT
 } dmi_memory_array_usage_t;
 
 /**

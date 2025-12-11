@@ -16,6 +16,7 @@
  */
 typedef enum dmi_onboard_device_type
 {
+    DMI_ONBOARD_DEVICE_TYPE_UNSPEC          = 0x00, ///< Unspecified
     DMI_ONBOARD_DEVICE_TYPE_OTHER           = 0x01, ///< Other
     DMI_ONBOARD_DEVICE_TYPE_UNKNOWN         = 0x02, ///< Unknown
     DMI_ONBOARD_DEVICE_TYPE_VIDEO           = 0x03, ///< Video

@@ -12,21 +12,9 @@
 
 const dmi_name_t dmi_system_wakeup_type_names[] =
 {
-    {
-        .id   = DMI_SYSTEM_WAKEUP_TYPE_RESERVED,
-        .code = "reserved",
-        .name = "Reserved"
-    },
-    {
-        .id   = DMI_SYSTEM_WAKEUP_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_SYSTEM_WAKEUP_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_RESERVED(DMI_SYSTEM_WAKEUP_TYPE_RESERVED),
+    DMI_NAME_OTHER(DMI_SYSTEM_WAKEUP_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_SYSTEM_WAKEUP_TYPE_UNKNOWN),
     {
         .id   = DMI_SYSTEM_WAKEUP_TYPE_APM_TIMER,
         .code = "apm-timer",
@@ -63,37 +51,38 @@ const dmi_name_t dmi_system_wakeup_type_names[] =
 const dmi_attribute_t dmi_system_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_system_t, vendor, STRING, {
-        .code = "vendor",
-        .name = "Manufacturer"
+        .code    = "vendor",
+        .name    = "Manufacturer"
     }),
     DMI_ATTRIBUTE(dmi_system_t, product, STRING, {
-        .code = "product",
-        .name = "Product"
+        .code    = "product",
+        .name    = "Product"
     }),
     DMI_ATTRIBUTE(dmi_system_t, version, STRING, {
-        .code = "version",
-        .name = "Version"
+        .code    = "version",
+        .name    = "Version"
     }),
     DMI_ATTRIBUTE(dmi_system_t, serial_number, STRING, {
-        .code = "serial-number",
-        .name = "Serial number"
+        .code    = "serial-number",
+        .name    = "Serial number"
     }),
     DMI_ATTRIBUTE(dmi_system_t, uuid, UUID, {
-        .code = "uuid",
-        .name = "UUID"
+        .code    = "uuid",
+        .name    = "UUID"
     }),
     DMI_ATTRIBUTE(dmi_system_t, wakeup_type, ENUM, {
-        .code   = "wakeup-type",
-        .name   = "Wakeup type",
-        .values = dmi_system_wakeup_type_names
+        .code    = "wakeup-type",
+        .name    = "Wakeup type",
+        .values  = dmi_system_wakeup_type_names,
+        .unknown = DMI_VALUE_PTR(DMI_SYSTEM_WAKEUP_TYPE_UNKNOWN)
     }),
     DMI_ATTRIBUTE(dmi_system_t, sku_number, STRING, {
-        .code = "sku-number",
-        .name = "SKU number"
+        .code    = "sku-number",
+        .name    = "SKU number"
     }),
     DMI_ATTRIBUTE(dmi_system_t, family, STRING, {
-        .code = "family",
-        .name = "Family"
+        .code    = "family",
+        .name    = "Family"
     }),
     DMI_ATTRIBUTE_NULL
 };

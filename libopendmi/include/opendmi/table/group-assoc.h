@@ -21,7 +21,6 @@ typedef struct dmi_group_assoc dmi_group_assoc_t;
 typedef struct dmi_group_assoc_data dmi_group_assoc_data_t;
 #endif // !DMI_GROUP_ASSOC_DATA_T
 
-
 /**
  * @brief Group associations table (type 14).
  */

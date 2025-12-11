@@ -14,16 +14,9 @@
 
 static const dmi_name_t dmi_power_supply_type_names[] =
 {
-    {
-        .id   = DMI_POWER_SUPPLY_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_POWER_SUPPLY_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_POWER_SUPPLY_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_POWER_SUPPLY_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_POWER_SUPPLY_TYPE_UNKNOWN),
     {
         .id   = DMI_POWER_SUPPLY_TYPE_LINEAR,
         .code = "linear",
@@ -59,16 +52,9 @@ static const dmi_name_t dmi_power_supply_type_names[] =
 
 static const dmi_name_t dmi_range_switching_type_names[] =
 {
-    {
-        .id   = DMI_RANGE_SWITCHING_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_RANGE_SWITCHING_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_RANGE_SWITCHING_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_RANGE_SWITCHING_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_RANGE_SWITCHING_TYPE_UNKNOWN),
     {
         .id   = DMI_RANGE_SWITCHING_TYPE_MANUAL,
         .code = "manual",
@@ -130,7 +116,7 @@ static const dmi_attribute_t dmi_power_supply_attrs[] =
         .code    = "maximum-capacity",
         .name    = "Maximum capacity",
         .unit    = "watts",
-        .unknown = &(short){ SHRT_MIN },
+        .unknown = DMI_VALUE_PTR((short)SHRT_MIN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
     DMI_ATTRIBUTE(dmi_power_supply_t, hot_swappable, BOOL, {

@@ -307,7 +307,11 @@ static void print_table_attr_value(const dmi_attribute_t *attr, const void *valu
 {
     char *str;
 
-    if (dmi_attribute_unknown(attr, value)) {
+    if (dmi_attribute_is_unspecified(attr, value)) {
+        printf("<unspecified>\n");
+        return;
+    }
+    if (dmi_attribute_is_unknown(attr, value)) {
         printf("<unknown>\n");
         return;
     }

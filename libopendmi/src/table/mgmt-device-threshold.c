@@ -16,32 +16,32 @@ const dmi_attribute_t dmi_mgmt_device_threshold_attrs[] =
     DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, lower_non_critical, INTEGER, {
         .code    = "lower-non-critical",
         .name    = "Lower non-critical",
-        .unknown = &(short){ SHRT_MIN }
+        .unknown = DMI_VALUE_PTR((short)SHRT_MIN)
     }),
     DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, upper_non_critical, INTEGER, {
         .code    = "upper-non-critical",
         .name    = "Upper non-critical",
-        .unknown = &(short){ SHRT_MIN }
+        .unknown = DMI_VALUE_PTR((short)SHRT_MIN)
     }),
     DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, lower_critical, INTEGER, {
         .code    = "lower-critical",
         .name    = "Lower critical",
-        .unknown = &(short){ SHRT_MIN }
+        .unknown = DMI_VALUE_PTR((short)SHRT_MIN)
     }),
     DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, upper_critical, INTEGER, {
         .code    = "upper-critical",
         .name    = "Upper critical",
-        .unknown = &(short){ SHRT_MIN }
+        .unknown = DMI_VALUE_PTR((short)SHRT_MIN)
     }),
     DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, lower_non_recoverable, INTEGER, {
         .code    = "lower-non-recoverable",
         .name    = "Lower non-recoverable",
-        .unknown = &(short){ SHRT_MIN }
+        .unknown = DMI_VALUE_PTR((short)SHRT_MIN)
     }),
     DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, upper_non_recoverable, INTEGER, {
         .code    = "upper-non-recoverable",
         .name    = "Upper non-recoverable",
-        .unknown = &(short){ SHRT_MIN }
+        .unknown = DMI_VALUE_PTR((short)SHRT_MIN)
     }),
     DMI_ATTRIBUTE_NULL
 };

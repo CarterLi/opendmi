@@ -20,6 +20,7 @@
  */
 typedef enum dmi_cache_type
 {
+    DMI_CACHE_TYPE_UNSPEC      = 0x00, ///< Unspecified
     DMI_CACHE_TYPE_OTHER       = 0x01, ///< Other
     DMI_CACHE_TYPE_UNKNOWN     = 0x02, ///< Unknown
     DMI_CACHE_TYPE_INSTRUCTION = 0x03, ///< Instruction cache
@@ -45,6 +46,7 @@ typedef enum dmi_cache_mode
  */
 typedef enum dmi_cache_assoc
 {
+    DMI_CACHE_ASSOC_UNSPEC  = 0x00, ///< Unspecified
     DMI_CACHE_ASSOC_OTHER   = 0x01, ///< Other
     DMI_CACHE_ASSOC_UNKNOWN = 0x02, ///< Unknown
     DMI_CACHE_ASSOC_DIRECT  = 0x03, ///< Direct mapped

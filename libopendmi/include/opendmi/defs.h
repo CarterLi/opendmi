@@ -42,6 +42,9 @@
 // Array size macro
 #define DMI_ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
+// Value pointer macro
+#define DMI_VALUE_PTR(x) &(typeof(x)){ (x) }
+
 // Cross-compiler packed structures support
 #ifdef _MSC_VER
 #define DMI_PACKED_STRUCT(...) __pragma(pack(push, 1)) struct __VA_ARGS__ __pragma(pack(pop))

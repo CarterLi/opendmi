@@ -8,16 +8,9 @@
 
 const dmi_name_t dmi_status_names[] =
 {
-    {
-        .id   = DMI_STATUS_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_STATUS_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_STATUS_UNSPEC),
+    DMI_NAME_OTHER(DMI_STATUS_OTHER),
+    DMI_NAME_UNKNOWN(DMI_STATUS_UNKNOWN),
     {
         .id   = DMI_STATUS_OK,
         .code = "ok",
@@ -43,21 +36,10 @@ const dmi_name_t dmi_status_names[] =
 
 const dmi_name_t dmi_error_correct_type_names[] =
 {
-    {
-        .id   = DMI_ERROR_CORRECT_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_ERROR_CORRECT_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown" 
-    },
-    {
-        .id   = DMI_ERROR_CORRECT_TYPE_NONE,
-        .code = "none",
-        .name = "None" 
-    },
+    DMI_NAME_UNSPEC(DMI_ERROR_CORRECT_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_ERROR_CORRECT_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_ERROR_CORRECT_TYPE_UNKNOWN),
+    DMI_NAME_NONE(DMI_ERROR_CORRECT_TYPE_NONE),
     {
         .id   = DMI_ERROR_CORRECT_TYPE_PARITY,
         .code = "parity",

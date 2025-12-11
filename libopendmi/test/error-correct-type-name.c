@@ -11,12 +11,10 @@
 
 int main(void)
 {
-    if (dmi_error_correct_type_name(0) != nullptr)
-        return EXIT_FAILURE;
     if (dmi_error_correct_type_name(__DMI_ERROR_CORRECT_TYPE_COUNT) != nullptr)
         return EXIT_FAILURE;
 
-    for (int i = 1; i < __DMI_ERROR_CORRECT_TYPE_COUNT; i++) {
+    for (int i = 0; i < __DMI_ERROR_CORRECT_TYPE_COUNT; i++) {
         if (dmi_error_correct_type_name(i) == nullptr)
             return EXIT_FAILURE;
     }

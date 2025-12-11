@@ -14,39 +14,39 @@
 const dmi_attribute_t dmi_memory_device_addr_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_memory_device_addr_t, start_addr, ADDRESS, {
-        .code = "start-addr",
-        .name = "Starting address"
+        .code    = "start-addr",
+        .name    = "Starting address"
     }),
     DMI_ATTRIBUTE(dmi_memory_device_addr_t, end_addr, ADDRESS, {
-        .code = "end-addr",
-        .name = "Ending address"
+        .code    = "end-addr",
+        .name    = "Ending address"
     }),
     DMI_ATTRIBUTE(dmi_memory_device_addr_t, range_size, SIZE, {
-        .code = "range-size",
-        .name = "Range size"
+        .code    = "range-size",
+        .name    = "Range size"
     }),
     DMI_ATTRIBUTE(dmi_memory_device_addr_t, device_handle, HANDLE, {
-        .code = "device-handle",
-        .name = "Device handle"
+        .code    = "device-handle",
+        .name    = "Device handle"
     }),
     DMI_ATTRIBUTE(dmi_memory_device_addr_t, array_addr_handle, HANDLE, {
-        .code = "array-addr-handle",
-        .name = "Array mapped address handle"
+        .code    = "array-addr-handle",
+        .name    = "Array mapped address handle"
     }),
     DMI_ATTRIBUTE(dmi_memory_device_addr_t, partition_pos, INTEGER, {
-        .code = "partition-pos",
-        .name = "Partition row position",
-        .unknown = &(unsigned short) { USHRT_MAX }
+        .code    = "partition-pos",
+        .name    = "Partition row position",
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_addr_t, interleave_pos, INTEGER, {
-        .code = "interleave-pos",
-        .name = "Interleave position",
-        .unknown = &(unsigned short) { USHRT_MAX }
+        .code    = "interleave-pos",
+        .name    = "Interleave position",
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_addr_t, interleave_depth, INTEGER, {
         .code    = "interleave-depth",
         .name    = "Interleave data depth",
-        .unknown = &(unsigned short) { USHRT_MAX }
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE_NULL
 };

@@ -9,16 +9,9 @@
 
 static const dmi_name_t dmi_slot_type_names[] =
 {
-    {
-        .id   = DMI_SLOT_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_SLOT_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_SLOT_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_SLOT_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_SLOT_TYPE_UNKNOWN),
     {
         .id   = DMI_SLOT_TYPE_ISA,
         .code = "isa",
@@ -409,16 +402,9 @@ static const dmi_name_t dmi_slot_type_names[] =
 
 static const dmi_name_t dmi_slot_width_names[] =
 {
-    {
-        .id   = DMI_SLOT_WIDTH_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_SLOT_WIDTH_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_SLOT_WIDTH_UNSPEC),
+    DMI_NAME_OTHER(DMI_SLOT_WIDTH_OTHER),
+    DMI_NAME_UNKNOWN(DMI_SLOT_WIDTH_UNKNOWN),
     {
         .id   = DMI_SLOT_WIDTH_8_BIT,
         .code = "8-bit",
@@ -484,16 +470,9 @@ static const dmi_name_t dmi_slot_width_names[] =
 
 static const dmi_name_t dmi_slot_usage_names[] =
 {
-    {
-        .id   = DMI_SLOT_USAGE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_SLOT_USAGE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_SLOT_USAGE_UNSPEC),
+    DMI_NAME_OTHER(DMI_SLOT_USAGE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_SLOT_USAGE_UNKNOWN),
     {
         .id   = DMI_SLOT_USAGE_AVAILABLE,
         .code = "available",

@@ -27,35 +27,35 @@ static const dmi_name_t dmi_hardware_security_status_names[] =
         .code = "not-implemented",
         .name = "Not implemented"
     },
-    {
-        .id   = DMI_HARDWARE_SECURITY_STATUS_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNKNOWN(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN),
     DMI_NAME_NULL
 };
 
 const dmi_attribute_t dmi_hardware_security_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_hardware_security_t, front_panel_reset, ENUM, {
-        .code   = "front-panel-reset",
-        .name   = "Front panel reset status",
-        .values = dmi_hardware_security_status_names
+        .code    = "front-panel-reset",
+        .name    = "Front panel reset status",
+        .values  = dmi_hardware_security_status_names,
+        .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE(dmi_hardware_security_t, admin_password, ENUM, {
-        .code   = "admin-password",
-        .name   = "Administrator password status",
-        .values = dmi_hardware_security_status_names
+        .code    = "admin-password",
+        .name    = "Administrator password status",
+        .values  = dmi_hardware_security_status_names,
+        .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE(dmi_hardware_security_t, keyboard_password, ENUM, {
-        .code   = "keyboard-password",
-        .name   = "Keyboard password status",
-        .values = dmi_hardware_security_status_names
+        .code    = "keyboard-password",
+        .name    = "Keyboard password status",
+        .values  = dmi_hardware_security_status_names,
+        .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE(dmi_hardware_security_t, poweron_password, ENUM, {
-        .code   = "poweron-password",
-        .name   = "Power-on password status",
-        .values = dmi_hardware_security_status_names
+        .code    = "poweron-password",
+        .name    = "Power-on password status",
+        .values  = dmi_hardware_security_status_names,
+        .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE_NULL
 };

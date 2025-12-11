@@ -16,6 +16,7 @@
  */
 typedef enum dmi_memory_device_type
 {
+    DMI_MEMORY_DEVICE_TYPE_UNSPEC      = 0x00, ///< Unspecified
     DMI_MEMORY_DEVICE_TYPE_OTHER       = 0x01, ///< Other
     DMI_MEMORY_DEVICE_TYPE_UNKNOWN     = 0x02, ///< Unknown
     DMI_MEMORY_DEVICE_TYPE_DRAM        = 0x03, ///< DRAM
@@ -58,6 +59,7 @@ typedef enum dmi_memory_device_type
  */
 typedef enum dmi_memory_device_form_factor
 {
+    DMI_MEMORY_DEVICE_FORM_FACTOR_UNSPEC   = 0x00, ///< Unspecified
     DMI_MEMORY_DEVICE_FORM_FACTOR_OTHER    = 0x01, ///< Other
     DMI_MEMORY_DEVICE_FORM_FACTOR_UNKNOWN  = 0x02, ///< Unknown
     DMI_MEMORY_DEVICE_FORM_FACTOR_SIMM     = 0x03, ///< SIMM
@@ -84,6 +86,7 @@ typedef enum dmi_memory_device_form_factor
  */
 typedef enum dmi_memory_device_technology
 {
+    DMI_MEMORY_DEVICE_TECHNOLOGY_UNSPEC   = 0x00, ///< Unspecified
     DMI_MEMORY_DEVICE_TECHNOLOGY_OTHER    = 0x01, ///< Other
     DMI_MEMORY_DEVICE_TECHNOLOGY_UNKNOWN  = 0x02, ///< Unknown
     DMI_MEMORY_DEVICE_TECHNOLOGY_DRAM     = 0x03, ///< DRAM

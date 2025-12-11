@@ -47,6 +47,7 @@ typedef struct dmi_chassis_element_data dmi_chassis_element_data_t;
  */
 typedef enum dmi_chassis_type
 {
+    DMI_CHASSIS_TYPE_UNSPEC              = 0x00, ///< Unspecified
     DMI_CHASSIS_TYPE_OTHER               = 0x01, ///< Other
     DMI_CHASSIS_TYPE_UNKNOWN             = 0x02, ///< Unknown
     DMI_CHASSIS_TYPE_DESKTOP             = 0x03, ///< Desktop
@@ -88,18 +89,19 @@ typedef enum dmi_chassis_type
 
 typedef enum dmi_chassis_security_status
 {
-    DMI_CHASSIS_SECURITY_STATUS_OTHER          = 0x01, ///<  Other 
-    DMI_CHASSIS_SECURITY_STATUS_UNKNOWN        = 0x02, ///<  Unknown 
-    DMI_CHASSIS_SECURITY_STATUS_NONE           = 0x03, ///<  None 
-    DMI_CHASSIS_SECURITY_STATUS_EXT_IF_LOCKED  = 0x04, ///<  External interface locked out 
-    DMI_CHASSIS_SECURITY_STATUS_EXT_IF_ENABLED = 0x05, ///<  External interface enabled 
+    DMI_CHASSIS_SECURITY_STATUS_UNSPEC         = 0x00, ///< Unspecified
+    DMI_CHASSIS_SECURITY_STATUS_OTHER          = 0x01, ///< Other 
+    DMI_CHASSIS_SECURITY_STATUS_UNKNOWN        = 0x02, ///< Unknown 
+    DMI_CHASSIS_SECURITY_STATUS_NONE           = 0x03, ///< None 
+    DMI_CHASSIS_SECURITY_STATUS_EXT_IF_LOCKED  = 0x04, ///< External interface locked out 
+    DMI_CHASSIS_SECURITY_STATUS_EXT_IF_ENABLED = 0x05, ///< External interface enabled 
     __DMI_CHASSIS_SECURITY_STATUS_COUNT
 } dmi_chassis_security_status_t;
 
 typedef enum dmi_rack_type
 {
-    DMI_RACK_TYPE_UNSPECIFIED = 0x00, ///< Unspecified
-    DMI_RACK_TYPE_OPEN        = 0x01, ///< Open Rack,
+    DMI_RACK_TYPE_UNSPEC = 0x00, ///< Unspecified
+    DMI_RACK_TYPE_OPEN   = 0x01, ///< Open Rack,
     __DMI_RACK_TYPE_COUNT
 } dmi_rack_type_t;
 
@@ -156,6 +158,11 @@ DMI_PACKED_STRUCT(dmi_chassis_element_data)
  */
 DMI_PACKED_STRUCT(dmi_chassis_data)
 {
+    /**
+     * @brief DMI structure header.
+     */
+    dmi_header_t header;
+
     /**
      * @brief Manufacturer name.
      * @since SMBIOS 2.0

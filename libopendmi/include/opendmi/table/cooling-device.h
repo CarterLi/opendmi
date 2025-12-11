@@ -17,6 +17,7 @@
  */
 typedef enum dmi_cooling_device_type
 {
+    DMI_COOLING_DEVICE_TYPE_UNSPEC                   = 0x00, ///< Unspecified
     DMI_COOLING_DEVICE_TYPE_OTHER                    = 0x01, ///< Other
     DMI_COOLING_DEVICE_TYPE_UNKNOWN                  = 0x02, ///< Unknown
     DMI_COOLING_DEVICE_TYPE_FAN                      = 0x03, ///< Fan
@@ -28,6 +29,7 @@ typedef enum dmi_cooling_device_type
     DMI_COOLING_DEVICE_TYPE_INTEGRATED_REFRIGERATION = 0x09, ///< Integrated refrigeration
     DMI_COOLING_DEVICE_TYPE_ACTIVE_COOLING           = 0x10, ///< Active cooling
     DMI_COOLING_DEVICE_TYPE_PASSIVE_COOLING          = 0x11, ///< Passive cooling
+    __DMI_COOLING_DEVICE_TYPE_COUNT
 } dmi_cooling_device_type_t;
 
 /**
@@ -47,14 +49,14 @@ DMI_PACKED_UNION(dmi_cooling_device_details)
          * 
          * @since SMBIOS 2.2
          */
-        dmi_cooling_device_type_t type : 5;
+        dmi_byte_t type : 5;
 
         /**
          * @brief Cooling device status.
          * 
          * @since SMBIOS 2.2
          */
-        dmi_status_t status : 3;
+        dmi_byte_t status : 3;
     };
 };
 

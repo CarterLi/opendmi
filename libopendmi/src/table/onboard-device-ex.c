@@ -20,6 +20,8 @@ const dmi_attribute_t dmi_onboard_device_ex_attrs[] =
     DMI_ATTRIBUTE(dmi_onboard_device_ex_t, type, ENUM, {
         .code    = "type",
         .name    = "Type",
+        .unspec  = DMI_VALUE_PTR(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
         .values  = dmi_onboard_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_onboard_device_ex_t, is_enabled, BOOL, {
@@ -33,22 +35,22 @@ const dmi_attribute_t dmi_onboard_device_ex_attrs[] =
     DMI_ATTRIBUTE(dmi_onboard_device_ex_t, segment_group, INTEGER, {
         .code    = "segment-group",
         .name    = "Segment group",
-        .unknown = &(unsigned short){ USHRT_MAX }
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_onboard_device_ex_t, bus_number, INTEGER, {
         .code    = "bus-number",
         .name    = "Bus number",
-        .unknown = &(unsigned short){ USHRT_MAX }
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_onboard_device_ex_t, device_number, INTEGER, {
         .code    = "device-number",
         .name    = "Device number",
-        .unknown = &(unsigned short){ USHRT_MAX }
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_onboard_device_ex_t, function_number, INTEGER, {
         .code    = "function-number",
         .name    = "Function number",
-        .unknown = &(unsigned short){ USHRT_MAX }
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE_NULL
 };

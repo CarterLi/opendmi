@@ -17,6 +17,7 @@
  */
 typedef enum dmi_power_supply_type
 {
+    DMI_POWER_SUPPLY_TYPE_UNSPEC    = 0x00, ///< Unspecified
     DMI_POWER_SUPPLY_TYPE_OTHER     = 0x01, ///< Other
     DMI_POWER_SUPPLY_TYPE_UNKNOWN   = 0x02, ///< Unknown
     DMI_POWER_SUPPLY_TYPE_LINEAR    = 0x03, ///< Linear
@@ -25,6 +26,7 @@ typedef enum dmi_power_supply_type
     DMI_POWER_SUPPLY_TYPE_UPS       = 0x06, ///< UPS
     DMI_POWER_SUPPLY_TYPE_CONVERTER = 0x07, ///< Converter
     DMI_POWER_SUPPLY_TYPE_REGULATOR = 0x08, ///< Regulator
+    __DMI_POWER_SUPPLY_TYPE_COUNT
 } dmi_power_supply_type_t;
 
 /**
@@ -32,12 +34,14 @@ typedef enum dmi_power_supply_type
  */
 typedef enum dmi_range_switching_type
 {
+    DMI_RANGE_SWITCHING_TYPE_UNSPEC         = 0x00, ///< Unspecified
     DMI_RANGE_SWITCHING_TYPE_OTHER          = 0x01, ///< Other
     DMI_RANGE_SWITCHING_TYPE_UNKNOWN        = 0x02, ///< Unknown
     DMI_RANGE_SWITCHING_TYPE_MANUAL         = 0x03, ///< Manual
     DMI_RANGE_SWITCHING_TYPE_AUTO           = 0x04, ///< Auto-switch
     DMI_RANGE_SWITCHING_TYPE_WIDE           = 0x05, ///< Wide range
     DMI_RANGE_SWITCHING_TYPE_NOT_APPLICABLE = 0x06, ///< Not applicable
+    __DMI_RANGE_SWITCHING_TYPE_COUNT
 } dmi_range_switching_type_t;
 
 /**
@@ -70,17 +74,17 @@ DMI_PACKED_UNION(dmi_power_supply_details)
         /**
          * @brief Input voltage range switching.
          */
-        dmi_range_switching_type_t range_switching : 4;
+        dmi_word_t range_switching : 4;
 
         /**
          * @brief Status.
          */
-        dmi_status_t status : 3;
+        dmi_word_t status : 3;
 
         /**
          * @brief Power supply type.
          */
-        dmi_power_supply_type_t type : 4;
+        dmi_word_t type : 4;
 
         /**
          * @brief Reserved for future use, set to zero.

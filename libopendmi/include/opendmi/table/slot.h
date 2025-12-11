@@ -14,6 +14,7 @@
  */
 typedef enum dmi_slot_type
 {
+    DMI_SLOT_TYPE_UNSPEC                = 0x00, ///< Unspecified
     DMI_SLOT_TYPE_OTHER                 = 0x01, ///< Other
     DMI_SLOT_TYPE_UNKNOWN               = 0x02, ///< Unknown
     DMI_SLOT_TYPE_ISA                   = 0x03, ///< ISA
@@ -102,6 +103,7 @@ typedef enum dmi_slot_type
  */
 typedef enum dmi_slot_width
 {
+    DMI_SLOT_WIDTH_UNSPEC  = 0x00, ///< Unspecified
     DMI_SLOT_WIDTH_OTHER   = 0x01, ///< Other
     DMI_SLOT_WIDTH_UNKNOWN = 0x02, ///< Unknown
     DMI_SLOT_WIDTH_8_BIT   = 0x03, ///< 8 bit
@@ -116,6 +118,7 @@ typedef enum dmi_slot_width
     DMI_SLOT_WIDTH_12X     = 0x0C, ///< 12x or x12
     DMI_SLOT_WIDTH_16X     = 0x0D, ///< 16x or x16
     DMI_SLOT_WIDTH_32X     = 0x0E, ///< 32x or x32
+    __DMI_SLOT_WIDTH_COUNT
 } dmi_slot_width_t;
 
 /**
@@ -123,11 +126,13 @@ typedef enum dmi_slot_width
  */
 typedef enum dmi_slot_usage
 {
+    DMI_SLOT_USAGE_UNSPEC      = 0x00, ///< Unspecified
     DMI_SLOT_USAGE_OTHER       = 0x01, ///< Other
     DMI_SLOT_USAGE_UNKNOWN     = 0x02, ///< Unknown
     DMI_SLOT_USAGE_AVAILABLE   = 0x03, ///< Available
     DMI_SLOT_USAGE_IN_USE      = 0x04, ///< In use
     DMI_SLOT_USAGE_UNAVAILABLE = 0x05, ///< Unavailable
+    __DMI_SLOT_USAGE_COUNT
 } dmi_slot_usage_t;
 
 DMI_PACKED_STRUCT(dmi_slot_data)

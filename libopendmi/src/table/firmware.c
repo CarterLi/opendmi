@@ -12,16 +12,8 @@
 
 static const dmi_name_t dmi_firmware_feature_names[] =
 {
-    {
-        .id   = 2,
-        .code = "unknown",
-        .name = "Unknown"
-    },
-    {
-        .id   = 3,
-        .code = "unsupported",
-        .name = "Firmware characteristics are not supported"
-    },
+    DMI_NAME_UNKNOWN(2),
+    DMI_NAME_UNSUPPORTED(3),
     {
         .id   = 4,
         .code = "isa-support",

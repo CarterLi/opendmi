@@ -9,16 +9,9 @@
 
 const dmi_name_t dmi_battery_chemistry_names[] =
 {
-    {
-        .id   = DMI_BATTERY_CHEMISTRY_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_BATTERY_CHEMISTRY_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_BATTERY_CHEMISTRY_UNSPEC),
+    DMI_NAME_OTHER(DMI_BATTERY_CHEMISTRY_OTHER),
+    DMI_NAME_UNKNOWN(DMI_BATTERY_CHEMISTRY_UNKNOWN),
     {
         .id   = DMI_BATTERY_CHEMISTRY_LEAD_ACID,
         .code = "lead-acid",

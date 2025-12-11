@@ -31,19 +31,20 @@ typedef union dmi_baseboard_features dmi_baseboard_features_t;
  */
 typedef enum dmi_baseboard_type
 {
-    DMI_BASEBOARD_TYPE_UNKNOWN                  = 0x01, /**< Unknown */
-    DMI_BASEBOARD_TYPE_OTHER                    = 0x02, /**< Other */
-    DMI_BASEBOARD_TYPE_SERVER_BLADE             = 0x03, /**< Server blade */
-    DMI_BASEBOARD_TYPE_CONNECTIVITY_SWITCH      = 0x04, /**< Connectivity switch */
-    DMI_BASEBOARD_TYPE_SYSTEM_MANAGEMENT_MODULE = 0x05, /**< System management module */
-    DMI_BASEBOARD_TYPE_PROCESSOR_MODULE         = 0x06, /**< Processor module */
-    DMI_BASEBOARD_TYPE_IO_MODULE                = 0x07, /**< IO module */
-    DMI_BASEBOARD_TYPE_MEMORY_MODULE            = 0x08, /**< Memory module */
-    DMI_BASEBOARD_TYPE_DAUGHTERBOARD            = 0x09, /**< Daughterboard */
-    DMI_BASEBOARD_TYPE_MOTHERBOARD              = 0x0A, /**< Motherboard */
-    DMI_BASEBOARD_TYPE_PROCESSOR_MEMORY_MODULE  = 0x0B, /**< Processor/memory module */
-    DMI_BASEBOARD_TYPE_PROCESSOR_IO_MODULE      = 0x0C, /**< Processor/IO module */
-    DMI_BASEBOARD_TYPE_INTERCONNECT_BOARD       = 0x0D, /**< Interconnect board */
+    DMI_BASEBOARD_TYPE_UNSPEC                   = 0x00, ///< Unspecified
+    DMI_BASEBOARD_TYPE_UNKNOWN                  = 0x01, ///< Unknown
+    DMI_BASEBOARD_TYPE_OTHER                    = 0x02, ///< Other
+    DMI_BASEBOARD_TYPE_SERVER_BLADE             = 0x03, ///< Server blade
+    DMI_BASEBOARD_TYPE_CONNECTIVITY_SWITCH      = 0x04, ///< Connectivity switch
+    DMI_BASEBOARD_TYPE_SYSTEM_MANAGEMENT_MODULE = 0x05, ///< System management module
+    DMI_BASEBOARD_TYPE_PROCESSOR_MODULE         = 0x06, ///< Processor module
+    DMI_BASEBOARD_TYPE_IO_MODULE                = 0x07, ///< IO module
+    DMI_BASEBOARD_TYPE_MEMORY_MODULE            = 0x08, ///< Memory module
+    DMI_BASEBOARD_TYPE_DAUGHTERBOARD            = 0x09, ///< Daughterboard
+    DMI_BASEBOARD_TYPE_MOTHERBOARD              = 0x0A, ///< Motherboard
+    DMI_BASEBOARD_TYPE_PROCESSOR_MEMORY_MODULE  = 0x0B, ///< Processor/memory module
+    DMI_BASEBOARD_TYPE_PROCESSOR_IO_MODULE      = 0x0C, ///< Processor/IO module
+    DMI_BASEBOARD_TYPE_INTERCONNECT_BOARD       = 0x0D, ///< Interconnect board
     __DMI_BASEBOARD_TYPE_COUNT
 } dmi_baseboard_type_t;
 
@@ -284,7 +285,7 @@ extern const dmi_table_spec_t dmi_baseboard_table;
 
 __BEGIN_DECLS
 
-const char *dmi_baseboard_type_name(enum dmi_baseboard_type value);
+const char *dmi_baseboard_type_name(dmi_baseboard_type_t value);
 
 /**
  * @internal

@@ -12,11 +12,7 @@
 
 static const dmi_name_t dmi_connector_type_names[] =
 {
-    {
-        .id   = DMI_CONNECTOR_TYPE_NONE,
-        .code = "none",
-        .name = "None"
-    },
+    DMI_NAME_NONE(DMI_CONNECTOR_TYPE_NONE),
     {
         .id   = DMI_CONNECTOR_TYPE_IEEE_1284_B,
         .code = "ieee-1284-b",
@@ -217,21 +213,13 @@ static const dmi_name_t dmi_connector_type_names[] =
         .code = "pc-98-full",
         .name = "PC-98 Full"
     },
-    {
-        .id   = DMI_CONNECTOR_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
+    DMI_NAME_OTHER(DMI_CONNECTOR_TYPE_OTHER),
     DMI_NAME_NULL
 };
 
 static const dmi_name_t dmi_port_type_names[] =
 {
-    {
-        .id   = DMI_PORT_TYPE_NONE,
-        .code = "none",
-        .name = "None"
-    },
+    DMI_NAME_NONE(DMI_PORT_TYPE_NONE),
     {
         .id   = DMI_PORT_TYPE_PARALLEL_XT_AT,
         .code = "parallel-xt-at",
@@ -417,11 +405,7 @@ static const dmi_name_t dmi_port_type_names[] =
         .code = "8251-fifo",
         .name = "8251 FIFO compatible"
     },
-    {
-        .id   = DMI_PORT_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
+    DMI_NAME_OTHER(DMI_PORT_TYPE_OTHER),
     DMI_NAME_NULL
 };
 

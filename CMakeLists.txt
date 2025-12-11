@@ -24,7 +24,7 @@ if(MSVC)
     add_compile_options(/std:c11 /W4)
     add_compile_definitions(_CRT_NONSTDC_NO_DEPRECATE)
 else()
-    add_compile_options(-Wall -Wextra -pedantic)
+    add_compile_options(-Wall -Wextra)
 
     if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
        "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")

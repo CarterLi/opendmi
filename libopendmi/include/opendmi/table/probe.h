@@ -19,6 +19,7 @@
  */
 typedef enum dmi_probe_location
 {
+    DMI_PROBE_LOCATION_UNSPEC             = 0x00, ///< Unspecified
     DMI_PROBE_LOCATION_OTHER              = 0x01, ///< Other
     DMI_PROBE_LOCATION_UNKNOWN            = 0x02, ///< Unknown
     DMI_PROBE_LOCATION_PROCESSOR          = 0x03, ///< Processor
@@ -34,6 +35,7 @@ typedef enum dmi_probe_location
     DMI_PROBE_LOCATION_BACK_PANEL_BOARD   = 0x0D, ///< Back panel board
     DMI_PROBE_LOCATION_POWER_SYSTEM_BOARD = 0x0E, ///< Power system board
     DMI_PROBE_LOCATION_DRIVE_BACK_PLANE   = 0x0F, ///< Drive back plane
+    __DMI_PROBE_LOCATION_COUNT
 } dmi_probe_location_t;
 
 /**

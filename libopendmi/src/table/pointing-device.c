@@ -12,16 +12,9 @@
 
 static const dmi_name_t dmi_pointing_device_type_names[] =
 {
-    {
-        .id   = DMI_POINTING_DEVICE_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_POINTING_DEVICE_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_POINTING_DEVICE_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_POINTING_DEVICE_TYPE_UNKNOWN),
     {
         .id   = DMI_POINTING_DEVICE_TYPE_MOUSE,
         .code = "mouse",
@@ -62,16 +55,9 @@ static const dmi_name_t dmi_pointing_device_type_names[] =
 
 static const dmi_name_t dmi_pointing_device_interface_names[] =
 {
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
+    DMI_NAME_OTHER(DMI_POINTING_DEVICE_INTERFACE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),
     {
         .id   = DMI_POINTING_DEVICE_INTERFACE_SERIAL,
         .code = "serial",
@@ -133,18 +119,22 @@ static const dmi_name_t dmi_pointing_device_interface_names[] =
 const dmi_attribute_t dmi_pointing_device_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_pointing_device_t, type, ENUM, {
-        .code   = "type",
-        .name   = "Type",
-        .values = dmi_pointing_device_type_names
+        .code    = "type",
+        .name    = "Type",
+        .unspec  = DMI_VALUE_PTR(DMI_POINTING_DEVICE_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_POINTING_DEVICE_TYPE_UNKNOWN),
+        .values  = dmi_pointing_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_pointing_device_t, interface, ENUM, {
-        .code   = "interface",
-        .name   = "Interface type",
-        .values = dmi_pointing_device_interface_names
+        .code    = "interface",
+        .name    = "Interface type",
+        .unspec  = DMI_VALUE_PTR(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),
+        .values  = dmi_pointing_device_interface_names
     }),
     DMI_ATTRIBUTE(dmi_pointing_device_t, button_count, INTEGER, {
-        .code   = "button-count",
-        .name   = "Button count"
+        .code    = "button-count",
+        .name    = "Button count"
     }),
     DMI_ATTRIBUTE_NULL
 };

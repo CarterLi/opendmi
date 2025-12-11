@@ -9,16 +9,9 @@
 
 static const dmi_name_t dmi_processor_type_names[] =
 {
-    {
-        .id   = DMI_PROCESSOR_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_PROCESSOR_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_PROCESSOR_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_PROCESSOR_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_PROCESSOR_TYPE_UNKNOWN),
     {
         .id   = DMI_PROCESSOR_TYPE_CENTRAL,
         .code = "central",
@@ -44,16 +37,9 @@ static const dmi_name_t dmi_processor_type_names[] =
 
 static const dmi_name_t dmi_processor_upgrade_names[] =
 {
-    {
-        .id   = DMI_PROCESSOR_UPGRADE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_PROCESSOR_UPGRADE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_PROCESSOR_UPGRADE_UNSPEC),
+    DMI_NAME_OTHER(DMI_PROCESSOR_UPGRADE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_PROCESSOR_UPGRADE_UNKNOWN),
     {
         .id   = DMI_PROCESSOR_UPGRADE_DAUGHTER_BOARD,
         .code = "daughter-board",
@@ -69,11 +55,7 @@ static const dmi_name_t dmi_processor_upgrade_names[] =
         .code = "piggy-back",
         .name = "Replaceable piggy-back"
     },
-    {
-        .id   = DMI_PROCESSOR_UPGRADE_NONE,
-        .code = "none",
-        .name = "None"
-    },
+    DMI_NAME_NONE(DMI_PROCESSOR_UPGRADE_NONE),
     {
         .id   = DMI_PROCESSOR_UPGRADE_SOCKET_LIF,
         .code = "socket-lif",

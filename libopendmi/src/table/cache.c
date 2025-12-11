@@ -12,16 +12,9 @@
 
 static const dmi_name_t dmi_cache_type_names[] =
 {
-    {
-        .id   = DMI_CACHE_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_CACHE_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_CACHE_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_CACHE_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_CACHE_TYPE_UNKNOWN),
     {
         .id   = DMI_CACHE_TYPE_INSTRUCTION,
         .code = "instruction",
@@ -57,26 +50,15 @@ static const dmi_name_t dmi_cache_mode_names[] =
         .code = "variable",
         .name = "Variable"
     },
-    {
-        .id   = DMI_CACHE_MODE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNKNOWN(DMI_CACHE_MODE_UNKNOWN),
     DMI_NAME_NULL
 };
 
 static const dmi_name_t dmi_cache_assoc_names[] =
 {
-    {
-        .id   = DMI_CACHE_ASSOC_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_CACHE_ASSOC_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_CACHE_ASSOC_UNSPEC),
+    DMI_NAME_OTHER(DMI_CACHE_ASSOC_OTHER),
+    DMI_NAME_UNKNOWN(DMI_CACHE_ASSOC_UNKNOWN),
     {
         .id   = DMI_CACHE_ASSOC_DIRECT,
         .code = "direct",
@@ -152,31 +134,15 @@ static const dmi_name_t dmi_cache_location_names[] =
         .code = "external",
         .name = "External"
     },
-    {
-        .id   = DMI_CACHE_LOCATION_RESERVED,
-        .code = "reserved",
-        .name = "Reserved"
-    },
-    {
-        .id   = DMI_CACHE_LOCATION_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_RESERVED(DMI_CACHE_LOCATION_RESERVED),
+    DMI_NAME_UNKNOWN(DMI_CACHE_LOCATION_UNKNOWN),
     DMI_NAME_NULL
 };
 
 static const dmi_name_t dmi_cache_sram_type_names[] =
 {
-    {
-        .id   = 0,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = 1,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_OTHER(0),
+    DMI_NAME_UNKNOWN(1),
     {
         .id   = 2,
         .code = "non-burst",
@@ -208,68 +174,76 @@ static const dmi_name_t dmi_cache_sram_type_names[] =
 const dmi_attribute_t dmi_cache_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_cache_t, socket_designator, STRING, {
-        .code = "socket-designator",
-        .name = "Socket designator"
+        .code    = "socket-designator",
+        .name    = "Socket designator"
     }),
     DMI_ATTRIBUTE(dmi_cache_t, level, INTEGER, {
-        .code = "level",
-        .name = "Cache level"
+        .code    = "level",
+        .name    = "Cache level"
     }),
     DMI_ATTRIBUTE(dmi_cache_t, socketed, BOOL, {
-        .code = "socketed",
-        .name = "Socketed",
+        .code    = "socketed",
+        .name    = "Socketed",
     }),
     DMI_ATTRIBUTE(dmi_cache_t, location, ENUM, {
-        .code   = "location",
-        .name   = "Location",
-        .values = dmi_cache_location_names
+        .code    = "location",
+        .name    = "Location",
+        .unknown = DMI_VALUE_PTR(DMI_CACHE_LOCATION_UNKNOWN),
+        .values  = dmi_cache_location_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, enabled, BOOL, {
-        .code = "enabled",
-        .name = "Enabled"
+        .code    = "enabled",
+        .name    = "Enabled"
     }),
     DMI_ATTRIBUTE(dmi_cache_t, mode, ENUM, {
-        .code   = "mode",
-        .name   = "Operational mode",
-        .values = dmi_cache_mode_names
+        .code    = "mode",
+        .name    = "Operational mode",
+        .unknown = DMI_VALUE_PTR(DMI_CACHE_MODE_UNKNOWN),
+        .values  = dmi_cache_mode_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, maximum_size, SIZE, {
-        .code = "maximum-size",
-        .name = "Maximum cache size"
+        .code    = "maximum-size",
+        .name    = "Maximum cache size"
     }),
     DMI_ATTRIBUTE(dmi_cache_t, installed_size, SIZE, {
-        .code = "installed-size",
-        .name = "Installed cache size"
+        .code    = "installed-size",
+        .name    = "Installed cache size"
     }),
     DMI_ATTRIBUTE(dmi_cache_t, supported_sram, SET, {
-        .code   = "supported-sram",
-        .name   = "Supported SRAM type",
-        .values = dmi_cache_sram_type_names
+        .code    = "supported-sram",
+        .name    = "Supported SRAM type",
+        .values  = dmi_cache_sram_type_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, current_sram, SET, {
-        .code   = "current-sram",
-        .name   = "Current SRAM type",
-        .values = dmi_cache_sram_type_names
+        .code    = "current-sram",
+        .name    = "Current SRAM type",
+        .values  = dmi_cache_sram_type_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, speed, INTEGER, {
-        .code   = "speed",
-        .name   = "Cache speed",
-        .unit   = "ns"
+        .code    = "speed",
+        .name    = "Cache speed",
+        .unit    = "ns"
     }),
     DMI_ATTRIBUTE(dmi_cache_t, error_correction, ENUM, {
-        .code   = "error-correction",
-        .name   = "Error correction type",
-        .values = dmi_error_correct_type_names
+        .code    = "error-correction",
+        .name    = "Error correction type",
+        .unspec  = DMI_VALUE_PTR(DMI_ERROR_CORRECT_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_ERROR_CORRECT_TYPE_UNKNOWN),
+        .values  = dmi_error_correct_type_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, type, ENUM, {
-        .code   = "type",
-        .name   = "System cache type",
-        .values = dmi_cache_type_names
+        .code    = "type",
+        .name    = "System cache type",
+        .unspec  = DMI_VALUE_PTR(DMI_CACHE_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_CACHE_TYPE_UNKNOWN),
+        .values  = dmi_cache_type_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, associativity, ENUM, {
-        .code   = "associativity",
-        .name   = "Associativity",
-        .values = dmi_cache_assoc_names
+        .code    = "associativity",
+        .name    = "Associativity",
+        .unspec  = DMI_VALUE_PTR(DMI_CACHE_ASSOC_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_CACHE_ASSOC_UNKNOWN),
+        .values  = dmi_cache_assoc_names
     }),
     DMI_ATTRIBUTE_NULL
 };

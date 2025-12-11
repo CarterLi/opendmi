@@ -12,16 +12,9 @@
 
 const dmi_name_t dmi_baseboard_type_names[] =
 {
-    {
-        .id   = DMI_BASEBOARD_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
-    {
-        .id   = DMI_BASEBOARD_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
+    DMI_NAME_UNSPEC(DMI_BASEBOARD_TYPE_UNSPEC),
+    DMI_NAME_UNKNOWN(DMI_BASEBOARD_TYPE_UNKNOWN),
+    DMI_NAME_OTHER(DMI_BASEBOARD_TYPE_OTHER),
     {
         .id   = DMI_BASEBOARD_TYPE_SERVER_BLADE,
         .code = "server-blade",
@@ -83,61 +76,63 @@ const dmi_name_t dmi_baseboard_type_names[] =
 const dmi_attribute_t dmi_baseboard_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_baseboard_t, vendor, STRING, {
-        .code   = "vendor",
-        .name   = "Vendor"
+        .code    = "vendor",
+        .name    = "Vendor"
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, product, STRING, {
-        .code   = "product",
-        .name   = "Product"
+        .code    = "product",
+        .name    = "Product"
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, version, STRING, {
-        .code   = "version",
-        .name   = "Version"
+        .code    = "version",
+        .name    = "Version"
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, serial_number, STRING, {
-        .code   = "serial-number",
-        .name   = "Serial number"
+        .code    = "serial-number",
+        .name    = "Serial number"
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, asset_tag, STRING, {
-        .code   = "asset-tag",
-        .name   = "Asset tag"
+        .code    = "asset-tag",
+        .name    = "Asset tag"
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, is_hosting_board, BOOL, {
-        .code   = "is-hosting-board",
-        .name   = "Hosting board"
+        .code    = "is-hosting-board",
+        .name    = "Hosting board"
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, require_daughter_board, BOOL, {
-        .code   = "require-daugther-board",
-        .name   = "Require daugther board"
+        .code    = "require-daugther-board",
+        .name    = "Require daugther board"
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, is_removable, BOOL, {
-        .code = "is-removable",
-        .name = "Removable"
+        .code    = "is-removable",
+        .name    = "Removable"
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, is_replaceable, BOOL, {
-        .code = "is-replaceable",
-        .name = "Replaceable"
+        .code    = "is-replaceable",
+        .name    = "Replaceable"
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, is_hot_swappable, BOOL, {
-        .code = "is-hot-swappable",
-        .name = "Hot-swappable"
+        .code    = "is-hot-swappable",
+        .name    = "Hot-swappable"
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, location, STRING, {
-        .code = "location",
-        .name = "Location"
+        .code    = "location",
+        .name    = "Location"
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, type, ENUM, {
-        .code   = "type",
-        .name   = "Type",
-        .values = dmi_baseboard_type_names
+        .code    = "type",
+        .name    = "Type",
+        .unspec  = DMI_VALUE_PTR(DMI_BASEBOARD_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_BASEBOARD_TYPE_UNKNOWN),
+        .values  = dmi_baseboard_type_names
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, children_count, INTEGER, {
-        .code   = "children-count",
-        .name   = "Children count"
+        .code    = "children-count",
+        .name    = "Children count"
     }),
     DMI_ATTRIBUTE_ARRAY(dmi_baseboard_t, children, children_count, HANDLE, {
-        .code   = "children",
-        .name   = "Children"
+        .code    = "children",
+        .name    = "Children"
     }),
     DMI_ATTRIBUTE_NULL
 };
@@ -155,7 +150,7 @@ const dmi_table_spec_t dmi_baseboard_table =
     }
 };
 
-const char *dmi_baseboard_type_name(enum dmi_baseboard_type value)
+const char *dmi_baseboard_type_name(dmi_baseboard_type_t value)
 {
     return dmi_name_lookup(dmi_baseboard_type_names, value);
 }

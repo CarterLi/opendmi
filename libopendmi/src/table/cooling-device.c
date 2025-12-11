@@ -14,16 +14,9 @@
 
 static const dmi_name_t dmi_cooling_device_type_names[] =
 {
-    {
-        .id   = DMI_COOLING_DEVICE_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_COOLING_DEVICE_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_COOLING_DEVICE_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_COOLING_DEVICE_TYPE_UNKNOWN),
     {
         .id   = DMI_COOLING_DEVICE_TYPE_FAN,
         .code = "fan",
@@ -75,22 +68,26 @@ static const dmi_name_t dmi_cooling_device_type_names[] =
 const dmi_attribute_t dmi_cooling_device_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_cooling_device_t, probe_handle, HANDLE, {
-        .code   = "probe-handle",
-        .name   = "Temperature probe handle"
+        .code    = "probe-handle",
+        .name    = "Temperature probe handle"
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, type, ENUM, {
-        .code   = "type",
-        .name   = "Type",
-        .values = dmi_cooling_device_type_names,
+        .code    = "type",
+        .name    = "Type",
+        .unspec  = DMI_VALUE_PTR(DMI_COOLING_DEVICE_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_COOLING_DEVICE_TYPE_UNKNOWN),
+        .values  = dmi_cooling_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, status, ENUM, {
-        .code   = "status",
-        .name   = "Status",
-        .values = dmi_status_names
+        .code    = "status",
+        .name    = "Status",
+        .unspec  = DMI_VALUE_PTR(DMI_STATUS_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_STATUS_UNKNOWN),
+        .values  = dmi_status_names
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, group, INTEGER, {
-        .code   = "group",
-        .name   = "Group"
+        .code    = "group",
+        .name    = "Group"
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, oem_defined, INTEGER, {
         .code    = "oem-defined",
@@ -101,11 +98,11 @@ const dmi_attribute_t dmi_cooling_device_attrs[] =
         .code    = "nominal-speed",
         .name    = "Nominal speed",
         .unit    = "rpm",
-        .unknown = &(short){ SHRT_MIN }
+        .unknown = DMI_VALUE_PTR((short)SHRT_MIN)
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, description, STRING, {
-        .code   = "description",
-        .name   = "Description"
+        .code    = "description",
+        .name    = "Description"
     }),
     DMI_ATTRIBUTE_NULL
 };

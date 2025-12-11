@@ -12,16 +12,9 @@
 
 static const dmi_name_t dmi_mgmt_device_type_names[] =
 {
-    {
-        .id   = DMI_MGMT_DEVICE_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MGMT_DEVICE_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MGMT_DEVICE_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_MGMT_DEVICE_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MGMT_DEVICE_TYPE_UNKNOWN),
     {
         .id   = DMI_MGMT_DEVICE_TYPE_NATIONAL_LM75,
         .code = "national-lm75",
@@ -82,16 +75,9 @@ static const dmi_name_t dmi_mgmt_device_type_names[] =
 
 static const dmi_name_t dmi_mgmt_device_addr_type_names[] =
 {
-    {
-        .id   = DMI_MGMT_DEVICE_ADDR_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MGMT_DEVICE_ADDR_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MGMT_DEVICE_ADDR_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_MGMT_DEVICE_ADDR_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MGMT_DEVICE_ADDR_TYPE_UNKNOWN),
     {
         .id   = DMI_MGMT_DEVICE_ADDR_TYPE_PORT,
         .code = "port",
@@ -113,22 +99,26 @@ static const dmi_name_t dmi_mgmt_device_addr_type_names[] =
 const dmi_attribute_t dmi_mgmt_device_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_mgmt_device_t, description, STRING, {
-        .code   = "description",
-        .name   = "Description"
+        .code    = "description",
+        .name    = "Description"
     }),
     DMI_ATTRIBUTE(dmi_mgmt_device_t, type, ENUM, {
-        .code   = "type",
-        .name   = "Type",
-        .values = dmi_mgmt_device_type_names
+        .code    = "type",
+        .name    = "Type",
+        .unspec  = DMI_VALUE_PTR(DMI_MGMT_DEVICE_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MGMT_DEVICE_TYPE_UNKNOWN),
+        .values  = dmi_mgmt_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_mgmt_device_t, addr, ADDRESS, {
-        .code   = "address",
-        .name   = "Address"
+        .code    = "address",
+        .name    = "Address"
     }),
     DMI_ATTRIBUTE(dmi_mgmt_device_t, addr_type, ENUM, {
-        .code   = "address-type",
-        .name   = "Address type",
-        .values = dmi_mgmt_device_addr_type_names
+        .code    = "address-type",
+        .name    = "Address type",
+        .unspec  = DMI_VALUE_PTR(DMI_MGMT_DEVICE_ADDR_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MGMT_DEVICE_ADDR_TYPE_UNKNOWN),
+        .values  = dmi_mgmt_device_addr_type_names
     }),
     DMI_ATTRIBUTE_NULL
 };

@@ -36,6 +36,7 @@ typedef struct dmi_memory_channel_device_data dmi_memory_channel_device_data_t;
  */
 typedef enum dmi_memory_channel_type
 {
+    DMI_MEMORY_CHANNEL_TYPE_UNSPEC   = 0x00, ///< Unspecified
     DMI_MEMORY_CHANNEL_TYPE_OTHER    = 0x01, ///< Other
     DMI_MEMORY_CHANNEL_TYPE_UNKNOWN  = 0x02, ///< Unknown
     DMI_MEMORY_CHANNEL_TYPE_RAMBUS   = 0x03, ///< RamBus

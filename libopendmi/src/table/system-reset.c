@@ -14,11 +14,7 @@
 
 static const dmi_name_t dmi_boot_option_names[] =
 {
-    {
-        .id   = DMI_BOOT_OPTION_RESERVED,
-        .code = "reserved",
-        .name = "Reserved"
-    },
+    DMI_NAME_RESERVED(DMI_BOOT_OPTION_RESERVED),
     {
         .id   = DMI_BOOT_OPTION_OPERATING_SYSTEM,
         .code = "operating-system",
@@ -60,24 +56,24 @@ static const dmi_attribute_t dmi_system_reset_attrs[] =
     DMI_ATTRIBUTE(dmi_system_reset_t, reset_count, INTEGER, {
         .code    = "reset-count",
         .name    = "Reset count",
-        .unknown = &(unsigned short){ USHRT_MAX }
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_system_reset_t, reset_limit, INTEGER, {
         .code    = "reset-limit",
         .name    = "Reset limit",
-        .unknown = &(unsigned short){ USHRT_MAX }
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_system_reset_t, timer_interval, INTEGER, {
         .code    = "timer-interval",
         .name    = "Timer interval",
         .unit    = "min",
-        .unknown = &(unsigned short){ USHRT_MAX }
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_system_reset_t, timeout, INTEGER, {
         .code    = "timeout",
         .name    = "Timeout",
         .unit    = "min",
-        .unknown = &(unsigned short){ USHRT_MAX },
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX),
     }),
     DMI_ATTRIBUTE_NULL
 };

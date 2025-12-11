@@ -25,6 +25,13 @@ struct dmi_name
 
 #define DMI_NAME_NULL { -1, nullptr, nullptr }
 
+#define DMI_NAME_UNSPEC(id)      { (id), "unspecified", "Unspecified" }
+#define DMI_NAME_UNKNOWN(id)     { (id), "unknown",     "Unknown"     }
+#define DMI_NAME_OTHER(id)       { (id), "other",       "Other"       }
+#define DMI_NAME_NONE(id)        { (id), "none",        "None"        }
+#define DMI_NAME_UNSUPPORTED(id) { (id), "unsupported", "Unsupported" }
+#define DMI_NAME_RESERVED(id)    { (id), "reserved",    "Reserved"    }
+
 __BEGIN_DECLS
 
 const char *dmi_code_lookup(const dmi_name_t *dictionary, int id);

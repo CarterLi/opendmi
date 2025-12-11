@@ -10,16 +10,9 @@
 
 static const dmi_name_t dmi_memory_error_type_names[] =
 {
-    {
-        .id   = DMI_MEMORY_ERROR_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MEMORY_ERROR_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MEMORY_ERROR_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_MEMORY_ERROR_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MEMORY_ERROR_TYPE_UNKNOWN),
     {
         .id   = DMI_MEMORY_ERROR_TYPE_OK,
         .code = "ok",
@@ -85,16 +78,9 @@ static const dmi_name_t dmi_memory_error_type_names[] =
 
 static const dmi_name_t dmi_memory_error_granularity_names[] =
 {
-    {
-        .id   = DMI_MEMORY_ERROR_GRANULARITY_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MEMORY_ERROR_GRANULARITY_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MEMORY_ERROR_GRANULARITY_UNSPEC),
+    DMI_NAME_OTHER(DMI_MEMORY_ERROR_GRANULARITY_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MEMORY_ERROR_GRANULARITY_UNKNOWN),
     {
         .id   = DMI_MEMORY_ERROR_GRANULARITY_DEVICE,
         .code = "device",
@@ -110,16 +96,9 @@ static const dmi_name_t dmi_memory_error_granularity_names[] =
 
 static const dmi_name_t dmi_memory_error_operation_names[] =
 {
-    {
-        .id   = DMI_MEMORY_ERROR_OPERATION_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MEMORY_ERROR_OPERATION_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MEMORY_ERROR_OPERATION_UNSPEC),
+    DMI_NAME_OTHER(DMI_MEMORY_ERROR_OPERATION_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MEMORY_ERROR_OPERATION_UNKNOWN),
     {
         .id   = DMI_MEMORY_ERROR_OPERATION_READ,
         .code = "read",
@@ -141,36 +120,42 @@ static const dmi_name_t dmi_memory_error_operation_names[] =
 const dmi_attribute_t dmi_memory_error_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_memory_error_t, type, ENUM, {
-        .code   = "type",
-        .name   = "Type",
-        .values = dmi_memory_error_type_names
+        .code    = "type",
+        .name    = "Type",
+        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_ERROR_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MEMORY_ERROR_TYPE_UNKNOWN),
+        .values  = dmi_memory_error_type_names
     }),
     DMI_ATTRIBUTE(dmi_memory_error_t, granularity, ENUM, {
-        .code   = "granularity",
-        .name   = "granularity",
-        .values = dmi_memory_error_granularity_names
+        .code    = "granularity",
+        .name    = "granularity",
+        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_ERROR_GRANULARITY_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MEMORY_ERROR_GRANULARITY_UNKNOWN),
+        .values  = dmi_memory_error_granularity_names
     }),
     DMI_ATTRIBUTE(dmi_memory_error_t, operation, ENUM, {
-        .code   = "operation",
-        .name   = "operation",
-        .values = dmi_memory_error_operation_names
+        .code    = "operation",
+        .name    = "operation",
+        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_ERROR_OPERATION_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MEMORY_ERROR_OPERATION_UNKNOWN),
+        .values  = dmi_memory_error_operation_names
     }),
     DMI_ATTRIBUTE(dmi_memory_error_t, vendor_syndrome, INTEGER, {
-        .code   = "vendor-syndrome",
-        .name   = "vendor-syndrome",
-        .flags  = DMI_ATTRIBUTE_FLAG_HEX
+        .code    = "vendor-syndrome",
+        .name    = "vendor-syndrome",
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_memory_error_t, array_addr, ADDRESS, {
-        .code   = "array-addr",
-        .name   = "Array-relative address"
+        .code    = "array-addr",
+        .name    = "Array-relative address"
     }),
     DMI_ATTRIBUTE(dmi_memory_error_t, device_addr, ADDRESS, {
-        .code   = "device-addr",
-        .name   = "Device-relative address"
+        .code    = "device-addr",
+        .name    = "Device-relative address"
     }),
     DMI_ATTRIBUTE(dmi_memory_error_t, resolution, SIZE, {
-        .code   = "resolution",
-        .name   = "Resolution"
+        .code    = "resolution",
+        .name    = "Resolution"
     }),
     DMI_ATTRIBUTE_NULL
 };

@@ -43,6 +43,7 @@ typedef union dmi_error_correct_caps dmi_error_correct_caps_t;
 
 typedef enum dmi_error_detect_method
 {
+    DMI_ERROR_DETECT_METHOD_UNSPEC  = 0x00, ///< Unspecified
     DMI_ERROR_DETECT_METHOD_OTHER   = 0x01, ///< Other
     DMI_ERROR_DETECT_METHOD_UNKNOWN = 0x02, ///< Unknown
     DMI_ERROR_DETECT_METHOD_NONE    = 0x03, ///< None
@@ -56,6 +57,7 @@ typedef enum dmi_error_detect_method
 
 typedef enum dmi_memory_interleave
 {
+    DMI_MEMORY_INTERLEAVE_UNSPEC  = 0x00, ///< Unspecified
     DMI_MEMORY_INTERLEAVE_OTHER   = 0x01, ///< Other
     DMI_MEMORY_INTERLEAVE_UNKNOWN = 0x02, ///< Unknown
     DMI_MEMORY_INTERLEAVE_1WAY    = 0x03, ///< One-Way Interleave

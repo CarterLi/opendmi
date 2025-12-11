@@ -16,6 +16,7 @@
  */
 typedef enum dmi_mgmt_device_type
 {
+    DMI_MGMT_DEVICE_TYPE_UNSPEC          = 0x00, ///< Unspecified
     DMI_MGMT_DEVICE_TYPE_OTHER           = 0x01, ///< Other
     DMI_MGMT_DEVICE_TYPE_UNKNOWN         = 0x02, ///< Unknown
     DMI_MGMT_DEVICE_TYPE_NATIONAL_LM75   = 0x03, ///< National Semiconductor LM75
@@ -29,6 +30,7 @@ typedef enum dmi_mgmt_device_type
     DMI_MGMT_DEVICE_TYPE_GENESYS_GL518SM = 0x0B, ///< Genesys GL518SM
     DMI_MGMT_DEVICE_TYPE_WINBOND_W83781D = 0x0C, ///< Winbond W83781D
     DMI_MGMT_DEVICE_TYPE_HOLTEK_HT82H791 = 0x0D, ///< Holtek HT82H791
+    __DMI_MGMT_DEVICE_TYPE_COUNT
 } dmi_mgmt_device_type_t;
 
 /**
@@ -36,11 +38,13 @@ typedef enum dmi_mgmt_device_type
  */
 typedef enum dmi_mgmt_device_addr_type
 {
+    DMI_MGMT_DEVICE_ADDR_TYPE_UNSPEC  = 0x00, ///< Unspecified
     DMI_MGMT_DEVICE_ADDR_TYPE_OTHER   = 0x01, ///< Other
     DMI_MGMT_DEVICE_ADDR_TYPE_UNKNOWN = 0x02, ///< Unknown
     DMI_MGMT_DEVICE_ADDR_TYPE_PORT    = 0x03, ///< I/O port
     DMI_MGMT_DEVICE_ADDR_TYPE_MEMORY  = 0x04, ///< Memory
     DMI_MGMT_DEVICE_ADDR_TYPE_SMBUS   = 0x05, ///< SMBus
+    __DMI_MGMT_DEVICE_ADDR_TYPE_COUNT
 } dmi_mgmt_device_addr_type_t;
 
 /**

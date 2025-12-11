@@ -26,6 +26,7 @@ typedef struct dmi_pointing_device dmi_pointing_device_t;
  */
 typedef enum dmi_pointing_device_type
 {
+    DMI_POINTING_DEVICE_TYPE_UNSPEC         = 0x00, ///< Unspecified
     DMI_POINTING_DEVICE_TYPE_OTHER          = 0x01, ///< Other
     DMI_POINTING_DEVICE_TYPE_UNKNOWN        = 0x02, ///< Unknown
     DMI_POINTING_DEVICE_TYPE_MOUSE          = 0x03, ///< Mouse
@@ -35,6 +36,7 @@ typedef enum dmi_pointing_device_type
     DMI_POINTING_DEVICE_TYPE_TOUCH_PAD      = 0x07, ///< Touch pad
     DMI_POINTING_DEVICE_TYPE_TOUCH_SCREEN   = 0x08, ///< Touch screen
     DMI_POINTING_DEVICE_TYPE_OPTICAL_SENSOR = 0x09, ///< Optical sensor
+    __DMI_POINTING_DEVICE_TYPE_COUNT
 } dmi_pointing_device_type_t;
 
 /**
@@ -42,6 +44,7 @@ typedef enum dmi_pointing_device_type
  */
 typedef enum dmi_pointing_device_interface
 {
+    DMI_POINTING_DEVICE_INTERFACE_UNSPEC        = 0x00, ///< Unspecified
     DMI_POINTING_DEVICE_INTERFACE_OTHER         = 0x01, ///< Other
     DMI_POINTING_DEVICE_INTERFACE_UNKNOWN       = 0x02, ///< Unknown
     DMI_POINTING_DEVICE_INTERFACE_SERIAL        = 0x03, ///< Serial
@@ -55,6 +58,7 @@ typedef enum dmi_pointing_device_interface
     DMI_POINTING_DEVICE_INTERFACE_USB           = 0xA2, ///< USB
     DMI_POINTING_DEVICE_INTERFACE_I2C           = 0xA3, ///< I2C
     DMI_POINTING_DEVICE_INTERFACE_SPI           = 0xA4, ///< SPI
+    __DMI_POINTING_DEVICE_INTERFACE_COUNT
 } dmi_pointing_device_interface_t;
 
 /**

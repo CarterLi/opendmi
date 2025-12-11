@@ -11,16 +11,9 @@
 
 static const dmi_name_t dmi_memory_channel_type_names[] =
 {
-    {
-        .id   = DMI_MEMORY_CHANNEL_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MEMORY_CHANNEL_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MEMORY_CHANNEL_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_MEMORY_CHANNEL_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MEMORY_CHANNEL_TYPE_UNKNOWN),
     {
         .id   = DMI_MEMORY_CHANNEL_TYPE_RAMBUS,
         .code = "rambus",
@@ -50,22 +43,24 @@ static const dmi_attribute_t dmi_memory_device_channel_attrs[] =
 static const dmi_attribute_t dmi_memory_channel_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_memory_channel_t, type, ENUM, {
-        .code   = "type",
-        .name   = "Type",
-        .values = dmi_memory_channel_type_names
+        .code    = "type",
+        .name    = "Type",
+        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_CHANNEL_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MEMORY_CHANNEL_TYPE_UNKNOWN),
+        .values  = dmi_memory_channel_type_names,
     }),
     DMI_ATTRIBUTE(dmi_memory_channel_t, maximum_load, INTEGER, {
-        .code   = "maximum-load",
-        .name   = "Maximum load"
+        .code    = "maximum-load",
+        .name    = "Maximum load"
     }),
     DMI_ATTRIBUTE(dmi_memory_channel_t, device_count, INTEGER, {
-        .code   = "device-count",
-        .name   = "Device count"
+        .code    = "device-count",
+        .name    = "Device count"
     }),
     DMI_ATTRIBUTE_ARRAY(dmi_memory_channel_t, devices, device_count, STRUCT, {
-        .code   = "devices",
-        .name   = "Devices",
-        .attrs  = dmi_memory_device_channel_attrs
+        .code    = "devices",
+        .name    = "Devices",
+        .attrs   = dmi_memory_device_channel_attrs
     }),
     DMI_ATTRIBUTE_NULL
 };

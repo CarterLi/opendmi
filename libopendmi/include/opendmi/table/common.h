@@ -16,6 +16,7 @@
  */
 typedef enum dmi_status
 {
+    DMI_STATUS_UNSPEC          = 0x00, ///< Unspecified
     DMI_STATUS_OTHER           = 0x01, ///< Other
     DMI_STATUS_UNKNOWN         = 0x02, ///< Unknown
     DMI_STATUS_OK              = 0x03, ///< OK
@@ -30,13 +31,14 @@ typedef enum dmi_status
  */
 typedef enum dmi_error_correct_type
 {
-    DMI_ERROR_CORRECT_TYPE_OTHER      = 0x01, ///< Other
-    DMI_ERROR_CORRECT_TYPE_UNKNOWN    = 0x02, ///< Unknown
-    DMI_ERROR_CORRECT_TYPE_NONE       = 0x03, ///< None
-    DMI_ERROR_CORRECT_TYPE_PARITY     = 0x04, ///< Parity
-    DMI_ERROR_CORRECT_TYPE_SINGLE_BIT = 0x05, ///< Single-bit ECC
-    DMI_ERROR_CORRECT_TYPE_MULTI_BIT  = 0x06, ///< Multi-bit ECC
-    DMI_ERROR_CORRECT_TYPE_CRC        = 0x07, ///< CRC
+    DMI_ERROR_CORRECT_TYPE_UNSPEC      = 0x00, ///< Unspecified
+    DMI_ERROR_CORRECT_TYPE_OTHER       = 0x01, ///< Other
+    DMI_ERROR_CORRECT_TYPE_UNKNOWN     = 0x02, ///< Unknown
+    DMI_ERROR_CORRECT_TYPE_NONE        = 0x03, ///< None
+    DMI_ERROR_CORRECT_TYPE_PARITY      = 0x04, ///< Parity
+    DMI_ERROR_CORRECT_TYPE_SINGLE_BIT  = 0x05, ///< Single-bit ECC
+    DMI_ERROR_CORRECT_TYPE_MULTI_BIT   = 0x06, ///< Multi-bit ECC
+    DMI_ERROR_CORRECT_TYPE_CRC         = 0x07, ///< CRC
     __DMI_ERROR_CORRECT_TYPE_COUNT
 } dmi_error_correct_type_t;
 

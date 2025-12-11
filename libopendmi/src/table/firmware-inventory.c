@@ -37,6 +37,7 @@ static const dmi_name_t dmi_version_format_names[] =
 
 static const dmi_name_t dmi_firmware_ident_format_names[] =
 {
+    DMI_NAME_UNSPEC(DMI_FIRMWARE_IDENT_FORMAT_UNSPEC),
     {
         .id   = DMI_FIRMWARE_IDENT_FORMAT_FREE,
         .code = "free-form",
@@ -67,16 +68,9 @@ static const dmi_name_t dmi_firmware_inventory_feature_names[] =
 
 static const dmi_name_t dmi_firmware_inventory_state_names[] = 
 {
-    {
-        .id   = DMI_FIRMWARE_INVENTORY_STATE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_FIRMWARE_INVENTORY_STATE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
+    DMI_NAME_OTHER(DMI_FIRMWARE_INVENTORY_STATE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_FIRMWARE_INVENTORY_STATE_UNKNOWN),
     {
         .id   = DMI_FIRMWARE_INVENTORY_STATE_DISABLED,
         .code = "disabled",
@@ -113,60 +107,63 @@ static const dmi_name_t dmi_firmware_inventory_state_names[] =
 const dmi_attribute_t dmi_firmware_inventory_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, name, STRING, {
-        .code   = "name",
-        .name   = "Name"
+        .code    = "name",
+        .name    = "Name"
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, version, VERSION, {
-        .code   = "version",
-        .name   = "Version"
+        .code    = "version",
+        .name    = "Version"
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, version_format, ENUM, {
-        .code   = "version-format",
-        .name   = "Version format",
-        .values = dmi_version_format_names
+        .code    = "version-format",
+        .name    = "Version format",
+        .values  = dmi_version_format_names
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, ident, STRING, {
-        .code   = "ident",
-        .name   = "Identifier"
+        .code    = "ident",
+        .name    = "Identifier"
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, ident_format, ENUM, {
-        .code   = "ident-format",
-        .name   = "identifier format",
-        .values = dmi_firmware_ident_format_names
+        .code    = "ident-format",
+        .name    = "identifier format",
+        .unspec  = DMI_VALUE_PTR(DMI_FIRMWARE_IDENT_FORMAT_UNSPEC),
+        .values  = dmi_firmware_ident_format_names
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, release_date, STRING, {
-        .code   = "release-date",
-        .name   = "Release date"
+        .code    = "release-date",
+        .name    = "Release date"
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, vendor, STRING, {
-        .code   = "vendor",
-        .name   = "Vendor"
+        .code    = "vendor",
+        .name    = "Vendor"
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, lowest_version, STRING, {
-        .code   = "lowest-version",
-        .name   = "Lowest version"
+        .code    = "lowest-version",
+        .name    = "Lowest version"
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, image_size, SIZE, {
-        .code   = "image-size",
-        .name   = "Image size"
+        .code    = "image-size",
+        .name    = "Image size"
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, features, SET, {
-        .code   = "characteristics",
-        .name   = "Characteristics",
-        .values = dmi_firmware_inventory_feature_names
+        .code    = "characteristics",
+        .name    = "Characteristics",
+        .values  = dmi_firmware_inventory_feature_names
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, state, ENUM, {
-        .code   = "state",
-        .name   = "State",
-        .values = dmi_firmware_inventory_state_names
+        .code    = "state",
+        .name    = "State",
+        .unspec  = DMI_VALUE_PTR(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
+        .values  = dmi_firmware_inventory_state_names
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, component_count, INTEGER, {
-        .code   = "component-count",
-        .name   = "Associated components count"
+        .code    = "component-count",
+        .name    = "Associated components count"
     }),
     DMI_ATTRIBUTE_ARRAY(dmi_firmware_inventory_t, component_handles, component_count, HANDLE, {
-        .code   = "component-handles",
-        .name   = "Associated component handles"
+        .code    = "component-handles",
+        .name    = "Associated component handles"
     }),
     DMI_ATTRIBUTE_NULL
 };

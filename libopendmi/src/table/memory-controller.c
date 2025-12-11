@@ -12,21 +12,10 @@
 
 static const dmi_name_t dmi_error_detect_method_names[] =
 {
-    {
-        .id   = DMI_ERROR_DETECT_METHOD_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_ERROR_DETECT_METHOD_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
-    {
-        .id   = DMI_ERROR_DETECT_METHOD_NONE,
-        .code = "none",
-        .name = "None"
-    },
+    DMI_NAME_UNSPEC(DMI_ERROR_DETECT_METHOD_UNSPEC),
+    DMI_NAME_OTHER(DMI_ERROR_DETECT_METHOD_OTHER),
+    DMI_NAME_UNKNOWN(DMI_ERROR_DETECT_METHOD_UNKNOWN),
+    DMI_NAME_NONE(DMI_ERROR_DETECT_METHOD_NONE),
     {
         .id   = DMI_ERROR_DETECT_METHOD_PARITY,
         .code = "parity",
@@ -57,21 +46,9 @@ static const dmi_name_t dmi_error_detect_method_names[] =
 
 static const dmi_name_t dmi_error_correct_caps_names[] =
 {
-    {
-        .id   = 0,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = 1,
-        .code = "unknown",
-        .name = "Unknown"
-    },
-    {
-        .id   = 2,
-        .code = "none",
-        .name = "None"
-    },
+    DMI_NAME_OTHER(0),
+    DMI_NAME_UNKNOWN(1),
+    DMI_NAME_NONE(2),
     {
         .id   = 3,
         .code = "single-bit",
@@ -92,16 +69,8 @@ static const dmi_name_t dmi_error_correct_caps_names[] =
 
 static const dmi_name_t dmi_memory_module_speed_names[] =
 {
-    {
-        .id   = 0,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = 1,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_OTHER(0),
+    DMI_NAME_UNKNOWN(1),
     {
         .id   = 2,
         .code = "70ns",
@@ -122,16 +91,9 @@ static const dmi_name_t dmi_memory_module_speed_names[] =
 
 static const dmi_name_t dmi_memory_interleave_names[] = 
 {
-    {
-        .id   = DMI_MEMORY_INTERLEAVE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MEMORY_INTERLEAVE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MEMORY_INTERLEAVE_UNSPEC),
+    DMI_NAME_OTHER(DMI_MEMORY_INTERLEAVE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MEMORY_INTERLEAVE_UNKNOWN),
     {
         .id   = DMI_MEMORY_INTERLEAVE_1WAY,
         .code = "1-way",

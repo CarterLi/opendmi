@@ -16,16 +16,9 @@ static short dmi_probe_value(dmi_word_t value);
 
 const dmi_name_t dmi_probe_location_names[] =
 {
-    {
-        .id   = DMI_PROBE_LOCATION_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_PROBE_LOCATION_UNSPEC),
+    DMI_NAME_OTHER(DMI_PROBE_LOCATION_OTHER),
+    DMI_NAME_UNKNOWN(DMI_PROBE_LOCATION_UNKNOWN),
     {
         .id   = DMI_PROBE_LOCATION_PROCESSOR,
         .code = "processor",

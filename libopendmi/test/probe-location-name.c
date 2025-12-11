@@ -7,15 +7,15 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/battery.h>
+#include <opendmi/table/probe.h>
 
 int main(void)
 {
-    if (dmi_battery_chemistry_name(__DMI_BATTERY_CHEMISTRY_COUNT) != nullptr)
+    if (dmi_probe_location_name(__DMI_PROBE_LOCATION_COUNT) != nullptr)
         return EXIT_FAILURE;
 
-    for (int i = 0; i < __DMI_BATTERY_CHEMISTRY_COUNT; i++) {
-        if (dmi_battery_chemistry_name(i) == nullptr)
+    for (int i = 0; i < __DMI_PROBE_LOCATION_COUNT; i++) {
+        if (dmi_probe_location_name(i) == nullptr)
             return EXIT_FAILURE;
     }
 

@@ -12,16 +12,9 @@
 
 const dmi_name_t dmi_onboard_device_type_names[] =
 {
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_ONBOARD_DEVICE_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
     {
         .id   = DMI_ONBOARD_DEVICE_TYPE_VIDEO,
         .code = "video",
@@ -98,17 +91,19 @@ const dmi_name_t dmi_onboard_device_type_names[] =
 static const dmi_attribute_t dmi_onboard_device_instance_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_onboard_device_instance_t, type, ENUM, {
-        .code   = "type",
-        .name   = "Type",
-        .values = dmi_onboard_device_type_names
+        .code    = "type",
+        .name    = "Type",
+        .unspec  = DMI_VALUE_PTR(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
+        .values  = dmi_onboard_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_onboard_device_instance_t, is_enabled, BOOL, {
-        .code   = "is-enabled",
-        .name   = "Enabled"
+        .code    = "is-enabled",
+        .name    = "Enabled"
     }),
     DMI_ATTRIBUTE(dmi_onboard_device_instance_t, description, STRING, {
-        .code   = "description",
-        .name   = "Description"
+        .code    = "description",
+        .name    = "Description"
     }),
     DMI_ATTRIBUTE_NULL
 };

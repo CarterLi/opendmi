@@ -14,16 +14,9 @@
 
 static const dmi_name_t dmi_memory_device_type_names[] =
 {
-    {
-        .id   = DMI_MEMORY_DEVICE_TYPE_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MEMORY_DEVICE_TYPE_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MEMORY_DEVICE_TYPE_UNSPEC),
+    DMI_NAME_OTHER(DMI_MEMORY_DEVICE_TYPE_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MEMORY_DEVICE_TYPE_UNKNOWN),
     {
         .id   = DMI_MEMORY_DEVICE_TYPE_DRAM,
         .code = "dram",
@@ -189,16 +182,9 @@ static const dmi_name_t dmi_memory_device_type_names[] =
 
 static const dmi_name_t dmi_memory_device_type_detail_names[] =
 {
-    {
-        .id   = 1,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = 2,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_RESERVED(0),
+    DMI_NAME_OTHER(1),
+    DMI_NAME_UNKNOWN(2),
     {
         .id   = 3,
         .code = "fast-paged",
@@ -269,16 +255,9 @@ static const dmi_name_t dmi_memory_device_type_detail_names[] =
 
 static const dmi_name_t dmi_memory_device_form_factor_names[] =
 {
-    {
-        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MEMORY_DEVICE_FORM_FACTOR_UNSPEC),
+    DMI_NAME_OTHER(DMI_MEMORY_DEVICE_FORM_FACTOR_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MEMORY_DEVICE_FORM_FACTOR_UNKNOWN),
     {
         .id   = DMI_MEMORY_DEVICE_FORM_FACTOR_SIMM,
         .code = "simm",
@@ -369,16 +348,9 @@ static const dmi_name_t dmi_memory_device_form_factor_names[] =
 
 static const dmi_name_t dmi_memory_device_technology_names[] =
 {
-    {
-        .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_OTHER,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_UNKNOWN,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_UNSPEC(DMI_MEMORY_DEVICE_TECHNOLOGY_UNSPEC),
+    DMI_NAME_OTHER(DMI_MEMORY_DEVICE_TECHNOLOGY_OTHER),
+    DMI_NAME_UNKNOWN(DMI_MEMORY_DEVICE_TECHNOLOGY_UNKNOWN),
     {
         .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_DRAM,
         .code = "dram",
@@ -426,28 +398,30 @@ const dmi_attribute_t dmi_memory_device_attrs[] =
         .code    = "total-width",
         .name    = "Total width",
         .unit    = "bits",
-        .unknown = &(unsigned short){ USHRT_MAX }
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, data_width, INTEGER, {
         .code    = "data-width",
         .name    = "Data width",
         .unit    = "bits",
-        .unknown = &(unsigned short){ USHRT_MAX }
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, size, SIZE, {
         .code    = "size",
         .name    = "Size",
-        .unknown = &(dmi_size_t){ UINT64_MAX }
+        .unknown = DMI_VALUE_PTR((dmi_size_t)UINT64_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, form_factor, ENUM, {
         .code    = "form-factor",
         .name    = "Form-factor",
+        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_DEVICE_FORM_FACTOR_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MEMORY_DEVICE_FORM_FACTOR_UNKNOWN),
         .values  = dmi_memory_device_form_factor_names
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, device_set, INTEGER, {
         .code    = "device-set",
         .name    = "Device set",
-        .unknown = &(unsigned short){ USHRT_MAX }
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, device_locator, STRING, {
         .code    = "device-locator",
@@ -460,18 +434,20 @@ const dmi_attribute_t dmi_memory_device_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_device_t, memory_type, ENUM, {
         .code    = "memory-type",
         .name    = "Memory type",
+        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_DEVICE_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MEMORY_DEVICE_TYPE_UNKNOWN),    
         .values  = dmi_memory_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, memory_type_detail, SET, {
-        .code   = "memory-type-details",
-        .name   = "Memory type details",
-        .values = dmi_memory_device_type_detail_names
+        .code    = "memory-type-details",
+        .name    = "Memory type details",
+        .values  = dmi_memory_device_type_detail_names
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, maximum_speed, INTEGER, {
         .code    = "maximum-speed",
         .name    = "Maximum speed",
         .unit    = "MT/s",
-        .unknown = &(unsigned long){ 0 }
+        .unknown = DMI_VALUE_PTR((unsigned long)0)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, vendor, STRING, {
         .code    = "vendor",
@@ -492,35 +468,37 @@ const dmi_attribute_t dmi_memory_device_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_device_t, rank, INTEGER, {
         .code    = "rank",
         .name    = "Rank",
-        .unknown = &(unsigned short){ 0 }
+        .unknown = DMI_VALUE_PTR((unsigned short)0)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, configured_speed, INTEGER, {
         .code    = "configured-speed",
         .name    = "Configured speed",
         .unit    = "MT/s",
-        .unknown = &(unsigned long){ 0 }
+        .unknown = DMI_VALUE_PTR((unsigned long)0)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, minimum_voltage, INTEGER, {
         .code    = "minimum-voltage",
         .name    = "Minimum voltage",
         .unit    = "mV",
-        .unknown = &(unsigned short){ 0 }
+        .unknown = DMI_VALUE_PTR((unsigned short)0)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, maximum_voltage, INTEGER, {
         .code    = "maximum-voltage",
         .name    = "Maximum voltage",
         .unit    = "mV",
-        .unknown = &(unsigned short){ 0 }
+        .unknown = DMI_VALUE_PTR((unsigned short)0)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, configured_voltage, INTEGER, {
         .code    = "configured-voltage",
         .name    = "Configured voltage",
         .unit    = "mV",
-        .unknown = &(unsigned short){ 0 }
+        .unknown = DMI_VALUE_PTR((unsigned short)0)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, memory_technology, ENUM, {
         .code    = "memory-technology",
         .name    = "Memory technology",
+        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_DEVICE_TECHNOLOGY_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MEMORY_DEVICE_TECHNOLOGY_UNKNOWN),
         .values  = dmi_memory_device_technology_names
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, memory_mode_caps, INTEGER, {
@@ -535,69 +513,69 @@ const dmi_attribute_t dmi_memory_device_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_device_t, module_vendor_id, INTEGER, {
         .code    = "module-vendor-id",
         .name    = "Module manufacturer ID",
-        .unknown = &(uint16_t){ 0x0000U },
+        .unknown = DMI_VALUE_PTR((uint16_t)0),
         .flags   = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, module_product_id, INTEGER, {
         .code    = "module-product-id",
         .name    = "Module product ID",
-        .unknown = &(uint16_t){ 0x0000U },
+        .unknown = DMI_VALUE_PTR((uint16_t)0),
         .flags   = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, controller_vendor_id, INTEGER, {
         .code    = "controller-vendor-id",
         .name    = "Memory subsystem controller manufacturer ID",
-        .unknown = &(uint16_t){ 0x0000U },
+        .unknown = DMI_VALUE_PTR((uint16_t)0),
         .flags   = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, controller_product_id, INTEGER, {
         .code    = "controller-product-id",
         .name    = "Memory subsystem controller product ID",
-        .unknown = &(uint16_t){ 0x0000U },
+        .unknown = DMI_VALUE_PTR((uint16_t)0),
         .flags   = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, non_volatile_size, SIZE, {
         .code    = "non-volatile-size",
         .name    = "Non-volatile size",
-        .unknown = &(dmi_size_t){ UINT64_MAX }
+        .unknown = DMI_VALUE_PTR((dmi_size_t)UINT64_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, volatile_size, SIZE, {
         .code    = "volatile-size",
         .name    = "Volatile size",
-        .unknown = &(dmi_size_t){ UINT64_MAX }
+        .unknown = DMI_VALUE_PTR((dmi_size_t)UINT64_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, cache_size, SIZE, {
         .code    = "cache-size",
         .name    = "Cache size",
-        .unknown = &(dmi_size_t){ UINT64_MAX }
+        .unknown = DMI_VALUE_PTR((dmi_size_t)UINT64_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, logical_size, SIZE, {
         .code    = "logical-size",
         .name    = "Logical size",
-        .unknown = &(dmi_size_t){ UINT64_MAX }
+        .unknown = DMI_VALUE_PTR((dmi_size_t)UINT64_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, pmic0_vendor_id, INTEGER, {
         .code    = "pmi0-vendor-id",
         .name    = "PMIC0 manufacturer ID",
-        .unknown = &(uint16_t){ 0x0000U },
+        .unknown = DMI_VALUE_PTR((uint16_t)0),
         .flags   = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, pmic0_revision, INTEGER, {
         .code    = "pmic0-revision",
         .name    = "PMIC0 revision number",
-        .unknown = &(uint16_t){ 0xFF00U },
+        .unknown = DMI_VALUE_PTR((uint16_t)0xFF00u),
         .flags   = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, rcd_vendor_id, INTEGER, {
         .code    = "rcd-vendor-id",
         .name    = "RCD manufacturer ID",
-        .unknown = &(uint16_t){ 0x0000U },
+        .unknown = DMI_VALUE_PTR((uint16_t)0),
         .flags   = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, rcd_revision, INTEGER, {
         .code    = "rcd-revision",
         .name    = "RCD revision number",
-        .unknown = &(uint16_t){ 0xFF00U },
+        .unknown = DMI_VALUE_PTR((uint16_t)0xFF00u),
         .flags   = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE_NULL

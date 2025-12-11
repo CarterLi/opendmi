@@ -23,12 +23,14 @@ typedef struct dmi_processor dmi_processor_t;
 
 enum dmi_processor_type
 {
+    DMI_PROCESSOR_TYPE_UNSPEC  = 0x00, ///< Unspecified
     DMI_PROCESSOR_TYPE_OTHER   = 0x01, ///< Other
     DMI_PROCESSOR_TYPE_UNKNOWN = 0x02, ///< Unknown
     DMI_PROCESSOR_TYPE_CENTRAL = 0x03, ///< Central processor
     DMI_PROCESSOR_TYPE_MATH    = 0x04, ///< Math processor
     DMI_PROCESSOR_TYPE_DSP     = 0x05, ///< DSP processor
     DMI_PROCESSOR_TYPE_VIDEO   = 0x06, ///< Video processor
+    __DMI_PROCESSOR_TYPE_COUNT
 };
 
 enum dmi_processor_family
@@ -87,6 +89,7 @@ enum dmi_processor_family
 
 enum dmi_processor_upgrade
 {
+    DMI_PROCESSOR_UPGRADE_UNSPEC           = 0x00, ///< Unspecified
     DMI_PROCESSOR_UPGRADE_OTHER            = 0x01, ///< Other
     DMI_PROCESSOR_UPGRADE_UNKNOWN          = 0x02, ///< Unknown
     DMI_PROCESSOR_UPGRADE_DAUGHTER_BOARD   = 0x03, ///< Daughter board

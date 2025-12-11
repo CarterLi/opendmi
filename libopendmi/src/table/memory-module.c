@@ -13,16 +13,8 @@
 
 const dmi_name_t dmi_memory_module_type_names[] =
 {
-    {
-        .id   = 0,
-        .code = "other",
-        .name = "Other"
-    },
-    {
-        .id   = 1,
-        .code = "unknown",
-        .name = "Unknown"
-    },
+    DMI_NAME_OTHER(0),
+    DMI_NAME_UNKNOWN(1),
     {
         .id   = 2,
         .code = "standard",

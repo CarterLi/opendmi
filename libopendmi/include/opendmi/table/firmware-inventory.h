@@ -65,6 +65,11 @@ typedef enum dmi_version_format
 typedef enum dmi_firmware_ident_format
 {
     /**
+     * @brief Unspecified.
+     */
+    DMI_FIRMWARE_IDENT_FORMAT_UNSPEC = 0x00,
+
+    /**
      * @brief The format is a free-form string that is implementation specific.
      * Example: "35EQP72B".
      */
@@ -86,6 +91,11 @@ typedef enum dmi_firmware_ident_format
  */
 typedef enum dmi_firmware_inventory_state
 {
+    /**
+     * @brief Unspecified.
+     */
+    DMI_FIRMWARE_INVENTORY_STATE_UNSPEC = 0x00,
+
     /**
      * @brief Other.
      */

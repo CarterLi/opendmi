@@ -74,7 +74,26 @@ static const dmi_attribute_ops_t dmi_attribute_type_ops[] =
     }
 };
 
-bool dmi_attribute_unknown(const dmi_attribute_t *attr, const void *value)
+bool dmi_attribute_is_unspecified(const dmi_attribute_t *attr, const void *value)
+{
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    if (attr->params.unspec) {
+        if (memcmp(value, attr->params.unspec, attr->size) == 0)
+            return true;
+    } else if (attr->type == DMI_ATTRIBUTE_TYPE_STRING) {
+        if (!*(const char **)value)
+            return true;
+    } else if (attr->type == DMI_ATTRIBUTE_TYPE_HANDLE) {
+        if (*(dmi_handle_t *)value == DMI_HANDLE_INVALID)
+            return true;
+    } 
+
+    return false;
+}
+
+bool dmi_attribute_is_unknown(const dmi_attribute_t *attr, const void *value)
 {
     assert(attr != nullptr);
     assert(value != nullptr);
@@ -128,7 +147,7 @@ static char *dmi_attribute_format_string(const dmi_attribute_t *attr, const void
 
     const char *str = *(const char **)value;
     if (!str)
-        str = "<unspecified>";
+        return nullptr;
 
     return strdup(str);
 }
@@ -299,7 +318,8 @@ static char *dmi_attribute_format_address(const dmi_attribute_t *attr, const voi
 
 static char *dmi_attribute_format_enum(const dmi_attribute_t *attr, const void *value)
 {
-    const char *str;
+    const char *name;
+    char *str = nullptr;
 
     assert(attr != nullptr);
     assert(value != nullptr);
@@ -307,11 +327,14 @@ static char *dmi_attribute_format_enum(const dmi_attribute_t *attr, const void *
     if (!attr->params.values)
         return nullptr;
 
-    str = dmi_name_lookup(attr->params.values, *(int *)value);
-    if (!str)
-        str = "<invalid>";
+    name = dmi_name_lookup(attr->params.values, *(int *)value);
 
-    return strdup(str);
+    if (name)
+        str = strdup(name);
+    else
+        dmi_asprintf(&str, "<invalid> (0x%x)", *(int *)value);
+
+    return str;
 }
 
 static char *dmi_attribute_format_set(const dmi_attribute_t *attr, const void *value)
