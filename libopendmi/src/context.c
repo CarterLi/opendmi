@@ -173,6 +173,8 @@ dmi_context_t *dmi_create(void)
     context = dmi_alloc(nullptr, sizeof(dmi_context_t));
     if (context == nullptr)
         return nullptr;
+    
+    context->log_level = DMI_LOG_INFO;
 
     // Allocate type map
     context->type_map = dmi_alloc_array(context, sizeof(dmi_table_spec_t *), 0x100);
@@ -249,6 +251,18 @@ bool dmi_set_logger(dmi_context_t *context, dmi_log_handler_t logger)
     }
 
     context->logger = logger;
+
+    return true;
+}
+
+bool dmi_set_log_level(dmi_context_t *context, dmi_log_level_t level)
+{
+    if (context == nullptr) {
+        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        return false;
+    }
+
+    context->log_level = level;
 
     return true;
 }
@@ -348,7 +362,6 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
             break;
 
         // Create registry
-        dmi_info(context, "Initializing registry...");
         context->registry = dmi_registry_create(context, 0);
         if (!context->registry)
             break;
@@ -363,7 +376,7 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
     } while (false);
 
     if (!success) {
-        dmi_error(context, "Unable to open DMI context: %s", dmi_error_message(context->last_error));
+        dmi_error(context, "Unable to open DMI context");
         dmi_set_error(context, context->last_error);
         dmi_close(context);
     }

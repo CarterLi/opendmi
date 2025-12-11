@@ -78,6 +78,11 @@ struct dmi_context
     dmi_log_handler_t logger;
 
     /**
+     * @brief Logging level.
+     */
+    dmi_log_level_t log_level;
+
+    /**
      * @brief Backend handle.
      */
     dmi_backend_t *backend;
@@ -162,6 +167,16 @@ const char *dmi_type_name(dmi_context_t *context, dmi_type_t type);
  * @return The function returns `true` on success and `false` otherwise.
  */
 bool dmi_set_logger(dmi_context_t *context, dmi_log_handler_t logger);
+
+/**
+ * @brief Set logging level.
+ *
+ * @param[in] context DMI context handle.
+ * @param[in] level Logging level.
+ *
+ * @return The function returns `true` on success and `false` otherwise.
+ */
+bool dmi_set_log_level(dmi_context_t *context, dmi_log_level_t level);
 
 /**
  * @brief Set last DMI error code.

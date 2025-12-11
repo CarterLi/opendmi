@@ -9,6 +9,7 @@
 #include <opendmi/registry.h>
 #include <opendmi/context.h>
 #include <opendmi/table.h>
+#include <opendmi/log.h>
 #include <opendmi/utils.h>
 
 /**
@@ -19,6 +20,8 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table);
 dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity)
 {
     dmi_registry_t *registry = nullptr;
+
+    dmi_debug(context, "Creating registry...");
 
     if (!capacity)
         capacity = DMI_REGISTRY_CAPACITY;
@@ -101,6 +104,8 @@ bool dmi_registry_build(dmi_registry_t *registry)
     dmi_context_t *context = registry->context;
     const dmi_data_t *ptr = context->table_data;
 
+    dmi_debug(context, "Scanning SMBIOS structures...");
+
     // Scan table area
     while ((context->table_count == 0) or (index < context->table_count)) {
         dmi_table_t *table = nullptr;
@@ -114,13 +119,20 @@ bool dmi_registry_build(dmi_registry_t *registry)
         // Decode table
         table = dmi_table_decode(context, ptr);
         if (table == nullptr) {
-            if (dmi_get_error(context) == DMI_ERROR_NO_MORE_ENTRIES)
+            dmi_error_t error = dmi_get_error(context);
+
+            if (error == DMI_ERROR_NO_MORE_ENTRIES) {
+                dmi_debug(context, "Scanning completed");
                 break;
+            }
+
+            dmi_error(context, "Unable to decode table: %s", dmi_error_message(error));
             goto exit;
         }
 
         // Add table to registry
         if (!dmi_registry_put(registry, table)) {
+            dmi_error(context, "Unable to register table");
             dmi_table_destroy(table);
             goto exit;
         }
@@ -132,6 +144,8 @@ bool dmi_registry_build(dmi_registry_t *registry)
 
     // Set table count
     registry->count = index + 1;
+    dmi_debug(context, "Found %zu tables", registry->count);
+
     success = true;
 
 exit:
@@ -141,6 +155,8 @@ exit:
 bool dmi_registry_link(dmi_registry_t *registry)
 {
     dmi_registry_entry_t *entry;
+
+    dmi_debug(registry->context, "Linking SMBIOS structures...");
 
     for (entry = registry->head; entry; entry = entry->seq_next) {
         dmi_table_t *table = entry->table;
@@ -177,11 +193,15 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
         registry->index[hash] = entry;
     } else {
         while (true) {
-            if (last->table->handle == table->handle) {
+            if (last->table->data == table->data) {
                 dmi_free(entry);
-                dmi_set_error(nullptr, DMI_ERROR_DUPLICATE_ENTRY);
+                dmi_set_error(registry->context, DMI_ERROR_DUPLICATE_ENTRY);
+                dmi_error(registry->context, "Duplicate table entry: %p (0x%04x)", table->data, table->handle);
                 return false;
             }
+
+            if (last->table->handle == table->handle)
+                dmi_warning(registry->context, "Duplicate table handle: 0x%04x", table->handle);
 
             if (!last->next)
                 break;

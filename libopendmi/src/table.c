@@ -31,6 +31,13 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
     dmi_table_t  *table  = nullptr;
     dmi_header_t *header = dmi_cast(header, data);
 
+    dmi_debug(context, "%p: Handle 0x%04x, length %d, type %d (%s)",
+              data,
+              (unsigned)dmi_value(header->handle),
+              (int)dmi_value(header->length),
+              (int)dmi_value(header->type),
+              dmi_type_name(context, dmi_value(header->type)));
+
     // Check table type
     if (header->type == DMI_TYPE_END_OF_TABLE) {
         dmi_set_error(context, DMI_ERROR_NO_MORE_ENTRIES);
@@ -73,8 +80,10 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
         // Decode information
         if ((table->spec != nullptr) and (table->spec->handlers.decode != nullptr)) {
             table->info = table->spec->handlers.decode(table, &table->level);
-            if (!table->info)
+            if (!table->info) {
+                dmi_error(context, "Failed to decode table: 0x%04x", table->handle);
                 break;
+            }
         }
 
         success = true;

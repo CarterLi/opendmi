@@ -31,6 +31,7 @@ struct dmi_config
     enum dmi_command command;
     char *memory_device;
     bool quiet;
+    bool debug;
     bool dump;
     char *input_path;
     char *output_path;
@@ -61,6 +62,7 @@ dmi_config_t config =
     .command       = DMI_COMMAND_DUMP_TABLES,
     .memory_device = nullptr,
     .quiet         = false,
+    .debug         = false,
     .dump          = false,
     .input_path    = nullptr,
     .output_path   = nullptr
@@ -85,6 +87,10 @@ int main(int argc, char *argv[])
     }
 
     dmi_set_logger(context, log_error);
+    if (config.quiet)
+        dmi_set_log_level(context, DMI_LOG_WARNING);
+    else if (config.debug)
+        dmi_set_log_level(context, DMI_LOG_DEBUG);
 
     if (config.command == DMI_COMMAND_LIST_KEYWORDS) {
         list_keywords(context);
@@ -122,6 +128,7 @@ static bool parse_args(int argc, char *argv[], int *rv)
     static struct option long_options[] =
     {
         { "dev-mem",   required_argument, nullptr, 'd' },
+        { "debug",     no_argument,       nullptr, 'g' },
         { "quiet",     no_argument,       nullptr, 'q' },
         { "string",    optional_argument, nullptr, 's' },
         { "type",      optional_argument, nullptr, 't' },
@@ -149,7 +156,11 @@ static bool parse_args(int argc, char *argv[], int *rv)
         case 'q':
             config.quiet = true;
             break;
-        
+
+        case 'g':
+            config.debug = true;
+            break;
+
         case 's':
             if (optarg == nullptr)
                 config.command = DMI_COMMAND_LIST_KEYWORDS;

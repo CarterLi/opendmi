@@ -24,6 +24,9 @@ void dmi_log(dmi_context_t *context, dmi_log_level_t level, const char *fmt, ...
     if ((context == nullptr) or (context->logger == nullptr))
         return;
 
+    if (level > context->log_level)
+        return;
+
     va_start(args, fmt);
     context->logger(context, level, fmt, args);
     va_end(args);
