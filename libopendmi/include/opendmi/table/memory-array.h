@@ -206,7 +206,7 @@ const char *dmi_memory_array_usage_name(enum dmi_memory_array_usage value);
 /**
  * @internal
  */
-dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table);
+dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

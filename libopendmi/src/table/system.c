@@ -68,21 +68,25 @@ const dmi_attribute_t dmi_system_attrs[] =
     }),
     DMI_ATTRIBUTE(dmi_system_t, uuid, UUID, {
         .code    = "uuid",
-        .name    = "UUID"
+        .name    = "UUID",
+        .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_system_t, wakeup_type, ENUM, {
         .code    = "wakeup-type",
         .name    = "Wakeup type",
         .values  = dmi_system_wakeup_type_names,
-        .unknown = DMI_VALUE_PTR(DMI_SYSTEM_WAKEUP_TYPE_UNKNOWN)
+        .unknown = DMI_VALUE_PTR(DMI_SYSTEM_WAKEUP_TYPE_UNKNOWN),
+        .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_system_t, sku_number, STRING, {
         .code    = "sku-number",
-        .name    = "SKU number"
+        .name    = "SKU number",
+        .level   = DMI_VERSION(2, 4, 0)
     }),
     DMI_ATTRIBUTE(dmi_system_t, family, STRING, {
         .code    = "family",
-        .name    = "Family"
+        .name    = "Family",
+        .level   = DMI_VERSION(2, 4, 0)
     }),
     DMI_ATTRIBUTE_NULL
 };
@@ -108,9 +112,10 @@ const char *dmi_system_wakeup_type_name(dmi_system_wakeup_type_t value)
     return dmi_name_lookup(dmi_system_wakeup_type_names, value);
 }
 
-dmi_system_t *dmi_system_decode(const dmi_table_t *table)
+dmi_system_t *dmi_system_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_system_t *info;
+    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_system_data_t *data;
 
     data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_SYSTEM));
@@ -128,15 +133,21 @@ dmi_system_t *dmi_system_decode(const dmi_table_t *table)
 
     // SMBIOS 2.1 features
     if (table->body_length >= 0x08) {
+        level = dmi_version(2, 1, 0);
         info->uuid        = dmi_decode_uuid(data->uuid);
         info->wakeup_type = data->wakeup_type;
     }
 
     // SMBIOS 2.4 features
     if (table->body_length >= 0x19) {
+        level = dmi_version(2, 4, 0);
+
         info->sku_number = dmi_table_string(table, data->sku_number);
         info->family     = dmi_table_string(table, data->family);
     }
+
+    if (plevel)
+        *plevel = level;
 
     return info;
 }

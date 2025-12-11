@@ -8,7 +8,7 @@
 
 const dmi_extension_t dmi_dell_ext =
 {
-    .tag    = "dell",
+    .code   = "dell",
     .name   = "Dell DMI extension",
     .tables = nullptr
 };

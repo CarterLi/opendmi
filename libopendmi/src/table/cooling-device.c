@@ -102,7 +102,8 @@ const dmi_attribute_t dmi_cooling_device_attrs[] =
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, description, STRING, {
         .code    = "description",
-        .name    = "Description"
+        .name    = "Description",
+        .level   = DMI_VERSION(2, 7, 0)
     }),
     DMI_ATTRIBUTE_NULL
 };
@@ -126,9 +127,10 @@ const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value)
     return dmi_name_lookup(dmi_cooling_device_type_names, value);
 }
 
-dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table)
+dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_cooling_device_t *info;
+    dmi_version_t level = dmi_version(2, 2, 0);
     const dmi_cooling_device_data_t *data;
 
     data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_COOLING_DEVICE));
@@ -160,8 +162,13 @@ dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table)
         info->nominal_speed = SHRT_MIN;
     }
 
-    if (table->body_length >= 0x0F)
+    if (table->body_length >= 0x0F) {
+        level = dmi_version(2, 7, 0);
         info->description = dmi_table_string(table, data->description);
+    }
+
+    if (plevel)
+        *plevel = level;
 
     return info;
 }

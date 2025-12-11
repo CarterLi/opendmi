@@ -80,11 +80,12 @@ static const dmi_attribute_t dmi_system_reset_attrs[] =
 
 const dmi_table_spec_t dmi_system_reset_table =
 {
-    .code       = "system-reset",
-    .name       = "System reset",
-    .type       = DMI_TYPE_SYSTEM_RESET,
-    .min_length = 0x0D,
-    .attributes = dmi_system_reset_attrs,
+    .code        = "system-reset",
+    .name        = "System reset",
+    .type        = DMI_TYPE_SYSTEM_RESET,
+    .min_version = DMI_VERSION(2, 2, 0),
+    .min_length  = 0x0D,
+    .attributes  = dmi_system_reset_attrs,
     .handlers   = {
         .decode = (dmi_table_decode_fn_t)dmi_system_reset_decode,
         .free   = (dmi_table_free_fn_t)dmi_system_reset_free
@@ -96,7 +97,7 @@ const char *dmi_boot_option_name(dmi_boot_option_t value)
     return dmi_name_lookup(dmi_boot_option_names, value);
 }
 
-dmi_system_reset_t *dmi_system_reset_decode(const dmi_table_t *table)
+dmi_system_reset_t *dmi_system_reset_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_system_reset_t *info;
     const dmi_system_reset_data_t *data;
@@ -122,6 +123,9 @@ dmi_system_reset_t *dmi_system_reset_decode(const dmi_table_t *table)
     info->reset_limit    = dmi_value(data->reset_limit);
     info->timer_interval = dmi_value(data->timer_inverval);
     info->timeout        = dmi_value(data->timeout);
+
+    if (plevel)
+        *plevel = dmi_version(2, 2, 0);
 
     return info;
 }

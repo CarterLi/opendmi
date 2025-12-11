@@ -79,9 +79,10 @@ bool dmi_memory_array_addr_validate(const dmi_table_t *table)
     return true;
 }
 
-dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_table_t *table)
+dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_memory_array_addr_t *info;
+    dmi_version_t level = dmi_version(2, 1, 0);
     const dmi_memory_array_addr_data_t *data;
     
     data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_MEMORY_ARRAY_ADDR));
@@ -92,12 +93,18 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_table_t *table)
     if (!info)
         return nullptr;
 
-    if ((table->body_length >= 0x1F) and (data->start_addr == 0xFFFFFFFFU)) {
-        info->start_addr = dmi_value(data->start_addr_ex);
-        info->end_addr   = dmi_value(data->end_addr_ex);
-    } else {
-        info->start_addr = dmi_value(data->start_addr) << 10;
-        info->end_addr   = dmi_value(data->end_addr) << 10;
+    info->start_addr      = dmi_value(data->start_addr) << 10;
+    info->end_addr        = dmi_value(data->end_addr) << 10;
+    info->array_handle    = dmi_value(data->array_handle);
+    info->partition_width = dmi_value(data->partition_width);
+
+    if (table->body_length >= 0x1F) {
+        level = dmi_version(2, 7, 0);
+
+        if (data->start_addr == 0xFFFFFFFFu) {
+            info->start_addr = dmi_value(data->start_addr_ex);
+            info->end_addr   = dmi_value(data->end_addr_ex);
+        }
     }
 
     if (info->end_addr > info->start_addr)
@@ -105,8 +112,8 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_table_t *table)
     else
         info->range_size = info->start_addr - info->end_addr;
 
-    info->array_handle    = dmi_value(data->array_handle);
-    info->partition_width = dmi_value(data->partition_width);
+    if (plevel)
+        *plevel = level;
 
     return info;
 }

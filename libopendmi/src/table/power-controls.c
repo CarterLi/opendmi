@@ -48,7 +48,7 @@ const dmi_table_spec_t dmi_power_controls_table =
     }
 };
 
-dmi_power_controls_t *dmi_power_controls_decode(const dmi_table_t *table)
+dmi_power_controls_t *dmi_power_controls_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_power_controls_t *info;
     const dmi_power_controls_data_t *data;
@@ -71,6 +71,9 @@ dmi_power_controls_t *dmi_power_controls_decode(const dmi_table_t *table)
                                     dmi_decode_bcd(&data->poweron_minute, sizeof(data->poweron_minute)));
     info->poweron_second = dmi_cast(info->poweron_second,
                                     dmi_decode_bcd(&data->poweron_second, sizeof(data->poweron_second)));
+
+    if (plevel)
+        *plevel = dmi_version(2, 2, 0);
 
     return info;
 }

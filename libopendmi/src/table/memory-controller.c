@@ -198,7 +198,8 @@ const dmi_attribute_t dmi_memory_controller_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_controller_t, enabled_error_correction, SET, {
         .code   = "error-correction",
         .name   = "Error correcting capabilities",
-        .values = dmi_error_correct_caps_names
+        .values = dmi_error_correct_caps_names,
+        .level  = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE_NULL
 };
@@ -226,9 +227,10 @@ const char *dmi_memory_interleave_name(dmi_memory_interleave_t value)
     return dmi_name_lookup(dmi_memory_interleave_names, value);
 }
 
-dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_table_t *table)
+dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_memory_controller_t *info;
+    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_memory_controller_data_t *data;
     const dmi_memory_controller_extra_t *extra;
 
@@ -279,12 +281,16 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_table_t *table)
                                     sizeof(dmi_handle_t) * info->slot_count;
 
     if (table->body_length > (size_t)(extra_start - table->data)) {
+        level = dmi_version(2, 1, 0);
         extra = dmi_cast(extra, extra_start);
 
         info->enabled_error_correction = (dmi_error_correct_caps_t) {
             ._value = dmi_value(extra->enabled_error_correction)
         };
     }
+
+    if (plevel)
+        *plevel = level;
 
     return info;
 }

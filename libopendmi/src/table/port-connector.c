@@ -460,7 +460,7 @@ const char *dmi_port_type_name(dmi_port_type_t value)
     return dmi_name_lookup(dmi_port_type_names, value);
 }
 
-dmi_port_connector_t *dmi_port_connector_decode(const dmi_table_t *table)
+dmi_port_connector_t *dmi_port_connector_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_port_connector_t *info;
     const dmi_port_connector_data_t *data;
@@ -478,6 +478,9 @@ dmi_port_connector_t *dmi_port_connector_decode(const dmi_table_t *table)
     info->external_designator = dmi_table_string(table, data->external_designator);
     info->external_connector  = data->external_connector;
     info->port_type           = data->port_type;
+
+    if (plevel)
+        *plevel = dmi_version(2, 0, 0);
 
     return info;
 }

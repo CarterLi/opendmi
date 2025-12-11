@@ -40,7 +40,7 @@ const dmi_table_spec_t dmi_group_assoc_table =
     }
 };
 
-dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_table_t *table)
+dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_group_assoc_t *info;
     const dmi_group_assoc_data_t *data;
@@ -56,6 +56,9 @@ dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_table_t *table)
     info->group_name  = dmi_table_string(table, data->group_name);
     info->item_type   = dmi_value(data->item_type);
     info->item_handle = dmi_value(data->item_handle);
+
+    if (plevel)
+        *plevel = dmi_version(2, 0, 0);
 
     return info;
 }

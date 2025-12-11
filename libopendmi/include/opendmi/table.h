@@ -34,7 +34,7 @@ typedef struct dmi_table dmi_table_t;
 #endif // !DMI_TABLE_T
 
 typedef bool (*dmi_table_validate_fn_t)(dmi_table_t *table);
-typedef void *(*dmi_table_decode_fn_t)(dmi_table_t *table);
+typedef void *(*dmi_table_decode_fn_t)(dmi_table_t *table, dmi_version_t *plevel);
 typedef bool (*dmi_table_link_fn_t)(dmi_table_t *table);
 typedef void (*dmi_table_free_fn_t)(void *info);
 
@@ -218,6 +218,11 @@ struct dmi_table
      * @brief Decoded table information.
      */
     void *info;
+
+    /**
+     * @brief Table structure version.
+     */
+    dmi_version_t level;
 };
 
 __BEGIN_DECLS

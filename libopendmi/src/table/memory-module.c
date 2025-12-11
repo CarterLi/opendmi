@@ -141,7 +141,7 @@ const dmi_table_spec_t dmi_memory_module_table =
     }
 };
 
-dmi_memory_module_t *dmi_memory_module_decode(const dmi_table_t *table)
+dmi_memory_module_t *dmi_memory_module_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_memory_module_t *info;
     const dmi_memory_module_data_t *data;
@@ -192,6 +192,9 @@ dmi_memory_module_t *dmi_memory_module_decode(const dmi_table_t *table)
     info->error_status = (dmi_memory_module_error_t){
         ._value = dmi_value(data->error_status)
     };
+
+    if (plevel)
+        *plevel = dmi_version(2, 0, 0);
 
     return info;
 }

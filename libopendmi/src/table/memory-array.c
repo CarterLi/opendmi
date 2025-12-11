@@ -178,9 +178,10 @@ const char *dmi_memory_array_usage_name(enum dmi_memory_array_usage value)
     return dmi_name_lookup(dmi_memory_array_usage_names, value);
 }
 
-dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table)
+dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_memory_array_t *info;
+    dmi_version_t level = dmi_version(2, 1, 0);
     const dmi_memory_array_data_t *data;
     dmi_dword_t maximum_capacity;
 
@@ -192,18 +193,24 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_table_t *table)
     if (!info)
         return nullptr;
 
+    maximum_capacity = dmi_value(data->maximum_capacity);
+
     info->location         = dmi_value(data->location);
     info->usage            = dmi_value(data->usage);
     info->error_correction = dmi_value(data->error_correction);
+    info->maximum_capacity = (dmi_size_t)(maximum_capacity & 0x7FFFFFFFU) << 10;
+    info->error_handle     = dmi_value(data->error_handle);
+    info->device_count     = dmi_value(data->device_count);
 
-    maximum_capacity = dmi_value(data->maximum_capacity);
-    if ((table->body_length >= 0x0F) and (maximum_capacity & 0x80000000))
-        info->maximum_capacity = dmi_value(data->maximum_capacity_ex);
-    else
-        info->maximum_capacity  = (dmi_size_t)(maximum_capacity & 0x7FFFFFFFU) << 10;
+    if (table->body_length >= 0x0F) {
+        level = dmi_version(2, 7, 0);
 
-    info->error_handle = dmi_value(data->error_handle);
-    info->device_count = dmi_value(data->device_count);
+        if (maximum_capacity & 0x80000000)
+            info->maximum_capacity = dmi_value(data->maximum_capacity_ex);
+    }
+        
+    if (plevel)
+        *plevel = level;
 
     return info;
 }

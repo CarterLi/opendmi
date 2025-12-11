@@ -35,7 +35,7 @@ const dmi_table_spec_t dmi_oem_strings_table =
     }
 };
 
-dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_table_t *table)
+dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_oem_strings_t *info;
     const dmi_oem_strings_data_t *data;
@@ -59,6 +59,9 @@ dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_table_t *table)
     for (size_t i = 0; i < info->string_count; i++) {
         info->strings[i] = dmi_table_string(table, (dmi_string_t)(i + 1));
     }
+
+    if (plevel)
+        *plevel = dmi_version(2, 0, 0);
 
     return info;
 }

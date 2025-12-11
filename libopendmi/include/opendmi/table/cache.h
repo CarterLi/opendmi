@@ -350,7 +350,7 @@ dmi_size_t dmi_cache_size_ex(uint32_t value);
 /**
  * @internal
  */
-dmi_cache_t *dmi_cache_decode(const dmi_table_t *table);
+dmi_cache_t *dmi_cache_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

@@ -181,7 +181,7 @@ const char *dmi_system_wakeup_type_name(dmi_system_wakeup_type_t value);
 /**
  * @internal
  */
-dmi_system_t *dmi_system_decode(const dmi_table_t *table);
+dmi_system_t *dmi_system_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

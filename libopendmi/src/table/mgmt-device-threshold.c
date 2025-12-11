@@ -60,7 +60,7 @@ const dmi_table_spec_t dmi_mgmt_device_threshold_table =
     }
 };
 
-dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_table_t *table)
+dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_mgmt_device_threshold_t *info;
     dmi_mgmt_device_threshold_data_t *data;
@@ -79,6 +79,9 @@ dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_table_t 
     info->upper_critical        = dmi_value(data->upper_critical);
     info->lower_non_recoverable = dmi_value(data->lower_non_recoverable);
     info->upper_non_recoverable = dmi_value(data->upper_non_recoverable);
+
+    if (plevel)
+        *plevel = dmi_version(2, 3, 0);
 
     return info;
 }

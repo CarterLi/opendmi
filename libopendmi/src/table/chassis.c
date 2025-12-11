@@ -271,71 +271,84 @@ static const dmi_attribute_t dmi_chassis_attrs[] =
         .name    = "Boot-up state",
         .unspec  = DMI_VALUE_PTR(DMI_STATUS_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_STATUS_UNKNOWN),
-        .values  = dmi_status_names
+        .values  = dmi_status_names,
+        .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, power_supply_state, ENUM, {
         .code    = "power-supply-state",
         .name    = "Power supply state",
         .unspec  = DMI_VALUE_PTR(DMI_STATUS_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_STATUS_UNKNOWN),
-        .values  = dmi_status_names
+        .values  = dmi_status_names,
+        .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, thermal_state, ENUM, {
         .code    = "thermal-state",
         .name    = "Thermal state",
         .unspec  = DMI_VALUE_PTR(DMI_STATUS_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_STATUS_UNKNOWN),
-        .values  = dmi_status_names
+        .values  = dmi_status_names,
+        .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, security_status, ENUM, {
         .code    = "security-status",
         .name    = "Security status",
         .unspec  = DMI_VALUE_PTR(DMI_CHASSIS_SECURITY_STATUS_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_CHASSIS_SECURITY_STATUS_UNKNOWN),
-        .values  = dmi_chassis_security_status_names
+        .values  = dmi_chassis_security_status_names,
+        .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, oem_defined, INTEGER, {
         .code    = "oem-defined",
         .name    = "OEM-defined",
-        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX,
+        .level   = DMI_VERSION(2, 3, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, height, INTEGER, {
         .code    = "height",
         .name    = "Height",
         .unit    = "U",
-        .unspec  = DMI_VALUE_PTR((unsigned short)0)
+        .unspec  = DMI_VALUE_PTR((unsigned short)0),
+        .level   = DMI_VERSION(2, 3, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, power_cord_count, INTEGER, {
         .code    = "power-cord-count",
         .name    = "Power cord count",
-        .unspec  = DMI_VALUE_PTR((unsigned short)0)
+        .unspec  = DMI_VALUE_PTR((unsigned short)0),
+        .level   = DMI_VERSION(2, 3, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, element_count, INTEGER, {
         .code    = "element-count",
         .name    = "Contained element count",
+        .level   = DMI_VERSION(2, 3, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, element_size, SIZE, {
         .code    = "element-size",
-        .name    = "Contained element size"
+        .name    = "Contained element size",
+        .level   = DMI_VERSION(2, 3, 0)
     }),
     DMI_ATTRIBUTE_ARRAY(dmi_chassis_t, elements, element_count, STRUCT, {
         .code    = "elements",
         .name    = "Contained elements",
-        .attrs   = dmi_chassis_element_attrs
+        .attrs   = dmi_chassis_element_attrs,
+        .level   = DMI_VERSION(2, 3, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, sku_number, STRING, {
         .code    = "sku-number",
-        .name    = "SKU number"
+        .name    = "SKU number",
+        .level   = DMI_VERSION(2, 7, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, rack_type, ENUM, {
         .code    = "rack-type",
         .name    = "Rack type",
         .unspec  = DMI_VALUE_PTR(DMI_RACK_TYPE_UNSPEC),
-        .values  = dmi_rack_type_names
+        .values  = dmi_rack_type_names,
+        .level   = DMI_VERSION(3, 9, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, rack_height, INTEGER, {
         .code    = "rack-height",
-        .name    = "Rack height"
+        .name    = "Rack height",
+        .level   = DMI_VERSION(3, 9, 0)
     }),
     DMI_ATTRIBUTE_NULL
 };
@@ -366,9 +379,10 @@ const char *dmi_chassis_security_status_name(dmi_chassis_security_status_t value
      return dmi_name_lookup(dmi_chassis_security_status_names, value);
 }
 
-dmi_chassis_t *dmi_chassis_decode(const dmi_table_t *table)
+dmi_chassis_t *dmi_chassis_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_chassis_t *info;
+    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_chassis_data_t *data;
     const dmi_data_t *element_ptr;
 
@@ -390,50 +404,73 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_table_t *table)
     info->version            = dmi_table_string(table, data->version);
     info->serial_number      = dmi_table_string(table, data->serial_number);
     info->asset_tag          = dmi_table_string(table, data->asset_tag);
-    info->bootup_state       = dmi_value(data->bootup_state);
-    info->power_supply_state = dmi_value(data->power_supply_state);
-    info->thermal_state      = dmi_value(data->thermal_state);
-    info->security_status    = dmi_value(data->security_status);
-    info->oem_defined        = dmi_value(data->oem_defined);
-    info->height             = dmi_value(data->height);
-    info->power_cord_count   = dmi_value(data->power_cord_count);
-    info->element_count      = dmi_value(data->element_count);
-    info->element_size       = dmi_value(data->element_size);
 
-    info->elements = dmi_alloc_array(table->context, sizeof(dmi_chassis_element_t), info->element_count);
-    if (!info->elements) {
-        dmi_free(info);
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
-        return nullptr;
+    if (table->body_length >= 0x09) {
+        level = dmi_version(2, 1, 0);
+
+        info->bootup_state       = dmi_value(data->bootup_state);
+        info->power_supply_state = dmi_value(data->power_supply_state);
+        info->thermal_state      = dmi_value(data->thermal_state);
+        info->security_status    = dmi_value(data->security_status);
     }
 
-    element_ptr = table->data + sizeof(dmi_chassis_data_t);
-    for (size_t i = 0; i < info->element_count; i++) {
-        dmi_chassis_element_t *element = &info->elements[i];
-        const dmi_chassis_element_data_t *element_data = dmi_cast(element_data, element_ptr);
+    if (table->body_length >= 0x0D) {
+        level = dmi_version(2, 3, 0);
 
-        uint8_t element_type = dmi_value(element_data->type);
-        if (element_type & 0x80u) {
-            element->type = element_type & 0x7Fu;
-        } else {
-            element->type       = DMI_TYPE_INVALID;
-            element->board_type = element_type;
+        info->oem_defined        = dmi_value(data->oem_defined);
+        info->height             = dmi_value(data->height);
+        info->power_cord_count   = dmi_value(data->power_cord_count);
+        info->element_count      = dmi_value(data->element_count);
+        info->element_size       = dmi_value(data->element_size);
+
+        info->elements = dmi_alloc_array(table->context, sizeof(dmi_chassis_element_t), info->element_count);
+        if (!info->elements) {
+            dmi_free(info);
+            dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
+            return nullptr;
         }
 
-        element->minimum_count = dmi_value(element_data->minimum_count);
-        element->maximum_count = dmi_value(element_data->maximum_count);
+        element_ptr = table->data + sizeof(dmi_chassis_data_t);
+        for (size_t i = 0; i < info->element_count; i++) {
+            dmi_chassis_element_t *element = &info->elements[i];
+            const dmi_chassis_element_data_t *element_data = dmi_cast(element_data, element_ptr);
 
-        element_ptr += info->element_size;
+            uint8_t element_type = dmi_value(element_data->type);
+            if (element_type & 0x80u) {
+                element->type = element_type & 0x7Fu;
+            } else {
+                element->type       = DMI_TYPE_INVALID;
+                element->board_type = element_type;
+            }
+
+            element->minimum_count = dmi_value(element_data->minimum_count);
+            element->maximum_count = dmi_value(element_data->maximum_count);
+
+            element_ptr += info->element_size;
+        }
+
+        size_t base_len = (size_t)(element_ptr - table->data);
+
+        if (table->body_length > base_len) {
+            level = dmi_version(2, 7, 0);
+
+            size_t extra_len = table->body_length - base_len;
+            dmi_chassis_extra_t *extra = dmi_cast(extra, element_ptr);
+
+            info->sku_number  = dmi_table_string(table, extra->sku_number);
+
+            // SMBIOS 3.9 features
+            if (extra_len > 0x01) {
+                level = dmi_version(3, 9, 0);
+
+                info->rack_type   = dmi_value(extra->rack_type);
+                info->rack_height = dmi_value(extra->rack_height);
+            }
+        }
     }
 
-    // SMBIOS 3.9 features
-    if (table->body_length > (size_t)(element_ptr - table->data)) {
-        dmi_chassis_extra_t *extra = dmi_cast(extra, element_ptr);
-
-        info->sku_number  = dmi_table_string(table, extra->sku_number);
-        info->rack_type   = dmi_value(extra->rack_type);
-        info->rack_height = dmi_value(extra->rack_height);
-    }
+    if (plevel)
+        *plevel = level;
 
     return info;
 }

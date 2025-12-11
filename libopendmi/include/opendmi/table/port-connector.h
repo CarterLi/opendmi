@@ -197,7 +197,7 @@ const char *dmi_port_type_name(dmi_port_type_t value);
 /**
  * @internal
  */
-dmi_port_connector_t *dmi_port_connector_decode(const dmi_table_t *table);
+dmi_port_connector_t *dmi_port_connector_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

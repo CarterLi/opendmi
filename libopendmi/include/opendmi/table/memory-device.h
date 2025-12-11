@@ -555,7 +555,7 @@ dmi_size_t dmi_memory_device_size_ex(uint32_t value);
 /**
  * @internal
  */
-dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table);
+dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

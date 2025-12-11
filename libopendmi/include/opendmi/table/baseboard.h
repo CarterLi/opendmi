@@ -290,7 +290,7 @@ const char *dmi_baseboard_type_name(dmi_baseboard_type_t value);
 /**
  * @internal
  */
-dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table);
+dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

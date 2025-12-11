@@ -23,7 +23,7 @@ const dmi_table_spec_t dmi_memory_error_32_table =
     }
 };
 
-dmi_memory_error_t *dmi_memory_error_32_decode(const dmi_table_t *table)
+dmi_memory_error_t *dmi_memory_error_32_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_memory_error_t *info;
     const dmi_memory_error_32_data_t *data;
@@ -43,6 +43,9 @@ dmi_memory_error_t *dmi_memory_error_32_decode(const dmi_table_t *table)
     info->array_addr      = dmi_value(data->array_addr);
     info->device_addr     = dmi_value(data->device_addr);
     info->resolution      = dmi_value(data->resolution);
+
+    if (plevel)
+        *plevel = dmi_version(2, 1, 0);
 
     return info;
 }

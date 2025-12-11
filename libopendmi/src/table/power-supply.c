@@ -185,7 +185,7 @@ const char *dmi_range_switching_type_name(dmi_range_switching_type_t value)
     return dmi_name_lookup(dmi_range_switching_type_names, value);
 }
 
-dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table)
+dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_power_supply_t *info;
     const dmi_power_supply_data_t *data;
@@ -222,6 +222,9 @@ dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table)
     info->voltage_probe_handle  = dmi_value(data->voltage_probe_handle);
     info->cooling_device_handle = dmi_value(data->cooling_device_handle);
     info->current_probe_handle  = dmi_value(data->current_probe_handle);
+
+    if (plevel)
+        *plevel = dmi_version(2, 3, 1);
 
     return info;
 }

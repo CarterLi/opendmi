@@ -384,7 +384,7 @@ const char *dmi_chassis_security_status_name(dmi_chassis_security_status_t value
 /**
  * @internal
  */
-dmi_chassis_t *dmi_chassis_decode(const dmi_table_t *table);
+dmi_chassis_t *dmi_chassis_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

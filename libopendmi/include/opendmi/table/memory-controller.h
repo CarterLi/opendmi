@@ -299,7 +299,7 @@ const char *dmi_memory_interleave_name(dmi_memory_interleave_t value);
 /**
  * @internal
  */
-dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_table_t *table);
+dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

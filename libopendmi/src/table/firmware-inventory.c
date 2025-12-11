@@ -196,7 +196,7 @@ const char *dmi_firmware_inventory_state_name(dmi_firmware_inventory_state_t val
     return dmi_name_lookup(dmi_firmware_inventory_state_names, value);
 }
 
-dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_table_t *table)
+dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_firmware_inventory_t *info;
     const dmi_firmware_inventory_data_t *data;
@@ -236,6 +236,9 @@ dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_table_t *table
     for (size_t i = 0; i < info->component_count; i++) {
         info->component_handles[i] = dmi_value(data->component_handles[i]);
     }
+
+    if (plevel)
+        *plevel = dmi_version(3, 5, 0);
 
     return info;
 }

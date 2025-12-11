@@ -63,7 +63,7 @@ __BEGIN_DECLS
 /**
  * @internal
  */
-dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_table_t *table);
+dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

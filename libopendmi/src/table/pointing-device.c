@@ -163,7 +163,7 @@ const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t v
     return dmi_name_lookup(dmi_pointing_device_interface_names, value);
 }
 
-dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table)
+dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_pointing_device_t *info;
     const dmi_pointing_device_data_t *data;
@@ -179,6 +179,9 @@ dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table)
     info->type         = data->type;
     info->interface    = data->interface;
     info->button_count = data->button_count;
+
+    if (plevel)
+        *plevel = dmi_version(2, 1, 0);
 
     return info;
 }

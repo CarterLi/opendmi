@@ -110,6 +110,11 @@ struct dmi_attribute_params
      * @brief Structure attribute descriptors.
      */
     const dmi_attribute_t *attrs;
+
+    /**
+     * @brief Minimum SMBIOS version supporting this attribute.
+     */
+    dmi_version_t level;
 };
 
 struct dmi_attribute

@@ -114,7 +114,7 @@ const char *dmi_hardware_security_status_name(dmi_hardware_security_status_t val
 /**
  * @internal
  */
-dmi_hardware_security_t *dmi_hardware_security_decode(dmi_table_t *table);
+dmi_hardware_security_t *dmi_hardware_security_decode(dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

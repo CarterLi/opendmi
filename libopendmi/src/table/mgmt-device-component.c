@@ -44,7 +44,7 @@ const dmi_table_spec_t dmi_mgmt_device_component_table =
     }
 };
 
-dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_table_t *table)
+dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_mgmt_device_component_t *info;
     const dmi_mgmt_device_component_data_t *data;
@@ -61,6 +61,9 @@ dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_table_t 
     info->device_handle    = dmi_value(data->device_handle);
     info->component_handle = dmi_value(data->component_handle);
     info->threshold_handle = dmi_value(data->threshold_handle);
+
+    if (plevel)
+        *plevel = dmi_version(2, 3, 0);
 
     return info;
 }

@@ -256,11 +256,20 @@ static void print_table_attrs(const dmi_table_t *table)
     const dmi_table_spec_t *spec = table->spec;
     const dmi_attribute_t *attr = nullptr;
 
+    // Process all attributes
     for (attr = spec->attributes; attr->params.name; attr++) {
         const dmi_data_t *ptr = (dmi_data_t *)table->info + attr->offset;
 
+        // Check attribute level
+        if (attr->params.level != DMI_VERSION_NONE) {
+            if (table->level < attr->params.level)
+                continue;
+        }
+    
+        // Print attribute name
         printf("\t%s: ", attr->params.name);
 
+        // Print attribute value
         if (attr->counter < 0) {
             if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT)
                 print_table_attr_struct(attr, ptr);

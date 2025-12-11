@@ -21,7 +21,7 @@ typedef struct dmi_extension dmi_extension_t;
  */
 struct dmi_extension
 {
-    const char *tag;
+    const char *code;
     const char *name;
     const dmi_table_spec_t *tables;
 };

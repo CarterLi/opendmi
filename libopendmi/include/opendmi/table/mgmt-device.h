@@ -126,7 +126,7 @@ const char *dmi_mgmt_device_addr_type_name(enum dmi_mgmt_device_addr_type value)
 /**
  * @internal
  */
-dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_table_t *table);
+dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

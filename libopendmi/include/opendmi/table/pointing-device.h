@@ -121,7 +121,7 @@ const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t v
 /**
  * @internal
  */
-dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table);
+dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

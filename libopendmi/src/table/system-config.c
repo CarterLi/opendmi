@@ -35,7 +35,7 @@ const dmi_table_spec_t dmi_system_config_opts_table =
     }
 };
 
-dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_table_t *table)
+dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_system_config_opts_t *info;
     const dmi_system_config_opts_data_t *data;
@@ -60,6 +60,9 @@ dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_table_t *table
     for (size_t i = 0; i < info->option_count; i++) {
         info->options[i] = dmi_table_string(table, (dmi_string_t)(i + 1));
     }
+
+    if (plevel)
+        *plevel = dmi_version(2, 0, 0);
 
     return info;
 }

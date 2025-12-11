@@ -72,7 +72,7 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
 
         // Decode information
         if ((table->spec != nullptr) and (table->spec->handlers.decode != nullptr)) {
-            table->info = table->spec->handlers.decode(table);
+            table->info = table->spec->handlers.decode(table, &table->level);
             if (!table->info)
                 break;
         }

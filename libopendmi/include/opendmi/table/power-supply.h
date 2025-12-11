@@ -318,7 +318,7 @@ const char *dmi_range_switching_type_name(dmi_range_switching_type_t value);
 /**
  * @internal
  */
-dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table);
+dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

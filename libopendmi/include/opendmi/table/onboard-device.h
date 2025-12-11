@@ -172,7 +172,7 @@ const char *dmi_onboard_device_type_name(enum dmi_onboard_device_type value);
 /**
  * @internal
  */
-dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_table_t *table);
+dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

@@ -43,7 +43,7 @@ const dmi_table_spec_t dmi_firmware_language_table =
     }
 };
 
-dmi_firmware_language_t *dmi_firmware_language_decode(const dmi_table_t *table)
+dmi_firmware_language_t *dmi_firmware_language_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_firmware_language_t *info;
     const dmi_firmware_language_data_t *data;
@@ -72,8 +72,11 @@ dmi_firmware_language_t *dmi_firmware_language_decode(const dmi_table_t *table)
         ._value = dmi_value(data->flags)
     };
 
-    info->is_abbreviated = flags.is_abbreviated;
+    info->is_abbreviated   = flags.is_abbreviated;
     info->current_language = dmi_table_string(table, data->current_language);
+
+    if (plevel)
+        *plevel = dmi_version(2, 0, 0);
 
     return info;
 }

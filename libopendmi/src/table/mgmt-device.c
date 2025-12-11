@@ -147,7 +147,7 @@ const char *dmi_mgmt_device_addr_type_name(enum dmi_mgmt_device_addr_type value)
     return dmi_name_lookup(dmi_mgmt_device_addr_type_names, value);
 }
 
-dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_table_t *table)
+dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_mgmt_device_t *info;
     const dmi_mgmt_device_data_t *data;
@@ -164,6 +164,9 @@ dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_table_t *table)
     info->type        = dmi_value(data->type);
     info->addr        = dmi_value(data->addr);
     info->addr_type   = dmi_value(data->addr_type);
+
+    if (plevel)
+        *plevel = dmi_version(2, 3, 0);
 
     return info;
 }

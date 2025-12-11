@@ -77,7 +77,7 @@ const dmi_table_spec_t dmi_tpm_device_table =
     }
 };
 
-dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_table_t *table)
+dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_tpm_device_t *info;
     const dmi_tpm_device_data_t *data;
@@ -117,6 +117,9 @@ dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_table_t *table)
 
     info->features    = features;
     info->oem_defined = dmi_value(data->oem_defined);
+
+    if (plevel)
+        *plevel = dmi_version(2, 0, 0);
 
     return info;
 }

@@ -8,7 +8,7 @@
 
 const dmi_extension_t dmi_apple_ext =
 {
-    .tag    = "apple",
+    .code   = "apple",
     .name   = "Apple DMI extension",
     .tables = nullptr
 };

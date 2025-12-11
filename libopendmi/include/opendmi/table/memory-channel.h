@@ -175,7 +175,7 @@ const char *dmi_memory_channel_type_name(dmi_memory_channel_type_t value);
 /**
  * @internal
  */
-dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_table_t *table);
+dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

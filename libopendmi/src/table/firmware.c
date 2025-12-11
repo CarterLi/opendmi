@@ -262,22 +262,26 @@ static const dmi_attribute_t dmi_firmware_attrs[] =
     DMI_ATTRIBUTE(dmi_firmware_t, features, SET, {
         .code   = "features",
         .name   = "Features",
-        .values = dmi_firmware_feature_names
+        .values = dmi_firmware_feature_names,
+        .level  = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_firmware_t, features_ex, SET, {
         .code   = "features-ex",
         .name   = "Extra features",
-        .values = dmi_firmware_feature_ex_names
+        .values = dmi_firmware_feature_ex_names,
+        .level  = DMI_VERSION(2, 4, 0)
     }),
     DMI_ATTRIBUTE(dmi_firmware_t, platform_version, VERSION, {
         .code   = "platform-version",
         .name   = "Platform firmware version",
-        .scale  = 2
+        .scale  = 2,
+        .level  = DMI_VERSION(2, 4, 0)
     }),
     DMI_ATTRIBUTE(dmi_firmware_t, controller_version, VERSION, {
         .code   = "controller-version",
         .name   = "Embedded controller firmware version",
-        .scale  = 2
+        .scale  = 2,
+        .level  = DMI_VERSION(2, 4, 0)
     }),
     DMI_ATTRIBUTE_NULL
 };
@@ -318,9 +322,10 @@ dmi_size_t dmi_firmware_rom_size_ex(dmi_word_t value)
     return size;
 }
 
-dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table)
+dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_firmware_t *info;
+    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_firmware_data_t *data;
 
     data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_FIRMWARE));
@@ -344,16 +349,22 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table)
 
     // SMBIOS 2.1: Extra feature bits
     size_t extra = table->body_length - 0x12;
-    dmi_firmware_features_ex_t features_ex = {
-        ._value = {
-            extra > 0 ? data->features_ex[0] : 0,
-            extra > 1 ? data->features_ex[1] : 0
-        }
-    };
-    info->features_ex = features_ex;
+    if (extra) {
+        level = dmi_version(2, 1, 0);
+
+        dmi_firmware_features_ex_t features_ex = {
+            ._value = {
+                extra > 0 ? data->features_ex[0] : 0,
+                extra > 1 ? data->features_ex[1] : 0
+            }
+        };
+        info->features_ex = features_ex;
+    }
 
     // SMBIOS 2.4 features
     if (table->body_length >= 0x14) {
+        level = dmi_version(2, 4, 0);
+
         if (data->platform_release_major != 0xFFU) {
             info->platform_version = dmi_version(data->platform_release_major,
                                                  data->platform_release_minor, 0);
@@ -371,9 +382,14 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table)
 
     // SMBIOS 3.1 features
     if (table->body_length >= 0x18) {
+        level = dmi_version(3, 1, 0);
+
         if (data->rom_size == 0xFFU)
             info->rom_size = dmi_firmware_rom_size_ex(dmi_value(data->rom_size_ex));
     }
+
+    if (plevel)
+        *plevel = level;
 
     return info;
 }

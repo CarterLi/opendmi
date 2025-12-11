@@ -96,9 +96,10 @@ bool dmi_memory_device_addr_validate(const dmi_table_t *table)
     return true;
 }
 
-dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table)
+dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_memory_device_addr_t *info;
+    dmi_version_t level = dmi_version(2, 1, 0);
     const dmi_memory_device_addr_data_t *data;
 
     data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_MEMORY_DEVICE_ADDR));
@@ -109,12 +110,28 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table
     if (!info)
         return nullptr;
 
-    if ((table->body_length >= 0x13) and (data->start_addr == 0xFFFFFFFFu)) {
-        info->start_addr = dmi_value(data->start_addr_ex);
-        info->end_addr   = dmi_value(data->end_addr_ex);
-    } else {
-        info->start_addr = dmi_value(data->start_addr) << 10;
-        info->end_addr   = dmi_value(data->end_addr) << 10;
+    uint32_t start_addr = dmi_value(data->start_addr);
+    uint32_t end_addr   = dmi_value(data->end_addr);
+
+    info->start_addr        = start_addr << 10;
+    info->end_addr          = end_addr << 10;
+    info->device_handle     = dmi_value(data->device_handle);
+    info->array_addr_handle = dmi_value(data->array_addr_handle);
+
+    info->partition_pos    = data->partition_pos != 0xFFu ?
+                             data->partition_pos : USHRT_MAX;
+    info->interleave_pos   = data->interleave_pos != 0xFFu ?
+                             data->interleave_pos : USHRT_MAX;
+    info->interleave_depth = data->interleave_depth != 0xFFu ?
+                             data->interleave_depth : USHRT_MAX;
+
+    if (table->body_length >= 0x13) {
+        level = dmi_version(2, 7, 0);
+
+        if (start_addr == 0xFFFFFFFFu)
+            info->start_addr = dmi_value(data->start_addr_ex);
+        if (end_addr == 0xFFFFFFFFu)
+            info->end_addr   = dmi_value(data->end_addr_ex);
     }
 
     if (info->end_addr > info->start_addr)
@@ -122,15 +139,8 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table
     else
         info->range_size = info->start_addr - info->end_addr;
 
-    info->device_handle     = dmi_value(data->device_handle);
-    info->array_addr_handle = dmi_value(data->array_addr_handle);
-
-    info->partition_pos    = data->partition_pos != 0xFFU ?
-                             data->partition_pos : USHRT_MAX;
-    info->interleave_pos   = data->interleave_pos != 0xFFU ?
-                             data->interleave_pos : USHRT_MAX;
-    info->interleave_depth = data->interleave_depth != 0xFFU ?
-                             data->interleave_depth : USHRT_MAX;
+    if (plevel)
+        *plevel = level;
 
     return info;
 }

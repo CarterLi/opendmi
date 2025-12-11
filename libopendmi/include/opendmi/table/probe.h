@@ -209,7 +209,7 @@ const char *dmi_probe_location_name(dmi_probe_location_t value);
 /**
  * @internal
  */
-dmi_probe_t *dmi_probe_decode(dmi_table_t *table);
+dmi_probe_t *dmi_probe_decode(dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

@@ -69,7 +69,7 @@ const dmi_table_spec_t dmi_onboard_device_ex_table =
     }
 };
 
-dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_table_t *table)
+dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_onboard_device_ex_t *info;
     const dmi_onboard_device_ex_data_t *data;
@@ -113,6 +113,9 @@ dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_table_t *table)
         info->device_number   = USHRT_MAX;
         info->function_number = USHRT_MAX;
     }
+
+    if (plevel)
+        *plevel = dmi_version(2, 6, 0);
 
     return info;
 }

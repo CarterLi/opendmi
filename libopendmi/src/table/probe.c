@@ -92,7 +92,7 @@ const char *dmi_probe_location_name(dmi_probe_location_t value)
     return dmi_name_lookup(dmi_probe_location_names, value);
 }
 
-dmi_probe_t * dmi_probe_decode(dmi_table_t *table)
+dmi_probe_t * dmi_probe_decode(dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_probe_t *info = nullptr;
     dmi_probe_data_t *data = dmi_cast(data, table->data);
@@ -120,6 +120,9 @@ dmi_probe_t * dmi_probe_decode(dmi_table_t *table)
         info->nominal_value = dmi_probe_value(data->nominal_value);
     else
         info->nominal_value = SHRT_MIN;
+
+    if (plevel)
+        *plevel = dmi_version(2, 2, 0);
 
     return info;
 }

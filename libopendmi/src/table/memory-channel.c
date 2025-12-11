@@ -7,6 +7,7 @@
 #include <opendmi/context.h>
 #include <opendmi/name.h>
 #include <opendmi/utils.h>
+
 #include <opendmi/table/memory-channel.h>
 
 static const dmi_name_t dmi_memory_channel_type_names[] =
@@ -85,7 +86,7 @@ const char *dmi_memory_channel_type_name(dmi_memory_channel_type_t value)
     return dmi_name_lookup(dmi_memory_channel_type_names, value);
 }
 
-dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_table_t *table)
+dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_memory_channel_t *info;
     const dmi_memory_channel_data_t *data;
@@ -117,6 +118,9 @@ dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_table_t *table)
         device->load   = dmi_value(device_data->load);
         device->handle = dmi_value(device_data->handle);
     }
+
+    if (plevel)
+        *plevel = dmi_version(2, 3, 0);
 
     return info;
 }

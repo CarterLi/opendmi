@@ -222,28 +222,32 @@ const dmi_attribute_t dmi_cache_attrs[] =
     DMI_ATTRIBUTE(dmi_cache_t, speed, INTEGER, {
         .code    = "speed",
         .name    = "Cache speed",
-        .unit    = "ns"
+        .unit    = "ns",
+        .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_cache_t, error_correction, ENUM, {
         .code    = "error-correction",
         .name    = "Error correction type",
         .unspec  = DMI_VALUE_PTR(DMI_ERROR_CORRECT_TYPE_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_ERROR_CORRECT_TYPE_UNKNOWN),
-        .values  = dmi_error_correct_type_names
+        .values  = dmi_error_correct_type_names,
+        .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_cache_t, type, ENUM, {
         .code    = "type",
         .name    = "System cache type",
         .unspec  = DMI_VALUE_PTR(DMI_CACHE_TYPE_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_CACHE_TYPE_UNKNOWN),
-        .values  = dmi_cache_type_names
+        .values  = dmi_cache_type_names,
+        .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_cache_t, associativity, ENUM, {
         .code    = "associativity",
         .name    = "Associativity",
         .unspec  = DMI_VALUE_PTR(DMI_CACHE_ASSOC_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_CACHE_ASSOC_UNKNOWN),
-        .values  = dmi_cache_assoc_names
+        .values  = dmi_cache_assoc_names,
+        .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE_NULL
 };
@@ -305,9 +309,10 @@ dmi_size_t dmi_cache_size_ex(uint32_t value)
     return size;
 }
 
-dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
+dmi_cache_t *dmi_cache_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_cache_t *info;
+    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_cache_data_t *data;
 
     data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_CACHE));
@@ -338,6 +343,8 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
 
     // SMBIOS 2.1 features
     if (data->header.length >= 0x0F) {
+        level = dmi_version(2, 1, 0);
+
         info->type             = dmi_value(data->type);
         info->associativity    = dmi_value(data->associativity);
         info->speed            = dmi_value(data->speed);
@@ -346,11 +353,16 @@ dmi_cache_t *dmi_cache_decode(const dmi_table_t *table)
 
     // SMBIOS 3.1 features
     if (data->header.length >= 0x13) {
+        level = dmi_version(3, 1, 0);
+
         if (data->maximum_size == 0xFFFFU)
             info->maximum_size = dmi_cache_size_ex(dmi_value(data->maximum_size_ex));
         if (data->installed_size == 0xFFFU)
             info->installed_size = dmi_cache_size_ex(dmi_value(data->installed_size_ex));
     }
+
+    if (plevel)
+        *plevel = level;
 
     return info;
 }

@@ -237,7 +237,7 @@ bool dmi_memory_device_addr_validate(const dmi_table_t *table);
 /**
  * @internal
  */
-dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table);
+dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

@@ -214,7 +214,7 @@ const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value);
 /**
  * @internal
  */
-dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table);
+dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

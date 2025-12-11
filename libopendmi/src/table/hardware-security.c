@@ -79,7 +79,7 @@ const char *dmi_hardware_security_status_name(dmi_hardware_security_status_t val
     return dmi_name_lookup(dmi_hardware_security_status_names, value);
 }
 
-dmi_hardware_security_t *dmi_hardware_security_decode(dmi_table_t *table)
+dmi_hardware_security_t *dmi_hardware_security_decode(dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_hardware_security_t *info;
     const dmi_hardware_security_data_t *data;
@@ -96,6 +96,9 @@ dmi_hardware_security_t *dmi_hardware_security_decode(dmi_table_t *table)
     info->admin_password    = data->settings.admin_password;
     info->keyboard_password = data->settings.keyboard_password;
     info->poweron_password  = data->settings.poweron_password;
+
+    if (plevel)
+        *plevel = dmi_version(2, 2, 0);
 
     return info;
 }

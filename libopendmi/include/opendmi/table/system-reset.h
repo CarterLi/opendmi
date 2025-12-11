@@ -186,7 +186,7 @@ const char *dmi_boot_option_name(dmi_boot_option_t value);
 /**
  * @internal
  */
-dmi_system_reset_t *dmi_system_reset_decode(const dmi_table_t *table);
+dmi_system_reset_t *dmi_system_reset_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

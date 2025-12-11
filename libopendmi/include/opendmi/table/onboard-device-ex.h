@@ -165,7 +165,7 @@ __BEGIN_DECLS
 /**
  * @internal
  */
-dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_table_t *table);
+dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

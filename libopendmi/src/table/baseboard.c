@@ -155,7 +155,7 @@ const char *dmi_baseboard_type_name(dmi_baseboard_type_t value)
     return dmi_name_lookup(dmi_baseboard_type_names, value);
 }
 
-dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table)
+dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_baseboard_t *info;
     const dmi_baseboard_data_t *data;
@@ -197,6 +197,9 @@ dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table)
 
     for (size_t i = 0; i < info->children_count; i++)
         info->children[i] = dmi_value(data->children_handles[i]);
+
+    if (plevel)
+        *plevel = dmi_version(2, 0, 0);
 
     return info;
 }

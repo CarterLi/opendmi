@@ -78,7 +78,7 @@ __BEGIN_DECLS
 /**
  * @internal
  */
-dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_table_t *table);
+dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

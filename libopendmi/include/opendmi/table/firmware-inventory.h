@@ -379,7 +379,7 @@ const char *dmi_firmware_inventory_state_name(dmi_firmware_inventory_state_t val
 /**
  * @internal
  */
-dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_table_t *table);
+dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal

@@ -140,7 +140,7 @@ const char *dmi_onboard_device_type_name(enum dmi_onboard_device_type value)
     return dmi_name_lookup(dmi_onboard_device_type_names, value);
 }
 
-dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_table_t *table)
+dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_table_t *table, dmi_version_t *plevel)
 {
     dmi_onboard_device_t *info;
     const dmi_onboard_device_data_t *data;
@@ -174,6 +174,9 @@ dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_table_t *table)
         instance->is_enabled  = details.is_enabled;
         instance->description = dmi_table_string(table, instance_data->description);
     }
+
+    if (plevel)
+        *plevel = dmi_version(2, 0, 0);
 
     return info;
 }

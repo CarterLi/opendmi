@@ -312,7 +312,7 @@ dmi_size_t dmi_firmware_rom_size_ex(dmi_word_t value);
 /**
  * @internal
  */
-dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table);
+dmi_firmware_t *dmi_firmware_decode(const dmi_table_t *table, dmi_version_t *plevel);
 
 /**
  * @internal
