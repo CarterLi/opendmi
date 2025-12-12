@@ -1,5 +1,17 @@
 project(opendmi-opendmi)
 
+find_package(Curses)
+
+if(Curses_FOUND AND NOT TARGET Curses::Curses)
+    add_library(Curses::Curses INTERFACE IMPORTED)
+    set_target_properties(
+        Curses::Curses
+        PROPERTIES
+            INTERFACE_LINK_LIBRARIES "${CURSES_LIBRARIES}"
+            INTERFACE_INCLUDE_DIRECTORIES "${CURSES_INCLUDE_DIRS}"
+    )
+endif()
+
 configure_file(
     ${PROJECT_SOURCE_DIR}/src/config.h.in
     ${PROJECT_SOURCE_DIR}/src/config.h
@@ -8,6 +20,6 @@ configure_file(
 add_executable(opendmi src/main.c)
 
 target_include_directories(opendmi PRIVATE include)
-target_link_libraries(opendmi PRIVATE opendmi-shared)
+target_link_libraries(opendmi PRIVATE opendmi-shared Curses::Curses)
 
 install(TARGETS opendmi RUNTIME DESTINATION bin)

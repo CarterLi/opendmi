@@ -15,6 +15,9 @@
 #include <libgen.h>
 #include <getopt.h>
 
+#include <curses.h>
+#include <term.h>
+
 #include <opendmi/context.h>
 #include <opendmi/table.h>
 
@@ -68,6 +71,8 @@ dmi_config_t config =
     .output_path   = nullptr
 };
 
+static bool tty = false;
+
 int main(int argc, char *argv[])
 {
     dmi_context_t *context;
@@ -78,6 +83,12 @@ int main(int argc, char *argv[])
 
     argc -= optind;
     argv += optind;
+
+    // Initialize terminal
+    if (isatty(STDOUT_FILENO)) {
+        if (setupterm(nullptr, STDOUT_FILENO, nullptr) == 0)
+            tty = has_colors() and (start_color() != 0);
+    }
 
     // Create DMI context
     context = dmi_create();
@@ -248,11 +259,17 @@ static void print_all(dmi_context_t *context)
 
 static void print_table(const dmi_table_t *table)
 {
+    if (tty)
+        tputs(tparm(tigetstr("setaf"), COLOR_YELLOW), 1, putchar);
+
     printf("Handle 0x%04x, DMI type %d, %zu bytes\n",
            (unsigned int)dmi_table_handle(table),
            dmi_table_type(table),
            table->total_length);
     printf("%s\n", dmi_table_name(table));
+
+    if (tty)
+        tputs(tparm(tigetstr("sgr0")), 1, putchar);
 
     if (table->info and !config.dump)
         print_table_attrs(table);
@@ -415,7 +432,42 @@ static void print_hex_data(const void *data, size_t length)
 
 static void log_error(dmi_context_t *context __attribute__((unused)), dmi_log_level_t level, const char *format, va_list args)
 {
-    fprintf(stderr, "[%s] ", dmi_log_level_name(level));
-    vfprintf(stderr, format, args);
-    fprintf(stderr, "\n");
+    FILE *out = stderr;
+
+    if (tty) {
+        out = stdout;
+
+        switch (level) {
+        case DMI_LOG_DEBUG:
+            tputs(tparm(tigetstr("setaf"), 8), 1, putchar);
+            break;
+
+        case DMI_LOG_INFO:
+            tputs(tparm(tigetstr("setaf"), COLOR_GREEN), 1, putchar);
+            break;
+
+        case DMI_LOG_NOTICE:
+            tputs(tparm(tigetstr("setaf"), COLOR_CYAN), 1, putchar);
+            break;
+
+        case DMI_LOG_WARNING:
+            tputs(tparm(tigetstr("setaf"), COLOR_YELLOW), 1, putchar);
+            break;
+
+        case DMI_LOG_ERROR:
+            tputs(tparm(tigetstr("setaf"), COLOR_RED), 1, putchar);
+            break;
+
+        default:
+            // fallthrough
+        }
+    }
+
+    fprintf(out, "[%s] ", dmi_log_level_name(level));
+
+    if (tty)
+        tputs(tparm(tigetstr("sgr0")), 1, putchar);
+
+    vfprintf(out, format, args);
+    fprintf(out, "\n");
 }
