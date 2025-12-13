@@ -62,7 +62,7 @@ OpenDMI uses the CTest framework for testing. You can simply run it to ensure
 that build was successful:
 
 ```sh
-$ ctest
+$ ctest --test-dir build
 ```
 
 ## Contributing
