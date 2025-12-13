@@ -8,6 +8,8 @@
 ## Release 0.2 (2026-02-28)
 
 * XML and JSON output support.
+* Decoders for OEM-specific structures
+* Autoloading of OEM extensions
 
 ## Release 0.3 (2026-03-31)
 
