@@ -44,6 +44,8 @@ typedef enum dmi_battery_chemistry
  * This structure describes the attributes of the portable battery or batteries
  * for the system. The structure contains the static attributes for the group.
  * Each structure describes attributes for a single battery pack.
+ * 
+ * @since SMBIOS 2.1
  */
 DMI_PACKED_STRUCT(dmi_battery_data)
 {
@@ -124,7 +126,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.1
      */
-    dmi_word_t design_capacity;
+    dmi_word_t capacity;
 
     /**
      * @brief Design voltage of the battery in mVolts. If the value is unknown,
@@ -132,7 +134,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.1
      */
-    dmi_word_t design_voltage;
+    dmi_word_t voltage;
 
     /**
      * @brief Number of the string that contains the Smart Battery Data
@@ -141,7 +143,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.1
      */
-    dmi_byte_t sbds_version;
+    dmi_string_t sbds_version;
 
     /**
      * @brief Maximum error (as a percentage in the range 0 to 100) in the
@@ -162,7 +164,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.2
      */
-    uint16_t sbds_serial_number;
+    dmi_word_t sbds_serial_number;
 
     /**
      * @brief Date the cell pack was manufactured, in packed format.
@@ -178,7 +180,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * 
      * @since SMBIOS 2.2
      */
-    dmi_string_t sbds_device_chemistry;
+    dmi_string_t sbds_chemistry;
 
     /**
      * @brief Multiplication factor of the Design Capacity value, which
@@ -191,7 +193,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      *
      * @since SMBIOS 2.2
      */
-    dmi_byte_t design_capacity_factor;
+    dmi_byte_t capacity_factor;
 
     /**
      * @brief Contains OEM- or firmware vendor-specific information.
@@ -203,15 +205,91 @@ DMI_PACKED_STRUCT(dmi_battery_data)
 
 struct dmi_battery
 {
+    /**
+     * @brief String that identifies the location of the battery. Example: "in
+     * the back, on the left-hand side".
+     */
     const char *location;
+
+    /**
+     * @brief String that names the company that manufactured the battery.
+     */
     const char *vendor;
+
+    /**
+     * @brief String that identifies the date on which the battery was
+     * manufactured.
+     */
     const char *manufacture_date;
+
+    /**
+     * @brief Number of the string that contains the serial number for the
+     * battery.
+     */
     const char *serial_number;
+
+    /**
+     * @brief String that names the battery device. Example: "DR-36".
+     */
     const char *name;
+
+    /**
+     * @brief The battery chemistry.
+     */
     dmi_battery_chemistry_t chemistry;
-    int design_capacity;
-    int design_voltage;
-    const char *sbds_device_chemistry;
+
+    /**
+     * @brief Design capacity of the battery in mWatt-hours. If the value is
+     * unknown, the field contains `0`.
+     */
+    unsigned int capacity;
+
+    /**
+     * @brief Design voltage of the battery in mVolts. If the value is unknown,
+     * the field contains `0`.
+     */
+    unsigned short voltage;
+
+    /**
+     * @brief String that contains the Smart Battery Data Specification version
+     * number supported by this battery. If the battery does not support the
+     * function, no string is supplied.
+     */
+    const char *sbds_version;
+
+    /**
+     * @brief Maximum error (as a percentage in the range 0 to 100) in the
+     * Watt-hour data reported by the battery, indicating an upper bound on how
+     * much additional energy the battery might have above the energy it
+     * reports having. If the value is unknown, the field contains `USHRT_MAX`.
+     */
+    unsigned short maximum_error;
+
+    /**
+     * @brief 16-bit value that identifies the battery’s serial number.
+     * 
+     * This value, when combined with the manufacturer, device name, and
+     * manufacture date, uniquely identifies the battery. The serial number
+     * field must be set to `0` (no string) for this field to be valid.
+     */
+    uint16_t sbds_serial_number;
+
+    /**
+     * @brief Date the cell pack was manufactured, in packed format.
+     */
+    uint16_t sbds_manufacture_date;
+
+    /**
+     * @brief String that identifies the battery chemistry (for example,
+     * "PbAc"). The device chemistry field must be set to `0x02` (Unknown) for
+     * this field to be valid.
+     */
+    const char *sbds_chemistry;
+
+    /**
+     * @brief Contains OEM- or firmware vendor-specific information.
+     */
+    uint32_t oem_defined;
 };
 
 /**
@@ -222,6 +300,16 @@ extern const dmi_table_spec_t dmi_battery_table;
 __BEGIN_DECLS
 
 const char *dmi_battery_chemistry_name(dmi_battery_chemistry_t value);
+
+/**
+ * @internal
+ */
+dmi_battery_t *dmi_battery_decode(const dmi_table_t *table, dmi_version_t *plevel);
+
+/**
+ * @internal
+ */
+void dmi_battery_free(dmi_battery_t *info);
 
 __END_DECLS
 

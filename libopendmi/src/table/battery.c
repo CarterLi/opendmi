@@ -4,8 +4,13 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/battery.h>
+#include <limits.h>
+
+#include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
+
+#include <opendmi/table/battery.h>
 
 const dmi_name_t dmi_battery_chemistry_names[] =
 {
@@ -47,19 +52,150 @@ const dmi_name_t dmi_battery_chemistry_names[] =
 
 const dmi_attribute_t dmi_battery_attrs[] =
 {
+    DMI_ATTRIBUTE(dmi_battery_t, location, STRING, {
+        .code    = "location",
+        .name    = "Location"
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, vendor, STRING, {
+        .code    = "vendor",
+        .name    = "Vendor"
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, manufacture_date, STRING, {
+        .code    = "manufacture-date",
+        .name    = "Manufacture date"
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, serial_number, STRING, {
+        .code    = "serial-number",
+        .name    = "Serial number"
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, name, STRING, {
+        .code    = "name",
+        .name    = "Name"
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, chemistry, ENUM, {
+        .code    = "chemistry",
+        .name    = "Chemistry",
+        .unspec  = DMI_VALUE_PTR(DMI_BATTERY_CHEMISTRY_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_BATTERY_CHEMISTRY_UNKNOWN),
+        .values  = dmi_battery_chemistry_names,
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, capacity, DECIMAL, {
+        .code    = "capacity",
+        .name    = "Design capacity",
+        .unit    = "W * h",
+        .scale   = 3,
+        .unknown = DMI_VALUE_PTR((unsigned int)0)
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, voltage, DECIMAL, {
+        .code    = "voltage",
+        .name    = "Design voltage",
+        .unit    = "V",
+        .scale   = 3,
+        .unknown = DMI_VALUE_PTR((unsigned short)0)
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, sbds_version, STRING, {
+        .code    = "sbds-version",
+        .name    = "SBDS version"
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, maximum_error, INTEGER, {
+        .code    = "maximum-error",
+        .name    = "Maximum error",
+        .unit    = "%",
+        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, sbds_serial_number, INTEGER, {
+        .code    = "sbds-serial-number",
+        .name    = "SBDS serial number",
+        .level   = DMI_VERSION(2, 2, 0)
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, sbds_manufacture_date, INTEGER, {
+        .code    = "sbds-manufacture-date",
+        .name    = "SBDS manufacture date",
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX,
+        .level   = DMI_VERSION(2, 2, 0)
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, sbds_chemistry, STRING, {
+        .code    = "sbds-chemistry",
+        .name    = "SBDS chemistry",
+        .level   = DMI_VERSION(2, 2, 0)
+    }),
+    DMI_ATTRIBUTE(dmi_battery_t, oem_defined, INTEGER, {
+        .code    = "oem-defined",
+        .name    = "OEM-defined",
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX,
+        .level   = DMI_VERSION(2, 2, 0)
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
 const dmi_table_spec_t dmi_battery_table =
 {
-    .code       = "portable-battery",
-    .name       = "Portable battery",
-    .type       = DMI_TYPE_PORTABLE_BATTERY,
-    .min_length = 0x05,
-    .attributes = dmi_battery_attrs
+    .code        = "portable-battery",
+    .name        = "Portable battery",
+    .type        = DMI_TYPE_PORTABLE_BATTERY,
+    .min_version = DMI_VERSION(2, 1, 0),
+    .min_length  = 0x05,
+    .attributes  = dmi_battery_attrs,
+    .handlers    = {
+        .decode = (dmi_table_decode_fn_t)dmi_battery_decode,
+        .free   = (dmi_table_free_fn_t)dmi_battery_free
+    }
 };
 
 const char *dmi_battery_chemistry_name(dmi_battery_chemistry_t value)
 {
     return dmi_name_lookup(dmi_battery_chemistry_names, value);
+}
+
+dmi_battery_t *dmi_battery_decode(const dmi_table_t *table, dmi_version_t *plevel)
+{
+    dmi_battery_t *info;
+    dmi_version_t level = dmi_version(2, 1, 0);
+    const dmi_battery_data_t *data;
+
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_PORTABLE_BATTERY));
+    if (!data)
+        return nullptr;
+
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (info == nullptr)
+        return nullptr;
+
+    info->location         = dmi_table_string(table, data->location);
+    info->vendor           = dmi_table_string(table, data->vendor);
+    info->manufacture_date = dmi_table_string(table, data->manufacture_date);
+    info->serial_number    = dmi_table_string(table, data->serial_number);
+    info->name             = dmi_table_string(table, data->name);
+    info->chemistry        = dmi_value(data->chemistry);
+    info->capacity         = dmi_value(data->capacity);
+    info->voltage          = dmi_value(data->voltage);
+    info->sbds_version     = dmi_table_string(table, data->sbds_version);
+
+    uint8_t maximum_error = dmi_value(data->maximum_error);
+    if (maximum_error != 0xFFu)
+        info->maximum_error = maximum_error;
+    else
+        info->maximum_error = USHRT_MAX;
+
+    // SMBIOS 2.2 features
+    if (table->body_length >= 0x10u) {
+        level = dmi_version(2, 2, 0);
+
+        info->sbds_serial_number    = dmi_value(data->sbds_serial_number);
+        info->sbds_manufacture_date = dmi_value(data->sbds_manufacture_date);
+        info->sbds_chemistry        = dmi_table_string(table, data->sbds_chemistry);
+        info->oem_defined           = dmi_value(data->oem_defined);
+
+        info->capacity *= dmi_value(data->capacity_factor);
+    }
+
+    if (plevel)
+        *plevel = level;
+
+    return info;
+}
+
+void dmi_battery_free(dmi_battery_t *info)
+{
+    dmi_free(info);
 }
