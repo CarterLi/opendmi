@@ -252,13 +252,22 @@ static char *dmi_attribute_format_decimal(const dmi_attribute_t *attr, const voi
     else
         return nullptr;
 
-    unsigned int factor = dmi_ipow32(10, attr->params.scale);
+    unsigned int scale = attr->params.scale;
+    unsigned int factor = dmi_ipow32(10, scale);
+
+    // Adjust scale and factor
+    while (scale > 1) {
+        if (src % 10 != 0)
+            break;
+        src /= 10, factor /= 10;
+        scale--;
+    }
 
     if (attr->params.flags & DMI_ATTRIBUTE_FLAG_SIGNED) {
-        snprintf(fmt, sizeof(fmt), "%%lld.%%0%dllu", attr->params.scale);
+        snprintf(fmt, sizeof(fmt), "%%lld.%%0%dllu", scale);
         rv = dmi_asprintf(&str, fmt, src / factor, llabs(src) % factor);
     } else {
-        snprintf(fmt, sizeof(fmt), "%%llu.%%0%dllu", attr->params.scale);
+        snprintf(fmt, sizeof(fmt), "%%llu.%%0%dllu", scale);
         rv = dmi_asprintf(&str, fmt, (uint64_t)src / factor, (uint64_t)src % factor);
     }
 

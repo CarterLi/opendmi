@@ -44,8 +44,10 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
                   dmi_type_name(context, type));
 
     // Check table length
-    if (length < sizeof(dmi_header_t))
-    {
+    if (length == 0) {
+        type   = DMI_TYPE_END_OF_TABLE;
+        length = sizeof(dmi_header_t);
+    } else if (length < sizeof(dmi_header_t)) {
         dmi_error_raise_ex(context, DMI_ERROR_INVALID_TABLE_LENGTH, "%zu", length);
         return nullptr;
     }
