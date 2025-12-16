@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <string.h>
+#include <assert.h>
 
 #include <opendmi/entry.h>
 #include <opendmi/utils.h>
@@ -73,12 +74,19 @@ static const dmi_entry_spec_t dmi_entry_specs[] =
 
 bool dmi_entry_decode(dmi_context_t *context, const void *data, size_t length)
 {
-    if ((context == nullptr) or (data == nullptr) or (length == 0)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
+    const dmi_entry_spec_t *spec;
+
+    if (context == nullptr)
+        return false;
+
+    if (data == nullptr) {
+        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "data");
         return false;
     }
-
-    const dmi_entry_spec_t *spec = nullptr;
+    if (length == 0) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ARGUMENT, "length");
+        return false;
+    }
 
     for (spec = dmi_entry_specs; spec->name != nullptr; spec++) {
         if (length < spec->min_length)
@@ -88,7 +96,7 @@ bool dmi_entry_decode(dmi_context_t *context, const void *data, size_t length)
     }
 
     if (spec->name == nullptr) {
-        dmi_set_error(context, DMI_ERROR_UNKNOWN_EPS_ANCHOR);
+        dmi_error_raise(context, DMI_ERROR_UNKNOWN_EPS_ANCHOR);
         return false;
     }
 
@@ -98,16 +106,17 @@ bool dmi_entry_decode(dmi_context_t *context, const void *data, size_t length)
 static bool dmi_entry_decode_legacy(dmi_context_t *context,
                                     const void *data, size_t length)
 {
-    if ((context == nullptr) or (data == nullptr) or (length < sizeof(dmi_entry_legacy_t))) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
+    assert(context != nullptr);
+    assert(data != nullptr);
+    assert(length >= sizeof(dmi_entry_legacy_t));
+
+    (void)length;
 
     const dmi_entry_legacy_t *entry = dmi_cast(entry, data);
 
     // Verify EPS checksum value
     if (!dmi_checksum(data, sizeof(dmi_entry_legacy_t))) {
-        dmi_set_error(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
+        dmi_error_raise(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
         return false;
     }
 
@@ -132,38 +141,40 @@ static bool dmi_entry_decode_legacy(dmi_context_t *context,
 static bool dmi_entry_decode_v21(dmi_context_t *context,
                                  const void *data, size_t length)
 {
-    if ((context == nullptr) or (data == nullptr) or (length < sizeof(dmi_entry_v21_t))) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
+    assert(context != nullptr);
+    assert(data != nullptr);
+    assert(length >= sizeof(dmi_entry_v21_t));
+
+    (void)length;
 
     const dmi_entry_v21_t *entry = dmi_cast(entry, data);
+    size_t entry_length = dmi_value(entry->length);
 
     // Check maximum entry point length to prevent checksum run beyond
     // the buffer.
-    if (entry->length > sizeof(dmi_entry_v21_t)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_EPS_LENGTH);
+    if (entry_length > sizeof(dmi_entry_v21_t)) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_EPS_LENGTH, "%zu", entry_length);
         return false;
     }
 
     // Check minimum entry point length. The size of this structure is 0x1F
     // bytes, but we also accept value 0x1E due to a mistake in SMBIOS
     // specification version 2.1.
-    if (entry->length < sizeof(dmi_entry_v21_t) - 1) {
-        dmi_set_error(context, DMI_ERROR_INVALID_EPS_LENGTH);
+    if (entry_length < sizeof(dmi_entry_v21_t) - 1) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_EPS_LENGTH, "%zu", entry_length);
         return false;
     }
 
     // Verify EPS checksum value
-    if (!dmi_checksum(data, entry->length)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
+    if (!dmi_checksum(data, entry_length)) {
+        dmi_error_raise(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
         return false;
     }
 
     // Decode SMBIOS version
-    context->smbios_version = dmi_version(entry->version_major,
-                                          entry->version_minor,
-                                          entry->revision);
+    context->smbios_version = dmi_version(dmi_value(entry->version_major),
+                                          dmi_value(entry->version_minor),
+                                          dmi_value(entry->revision));
 
     // Decode table parameters
     context->table_max_size = entry->table_max_size;
@@ -174,36 +185,38 @@ static bool dmi_entry_decode_v21(dmi_context_t *context,
 static bool dmi_entry_decode_v30(dmi_context_t *context,
                                  const void *data, size_t length)
 {
-    if ((context == nullptr) or (data == nullptr) or (length < sizeof(dmi_entry_v30_t))) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
+    assert(context != nullptr);
+    assert(data != nullptr);
+    assert(length >= sizeof(dmi_entry_v30_t));
+
+    (void)length;
 
     const dmi_entry_v30_t *entry = dmi_cast(entry, data);
+    size_t entry_length = dmi_value(entry->length);
 
     // Check maximum entry point length to prevent checksum run beyond
     // the buffer.
-    if (entry->length > sizeof(dmi_entry_v30_t)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_EPS_LENGTH);
+    if (entry_length > sizeof(dmi_entry_v30_t)) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_EPS_LENGTH, "%zu", entry_length);
         return false;
     }
 
     // Check minimum entry point length.
-    if (entry->length < sizeof(dmi_entry_v30_t)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_EPS_LENGTH);
+    if (entry_length < sizeof(dmi_entry_v30_t)) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_EPS_LENGTH, "%zu", entry_length);
         return false;
     }
 
     // Verify EPS checksum value
-    if (!dmi_checksum(data, entry->length)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
+    if (!dmi_checksum(data, entry_length)) {
+        dmi_error_raise(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
         return false;
     }
 
     // Decode SMBIOS version
-    context->smbios_version = dmi_version(entry->version_major,
-                                          entry->version_minor,
-                                          entry->revision);
+    context->smbios_version = dmi_version(dmi_value(entry->version_major),
+                                          dmi_value(entry->version_minor),
+                                          dmi_value(entry->revision));
 
     // Decode table parameters
     context->table_area_addr     = dmi_value(entry->table_area_addr);

@@ -9,6 +9,7 @@
 #endif // !__APPLE__
 
 #include <errno.h>
+#include <assert.h>
 
 #include <IOKit/IOKitLib.h>
 
@@ -45,23 +46,13 @@ static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute_
 {
     dmi_darwin_session_t *session = nullptr;
 
-    if (context == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
-    if (context->session != nullptr) {
-        dmi_set_error(context, DMI_ERROR_INVALID_STATE);
-        return false;
-    }
+    assert(context != nullptr);
+    assert(context->session == nullptr);
 
     // Allocate backend descriptor
-    session = malloc(sizeof(dmi_darwin_session_t));
-    if (session == nullptr) {
-        dmi_error(context, "Unable to allocate DMI backend descriptor: %s", strerror(errno));
-        dmi_set_error(context, DMI_ERROR_OUT_OF_MEMORY);
+    session = dmi_alloc(context, sizeof(dmi_darwin_session_t));
+    if (session == nullptr)
         return false;
-    }
-    memset(session, 0, sizeof(dmi_darwin_session_t));
 
     // Establish SMBIOS service connection
     bool success = false;
@@ -69,8 +60,7 @@ static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute_
         // Connect to SMBIOS service
         session->service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("AppleSMBIOS"));
         if (session->service == MACH_PORT_NULL) {
-            dmi_error(context, "Apple SMBIOS service is not reachable");
-            dmi_set_error(context, DMI_ERROR_SERVICE_UNAVAILABLE);
+            dmi_error_raise_ex(context, DMI_ERROR_SERVICE_UNAVAILABLE, "AppleSMBIOS");
             break;
         }
 
@@ -99,14 +89,8 @@ static dmi_data_t *dmi_darwin_read_tables(dmi_context_t *context, size_t *plengt
 
 static bool dmi_darwin_close(dmi_context_t *context)
 {
-    if (context == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
-    if (context->session == nullptr) {
-        dmi_set_error(context, DMI_ERROR_INVALID_STATE);
-        return false;
-    }
+    assert(context != nullptr);
+    assert(context->session != nullptr);
 
     dmi_darwin_session_t *session = dmi_cast(session, context->session);
 
@@ -127,14 +111,9 @@ static bool dmi_darwin_close(dmi_context_t *context)
 
 static dmi_data_t *dmi_darwin_read_data(dmi_context_t *context, CFStringRef key, size_t *plength)
 {
-    if ((context == nullptr) or (plength == nullptr)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
-        return nullptr;
-    }
-    if (context->session == nullptr) {
-        dmi_set_error(context, DMI_ERROR_INVALID_STATE);
-        return nullptr;
-    }
+    assert(context != nullptr);
+    assert(context->session != nullptr);
+    assert(plength != nullptr);
 
     dmi_darwin_session_t *session = dmi_cast(session, context->session);
 
@@ -147,17 +126,15 @@ static dmi_data_t *dmi_darwin_read_data(dmi_context_t *context, CFStringRef key,
         ref = (CFDataRef)IORegistryEntryCreateCFProperty(session->service, key,
                                                          kCFAllocatorDefault, kNilOptions);
         if (ref == NULL) {
-            dmi_set_error(context, DMI_ERROR_INTERNAL);
+            dmi_error_raise(context, DMI_ERROR_INTERNAL);
             return nullptr;
         }
 
         length = CFDataGetLength(ref);
 
-        data = malloc(length);
-		if (data == nullptr) {
-			dmi_set_error(context, DMI_ERROR_OUT_OF_MEMORY);
+        data = dmi_alloc(context, length);
+		if (data == nullptr)
 			break;
-		}
     
         CFDataGetBytes(ref, CFRangeMake(0, length), (UInt8 *)data);
 

@@ -6,6 +6,7 @@
 //
 #include <string.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #include <opendmi/context.h>
 #include <opendmi/table.h>
@@ -23,35 +24,29 @@ static bool dmi_table_decode_strings(dmi_table_t *table);
 
 dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
 {
-    if ((context == nullptr) or (data == nullptr)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
+    dmi_table_t *table = nullptr;
+
+    if (context == nullptr)
+        return nullptr;
+
+    if (data == nullptr) {
+        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "data");
         return nullptr;
     }
 
-    dmi_table_t  *table  = nullptr;
     dmi_header_t *header = dmi_cast(header, data);
+    dmi_type_t    type   = dmi_value(header->type);
+    size_t        length = dmi_value(header->length);
+    dmi_handle_t  handle = dmi_value(header->handle);
 
-    dmi_debug(context, "%p: Handle 0x%04x, length %d, type %d (%s)",
-              data,
-              (unsigned)dmi_value(header->handle),
-              (int)dmi_value(header->length),
-              (int)dmi_value(header->type),
-              dmi_type_name(context, dmi_value(header->type)));
-
-    // Check table type
-    if (header->type == DMI_TYPE_END_OF_TABLE) {
-        dmi_set_error(context, DMI_ERROR_NO_MORE_ENTRIES);
-        return nullptr;
-    }
+    dmi_log_debug(context, "%p: Handle 0x%04x, length %zu, type %d (%s)",
+                  data, (unsigned)handle, length, (int)header->type,
+                  dmi_type_name(context, type));
 
     // Check table length
-    if (header->length < sizeof(dmi_header_t))
+    if (length < sizeof(dmi_header_t))
     {
-        if (header->length == 0)
-            dmi_set_error(context, DMI_ERROR_NO_MORE_ENTRIES);
-        else
-            dmi_set_error(context, DMI_ERROR_INVALID_TABLE_LENGTH);
-
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_TABLE_LENGTH, "%zu", length);
         return nullptr;
     }
 
@@ -62,9 +57,9 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
 
     // Decode table header
     table->context     = context;
-    table->type        = dmi_value(header->type);
-    table->body_length = dmi_value(header->length);
-    table->handle      = dmi_value(header->handle);
+    table->type        = type;
+    table->body_length = length;
+    table->handle      = handle;
     table->spec        = dmi_type_spec(context, table->type);
     table->data        = data;
 
@@ -80,10 +75,8 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
         // Decode information
         if ((table->spec != nullptr) and (table->spec->handlers.decode != nullptr)) {
             table->info = table->spec->handlers.decode(table, &table->level);
-            if (!table->info) {
-                dmi_error(context, "Failed to decode table: 0x%04x", table->handle);
+            if (!table->info)
                 break;
-            }
         }
 
         success = true;
@@ -99,42 +92,35 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
 
 dmi_handle_t dmi_table_handle(const dmi_table_t *table)
 {
-    if (table == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    if (table == nullptr)
         return DMI_HANDLE_INVALID;
-    }
 
     return table->handle;
 }
 
 dmi_type_t dmi_table_type(const dmi_table_t *table)
 {
-    if (table == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    if (table == nullptr)
         return DMI_TYPE_INVALID;
-    }
 
     return table->type;
 }
 
 const char *dmi_table_name(const dmi_table_t *table)
 {
-    if (table == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
-        return NULL;
-    }
+    if (table == nullptr)
+        return nullptr;
 
     return dmi_type_name(table->context, table->type);
 }
 
 const void *dmi_table_data(const dmi_table_t *table, dmi_type_t type)
 {
-    if (table == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    if (table == nullptr)
         return nullptr;
-    }
+
     if ((type != DMI_TYPE_INVALID) and (table->type != type)) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        dmi_error_raise(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
         return nullptr;
     }
 
@@ -143,12 +129,11 @@ const void *dmi_table_data(const dmi_table_t *table, dmi_type_t type)
 
 const void *dmi_table_info(const dmi_table_t *table, dmi_type_t type)
 {
-    if (table == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    if (table == nullptr)
         return nullptr;
-    }
+
     if ((type != DMI_TYPE_INVALID) and (table->type != type)) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
+        dmi_error_raise(table->context, DMI_ERROR_INVALID_TABLE_TYPE);
         return nullptr;
     }
 
@@ -157,12 +142,12 @@ const void *dmi_table_info(const dmi_table_t *table, dmi_type_t type)
 
 const char *dmi_table_string(const dmi_table_t *table, dmi_string_t num)
 {
-    if (table == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    if (table == nullptr)
         return nullptr;
-    }
+
     if (num > table->string_count) {
-        dmi_set_error(table->context, DMI_ERROR_ENTRY_NOT_FOUND);
+        dmi_error_raise_ex(table->context, DMI_ERROR_STRING_NOT_FOUND,
+                           "Handle 0x%04x, index %u", table->handle, num);
         return nullptr;
     }
 
@@ -187,14 +172,8 @@ void dmi_table_destroy(dmi_table_t *table)
 
 static bool dmi_table_decode_length(dmi_table_t *table)
 {
-    if (table == nullptr) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
-    if (table->data == nullptr) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
+    assert(table != nullptr);
+    assert(table->data != nullptr);
 
     const char *data  = dmi_cast(data, table->data);
     const char *start = data + table->body_length;
@@ -228,14 +207,8 @@ static bool dmi_table_decode_length(dmi_table_t *table)
 
 static bool dmi_table_decode_strings(dmi_table_t *table)
 {
-    if (table == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
-    if (table->data == nullptr) {
-        dmi_set_error(table->context, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
+    assert(table != nullptr);
+    assert(table->data != nullptr);
 
     const char *data  = dmi_cast(data, table->data);
     const char *start = data + table->body_length;

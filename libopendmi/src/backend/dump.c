@@ -39,14 +39,16 @@ static bool dmi_dump_open(dmi_context_t *context, const void *arg)
 {
     (void)arg;
 
-    if ((context == nullptr) or (arg == nullptr)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
+    if (context == nullptr)
+        return false;
+
+    if (arg == nullptr) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ARGUMENT, "arg");
         return false;
     }
 
     dmi_dump_session_t *session = malloc(sizeof(dmi_dump_session_t));
     if (session == nullptr) {
-        dmi_set_error(context, DMI_ERROR_OUT_OF_MEMORY);
         return false;
     }
     memset(session, 0, sizeof(dmi_dump_session_t));

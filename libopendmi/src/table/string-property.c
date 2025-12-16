@@ -76,9 +76,7 @@ bool dmi_string_property_link(dmi_table_t *table)
     registry = table->context->registry;
 
     if (info->parent_handle != DMI_HANDLE_INVALID) {
-        info->parent = dmi_registry_get(registry, info->parent_handle);
-        if (!info->parent)
-            dmi_warning(table->context, "Parent not found: 0x%04x", info->parent_handle);
+        info->parent = dmi_registry_get(registry, info->parent_handle, DMI_TYPE_INVALID);
     }
 
     return true;

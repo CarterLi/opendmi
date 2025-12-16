@@ -156,13 +156,14 @@ bool dmi_memory_device_addr_link(dmi_table_t *table)
 
     registry = table->context->registry;
 
-    info->device = dmi_registry_get(registry, info->device_handle);
+    info->device = dmi_registry_get(registry, info->device_handle, DMI_TYPE_MEMORY_DEVICE);
     if (!info->device)
         return false;
 
-    info->array_addr = dmi_registry_get(registry, info->array_addr_handle);
-    if (!info->array_addr)
-        dmi_warning(table->context, "Memory array address not found: 0x%04x", info->array_addr_handle);
+    info->array_addr = dmi_registry_get(registry, info->array_addr_handle, DMI_TYPE_MEMORY_ARRAY_ADDR);
+    if (!info->array_addr) {
+        dmi_log_warning(table->context, "Memory array address not found: 0x%04x", info->array_addr_handle);
+    }
 
     return true;
 }

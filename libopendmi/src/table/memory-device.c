@@ -787,6 +787,12 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table, dmi_version_t 
 
 bool dmi_memory_device_link(dmi_table_t *table)
 {
+    static dmi_type_t error_types[] = {
+        DMI_TYPE_MEMORY_ERROR_32,
+        DMI_TYPE_MEMORY_ERROR_64,
+        DMI_TYPE_INVALID
+    };
+
     dmi_memory_device_t *info;
     dmi_registry_t *registry;
 
@@ -797,17 +803,17 @@ bool dmi_memory_device_link(dmi_table_t *table)
     registry = table->context->registry;
 
     if (info->array_handle != DMI_HANDLE_INVALID) {
-        info->array = dmi_registry_get(registry, info->array_handle);
-        if (!info->array)
-            dmi_warning(table->context, "Memory array not found: 0x%04x", info->array_handle);
+        info->array = dmi_registry_get(registry, info->array_handle, DMI_TYPE_MEMORY_ARRAY);
+        if (!info->array) {
+            dmi_error_raise_ex(table->context, DMI_ERROR_TABLE_NOT_FOUND,
+                               "Memory array: 0x%04x", info->array_handle);
+        }
     }
 
     if ((info->error_info_handle != DMI_HANDLE_INVALID) and
         (info->error_info_handle != DMI_HANDLE_UNSUPPORTED))
     {
-        info->error_info = dmi_registry_get(registry, info->error_info_handle);
-        if (!info->error_info)
-            dmi_warning(table->context, "Memory error information not found: 0x%04x", info->error_info_handle);
+        info->error_info = dmi_registry_get_any(registry, info->error_info_handle, error_types);
     }
 
     return true;

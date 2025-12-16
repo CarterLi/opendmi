@@ -427,7 +427,6 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_table_t *table, dmi_version_t *pleve
         info->elements = dmi_alloc_array(table->context, sizeof(dmi_chassis_element_t), info->element_count);
         if (!info->elements) {
             dmi_free(info);
-            dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
             return nullptr;
         }
 

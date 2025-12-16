@@ -53,7 +53,6 @@ dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_table_t *table
     info->options = dmi_alloc_array(table->context, sizeof(const char *), info->option_count);
     if (!info->options) {
         dmi_free(info);
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
 

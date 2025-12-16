@@ -35,10 +35,10 @@ const char *dmi_log_level_name(dmi_log_level_t value);
 
 __END_DECLS
 
-#define dmi_error(context, fmt, ...)   dmi_log(context, DMI_LOG_ERROR, fmt, ##__VA_ARGS__)
-#define dmi_warning(context, fmt, ...) dmi_log(context, DMI_LOG_WARNING, fmt, ##__VA_ARGS__)
-#define dmi_notice(context, fmt, ...)  dmi_log(context, DMI_LOG_NOTICE, fmt, ##__VA_ARGS__)
-#define dmi_info(context, fmt, ...)    dmi_log(context, DMI_LOG_INFO, fmt, ##__VA_ARGS__)
-#define dmi_debug(context, fmt, ...)   dmi_log(context, DMI_LOG_DEBUG, fmt, ##__VA_ARGS__)
+#define dmi_log_error(context, fmt, ...)   dmi_log(context, DMI_LOG_ERROR, fmt, ##__VA_ARGS__)
+#define dmi_log_warning(context, fmt, ...) dmi_log(context, DMI_LOG_WARNING, fmt, ##__VA_ARGS__)
+#define dmi_log_notice(context, fmt, ...)  dmi_log(context, DMI_LOG_NOTICE, fmt, ##__VA_ARGS__)
+#define dmi_log_info(context, fmt, ...)    dmi_log(context, DMI_LOG_INFO, fmt, ##__VA_ARGS__)
+#define dmi_log_debug(context, fmt, ...)   dmi_log(context, DMI_LOG_DEBUG, fmt, ##__VA_ARGS__)
 
 #endif // !OPENDMI_LOG_H

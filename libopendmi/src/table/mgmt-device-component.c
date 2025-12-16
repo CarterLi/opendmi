@@ -70,6 +70,14 @@ dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_table_t 
 
 bool dmi_mgmt_device_component_link(dmi_table_t *table)
 {
+    static dmi_type_t dmi_component_types[] = {
+        DMI_TYPE_COOLING_DEVICE,
+        DMI_TYPE_TEMPERATURE_PROBE,
+        DMI_TYPE_VOLTAGE_PROBE,
+        DMI_TYPE_CURRENT_PROBE,
+        DMI_TYPE_INVALID
+    };
+
     dmi_mgmt_device_component_t *info;
     dmi_registry_t *registry;
 
@@ -79,18 +87,16 @@ bool dmi_mgmt_device_component_link(dmi_table_t *table)
 
     registry = table->context->registry;
 
-    info->device = dmi_registry_get(registry, info->device_handle);
+    info->device = dmi_registry_get(registry, info->device_handle, DMI_TYPE_MGMT_DEVICE);
     if (!info->device)
         return false;
 
-    info->component = dmi_registry_get(registry, info->component_handle);
+    info->component = dmi_registry_get_any(registry, info->component_handle, dmi_component_types);
     if (!info->component)
         return false;
 
     if (info->threshold_handle != DMI_HANDLE_INVALID) {
-        info->threshold = dmi_registry_get(registry, info->threshold_handle);
-        if (!info->threshold)
-            dmi_warning(table->context, "Threshold data not found: 0x%04x", info->threshold_handle);
+        info->threshold = dmi_registry_get(registry, info->threshold_handle, DMI_TYPE_MGMT_DEVICE_THRESHOLD);
     }
 
     return true;

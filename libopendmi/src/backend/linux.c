@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <limits.h>
+#include <assert.h>
 
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
@@ -65,14 +66,8 @@ static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__
     bool rv = false;
     dmi_linux_session_t *session = nullptr;
 
-    if (context == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
-    if (context->session != nullptr) {
-        dmi_set_error(context, DMI_ERROR_INVALID_STATE);
-        return false;
-    }
+    assert(context != nullptr);
+    assert(context->session == nullptr);
 
     session = dmi_alloc(context, sizeof(*session));
     if (!session)
@@ -103,14 +98,9 @@ static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__
 
 static dmi_data_t *dmi_linux_read_entry(dmi_context_t *context, size_t *plength)
 {
-    if ((context == nullptr) or (plength == nullptr)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
-        return nullptr;
-    }
-    if (context->session == nullptr) {
-        dmi_set_error(context, DMI_ERROR_INVALID_STATE);
-        return nullptr;
-    }
+    assert(context != nullptr);
+    assert(context->session != nullptr);
+    assert(plength != nullptr);
 
     dmi_linux_session_t *session = dmi_cast(session, context->session);
 
@@ -121,14 +111,9 @@ static dmi_data_t *dmi_linux_read_entry(dmi_context_t *context, size_t *plength)
 
 static dmi_data_t *dmi_linux_read_tables(dmi_context_t *context, size_t *plength)
 {
-    if ((context == nullptr) or (plength == nullptr)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
-        return nullptr;
-    }
-    if (context->session == nullptr) {
-        dmi_set_error(context, DMI_ERROR_INVALID_STATE);
-        return nullptr;
-    }
+    assert(context != nullptr);
+    assert(context->session != nullptr);
+    assert(plength != nullptr);
 
     dmi_linux_session_t *session = dmi_cast(session, context->session);
 
@@ -139,14 +124,8 @@ static dmi_data_t *dmi_linux_read_tables(dmi_context_t *context, size_t *plength
 
 static bool dmi_linux_close(dmi_context_t *context)
 {
-    if (context == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
-    if (context->session == nullptr) {
-        dmi_set_error(context, DMI_ERROR_INVALID_STATE);
-        return false;
-    }
+    assert(context != nullptr);
+    assert(context->session != nullptr);
 
     dmi_linux_session_free(context->session);
 

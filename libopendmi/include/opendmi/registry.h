@@ -113,9 +113,18 @@ bool dmi_registry_link(dmi_registry_t *registry);
  * @brief Get table from DMI registry.
  *
  * @param[in] registry DMI registry handle.
- * @param[in] handle DMI table identifier.
+ * @param[in] handle   DMI table identifier.
+ * @param[in] type     Expected table type.
  */
-dmi_table_t *dmi_registry_get(dmi_registry_t *registry, dmi_handle_t handle);
+dmi_table_t *dmi_registry_get(
+        dmi_registry_t *registry,
+        dmi_handle_t    handle,
+        dmi_type_t      type);
+
+dmi_table_t *dmi_registry_get_any(
+        dmi_registry_t *registry,
+        dmi_handle_t    handle,
+        dmi_type_t     *type);
 
 /**
  * @brief Destroy DMI registry.

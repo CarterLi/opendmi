@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     // Create DMI context
     context = dmi_create();
     if (context == nullptr) {
-        printf("Unable to create DMI context: %s\n", dmi_error_message(dmi_get_error(nullptr)));
+        printf("Unable to create DMI context\n");
         return EXIT_FAILURE;
     }
 

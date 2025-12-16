@@ -129,9 +129,7 @@ bool dmi_memory_array_addr_link(dmi_table_t *table)
 
     registry = table->context->registry;
 
-    info->array = dmi_registry_get(registry, info->array_handle);
-    if (!info->array)
-        dmi_warning(table->context, "Memory array not found: 0x%04x", info->array_handle);
+    info->array = dmi_registry_get(registry, info->array_handle, DMI_TYPE_MEMORY_ARRAY);
 
     return true;
 }

@@ -103,9 +103,9 @@ struct dmi_context
     dmi_registry_t *registry;
 
     /**
-     * @brief Last error code.
+     * @brief Error state.
      */
-    dmi_error_t last_error;
+    dmi_error_state_t error_state;
 };
 
 __BEGIN_DECLS
@@ -177,22 +177,6 @@ bool dmi_set_logger(dmi_context_t *context, dmi_log_handler_t logger);
  * @return The function returns `true` on success and `false` otherwise.
  */
 bool dmi_set_log_level(dmi_context_t *context, dmi_log_level_t level);
-
-/**
- * @brief Set last DMI error code.
- *
- * @param[in] context DMI context handle (may be `NULL`).
- * @param[in] error Error code.
- */
-void dmi_set_error(dmi_context_t *context, dmi_error_t error);
-
-/**
- * @brief Get last DMI error code.
- *
- * @param[in] context DMI context handle (may be `NULL`).
- * @return Error code.
- */
-dmi_error_t dmi_get_error(const dmi_context_t *context);
 
 /**
  * @brief Close DMI context.

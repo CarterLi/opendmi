@@ -269,7 +269,6 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_table_t *table, 
                                            info->slot_count);
     if (!info->module_handles) {
         dmi_free(info);
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
 

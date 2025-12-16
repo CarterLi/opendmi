@@ -5,22 +5,38 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <stdio.h>
+
+#include <opendmi/context.h>
 #include <opendmi/error.h>
 #include <opendmi/utils.h>
 
+static size_t dmi_error_slot_get(dmi_error_state_t *state);
+static void dmi_error_slot_clear(dmi_error_state_t *state, size_t idx);
+
 static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
 {
-    [DMI_OK]                         = "Success",
+    [DMI_ERROR_NONE]                 = "Success",
+    [DMI_ERROR_NULL_ARGUMENT]        = "Argument is NULL",
     [DMI_ERROR_INVALID_ARGUMENT]     = "Invalid argument",
     [DMI_ERROR_INVALID_STATE]        = "Invalid state",
+    [DMI_ERROR_FILE_OPEN]            = "Unable to open file",
+    [DMI_ERROR_FILE_STAT]            = "Unable to stat file",
+    [DMI_ERROR_FILE_READ]            = "Unable to read file",
+    [DMI_ERROR_FILE_MAP]             = "Unable to map file",
     [DMI_ERROR_UNKNOWN_EPS_ANCHOR]   = "Unknown entry point structure anchor",
     [DMI_ERROR_INVALID_EPS_LENGTH]   = "Invalid entry point structure length",
     [DMI_ERROR_INVALID_EPS_CHECKSUM] = "Invalid entry point structure checksum",
     [DMI_ERROR_INVALID_TABLE_ADDR]   = "Invalid table address",
     [DMI_ERROR_INVALID_TABLE_LENGTH] = "Invalid table length",
     [DMI_ERROR_INVALID_TABLE_TYPE]   = "Invalid table type",
-    [DMI_ERROR_ENTRY_NOT_FOUND]      = "Entry not found",
+    [DMI_ERROR_TABLE_DECODE]         = "Unable to decode table",
+    [DMI_ERROR_TABLE_REGISTER]       = "Unable to register table",
+    [DMI_ERROR_TABLE_LINK]           = "Unable to link table",
+    [DMI_ERROR_TABLE_NOT_FOUND]      = "Table not found",
+    [DMI_ERROR_STRING_NOT_FOUND]     = "String not found",
     [DMI_ERROR_DUPLICATE_ENTRY]      = "Duplicate entry",
+    [DMI_ERROR_DUPLICATE_HANDLE]     = "Duplicate handle",
     [DMI_ERROR_NO_MORE_ENTRIES]      = "No more entries",
     [DMI_ERROR_SERVICE_UNAVAILABLE]  = "Service unavailable",
     [DMI_ERROR_OUT_OF_MEMORY]        = "Out of memory",
@@ -28,10 +44,182 @@ static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
     [DMI_ERROR_INTERNAL]             = "Internal error"
 };
 
-const char *dmi_error_message(dmi_error_t error)
+static const dmi_error_t dmi_error_null =
 {
-    if ((error < 0) or (error >= __DMI_ERROR_COUNT) or (dmi_error_messages[error] == nullptr))
+    .file     = nullptr,
+    .function = nullptr,
+    .line     = 0,
+    .reason   = DMI_ERROR_NONE,
+    .message  = nullptr
+};
+
+const char *dmi_error_message(dmi_error_code_t reason)
+{
+    if ((reason < 0) or (reason >= __DMI_ERROR_COUNT) or (dmi_error_messages[reason] == nullptr))
         return "Unknown error";
 
-    return dmi_error_messages[error];
+    return dmi_error_messages[reason];
+}
+
+bool _dmi_error_raise(
+        dmi_context_t    *context,
+        const char       *file,
+        const char       *function,
+        unsigned int      line,
+        dmi_error_code_t  reason,
+        const char       *message,
+        ...)
+{
+    va_list args;
+    bool rv;
+
+    va_start(args, message);
+    rv = _dmi_error_vraise(context, file, function, line, reason, message, args);
+    va_end(args);
+
+    return rv;
+}
+
+bool _dmi_error_vraise(
+        dmi_context_t    *context,
+        const char       *file,
+        const char       *function,
+        unsigned int      line,
+        dmi_error_code_t  reason,
+        const char       *message,
+        va_list           args)
+{
+    size_t slot;
+    dmi_error_t *error;
+    int rv = -1;
+
+    if (!context)
+        return false;
+
+    slot = dmi_error_slot_get(&context->error_state);
+    error = &context->error_state.errors[slot];
+
+    error->file     = file;
+    error->function = function;
+    error->line     = line;
+    error->reason   = reason;
+
+    if (message) {
+        rv = vasprintf(&error->message, message, args);
+
+        if ((rv < 0) || !error->message) {
+            dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);
+            return false;
+        }
+    }
+
+    if (error->message)
+        dmi_log_error(context, "%s: %s", dmi_error_message(error->reason), error->message);
+    else
+        dmi_log_error(context, "%s", dmi_error_message(error->reason));
+
+    return true;
+}
+
+dmi_error_t *dmi_error_peek(dmi_context_t *context)
+{
+    dmi_error_state_t *state;
+
+    if (!context)
+        return nullptr;
+
+    state = &context->error_state;
+    if (state->first == state->last)
+        return nullptr;
+
+    return &state->errors[state->first + 1];
+}
+
+dmi_error_t *dmi_error_peek_last(dmi_context_t *context)
+{
+    dmi_error_state_t *state;
+
+    if (!context)
+        return nullptr;
+
+    state = &context->error_state;
+    if (state->first == state->last)
+        return nullptr;
+
+    return &state->errors[state->last];
+}
+
+dmi_error_t *dmi_error_get(dmi_context_t *context)
+{
+    dmi_error_state_t *state;
+    dmi_error_t *error;
+
+    if (!context)
+        return nullptr;
+
+    state = &context->error_state;
+    if (state->first == state->last)
+        return nullptr;
+
+    error = &state->errors[state->first + 1];
+    state->first = (state->first + 1) % DMI_ERROR_MAX_DEPTH;
+
+    return error;
+}
+
+dmi_error_t *dmi_error_get_last(dmi_context_t *context)
+{
+    dmi_error_state_t *state;
+    dmi_error_t *error;
+
+    if (!context)
+        return nullptr;
+
+    state = &context->error_state;
+    if (state->first == state->last)
+        return nullptr;
+
+    error = &state->errors[state->last];
+
+    if (state->last > 0)
+        state->last--;
+    else
+        state->last = DMI_ERROR_MAX_DEPTH - 1;
+
+    return error;
+}
+
+void dmi_error_clear(dmi_context_t *context)
+{
+    dmi_error_state_t *state;
+
+    if (!context)
+        return;
+
+    state = &context->error_state;
+
+    for (size_t i = 0; i < DMI_ERROR_MAX_DEPTH; i++) {
+        dmi_error_slot_clear(state, i);
+    }
+
+    state->first = 0;
+    state->last  = 0;
+}
+
+static size_t dmi_error_slot_get(dmi_error_state_t *state)
+{
+    state->last = (state->last + 1) % DMI_ERROR_MAX_DEPTH;
+
+    if (state->last == state->first)
+        state->first = (state->first + 1) % DMI_ERROR_MAX_DEPTH;
+
+    dmi_error_slot_clear(state, state->last);
+
+    return state->last;
+}
+
+static void dmi_error_slot_clear(dmi_error_state_t *state, size_t idx)
+{
+    dmi_free(state->errors[idx].message);
+    state->errors[idx] = dmi_error_null;
 }

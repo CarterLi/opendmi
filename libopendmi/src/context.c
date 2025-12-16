@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <string.h>
+#include <assert.h>
 
 #include <opendmi/context.h>
 #include <opendmi/entry.h>
@@ -84,11 +85,6 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
  * @brief Fixup DMI version number.
  */
 static void dmi_version_fixup(dmi_context_t *context);
-
-/**
- * @brief Last error code (thread-local).
- */
-static thread_local dmi_error_t dmi_last_error = DMI_OK;
 
 /**
  * @brief Backend handle.
@@ -180,7 +176,6 @@ dmi_context_t *dmi_create(void)
     context->type_map = dmi_alloc_array(context, sizeof(dmi_table_spec_t *), 0x100);
     if (!context->type_map) {
         dmi_free(context);
-        dmi_set_error(nullptr,  DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;    
     }
 
@@ -189,25 +184,34 @@ dmi_context_t *dmi_create(void)
 
 bool dmi_open(dmi_context_t *context)
 {
+    if (context == nullptr)
+        return false;
+
     return dmi_open_ex(context, dmi_backend, nullptr);
 }
 
 bool dmi_dump_load(dmi_context_t *context, const char *path)
 {
+    if (context == nullptr)
+        return false;
+
     if (path == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "path");
         return false;
     }
 
-    dmi_info(context, "Loading DMI dump: %s...", path);
+    dmi_log_info(context, "Loading DMI dump: %s...", path);
 
     return dmi_open_ex(context, &dmi_dump_backend, path);
 }
 
 bool dmi_dump_save(dmi_context_t *context, const char *path)
 {
-    if ((context == nullptr) or (path == nullptr)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
+    if (context == nullptr)
+        return false;
+
+    if (path == nullptr) {
+        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "path");
         return false;
     }
 
@@ -245,10 +249,8 @@ const char *dmi_type_name(dmi_context_t *context, dmi_type_t type)
 
 bool dmi_set_logger(dmi_context_t *context, dmi_log_handler_t logger)
 {
-    if (context == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    if (context == nullptr)
         return false;
-    }
 
     context->logger = logger;
 
@@ -257,38 +259,18 @@ bool dmi_set_logger(dmi_context_t *context, dmi_log_handler_t logger)
 
 bool dmi_set_log_level(dmi_context_t *context, dmi_log_level_t level)
 {
-    if (context == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    if (context == nullptr)
         return false;
-    }
 
     context->log_level = level;
 
     return true;
 }
 
-void dmi_set_error(dmi_context_t *context, dmi_error_t error)
-{
-    if (context != nullptr)
-        context->last_error = error;
-    else
-        dmi_last_error = error;
-}
-
-dmi_error_t dmi_get_error(const dmi_context_t *context)
-{
-    if (context == nullptr)
-        return dmi_last_error;
-
-    return context->last_error;
-}
-
 bool dmi_close(dmi_context_t *context)
 {
-    if (context == nullptr) {
-        dmi_set_error(nullptr, DMI_ERROR_INVALID_ARGUMENT);
+    if (context == nullptr)
         return false;
-    }
 
     dmi_registry_destroy(context->registry);
 
@@ -316,17 +298,15 @@ void dmi_destroy(dmi_context_t *context)
 
 static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const void *arg)
 {
-    if (context == nullptr) {
-        dmi_set_error(nullptr,  DMI_ERROR_INVALID_ARGUMENT);
-        return false;
-    }
+    assert(context != nullptr);
+
     if ((context->backend != nullptr) or (context->session != nullptr)) {
-        dmi_set_error(nullptr,  DMI_ERROR_INVALID_STATE);
+        dmi_error_raise_ex(context,  DMI_ERROR_INVALID_STATE, "Context already initialized");
         return false;
     }
 
-    dmi_info(context, "Opening DMI context...");
-    dmi_info(context, "Using backend: %s", backend->name);
+    dmi_log_info(context, "Opening DMI context...");
+    dmi_log_info(context, "Using backend: %s", backend->name);
 
     // Initialize context
     bool success = false;
@@ -335,12 +315,12 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
 
         // Initialize backend
         if (!context->backend->open(context, arg)) {
-            dmi_error(context, "Unable to open backend: %s", dmi_error_message(context->last_error));
+            dmi_log_error(context, "Unable to open backend: %s", backend->name);
             break;
         }
 
         // Read and decode entry point
-        dmi_info(context, "Reading DMI entry point...");
+        dmi_log_info(context, "Reading DMI entry point...");
         context->entry_data = context->backend->read_entry(context, &context->entry_size);
         if (context->entry_data == nullptr)
             break;
@@ -349,14 +329,14 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
 
         // Fixup SMBIOS version number
         dmi_version_fixup(context);
-        dmi_info(context, "SMBIOS %u.%u.%u present",
-                 dmi_version_major(context->smbios_version),
-                 dmi_version_minor(context->smbios_version),
-                 dmi_version_revision(context->smbios_version));
+        dmi_log_info(context, "SMBIOS %u.%u.%u present",
+                     dmi_version_major(context->smbios_version),
+                     dmi_version_minor(context->smbios_version),
+                     dmi_version_revision(context->smbios_version));
 
         // Read and decode SMBIOS tables
         // TODO: Use separate variable for size
-        dmi_info(context, "Reading DMI tables...");
+        dmi_log_info(context, "Reading DMI tables...");
         context->table_data = context->backend->read_tables(context, &context->table_area_size);
         if (context->table_data == nullptr)
             break;
@@ -376,8 +356,7 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
     } while (false);
 
     if (!success) {
-        dmi_error(context, "Unable to open DMI context");
-        dmi_set_error(context, context->last_error);
+        dmi_log_error(context, "Unable to open DMI context");
         dmi_close(context);
     }
 

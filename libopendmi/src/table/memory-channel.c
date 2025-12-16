@@ -107,7 +107,6 @@ dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_table_t *table, dmi_ve
                                     info->device_count);
     if (!info->devices) {
         dmi_free(info);
-        dmi_set_error(table->context, DMI_ERROR_OUT_OF_MEMORY);
         return nullptr;
     }
 
@@ -129,6 +128,7 @@ bool dmi_memory_channel_link(dmi_table_t *table)
 {
     dmi_memory_channel_t *info;
     dmi_registry_t *registry;
+    dmi_table_t *device;
 
     info = dmi_cast(info, dmi_table_info(table, DMI_TYPE_MEMORY_CHANNEL));
     if (!info)
@@ -137,11 +137,9 @@ bool dmi_memory_channel_link(dmi_table_t *table)
     registry = table->context->registry;
 
     for (size_t i = 0; i < info->device_count; i++) {
-        dmi_table_t *device = dmi_registry_get(registry, info->devices[i].handle);
-        if (!device) {
-            dmi_warning(table->context, "Memory device not found: 0x%04x", info->devices[i].handle);
+        device = dmi_registry_get(registry, info->devices[i].handle, DMI_TYPE_MEMORY_DEVICE);
+        if (device == nullptr)
             continue;
-        }
 
         info->devices[i].device = device;
     }

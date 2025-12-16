@@ -49,8 +49,8 @@ void *dmi_alloc(dmi_context_t *context, size_t size)
     void *ptr;
 
     ptr = calloc(1, size);
-    if (ptr == nullptr)
-        dmi_set_error(context, DMI_ERROR_OUT_OF_MEMORY);
+    if ((ptr == nullptr) and (context != nullptr))
+        dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);
 
     return ptr;
 }
@@ -265,9 +265,16 @@ int dmi_vasprintf(char **strp, const char *fmt, va_list ap)
 
 dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plength)
 {
-    if ((context == nullptr) or (path == nullptr) or (plength == nullptr)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
+    if (context == nullptr)
         return nullptr;
+
+    if (path == nullptr) {
+        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "path");
+        return nullptr;
+    }
+    if (plength == nullptr) {
+        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "plength");
+        return nullptr; 
     }
 
     int         fd   = -1;
@@ -281,21 +288,29 @@ dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plen
         if (_sopen_s(&fd, path, _O_RDONLY, _SH_DENYNO, _S_IREAD) != 0)
             break;
 #else
-        if ((fd = open(path, O_RDONLY)) < 0)
+        if ((fd = open(path, O_RDONLY)) < 0) {
+            dmi_error_raise_ex(context, DMI_ERROR_FILE_OPEN, "%s: %s", path, strerror(errno));
             break;
+        }
 #endif
  
-        if (fstat(fd, &st) < 0)
+        if (fstat(fd, &st) < 0) {
+            dmi_error_raise_ex(context, DMI_ERROR_FILE_STAT, "%s: %s", path, strerror(errno));
             break;
+        }
 
-        if ((data = malloc(st.st_size)) == nullptr)
+        if ((data = malloc(st.st_size)) == nullptr) {
+            dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);
             break;
+        }
 
     retry:
         nread = read(fd, data, st.st_size);
         if (nread < st.st_size) {
             if ((nread < 0) and (errno == EINTR))
                 goto retry;
+
+            dmi_error_raise_ex(context, DMI_ERROR_FILE_READ, "%s: %s", path, strerror(errno));
             break;
         }
 
@@ -307,10 +322,7 @@ dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plen
         close(fd);
 
     if (!success) {
-        if (data)
-            free(data);
-        dmi_set_error(context, DMI_ERROR_SYSTEM);
-
+        dmi_free(data);
         return nullptr;
     }
 
@@ -320,26 +332,39 @@ dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plen
 #if !defined(_WIN32)
 dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength)
 {
-    if ((context == nullptr) or (path == nullptr) or (plength == nullptr)) {
-        dmi_set_error(context, DMI_ERROR_INVALID_ARGUMENT);
-        return nullptr;
-    }
-
     int         fd   = -1;
     dmi_data_t *data = nullptr;
     stat_t      st;
 
+    if (context == nullptr)
+        return nullptr;
+
+    if (path == nullptr) {
+        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "path");
+        return nullptr;
+    }
+    if (plength == nullptr) {
+        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "plength");
+        return nullptr;
+    }
+
     bool success = false;
     do {
         fd = open(path, O_RDONLY);
-        if (fd < 0)
+        if (fd < 0) {
+            dmi_error_raise_ex(context, DMI_ERROR_FILE_OPEN, "%s: %s", path, strerror(errno));
             break;
+        }
  
-        if (fstat(fd, &st) < 0)
+        if (fstat(fd, &st) < 0) {
+            dmi_error_raise_ex(context, DMI_ERROR_FILE_STAT, "%s: %s", path, strerror(errno));
             break;
+        }
 
-        if ((data = mmap(nullptr, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == nullptr)
+        if ((data = mmap(nullptr, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == nullptr) {
+            dmi_error_raise_ex(context, DMI_ERROR_FILE_MAP, "%s: %s", path, strerror(errno));
             break;
+        }
 
         success = true;
     } while (false);
@@ -347,10 +372,8 @@ dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *pleng
     if (fd >= 0)
         close(fd);
 
-    if (!success) {
-        dmi_set_error(context, DMI_ERROR_SYSTEM);
+    if (!success)
         return nullptr;
-    }
 
     *plength = st.st_size;
 
