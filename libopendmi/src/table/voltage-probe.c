@@ -4,6 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <opendmi/value.h>
 #include <opendmi/table/voltage-probe.h>
 
 /**
@@ -33,7 +34,7 @@ const dmi_attribute_t dmi_voltage_probe_attrs[] =
         .code    = "maximum-value",
         .name    = "Maximum value",
         .scale   = 1,
-        .unit    = "mV",
+        .unit    = DMI_UNIT_MILLIVOLT,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
@@ -41,7 +42,7 @@ const dmi_attribute_t dmi_voltage_probe_attrs[] =
         .code    = "minimum-value",
         .name    = "Minimum value",
         .scale   = 1,
-        .unit    = "mV",
+        .unit    = DMI_UNIT_MILLIVOLT,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
@@ -49,7 +50,7 @@ const dmi_attribute_t dmi_voltage_probe_attrs[] =
         .code    = "resolution",
         .name    = "Resolution",
         .scale   = 3,
-        .unit    = "mV",
+        .unit    = DMI_UNIT_MILLIVOLT,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
@@ -57,7 +58,7 @@ const dmi_attribute_t dmi_voltage_probe_attrs[] =
         .code    = "tolerance",
         .name    = "Tolerance",
         .scale   = 1,
-        .unit    = "mV",
+        .unit    = DMI_UNIT_MILLIVOLT,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
@@ -65,7 +66,7 @@ const dmi_attribute_t dmi_voltage_probe_attrs[] =
         .code    = "accuracy",
         .name    = "Accuracy",
         .scale   = 2,
-        .unit    = "mV",
+        .unit    = DMI_UNIT_MILLIVOLT,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
@@ -78,7 +79,7 @@ const dmi_attribute_t dmi_voltage_probe_attrs[] =
         .code    = "nominal-value",
         .name    = "Nominal value",
         .scale   = 1,
-        .unit    = "mV",
+        .unit    = DMI_UNIT_MILLIVOLT,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),

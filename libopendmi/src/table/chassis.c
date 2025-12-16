@@ -6,6 +6,7 @@
 //
 #include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/value.h>
 #include <opendmi/utils.h>
 
 #include <opendmi/table/chassis.h>
@@ -307,7 +308,7 @@ static const dmi_attribute_t dmi_chassis_attrs[] =
     DMI_ATTRIBUTE(dmi_chassis_t, height, INTEGER, {
         .code    = "height",
         .name    = "Height",
-        .unit    = "U",
+        .unit    = DMI_UNIT_RACK,
         .unspec  = DMI_VALUE_PTR((unsigned short)0),
         .level   = DMI_VERSION(2, 3, 0)
     }),

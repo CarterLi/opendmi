@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #include <opendmi/context.h>
+#include <opendmi/value.h>
 #include <opendmi/utils.h>
 
 #include <opendmi/table/memory-module.h>
@@ -97,7 +98,7 @@ const dmi_attribute_t dmi_memory_module_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_module_t, current_speed, INTEGER, {
         .code   = "current-speed",
         .name   = "Current speed",
-        .unit   = "ns"
+        .unit   = DMI_UNIT_NANOSECOND
     }),
     DMI_ATTRIBUTE(dmi_memory_module_t, current_type, SET, {
         .code   = "current-type",

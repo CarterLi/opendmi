@@ -6,6 +6,7 @@
 //
 #include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/value.h>
 #include <opendmi/utils.h>
 
 #include <opendmi/table/cache.h>
@@ -222,7 +223,7 @@ const dmi_attribute_t dmi_cache_attrs[] =
     DMI_ATTRIBUTE(dmi_cache_t, speed, INTEGER, {
         .code    = "speed",
         .name    = "Cache speed",
-        .unit    = "ns",
+        .unit    = DMI_UNIT_NANOSECOND,
         .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_cache_t, error_correction, ENUM, {

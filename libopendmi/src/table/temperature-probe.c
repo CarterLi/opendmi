@@ -6,6 +6,7 @@
 //
 #include <stdio.h>
 
+#include <opendmi/value.h>
 #include <opendmi/table/temperature-probe.h>
 
 /**
@@ -35,7 +36,7 @@ const dmi_attribute_t dmi_temperature_probe_attrs[] =
         .code    = "maximum-value",
         .name    = "Maximum value",
         .scale   = 1,
-        .unit    = "°C",
+        .unit    = DMI_UNIT_CELSIUS,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
@@ -43,7 +44,7 @@ const dmi_attribute_t dmi_temperature_probe_attrs[] =
         .code    = "minimum-value",
         .name    = "Minimum value",
         .scale   = 1,
-        .unit    = "°C",
+        .unit    = DMI_UNIT_CELSIUS,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
@@ -51,7 +52,7 @@ const dmi_attribute_t dmi_temperature_probe_attrs[] =
         .code    = "resolution",
         .name    = "Resolution",
         .scale   = 3,
-        .unit    = "°C",
+        .unit    = DMI_UNIT_CELSIUS,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
@@ -59,7 +60,7 @@ const dmi_attribute_t dmi_temperature_probe_attrs[] =
         .code    = "tolerance",
         .name    = "Tolerance",
         .scale   = 1,
-        .unit    = "°C",
+        .unit    = DMI_UNIT_CELSIUS,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
@@ -67,7 +68,7 @@ const dmi_attribute_t dmi_temperature_probe_attrs[] =
         .code    = "accuracy",
         .name    = "Accuracy",
         .scale   = 2,
-        .unit    = "°C",
+        .unit    = DMI_UNIT_CELSIUS,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
@@ -80,7 +81,7 @@ const dmi_attribute_t dmi_temperature_probe_attrs[] =
         .code    = "nominal-value",
         .name    = "Nominal value",
         .scale   = 1,
-        .unit    = "°C",
+        .unit    = DMI_UNIT_CELSIUS,
         .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),

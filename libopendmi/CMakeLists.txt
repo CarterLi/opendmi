@@ -88,6 +88,7 @@ target_sources(opendmi-object
                 include/opendmi/table.h
                 include/opendmi/types.h
                 include/opendmi/utils.h
+                include/opendmi/value.h
                 include/opendmi/version.h
                 include/opendmi/backend/dump.h
                 include/opendmi/table/additional-info.h

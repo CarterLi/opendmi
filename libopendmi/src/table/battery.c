@@ -8,6 +8,7 @@
 
 #include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/value.h>
 #include <opendmi/utils.h>
 
 #include <opendmi/table/battery.h>
@@ -82,14 +83,14 @@ const dmi_attribute_t dmi_battery_attrs[] =
     DMI_ATTRIBUTE(dmi_battery_t, capacity, DECIMAL, {
         .code    = "capacity",
         .name    = "Design capacity",
-        .unit    = "W * h",
+        .unit    = DMI_UNIT_WATT_HOUR,
         .scale   = 3,
         .unknown = DMI_VALUE_PTR((unsigned int)0)
     }),
     DMI_ATTRIBUTE(dmi_battery_t, voltage, DECIMAL, {
         .code    = "voltage",
         .name    = "Design voltage",
-        .unit    = "V",
+        .unit    = DMI_UNIT_VOLT,
         .scale   = 3,
         .unknown = DMI_VALUE_PTR((unsigned short)0)
     }),
@@ -100,7 +101,7 @@ const dmi_attribute_t dmi_battery_attrs[] =
     DMI_ATTRIBUTE(dmi_battery_t, maximum_error, INTEGER, {
         .code    = "maximum-error",
         .name    = "Maximum error",
-        .unit    = "%",
+        .unit    = DMI_UNIT_PERCENT,
         .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_battery_t, sbds_serial_number, INTEGER, {

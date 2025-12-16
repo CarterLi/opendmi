@@ -8,6 +8,7 @@
 
 #include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/value.h>
 #include <opendmi/utils.h>
 
 #include <opendmi/table/memory-device.h>
@@ -397,13 +398,13 @@ const dmi_attribute_t dmi_memory_device_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_device_t, total_width, INTEGER, {
         .code    = "total-width",
         .name    = "Total width",
-        .unit    = "bits",
+        .unit    = DMI_UNIT_BIT,
         .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, data_width, INTEGER, {
         .code    = "data-width",
         .name    = "Data width",
-        .unit    = "bits",
+        .unit    = DMI_UNIT_BIT,
         .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, size, SIZE, {
@@ -446,7 +447,7 @@ const dmi_attribute_t dmi_memory_device_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_device_t, maximum_speed, INTEGER, {
         .code    = "maximum-speed",
         .name    = "Maximum speed",
-        .unit    = "MT/s",
+        .unit    = DMI_UNIT_MEGAXA_SECOND,
         .unknown = DMI_VALUE_PTR((unsigned long)0),
         .level   = DMI_VERSION(2, 3, 0)
     }),
@@ -479,28 +480,31 @@ const dmi_attribute_t dmi_memory_device_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_device_t, configured_speed, INTEGER, {
         .code    = "configured-speed",
         .name    = "Configured speed",
-        .unit    = "MT/s",
+        .unit    = DMI_UNIT_MEGAXA_SECOND,
         .unknown = DMI_VALUE_PTR((unsigned long)0),
         .level   = DMI_VERSION(2, 7, 0)
     }),
-    DMI_ATTRIBUTE(dmi_memory_device_t, minimum_voltage, INTEGER, {
+    DMI_ATTRIBUTE(dmi_memory_device_t, minimum_voltage, DECIMAL, {
         .code    = "minimum-voltage",
         .name    = "Minimum voltage",
-        .unit    = "mV",
+        .unit    = DMI_UNIT_VOLT,
+        .scale   = 3,
         .unknown = DMI_VALUE_PTR((unsigned short)0),
         .level   = DMI_VERSION(2, 8, 0)
     }),
-    DMI_ATTRIBUTE(dmi_memory_device_t, maximum_voltage, INTEGER, {
+    DMI_ATTRIBUTE(dmi_memory_device_t, maximum_voltage, DECIMAL, {
         .code    = "maximum-voltage",
         .name    = "Maximum voltage",
-        .unit    = "mV",
+        .unit    = DMI_UNIT_VOLT,
+        .scale   = 3,
         .unknown = DMI_VALUE_PTR((unsigned short)0),
         .level   = DMI_VERSION(2, 8, 0)
     }),
-    DMI_ATTRIBUTE(dmi_memory_device_t, configured_voltage, INTEGER, {
+    DMI_ATTRIBUTE(dmi_memory_device_t, configured_voltage, DECIMAL, {
         .code    = "configured-voltage",
         .name    = "Configured voltage",
-        .unit    = "mV",
+        .unit    = DMI_UNIT_VOLT,
+        .scale   = 3,
         .unknown = DMI_VALUE_PTR((unsigned short)0),
         .level   = DMI_VERSION(2, 8, 0)
     }),

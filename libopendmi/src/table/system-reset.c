@@ -8,6 +8,7 @@
 
 #include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/value.h>
 #include <opendmi/utils.h>
 
 #include <opendmi/table/system-reset.h>
@@ -66,13 +67,13 @@ static const dmi_attribute_t dmi_system_reset_attrs[] =
     DMI_ATTRIBUTE(dmi_system_reset_t, timer_interval, INTEGER, {
         .code    = "timer-interval",
         .name    = "Timer interval",
-        .unit    = "min",
+        .unit    = DMI_UNIT_MINUTE,
         .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_system_reset_t, timeout, INTEGER, {
         .code    = "timeout",
         .name    = "Timeout",
-        .unit    = "min",
+        .unit    = DMI_UNIT_MINUTE,
         .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX),
     }),
     DMI_ATTRIBUTE_NULL
@@ -111,7 +112,7 @@ dmi_system_reset_t *dmi_system_reset_decode(const dmi_table_t *table, dmi_versio
         return nullptr;
 
     dmi_system_reset_caps_t caps = {
-        ._value = data->capabilities
+        ._value = dmi_value(data->capabilities)
     };
 
     info->status           = caps.status;

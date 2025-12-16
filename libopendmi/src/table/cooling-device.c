@@ -8,6 +8,7 @@
 
 #include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/value.h>
 #include <opendmi/utils.h>
 
 #include <opendmi/table/cooling-device.h>
@@ -97,7 +98,7 @@ const dmi_attribute_t dmi_cooling_device_attrs[] =
     DMI_ATTRIBUTE(dmi_cooling_device_t, nominal_speed, INTEGER, {
         .code    = "nominal-speed",
         .name    = "Nominal speed",
-        .unit    = "rpm",
+        .unit    = DMI_UNIT_REVOLUTION,
         .unknown = DMI_VALUE_PTR((short)SHRT_MIN)
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, description, STRING, {

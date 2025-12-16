@@ -8,6 +8,7 @@
 
 #include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/value.h>
 #include <opendmi/utils.h>
 
 #include <opendmi/table/power-supply.h>
@@ -115,7 +116,7 @@ static const dmi_attribute_t dmi_power_supply_attrs[] =
     DMI_ATTRIBUTE(dmi_power_supply_t, maximum_capacity, INTEGER, {
         .code    = "maximum-capacity",
         .name    = "Maximum capacity",
-        .unit    = "watts",
+        .unit    = DMI_UNIT_WATT,
         .unknown = DMI_VALUE_PTR((short)SHRT_MIN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
