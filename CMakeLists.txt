@@ -12,6 +12,12 @@ set(OPENDMI_VERSION_MAJOR "${CMAKE_PROJECT_VERSION_MAJOR}")
 set(OPENDMI_VERSION_MINOR "${CMAKE_PROJECT_VERSION_MINOR}")
 set(OPENDMI_VERSION_PATCH "${CMAKE_PROJECT_VERSION_PATCH}")
 
+set(OPENDMI_CXX OFF CACHE BOOL "Enable C++ support(libopendmi++)")
+set(OPENDMI_GOLANG OFF CACHE BOOL "Enable Go support (libopendmi-go)")
+set(OPENDMI_PYTHON OFF CACHE BOOL "Enable Python support (libopendmi-python)")
+set(OPENDMI_RUST OFF CACHE BOOL "Enable Rust support (libopendmi-rust)")
+set(OPENDMI_DBUS OFF CACHE BOOL "Enable D-bus support (opendmi-dbus)")
+
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_EXTENSIONS ON)
 
