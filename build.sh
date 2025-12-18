@@ -9,7 +9,20 @@ ENABLE_PYTHON=OFF
 ENABLE_RUST=OFF
 ENABLE_DBUS=OFF
 
-configure() {
+OSNAME=`uname -s`
+
+case "${OSNAME}" in
+    Linux)
+        NPROC=`nproc --all`
+        ;;
+    FreeBSD|Darwin)
+        NPROC=`sysctl -n hw.ncpu`
+        ;;
+    *)
+        NPROC=1
+esac
+
+_configure() {
     while [ $# -gt 0 ]; do
         OPTION=$1
         shift
@@ -51,6 +64,39 @@ configure() {
         -DOPENDMI_DBUS=${ENABLE_DBUS}
 }
 
+_build() {
+    cmake --build ${BUILD_DIR} --parallel ${NPROC}
+}
+
+_test() {
+    CTEST_ARGS=""
+
+    while [ $# -gt 0 ]; do
+        OPTION=$1
+        shift
+
+        case "$OPTION" in
+            --failed)
+                CTEST_ARGS="${CTEST_ARGS} --rerun-failed"
+                ;;
+            *)
+                echo "Invalid option: ${OPTION}" 1>&2
+                exit 1
+        esac
+    done
+
+    ctest --test-dir ${BUILD_DIR} --parallel ${NPROC} ${CTEST_ARGS}
+}
+
+_clean() {
+    cmake --build ${BUILD_DIR} --target clean
+}
+
+_distclean()
+{
+    rm -rf ${BUILD_DIR}
+}
+
 if [ $# -eq 0 ]; then
     echo "Missing command" 1>&2
     exit 1
@@ -59,23 +105,23 @@ fi
 COMMAND=$1
 shift
 
-case "$COMMAND" in
+case "${COMMAND}" in
     configure)
-        configure "$@"
+        _configure "$@"
         ;;
     build)
-        cmake --build ${BUILD_DIR}
+        _build "$@"
         ;;
     test)
-        ctest --test-dir ${BUILD_DIR}
+        _test "$@"
         ;;
     clean)
-        cmake --build ${BUILD_DIR} --target clean
+        _clean "$@"
         ;;
     distclean)
-        rm -rf ${BUILD_DIR}
+        _distclean "$@"
         ;;
     *)
-        echo "Invalid command: $COMMAND" 1>&2
+        echo "Invalid command: ${COMMAND}" 1>&2
         exit 1
 esac
