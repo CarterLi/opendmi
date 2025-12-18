@@ -32,25 +32,10 @@ const dmi_attribute_t dmi_onboard_device_ex_attrs[] =
         .code    = "instance",
         .name    = "Instance"
     }),
-    DMI_ATTRIBUTE(dmi_onboard_device_ex_t, segment_group, INTEGER, {
-        .code    = "segment-group",
-        .name    = "Segment group",
-        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
-    }),
-    DMI_ATTRIBUTE(dmi_onboard_device_ex_t, bus_number, INTEGER, {
-        .code    = "bus-number",
-        .name    = "Bus number",
-        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
-    }),
-    DMI_ATTRIBUTE(dmi_onboard_device_ex_t, device_number, INTEGER, {
-        .code    = "device-number",
-        .name    = "Device number",
-        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
-    }),
-    DMI_ATTRIBUTE(dmi_onboard_device_ex_t, function_number, INTEGER, {
-        .code    = "function-number",
-        .name    = "Function number",
-        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
+    DMI_ATTRIBUTE(dmi_onboard_device_ex_t, address, STRUCT, {
+        .code    = "address",
+        .name    = "Address",
+        .attrs   = dmi_pci_addr_attrs
     }),
     DMI_ATTRIBUTE_NULL
 };
@@ -92,27 +77,7 @@ dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_table_t *table, 
     info->is_enabled = details.is_enabled;
     info->instance   = dmi_value(data->instance);
 
-    if (data->segment_group != 0xFFFFu)
-        info->segment_group = dmi_value(data->segment_group);
-    else
-        info->segment_group = USHRT_MAX;
-
-    if (data->bus_number != 0xFFu)
-        info->bus_number = dmi_value(data->bus_number);
-    else
-        info->bus_number = USHRT_MAX;
-
-    if (data->bus_addr != 0xFFu) {
-        dmi_onboard_device_addr_t addr = {
-            ._value = dmi_value(data->bus_addr)
-        };
-
-        info->device_number   = addr.device_number;
-        info->function_number = addr.function_number;
-    } else {
-        info->device_number   = USHRT_MAX;
-        info->function_number = USHRT_MAX;
-    }
+    dmi_pci_addr_decode(&info->address, &data->address);
 
     if (plevel)
         *plevel = dmi_version(2, 6, 0);

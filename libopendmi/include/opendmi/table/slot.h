@@ -8,6 +8,17 @@
 #define OPENDMI_TABLE_SLOT_H
 
 #include <opendmi/table.h>
+#include <opendmi/table/common.h>
+
+#ifndef DMI_SLOT_T
+#define DMI_SLOT_T
+typedef struct dmi_slot dmi_slot_t;
+#endif // !DMI_SLOT_T
+
+#ifndef DMI_SLOT_DATA_T
+#define DMI_SLOT_DATA_T
+typedef struct dmi_slot_data dmi_slot_data_t;
+#endif // !DMI_SLOT_DATA_T
 
 /**
  * @brief Slot type identifiers.
@@ -96,6 +107,7 @@ typedef enum dmi_slot_type
     DMI_SLOT_TYPE_PCI_E_G6              = 0xC4, ///< PCI Express Gen 6 and beyond
     DMI_SLOT_TYPE_EDSFF_E1              = 0xC5, ///< Enterprise and datacenter 1U E1 form factor slot (EDSFF E1.S, E1.L)
     DMI_SLOT_TYPE_EDSFF_E3              = 0xC6, ///< Enterprise and datacenter 3" E3 form factor slot (EDSFF E3.S, E3.L)
+    __DMI_SLOT_TYPE_COUNT
 } dmi_slot_type_t;
 
 /**
@@ -135,6 +147,27 @@ typedef enum dmi_slot_usage
     __DMI_SLOT_USAGE_COUNT
 } dmi_slot_usage_t;
 
+/**
+ * @brief Slot length values.
+ */
+typedef enum dmi_slot_length
+{
+    DMI_SLOT_LENGTH_UNSPEC   = 0x00, ///< Unspecified
+    DMI_SLOT_LENGTH_OTHER    = 0x01, ///< Other
+    DMI_SLOT_LENGTH_UNKNOWN  = 0x02, ///< Unknown
+    DMI_SLOT_LENGTH_SHORT    = 0x03, ///< Short length
+    DMI_SLOT_LENGTH_LONG     = 0x04, ///< Long length
+    DMI_SLOT_LENGTH_SFF_8200 = 0x05, ///< 2.5" drive form factor
+    DMI_SLOT_LENGTH_SFF_8300 = 0x06, ///< 3.5" drive form factor
+    __DMI_SLOT_LENGTH_COUNT
+} dmi_slot_length_t;
+
+/**
+ * @brief System slots table (type 9).
+ * 
+ * The information in this structure defines the attributes of a system slot.
+ * One structure is provided for each slot in the system.
+ */
 DMI_PACKED_STRUCT(dmi_slot_data)
 {
     /**
@@ -152,31 +185,31 @@ DMI_PACKED_STRUCT(dmi_slot_data)
      * @brief Slot type.
      * @since SMBIOS 2.0
      */
-    dmi_slot_type_t type : 8;
+    dmi_byte_t type;
 
     /**
      * @brief Data bus width.
      * @since SMBIOS 2.0
      */
-    dmi_slot_width_t width : 8;
+    dmi_byte_t width;
 
     /**
      * @brief Current usage.
      * @since SMBIOS 2.0
      */
-    dmi_slot_usage_t usage : 8;
+    dmi_byte_t usage;
 
     /**
      * @brief Slot length.
      * @since SMBIOS 2.0
      */
-    dmi_byte_t length : 8;
+    dmi_byte_t length;
 
     /**
      * @brief Slot identifier.
      * @since SMBIOS 2.0
      */
-    dmi_word_t id;
+    dmi_word_t ident;
 
     /**
      * @since SMBIOS 2.0
@@ -189,27 +222,10 @@ DMI_PACKED_STRUCT(dmi_slot_data)
     dmi_byte_t features_ex;
 
     /**
+     * @brief Device address.
      * @since SMBIOS 2.6
      */
-    dmi_word_t segment_group;
-
-    /**
-     * @since SMBIOS 2.6
-     */
-    dmi_byte_t bus_number;
-
-    struct
-    {
-        /**
-         * @since SMBIOS 2.6
-         */
-        dmi_byte_t function_number : 3;
-
-        /**
-         * @since SMBIOS 2.6
-         */
-        dmi_byte_t device_number : 5;
-    };
+    dmi_pci_addr_t address;
     
     dmi_byte_t data_bus_width;
 
@@ -218,7 +234,7 @@ DMI_PACKED_STRUCT(dmi_slot_data)
     dmi_byte_t peer_groups[];
 };
 
-struct dmi_slot_data_ex
+struct dmi_slot_extra
 {
     dmi_byte_t information;
     dmi_byte_t physical_width;
@@ -226,9 +242,38 @@ struct dmi_slot_data_ex
     dmi_byte_t height;
 };
 
-struct dmi_slot_info
+struct dmi_slot
 {
+    /**
+     * @brief Reference designator.
+     */
     const char *designator;
+
+    /**
+     * @brief Slot type.
+     */
+    dmi_slot_type_t type;
+
+    /**
+     * @brief Data bus width.
+     */
+    dmi_slot_width_t width;
+
+    /**
+     * @brief Current usage.
+     */
+    dmi_slot_usage_t usage;
+
+    /**
+     * @brief Slot length.
+     */
+    dmi_slot_length_t length;
+
+    /**
+     * @brief Slot identifier.
+     * @todo Implement bus-specific identifier decoding (PCI, MCA, etc).
+     */
+    uint16_t ident;
 };
 
 /**
@@ -241,6 +286,17 @@ __BEGIN_DECLS
 const char *dmi_slot_type_name(dmi_slot_type_t value);
 const char *dmi_slot_width_name(dmi_slot_width_t value);
 const char *dmi_slot_usage_name(dmi_slot_usage_t value);
+const char *dmi_slot_length_name(dmi_slot_length_t value);
+
+/**
+ * @internal
+ */
+dmi_slot_t *dmi_slot_decode(const dmi_table_t *table, dmi_version_t *plevel);
+
+/**
+ * @internal
+ */
+void dmi_slot_free(dmi_slot_t *info);
 
 __END_DECLS
 

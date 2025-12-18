@@ -4,6 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <assert.h>
+
+#include <opendmi/utils.h>
 #include <opendmi/table/common.h>
 
 const dmi_name_t dmi_status_names[] =
@@ -63,6 +66,35 @@ const dmi_name_t dmi_error_correct_type_names[] =
     DMI_NAME_NULL
 };
 
+const dmi_attribute_t dmi_pci_addr_attrs[] =
+{
+    DMI_ATTRIBUTE(dmi_pci_addr_t, segment_group, INTEGER, {
+        .code   = "segment-group",
+        .name   = "Segment group",
+        .unspec = DMI_VALUE_PTR((uint16_t)UINT16_MAX),
+        .flags  = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_pci_addr_t, bus_number, INTEGER, {
+        .code   = "bus-number",
+        .name   = "Bus number",
+        .unspec = DMI_VALUE_PTR((uint8_t)UINT8_MAX),
+        .flags  = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_pci_addr_t, device_number, INTEGER, {
+        .code   = "device-number",
+        .name   = "Device number",
+        .unspec = DMI_VALUE_PTR((uint8_t)UINT8_MAX),
+        .flags  = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE(dmi_pci_addr_t, function_number, INTEGER, {
+        .code   = "function-number",
+        .name   = "Function number",
+        .unspec = DMI_VALUE_PTR((uint8_t)UINT8_MAX),
+        .flags  = DMI_ATTRIBUTE_FLAG_HEX
+    }),
+    DMI_ATTRIBUTE_NULL
+};
+
 const char *dmi_status_name(dmi_status_t value)
 {
     return dmi_name_lookup(dmi_status_names, value);
@@ -71,4 +103,20 @@ const char *dmi_status_name(dmi_status_t value)
 const char *dmi_error_correct_type_name(dmi_error_correct_type_t value)
 {
     return dmi_name_lookup(dmi_error_correct_type_names, value);
+}
+
+void dmi_pci_addr_decode(dmi_pci_addr_t *addr, const dmi_pci_addr_data_t *data)
+{
+    assert(addr != nullptr);
+    assert(data != nullptr);
+
+    addr->segment_group   = dmi_value(data->segment_group);
+    addr->bus_number      = dmi_value(data->bus_number);
+    addr->device_number   = dmi_value((dmi_byte_t)data->device_number);
+    addr->function_number = dmi_value((dmi_byte_t)data->function_number);
+
+    if (addr->bus_number == UINT8_MAX) {
+        addr->device_number = UINT8_MAX;
+        addr->function_number = UINT8_MAX;
+    }
 }

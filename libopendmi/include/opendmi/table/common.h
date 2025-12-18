@@ -10,6 +10,17 @@
 #pragma once
 
 #include <opendmi/name.h>
+#include <opendmi/attribute.h>
+
+#ifndef DMI_PCI_ADDR_T
+#define DMI_PCI_ADDR_T
+typedef struct dmi_pci_addr dmi_pci_addr_t;
+#endif // !DMI_PCI_ADDR_T
+
+#ifndef DMI_PCI_ADDR_DATA_T
+#define DMI_PCI_ADDR_DATA_T
+typedef struct dmi_pci_addr_data dmi_pci_addr_data_t;
+#endif // !DMI_PCI_ADDR_DATA_T
 
 /**
  * @brief Status types.
@@ -42,13 +53,66 @@ typedef enum dmi_error_correct_type
     __DMI_ERROR_CORRECT_TYPE_COUNT
 } dmi_error_correct_type_t;
 
+DMI_PACKED_STRUCT(dmi_pci_addr_data)
+{
+    /**
+     * @brief Segment group number. The value is 0 for a single-segment topology.
+     */
+    dmi_word_t segment_group;
+
+    /**
+     * @brief Bus number. Set to `0xFF` if not applicable.
+     */
+    dmi_byte_t bus_number;
+
+    /**
+     * @brief Function number. Set to `0x07` if not applicable.
+     */
+    dmi_byte_t function_number : 3;
+
+    /**
+     * @brief Device number. Set to `0x1F` if not applicable.
+     */
+    dmi_byte_t device_number : 5;
+};
+
+struct dmi_pci_addr
+{
+    /**
+     * @brief Segment group. The value is 0 for a single-segment topology.
+     */
+    uint16_t segment_group;
+
+    /**
+     * @brief Bus number. Set to `UINT8_MAX` if not applicable.
+     */
+    uint8_t bus_number;
+
+    /**
+     * @brief Device number. Set to `UINT8_MAX` if not applicable.
+     */
+    uint8_t device_number;
+
+    /**
+     * @brief Function number. Set to `UINT8_MAX` if not applicable.
+     */
+    uint8_t function_number;
+};
+
 extern const dmi_name_t dmi_status_names[];
 extern const dmi_name_t dmi_error_correct_type_names[];
+
+extern const dmi_attribute_t dmi_pci_addr_attrs[];
 
 __BEGIN_DECLS
 
 const char *dmi_status_name(dmi_status_t value);
 const char *dmi_error_correct_type_name(dmi_error_correct_type_t value);
+
+/**
+ * @internal
+ */
+void dmi_pci_addr_decode(dmi_pci_addr_t *addr, const dmi_pci_addr_data_t *data);
 
 __END_DECLS
 

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <opendmi/table/common.h>
 #include <opendmi/table/onboard-device.h>
 
 #ifndef DMI_ONBOARD_DEVICE_EX_T
@@ -20,35 +21,6 @@ typedef struct dmi_onboard_device_ex dmi_onboard_device_ex_t;
 #define DMI_ONBOARD_DEVICE_EX_DATA_T
 typedef struct dmi_onboard_device_ex_data dmi_onboard_device_ex_data_t;
 #endif // !DMI_ONBOARD_DEVICE_EX_DATA_T
-
-#ifndef DMI_ONBOARD_DEVICE_ADDR_T
-#define DMI_ONBOARD_DEVICE_ADDR_T
-typedef union dmi_onboard_device_addr dmi_onboard_device_addr_t;
-#endif // !DMI_ONBOARD_DEVICE_ADDR_T
-
-/**
- * @brief Onboard device bus address.
- */
-DMI_PACKED_UNION(dmi_onboard_device_addr)
-{
-    /**
-     * @brief Raw value.
-     */
-    dmi_byte_t _value;
-
-    DMI_PACKED_STRUCT()
-    {
-        /**
-         * @brief Function number.
-         */
-        dmi_byte_t function_number : 3;
-
-        /**
-         * @brief Device number.
-         */
-        dmi_byte_t device_number : 5;
-    };
-};
 
 /**
  * @brief Onboard devices extended information table (type 41).
@@ -83,21 +55,9 @@ DMI_PACKED_STRUCT(dmi_onboard_device_ex_data)
     dmi_byte_t instance;
 
     /**
-     * @brief Segment group Number is defined in the PCI firmware specification.
-     * The value is 0 for a single-segment topology.
+     * @brief Device address.
      */
-    dmi_word_t segment_group;
-
-    /**
-     * @brief Bus number. Set to `0xFF` if not applicable.
-     */
-    dmi_byte_t bus_number;
-
-    /**
-     * @brief Bus address (device and function number). Set to `0xFF` if not
-     * applicable.
-     */
-    dmi_byte_t bus_addr;
+    dmi_pci_addr_data_t address;
 };
 
 /**
@@ -133,26 +93,9 @@ struct dmi_onboard_device_ex
     unsigned short instance;
 
     /**
-     * @brief Segment group Number is defined in the PCI firmware specification.
-     * The value is 0 for a single-segment topology. Set to `USHRT_MAX` if not
-     * applicable.
+     * @brief Device address.
      */
-    unsigned short segment_group;
-
-    /**
-     * @brief Bus number. Set to `USHRT_MAX` if not applicable.
-     */
-    unsigned short bus_number;
-
-    /**
-     * @brief Device number. Set to `USHRT_MAX` if not applicable.
-     */
-    unsigned short device_number;
-
-    /**
-     * @brief Function number. Set to `USHRT_MAX` if not applicable.
-     */
-    unsigned short function_number;
+    dmi_pci_addr_t address;
 };
 
 /**

@@ -10,6 +10,7 @@
 #pragma once
 
 #include <opendmi/name.h>
+#include <opendmi/version.h>
 
 #ifndef DMI_ATTRIBUTE_T
 #define DMI_ATTRIBUTE_T

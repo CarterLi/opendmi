@@ -4,8 +4,11 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/table/slot.h>
+#include <opendmi/context.h>
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
+
+#include <opendmi/table/slot.h>
 
 static const dmi_name_t dmi_slot_type_names[] =
 {
@@ -468,6 +471,34 @@ static const dmi_name_t dmi_slot_width_names[] =
     DMI_NAME_NULL
 };
 
+static const dmi_name_t dmi_slot_length_names[] =
+{
+    DMI_NAME_UNSPEC(DMI_SLOT_LENGTH_UNSPEC),
+    DMI_NAME_OTHER(DMI_SLOT_LENGTH_OTHER),
+    DMI_NAME_UNKNOWN(DMI_SLOT_LENGTH_UNKNOWN),
+    {
+        .id   = DMI_SLOT_LENGTH_SHORT,
+        .code = "short",
+        .name = "Short length"
+    },
+    {
+        .id   = DMI_SLOT_LENGTH_LONG,
+        .code = "long",
+        .name = "Long length"
+    },
+    {
+        .id   = DMI_SLOT_LENGTH_SFF_8200,
+        .code = "sff-8200",
+        .name = "2.5\" drive form factor"
+    },
+    {
+        .id   = DMI_SLOT_LENGTH_SFF_8300,
+        .code = "sff-8300",
+        .name = "3.5\" drive form factor"
+    },
+    DMI_NAME_NULL
+};
+
 static const dmi_name_t dmi_slot_usage_names[] =
 {
     DMI_NAME_UNSPEC(DMI_SLOT_USAGE_UNSPEC),
@@ -493,6 +524,43 @@ static const dmi_name_t dmi_slot_usage_names[] =
 
 const dmi_attribute_t dmi_slot_attrs[] =
 {
+    DMI_ATTRIBUTE(dmi_slot_t, designator, STRING, {
+        .code = "designator",
+        .name = "Designator"
+    }),
+    DMI_ATTRIBUTE(dmi_slot_t, type, ENUM, {
+        .code    = "type",
+        .name    = "Type",
+        .unspec  = DMI_VALUE_PTR(DMI_SLOT_TYPE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_SLOT_TYPE_UNKNOWN),
+        .values  = dmi_slot_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_slot_t, width, ENUM, {
+        .code    = "width",
+        .name    = "Data bus width",
+        .unspec  = DMI_VALUE_PTR(DMI_SLOT_WIDTH_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_SLOT_WIDTH_UNKNOWN),
+        .values  = dmi_slot_width_names
+    }),
+    DMI_ATTRIBUTE(dmi_slot_t, usage, ENUM, {
+        .code    = "usage",
+        .name    = "Current usage",
+        .unspec  = DMI_VALUE_PTR(DMI_SLOT_USAGE_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_SLOT_USAGE_UNKNOWN),
+        .values  = dmi_slot_usage_names
+    }),
+    DMI_ATTRIBUTE(dmi_slot_t, length, ENUM, {
+        .code    = "length",
+        .name    = "Slot length",
+        .unspec  = DMI_VALUE_PTR(DMI_SLOT_LENGTH_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_SLOT_LENGTH_UNKNOWN),
+        .values  = dmi_slot_length_names
+    }),
+    DMI_ATTRIBUTE(dmi_slot_t, ident, INTEGER, {
+        .code    = "ident",
+        .name    = "Identifier",
+        .flags   = DMI_ATTRIBUTE_FLAG_HEX
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
@@ -502,7 +570,11 @@ const dmi_table_spec_t dmi_slot_table =
     .name       = "System slots",
     .type       = DMI_TYPE_SYSTEM_SLOTS,
     .min_length = 0x0C,
-    .attributes = dmi_slot_attrs
+    .attributes = dmi_slot_attrs,
+    .handlers   = {
+        .decode = (dmi_table_decode_fn_t)dmi_slot_decode,
+        .free   = (dmi_table_free_fn_t)dmi_slot_free
+    }
 };
 
 const char *dmi_slot_type_name(dmi_slot_type_t value)
@@ -518,4 +590,42 @@ const char *dmi_slot_width_name(dmi_slot_width_t value)
 const char *dmi_slot_usage_name(dmi_slot_usage_t value)
 {
     return dmi_name_lookup(dmi_slot_usage_names, value);
+}
+
+const char *dmi_slot_length_name(dmi_slot_length_t value)
+{
+    return dmi_name_lookup(dmi_slot_length_names, value);
+}
+
+dmi_slot_t *dmi_slot_decode(const dmi_table_t *table, dmi_version_t *plevel)
+{
+    dmi_slot_t *info;
+    dmi_version_t level = dmi_version(2, 0, 0);
+    const dmi_slot_data_t *data;
+
+    data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_SYSTEM_SLOTS));
+    if (!data)
+        return nullptr;
+
+    info = dmi_alloc(table->context, sizeof(*info));
+    if (!info)
+        return nullptr;
+
+    info->designator = dmi_table_string(table, data->designator);
+
+    info->type   = dmi_value(data->type);
+    info->width  = dmi_value(data->width);
+    info->usage  = dmi_value(data->usage);
+    info->length = dmi_value(data->length);
+    info->ident  = dmi_value(data->ident);
+
+    if (plevel)
+        *plevel = level;
+
+    return info;
+}
+
+void dmi_slot_free(dmi_slot_t *info)
+{
+    dmi_free(info);
 }
