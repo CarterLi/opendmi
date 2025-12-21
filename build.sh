@@ -78,7 +78,7 @@ _usage() {
     echo "        --enable-rust    Build with Rust support (libopendmi-rust, default=${ENABLE_RUST})"
     echo "        --enable-dbus    Build with D-bus support (opendmi-dbus, default=${ENABLE_DBUS})"
     echo "    Features:"
-    echo "        --with-curses    Build with Curses support (default=${WITH_CURSES})" 
+    echo "        --with-curses    Build with Curses support (default=${ENABLE_CURSES})"
     echo
     echo "Defaults:"
     echo "    Build directory: ${BUILD_DIR}"
@@ -130,7 +130,7 @@ _configure() {
     done
 
     FEATURES=""
-    if [ "${WITH_CURSES}" != "AUTO" ]; then
+    if [ "${ENABLE_CURSES}" != "AUTO" ]; then
         FEATURES="${FEATURES} -DENABLE_CURSES=${ENABLE_CURSES}"
     fi
 
