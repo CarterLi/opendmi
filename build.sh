@@ -7,14 +7,12 @@
 #
 SCRIPT=`basename $0`
 OSNAME=`uname -s`
-BUILD_DIR=build
-BUILD_TYPE=Release
 
-ENABLE_CXX=OFF
-ENABLE_GOLANG=OFF
-ENABLE_PYTHON=OFF
-ENABLE_RUST=OFF
-ENABLE_DBUS=OFF
+source ./build.conf.dist
+
+if [ -f ./build.conf ]; then
+    source ./build.conf
+fi
 
 case "${OSNAME}" in
     Linux)
@@ -62,20 +60,25 @@ _usage() {
     echo "    -j, --jobs <N>     Set number of parallel jobs"
     echo
     echo "Commands:"
-    echo "   configure  Configure build settings"
-    echo "   build      Build the entire project"
-    echo "   test       Perform unit tests"
-    echo "   clean      Delete all files that are created by building the program"
-    echo "   distclean  Delete all files that are created by configuring or building the program"
+    echo "    configure  Configure build settings"
+    echo "    build      Build the entire project"
+    echo "    test       Perform unit tests"
+    echo "    clean      Delete all files that are created by building the program"
+    echo "    distclean  Delete all files that are created by configuring or building the program"
     echo
     echo "Configure options:"
-    echo "   --release        Use release build configuration (default)"
-    echo "   --debug          Use debug build configuration"
-    echo "   --enable-cxx     Enable C++ support (libopendmi++)"
-    echo "   --enable-golang  Enable Go support (libopendmi-go)"
-    echo "   --enable-python  Enable Python support (libopendmi-python)"
-    echo "   --enable-rust    Enable Rust support (libopendmi-rust)"
-    echo "   --enable-dbus    Enable D-bus support (opendmi-dbus)"
+    echo "    Build type:"
+    echo "        --release        Release build"
+    echo "        --debug          Debug build"
+    echo "    Components:"
+    echo "        --enable-all     Build all components"
+    echo "        --enable-cxx     Build with C++ support (libopendmi++, default=${ENABLE_CXX})"
+    echo "        --enable-golang  Build with Go support (libopendmi-go, default=${ENABLE_GOLANG})"
+    echo "        --enable-python  Build with Python support (libopendmi-python, default=${ENABLE_PYTHON})"
+    echo "        --enable-rust    Build with Rust support (libopendmi-rust, default=${ENABLE_RUST})"
+    echo "        --enable-dbus    Build with D-bus support (opendmi-dbus, default=${ENABLE_DBUS})"
+    echo "    Features:"
+    echo "        --with-curses    Build with Curses support (default=${WITH_CURSES})" 
     echo
     echo "Defaults:"
     echo "    Build directory: ${BUILD_DIR}"
@@ -95,6 +98,13 @@ _configure() {
             --release)
                 BUILD_TYPE=Release
                 ;;
+            --enable-all)
+                ENABLE_CXX=ON
+                ENABLE_GOLANG=ON
+                ENABLE_PYTHON=ON
+                ENABLE_RUST=ON
+                ENABLE_DBUS=ON
+                ;;
             --enable-cxx)
                 ENABLE_CXX=ON
                 ;;
@@ -110,19 +120,28 @@ _configure() {
             --enable-dbus)
                 ENABLE_DBUS=ON
                 ;;
+            --with-curses)
+                ENABLE_CURSES=ON
+                ;;
             *)
                 _invalid_option ${OPTION}
                 ;;
         esac
     done
 
+    FEATURES=""
+    if [ "${WITH_CURSES}" != "AUTO" ]; then
+        FEATURES="${FEATURES} -DENABLE_CURSES=${ENABLE_CURSES}"
+    fi
+
     cmake -B ${BUILD_DIR} \
         -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
-        -DOPENDMI_CXX=${ENABLE_CXX} \
-        -DOPENDMI_GOLANG=${ENABLE_GOLANG} \
-        -DOPENDMI_PYTHON=${ENABLE_PYTHON} \
-        -DOPENDMI_RUST=${ENABLE_RUST} \
-        -DOPENDMI_DBUS=${ENABLE_DBUS}
+        -DENABLE_CXX=${ENABLE_CXX} \
+        -DENABLE_GOLANG=${ENABLE_GOLANG} \
+        -DENABLE_PYTHON=${ENABLE_PYTHON} \
+        -DENABLE_RUST=${ENABLE_RUST} \
+        -DENABLE_DBUS=${ENABLE_DBUS} \
+        ${FEATURES}
 }
 
 _build() {

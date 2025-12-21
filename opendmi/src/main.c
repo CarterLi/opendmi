@@ -15,8 +15,10 @@
 #include <libgen.h>
 #include <getopt.h>
 
-#include <curses.h>
-#include <term.h>
+#ifdef ENABLE_CURSES
+#   include <curses.h>
+#   include <term.h>
+#endif // ENABLE_CURSES
 
 #include <opendmi/context.h>
 #include <opendmi/table.h>
@@ -84,11 +86,13 @@ int main(int argc, char *argv[])
     argc -= optind;
     argv += optind;
 
+#ifdef ENABLE_CURSES
     // Initialize terminal
     if (isatty(STDOUT_FILENO)) {
         if (setupterm(nullptr, STDOUT_FILENO, nullptr) == 0)
             tty = has_colors() and (start_color() != 0);
     }
+#endif // ENABLE_CURSES
 
     // Create DMI context
     context = dmi_create();
@@ -259,8 +263,10 @@ static void print_all(dmi_context_t *context)
 
 static void print_table(const dmi_table_t *table)
 {
+#ifdef ENABLE_CURSES
     if (tty)
         tputs(tparm(tigetstr("setaf"), COLOR_YELLOW), 1, putchar);
+#endif // ENABLE_CURSES
 
     printf("Handle 0x%04x, DMI type %d, %zu bytes\n",
            (unsigned int)dmi_table_handle(table),
@@ -268,8 +274,10 @@ static void print_table(const dmi_table_t *table)
            table->total_length);
     printf("%s\n", dmi_table_name(table));
 
+#ifdef ENABLE_CURSES
     if (tty)
         tputs(tparm(tigetstr("sgr0")), 1, putchar);
+#endif // ENABLE_CURSES
 
     if (table->info and !config.dump)
         print_table_attrs(table);
@@ -434,6 +442,7 @@ static void log_error(dmi_context_t *context __attribute__((unused)), dmi_log_le
 {
     FILE *out = stderr;
 
+#ifdef ENABLE_CURSES
     if (tty) {
         out = stdout;
 
@@ -462,11 +471,14 @@ static void log_error(dmi_context_t *context __attribute__((unused)), dmi_log_le
             // fallthrough
         }
     }
+#endif // ENABLE_CURSES
 
     fprintf(out, "[%s] ", dmi_log_level_name(level));
 
+#ifdef ENABLE_CURSES
     if (tty)
         tputs(tparm(tigetstr("sgr0")), 1, putchar);
+#endif // ENABLE_CURSES
 
     vfprintf(out, format, args);
     fprintf(out, "\n");

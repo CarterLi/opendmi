@@ -6,8 +6,6 @@
 #
 project(opendmi-opendmi)
 
-find_package(Curses)
-
 if(Curses_FOUND AND NOT TARGET Curses::Curses)
     add_library(Curses::Curses INTERFACE IMPORTED)
     set_target_properties(

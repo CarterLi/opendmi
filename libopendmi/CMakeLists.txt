@@ -151,7 +151,7 @@ target_sources(opendmi-object
                 include/opendmi/extension/intel.h
 )
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_sources(opendmi-object
         PRIVATE
             src/backend/linux.c
@@ -160,10 +160,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
                 BASE_DIRS include
                 FILES include/opendmi/backend/linux.h
     )
-elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     find_library(COREFOUNDATION_LIB CoreFoundation)
     find_library(IOKIT_LIB IOKit)
-    list(APPEND LIBDMI_LIBRARIES ${COREFOUNDATION_LIB} ${IOKIT_LIB})
+    list(APPEND LIBOPENDMI_LIBRARIES ${COREFOUNDATION_LIB} ${IOKIT_LIB})
 
     target_sources(opendmi-object
         PRIVATE
@@ -173,7 +173,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
                 BASE_DIRS include
                 FILES include/opendmi/backend/darwin.h
     )
-elseif (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
     target_sources(opendmi-object
         PRIVATE
             src/backend/freebsd.c
@@ -182,7 +182,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
                 BASE_DIRS include
                 FILES include/opendmi/backend/freebsd.h
     )
-elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     target_sources(opendmi-object
         PRIVATE
             src/backend/windows.c
@@ -191,20 +191,20 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
                 BASE_DIRS include
                 FILES include/opendmi/backend/windows.h
     )
-endif ()
+endif()
 
-if (NOT MSVC)
-target_compile_options(opendmi-object PRIVATE -fPIC)
-endif ()
+if(NOT MSVC)
+    target_compile_options(opendmi-object PRIVATE -fPIC)
+endif()
 
 add_library(opendmi-static STATIC $<TARGET_OBJECTS:opendmi-object>)
 target_include_directories(opendmi-static INTERFACE include)
-target_link_libraries(opendmi-static PUBLIC ${LIBDMI_LIBRARIES})
+target_link_libraries(opendmi-static PUBLIC ${LIBOPENDMI_LIBRARIES})
 set_target_properties(opendmi-static PROPERTIES OUTPUT_NAME opendmi)
 
 add_library(opendmi-shared SHARED $<TARGET_OBJECTS:opendmi-object>)
 target_include_directories(opendmi-shared INTERFACE include)
-target_link_libraries(opendmi-shared PUBLIC ${LIBDMI_LIBRARIES})
+target_link_libraries(opendmi-shared PUBLIC ${LIBOPENDMI_LIBRARIES})
 set_target_properties(opendmi-shared PROPERTIES OUTPUT_NAME opendmi)
 
 install(TARGETS opendmi-object FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
@@ -212,9 +212,9 @@ install(TARGETS opendmi-static ARCHIVE DESTINATION lib)
 install(TARGETS opendmi-shared LIBRARY DESTINATION lib)
 
 macro(opendmi_test name sources)
-add_executable(${name}-test ${sources})
-target_link_libraries(${name}-test opendmi-shared)
-add_test(NAME ${name} COMMAND ${name}-test)
+    add_executable(${name}-test ${sources})
+    target_link_libraries(${name}-test opendmi-shared)
+    add_test(NAME ${name} COMMAND ${name}-test)
 endmacro()
 
 opendmi_test(bswap16 test/bswap16.c)
