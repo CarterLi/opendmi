@@ -128,7 +128,7 @@ const dmi_attribute_t dmi_memory_error_attrs[] =
     }),
     DMI_ATTRIBUTE(dmi_memory_error_t, granularity, ENUM, {
         .code    = "granularity",
-        .name    = "granularity",
+        .name    = "Granularity",
         .unspec  = DMI_VALUE_PTR(DMI_MEMORY_ERROR_GRANULARITY_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_MEMORY_ERROR_GRANULARITY_UNKNOWN),
         .values  = dmi_memory_error_granularity_names
