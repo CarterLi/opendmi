@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #ifndef _WIN32
-#error "Unsupported OS type"
+#   error "Unsupported OS type"
 #endif // !_WIN32
 
 #include <opendmi/backend/windows.h>

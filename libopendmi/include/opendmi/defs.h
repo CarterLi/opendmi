@@ -10,15 +10,15 @@
 #pragma once
 
 #ifndef _WIN32
-#include <sys/cdefs.h>
+#   include <sys/cdefs.h>
 #else // _WIN32
-#if defined(__cplusplus)
-#define __BEGIN_DECLS extern "C" {
-#define __END_DECLS   }
-#else
-#define __BEGIN_DECLS
-#define __END_DECLS
-#endif
+#   if defined(__cplusplus)
+#       define __BEGIN_DECLS extern "C" {
+#       define __END_DECLS   }
+#   else
+#       define __BEGIN_DECLS
+#       define __END_DECLS
+#   endif
 #endif // _WIN32
 
 #include <iso646.h>
@@ -34,7 +34,7 @@
 
 // Nullptr emulation
 #if !defined(__cplusplus)
-#define nullptr ((void *)0)
+#   define nullptr ((void *)0)
 #endif // !__cplusplus
 
 #endif // _MSC_VER
@@ -47,24 +47,24 @@
 
 // Cross-compiler packed structures support
 #ifdef _MSC_VER
-#define DMI_PACKED_STRUCT(...) __pragma(pack(push, 1)) struct __VA_ARGS__ __pragma(pack(pop))
-#define DMI_PACKED_UNION(...) __pragma(pack(push, 1)) union __VA_ARGS__ __pragma(pack(pop))
+#   define DMI_PACKED_STRUCT(...) __pragma(pack(push, 1)) struct __VA_ARGS__ __pragma(pack(pop))
+#   define DMI_PACKED_UNION(...) __pragma(pack(push, 1)) union __VA_ARGS__ __pragma(pack(pop))
 #else
-#define DMI_PACKED_STRUCT(...) struct __attribute__((packed)) __VA_ARGS__
-#define DMI_PACKED_UNION(...) union __attribute__((packed)) __VA_ARGS__
+#   define DMI_PACKED_STRUCT(...) struct __attribute__((packed)) __VA_ARGS__
+#   define DMI_PACKED_UNION(...) union __attribute__((packed)) __VA_ARGS__
 #endif
 
 // Cross-compiler thread-local specifier support
 #if !defined(thread_local) && !defined(__cplusplus)
-#if (__STDC_VERSION__ >= 201112L) && !defined(__STDC_NO_THREADS__)
-#define thread_local _Thread_local
-#elif defined(_WIN32) && (defined(_MSC_VER) || defined(__ICL))
-#define thread_local __declspec(thread)
-#elif defined(__GNUC__) || defined(__clang__)
-#define thread_local __thread
-#else
-#error "Cannot define thread_local"
-#endif
+#   if (__STDC_VERSION__ >= 201112L) && !defined(__STDC_NO_THREADS__)
+#       define thread_local _Thread_local
+#   elif defined(_WIN32) && (defined(_MSC_VER) || defined(__ICL))
+#       define thread_local __declspec(thread)
+#   elif defined(__GNUC__) || defined(__clang__)
+#       define thread_local __thread
+#   else
+#       error "Cannot define thread_local"
+#   endif
 #endif // !thread_local && !__cplusplus
 
 #define dmi_member_size(type, member)   sizeof(((type *)0)->member)

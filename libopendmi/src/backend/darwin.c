@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #ifndef __APPLE__
-#error "Unsupported OS type"
+#   error "Unsupported OS type"
 #endif // !__APPLE__
 
 #include <errno.h>

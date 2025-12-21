@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #ifndef __linux__
-#error "Unsupported OS type"
+#   error "Unsupported OS type"
 #endif // !__linux__
 
 #include <sys/mman.h>
