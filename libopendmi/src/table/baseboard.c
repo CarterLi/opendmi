@@ -10,67 +10,70 @@
 
 #include <opendmi/table/baseboard.h>
 
-const dmi_name_t dmi_baseboard_type_names[] =
+const dmi_name_set_t dmi_baseboard_type_names =
 {
-    DMI_NAME_UNSPEC(DMI_BASEBOARD_TYPE_UNSPEC),
-    DMI_NAME_UNKNOWN(DMI_BASEBOARD_TYPE_UNKNOWN),
-    DMI_NAME_OTHER(DMI_BASEBOARD_TYPE_OTHER),
-    {
-        .id   = DMI_BASEBOARD_TYPE_SERVER_BLADE,
-        .code = "server-blade",
-        .name = "Server blade"
-    },
-    {
-        .id   = DMI_BASEBOARD_TYPE_CONNECTIVITY_SWITCH,
-        .code = "connectivity-switch",
-        .name = "Connectivity switch"
-    },
-    {
-        .id   =  DMI_BASEBOARD_TYPE_SYSTEM_MANAGEMENT_MODULE,
-        .code = "system-management-module",
-        .name = "System management module"
-    },
-    {
-        .id   = DMI_BASEBOARD_TYPE_PROCESSOR_MODULE,
-        .code = "processor-module",
-        .name = "Processor module"
-    },
-    {
-        .id   = DMI_BASEBOARD_TYPE_IO_MODULE,
-        .code = "io-module",
-        .name = "IO module"
-    },
-    {
-        .id   = DMI_BASEBOARD_TYPE_MEMORY_MODULE,
-        .code = "memory-module",
-        .name = "Memory module"
-    },
-    {
-        .id   = DMI_BASEBOARD_TYPE_DAUGHTERBOARD,
-        .code = "daughterboard",
-        .name = "Daughterboard"
-    },
-    {
-        .id   = DMI_BASEBOARD_TYPE_MOTHERBOARD,
-        .code = "motherboard",
-        .name = "Motherboard"
-    },
-    {
-        .id   = DMI_BASEBOARD_TYPE_PROCESSOR_MEMORY_MODULE,
-        .code = "processor-memory-module",
-        .name = "Processor/memory module"
-    },
-    {
-        .id   = DMI_BASEBOARD_TYPE_PROCESSOR_IO_MODULE,
-        .code = "processor-io-module",
-        .name = "Processor/IO module"
-    },
-    {
-        .id   = DMI_BASEBOARD_TYPE_INTERCONNECT_BOARD,
-        .code = "interconnect-board",
-        .name = "Interconnect board"
-    },
-    DMI_NAME_NULL
+    .code  = "baseboard-types",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_BASEBOARD_TYPE_UNSPEC),
+        DMI_NAME_UNKNOWN(DMI_BASEBOARD_TYPE_UNKNOWN),
+        DMI_NAME_OTHER(DMI_BASEBOARD_TYPE_OTHER),
+        {
+            .id   = DMI_BASEBOARD_TYPE_SERVER_BLADE,
+            .code = "server-blade",
+            .name = "Server blade"
+        },
+        {
+            .id   = DMI_BASEBOARD_TYPE_CONNECTIVITY_SWITCH,
+            .code = "connectivity-switch",
+            .name = "Connectivity switch"
+        },
+        {
+            .id   =  DMI_BASEBOARD_TYPE_SYSTEM_MANAGEMENT_MODULE,
+            .code = "system-management-module",
+            .name = "System management module"
+        },
+        {
+            .id   = DMI_BASEBOARD_TYPE_PROCESSOR_MODULE,
+            .code = "processor-module",
+            .name = "Processor module"
+        },
+        {
+            .id   = DMI_BASEBOARD_TYPE_IO_MODULE,
+            .code = "io-module",
+            .name = "IO module"
+        },
+        {
+            .id   = DMI_BASEBOARD_TYPE_MEMORY_MODULE,
+            .code = "memory-module",
+            .name = "Memory module"
+        },
+        {
+            .id   = DMI_BASEBOARD_TYPE_DAUGHTERBOARD,
+            .code = "daughterboard",
+            .name = "Daughterboard"
+        },
+        {
+            .id   = DMI_BASEBOARD_TYPE_MOTHERBOARD,
+            .code = "motherboard",
+            .name = "Motherboard"
+        },
+        {
+            .id   = DMI_BASEBOARD_TYPE_PROCESSOR_MEMORY_MODULE,
+            .code = "processor-memory-module",
+            .name = "Processor/memory module"
+        },
+        {
+            .id   = DMI_BASEBOARD_TYPE_PROCESSOR_IO_MODULE,
+            .code = "processor-io-module",
+            .name = "Processor/IO module"
+        },
+        {
+            .id   = DMI_BASEBOARD_TYPE_INTERCONNECT_BOARD,
+            .code = "interconnect-board",
+            .name = "Interconnect board"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 const dmi_attribute_t dmi_baseboard_attrs[] =
@@ -124,7 +127,7 @@ const dmi_attribute_t dmi_baseboard_attrs[] =
         .name    = "Type",
         .unspec  = DMI_VALUE_PTR(DMI_BASEBOARD_TYPE_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_BASEBOARD_TYPE_UNKNOWN),
-        .values  = dmi_baseboard_type_names
+        .values  = &dmi_baseboard_type_names
     }),
     DMI_ATTRIBUTE(dmi_baseboard_t, children_count, INTEGER, {
         .code    = "children-count",
@@ -152,7 +155,7 @@ const dmi_table_spec_t dmi_baseboard_table =
 
 const char *dmi_baseboard_type_name(dmi_baseboard_type_t value)
 {
-    return dmi_name_lookup(dmi_baseboard_type_names, value);
+    return dmi_name_lookup(&dmi_baseboard_type_names, value);
 }
 
 dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table, dmi_version_t *plevel)

@@ -10,42 +10,45 @@
 
 #include <opendmi/table/system.h>
 
-const dmi_name_t dmi_system_wakeup_type_names[] =
+const dmi_name_set_t dmi_system_wakeup_type_names =
 {
-    DMI_NAME_RESERVED(DMI_SYSTEM_WAKEUP_TYPE_RESERVED),
-    DMI_NAME_OTHER(DMI_SYSTEM_WAKEUP_TYPE_OTHER),
-    DMI_NAME_UNKNOWN(DMI_SYSTEM_WAKEUP_TYPE_UNKNOWN),
-    {
-        .id   = DMI_SYSTEM_WAKEUP_TYPE_APM_TIMER,
-        .code = "apm-timer",
-        .name = "APM Timer"
-    },
-    {
-        .id   = DMI_SYSTEM_WAKEUP_TYPE_MODEM_RING,
-        .code = "modem-ring",
-        .name = "Modem Ring"
-    },
-    {
-        .id   = DMI_SYSTEM_WAKEUP_TYPE_LAN_REMOTE,
-        .code = "lan-remote",
-        .name = "LAN Remote"
-    },
-    {
-        .id = DMI_SYSTEM_WAKEUP_TYPE_POWER_SWITCH,
-        .code = "power-switch",
-        .name = "Power Switch"
-    },
-    {
-        .id   = DMI_SYSTEM_WAKEUP_TYPE_PCI_PME,
-        .code = "pci-pme",
-        .name = "PCI PME#"
-    },
-    {
-        .id   = DMI_SYSTEM_WAKEUP_TYPE_POWER_RESTORE,
-        .code = "power-restore",
-        .name = "AC Power Restored"
-    },
-    DMI_NAME_NULL
+    .code  = "system-wakeup-types",
+    .names = {
+        DMI_NAME_RESERVED(DMI_SYSTEM_WAKEUP_TYPE_RESERVED),
+        DMI_NAME_OTHER(DMI_SYSTEM_WAKEUP_TYPE_OTHER),
+        DMI_NAME_UNKNOWN(DMI_SYSTEM_WAKEUP_TYPE_UNKNOWN),
+        {
+            .id   = DMI_SYSTEM_WAKEUP_TYPE_APM_TIMER,
+            .code = "apm-timer",
+            .name = "APM Timer"
+        },
+        {
+            .id   = DMI_SYSTEM_WAKEUP_TYPE_MODEM_RING,
+            .code = "modem-ring",
+            .name = "Modem Ring"
+        },
+        {
+            .id   = DMI_SYSTEM_WAKEUP_TYPE_LAN_REMOTE,
+            .code = "lan-remote",
+            .name = "LAN Remote"
+        },
+        {
+            .id = DMI_SYSTEM_WAKEUP_TYPE_POWER_SWITCH,
+            .code = "power-switch",
+            .name = "Power Switch"
+        },
+        {
+            .id   = DMI_SYSTEM_WAKEUP_TYPE_PCI_PME,
+            .code = "pci-pme",
+            .name = "PCI PME#"
+        },
+        {
+            .id   = DMI_SYSTEM_WAKEUP_TYPE_POWER_RESTORE,
+            .code = "power-restore",
+            .name = "AC Power Restored"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 const dmi_attribute_t dmi_system_attrs[] =
@@ -74,7 +77,7 @@ const dmi_attribute_t dmi_system_attrs[] =
     DMI_ATTRIBUTE(dmi_system_t, wakeup_type, ENUM, {
         .code    = "wakeup-type",
         .name    = "Wakeup type",
-        .values  = dmi_system_wakeup_type_names,
+        .values  = &dmi_system_wakeup_type_names,
         .unknown = DMI_VALUE_PTR(DMI_SYSTEM_WAKEUP_TYPE_UNKNOWN),
         .level   = DMI_VERSION(2, 1, 0)
     }),
@@ -109,7 +112,7 @@ const dmi_table_spec_t dmi_system_table =
 
 const char *dmi_system_wakeup_type_name(dmi_system_wakeup_type_t value)
 {
-    return dmi_name_lookup(dmi_system_wakeup_type_names, value);
+    return dmi_name_lookup(&dmi_system_wakeup_type_names, value);
 }
 
 dmi_system_t *dmi_system_decode(const dmi_table_t *table, dmi_version_t *plevel)

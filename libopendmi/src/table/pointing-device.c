@@ -10,110 +10,116 @@
 
 #include <opendmi/table/pointing-device.h>
 
-static const dmi_name_t dmi_pointing_device_type_names[] =
+static const dmi_name_set_t dmi_pointing_device_type_names =
 {
-    DMI_NAME_UNSPEC(DMI_POINTING_DEVICE_TYPE_UNSPEC),
-    DMI_NAME_OTHER(DMI_POINTING_DEVICE_TYPE_OTHER),
-    DMI_NAME_UNKNOWN(DMI_POINTING_DEVICE_TYPE_UNKNOWN),
-    {
-        .id   = DMI_POINTING_DEVICE_TYPE_MOUSE,
-        .code = "mouse",
-        .name = "Mouse"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_TYPE_TRACK_BALL,
-        .code = "track-ball",
-        .name = "Track ball"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_TYPE_TRACK_POINT,
-        .code = "track-point",
-        .name = "Track point"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_TYPE_GLIDE_POINT,
-        .code = "glide-point",
-        .name = "Glide point"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_TYPE_TOUCH_PAD,
-        .code = "touch-pad",
-        .name = "Touch pad"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_TYPE_TOUCH_SCREEN,
-        .code = "touch-screen",
-        .name = "Touch screen"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_TYPE_OPTICAL_SENSOR,
-        .code = "optical-sensor",
-        .name = "Optical sensor"
-    },
-    DMI_NAME_NULL
+    .code  = "pointing-device-types",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_POINTING_DEVICE_TYPE_UNSPEC),
+        DMI_NAME_OTHER(DMI_POINTING_DEVICE_TYPE_OTHER),
+        DMI_NAME_UNKNOWN(DMI_POINTING_DEVICE_TYPE_UNKNOWN),
+        {
+            .id   = DMI_POINTING_DEVICE_TYPE_MOUSE,
+            .code = "mouse",
+            .name = "Mouse"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_TYPE_TRACK_BALL,
+            .code = "track-ball",
+            .name = "Track ball"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_TYPE_TRACK_POINT,
+            .code = "track-point",
+            .name = "Track point"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_TYPE_GLIDE_POINT,
+            .code = "glide-point",
+            .name = "Glide point"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_TYPE_TOUCH_PAD,
+            .code = "touch-pad",
+            .name = "Touch pad"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_TYPE_TOUCH_SCREEN,
+            .code = "touch-screen",
+            .name = "Touch screen"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_TYPE_OPTICAL_SENSOR,
+            .code = "optical-sensor",
+            .name = "Optical sensor"
+        },
+        DMI_NAME_NULL
+    }
 };
 
-static const dmi_name_t dmi_pointing_device_interface_names[] =
+static const dmi_name_set_t dmi_pointing_device_interface_names =
 {
-    DMI_NAME_UNSPEC(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
-    DMI_NAME_OTHER(DMI_POINTING_DEVICE_INTERFACE_OTHER),
-    DMI_NAME_UNKNOWN(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_SERIAL,
-        .code = "serial",
-        .name = "Serial"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_PS2,
-        .code = "ps2",
-        .name = "PS/2"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_INFRARED,
-        .code = "infrared",
-        .name = "Infrared"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_HP_HIL,
-        .code = "hp-hil",
-        .name = "HP-HIL"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE,
-        .code = "bus-mouse",
-        .name = "Bus mouse"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_ADB,
-        .code = "adb",
-        .name = "ADB (Apple Desktop Bus)"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE_DB9,
-        .code = "bus-mouse-db9",
-        .name = "Bus mouse DB-9"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE_DIN,
-        .code = "bus-mouse-din",
-        .name = "Bus mouse micro-DIN"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_USB,
-        .code = "usb",
-        .name = "USB"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_I2C,
-        .code = "i2c",
-        .name = "I2C"
-    },
-    {
-        .id   = DMI_POINTING_DEVICE_INTERFACE_SPI,
-        .code = "spi",
-        .name = "SPI"
-    },
-    DMI_NAME_NULL
+    .code  = "pointing-device-interfaces",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
+        DMI_NAME_OTHER(DMI_POINTING_DEVICE_INTERFACE_OTHER),
+        DMI_NAME_UNKNOWN(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),
+        {
+            .id   = DMI_POINTING_DEVICE_INTERFACE_SERIAL,
+            .code = "serial",
+            .name = "Serial"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_INTERFACE_PS2,
+            .code = "ps2",
+            .name = "PS/2"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_INTERFACE_INFRARED,
+            .code = "infrared",
+            .name = "Infrared"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_INTERFACE_HP_HIL,
+            .code = "hp-hil",
+            .name = "HP-HIL"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE,
+            .code = "bus-mouse",
+            .name = "Bus mouse"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_INTERFACE_ADB,
+            .code = "adb",
+            .name = "ADB (Apple Desktop Bus)"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE_DB9,
+            .code = "bus-mouse-db9",
+            .name = "Bus mouse DB-9"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE_DIN,
+            .code = "bus-mouse-din",
+            .name = "Bus mouse micro-DIN"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_INTERFACE_USB,
+            .code = "usb",
+            .name = "USB"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_INTERFACE_I2C,
+            .code = "i2c",
+            .name = "I2C"
+        },
+        {
+            .id   = DMI_POINTING_DEVICE_INTERFACE_SPI,
+            .code = "spi",
+            .name = "SPI"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 const dmi_attribute_t dmi_pointing_device_attrs[] =
@@ -123,14 +129,14 @@ const dmi_attribute_t dmi_pointing_device_attrs[] =
         .name    = "Type",
         .unspec  = DMI_VALUE_PTR(DMI_POINTING_DEVICE_TYPE_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_POINTING_DEVICE_TYPE_UNKNOWN),
-        .values  = dmi_pointing_device_type_names
+        .values  = &dmi_pointing_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_pointing_device_t, interface, ENUM, {
         .code    = "interface",
         .name    = "Interface type",
         .unspec  = DMI_VALUE_PTR(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),
-        .values  = dmi_pointing_device_interface_names
+        .values  = &dmi_pointing_device_interface_names
     }),
     DMI_ATTRIBUTE(dmi_pointing_device_t, button_count, INTEGER, {
         .code    = "button-count",
@@ -155,12 +161,12 @@ const dmi_table_spec_t dmi_pointing_device_table =
 
 const char *dmi_pointing_device_type_name(dmi_pointing_device_type_t value)
 {
-    return dmi_name_lookup(dmi_pointing_device_type_names, value);
+    return dmi_name_lookup(&dmi_pointing_device_type_names, value);
 }
 
 const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t value)
 {
-    return dmi_name_lookup(dmi_pointing_device_interface_names, value);
+    return dmi_name_lookup(&dmi_pointing_device_interface_names, value);
 }
 
 dmi_pointing_device_t *dmi_pointing_device_decode(dmi_table_t *table, dmi_version_t *plevel)

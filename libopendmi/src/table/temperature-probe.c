@@ -23,14 +23,14 @@ const dmi_attribute_t dmi_temperature_probe_attrs[] =
         .name    = "Location",
         .unspec  = DMI_VALUE_PTR(DMI_PROBE_LOCATION_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_PROBE_LOCATION_UNKNOWN),
-        .values  = dmi_probe_location_names
+        .values  = &dmi_probe_location_names
     }),
     DMI_ATTRIBUTE(dmi_temperature_probe_t, status, ENUM, {
         .code    = "status",
         .name    = "Status",
         .unspec  = DMI_VALUE_PTR(DMI_STATUS_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_STATUS_UNKNOWN),
-        .values  = dmi_status_names
+        .values  = &dmi_status_names
     }),
     DMI_ATTRIBUTE(dmi_temperature_probe_t, maximum_value, DECIMAL, {
         .code    = "maximum-value",

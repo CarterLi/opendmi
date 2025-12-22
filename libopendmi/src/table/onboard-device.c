@@ -10,82 +10,85 @@
 
 #include <opendmi/table/onboard-device.h>
 
-const dmi_name_t dmi_onboard_device_type_names[] =
+const dmi_name_set_t dmi_onboard_device_type_names =
 {
-    DMI_NAME_UNSPEC(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
-    DMI_NAME_OTHER(DMI_ONBOARD_DEVICE_TYPE_OTHER),
-    DMI_NAME_UNKNOWN(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_VIDEO,
-        .code = "video",
-        .name = "Video"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_SCSI_CONTROLLER,
-        .code = "scsi-controller",
-        .name = "SCSI controller"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_ETHERNET,
-        .code = "ethernet",
-        .name = "Ethernet"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_TOKEN_RING,
-        .code = "token-ring",
-        .name = "Token ring"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_SOUND,
-        .code = "sound",
-        .name = "Sound"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_PATA_CONTROLLER,
-        .code = "pata-controller",
-        .name = "PATA controller"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_SATA_CONTROLLER,
-        .code = "sata-controller",
-        .name = "SATA controller"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_SAS_CONTROLLER,
-        .code = "sas-controller",
-        .name = "SAS controller"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_WIRELESS_LAN,
-        .code = "wireless lan",
-        .name = "Wireless LAN"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_BLUETOOTH,
-        .code = "bluetooth",
-        .name = "Bluetooth"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_WIRELESS_WAN,
-        .code = "wireless-wan",
-        .name = "Wireless WAN"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_EMM_CONTROLLER,
-        .code = "emm-controller",
-        .name = "eMM controller"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_NVME_CONTROLLER,
-        .code = "nvme-controller",
-        .name = "NVMe controller"
-    },
-    {
-        .id   = DMI_ONBOARD_DEVICE_TYPE_UFS_CONTROLLER,
-        .code = "ufs-controller",
-        .name = "UFS controller"
-    },
-    DMI_NAME_NULL
+    .code  = "onboard-device-types",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
+        DMI_NAME_OTHER(DMI_ONBOARD_DEVICE_TYPE_OTHER),
+        DMI_NAME_UNKNOWN(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_VIDEO,
+            .code = "video",
+            .name = "Video"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_SCSI_CONTROLLER,
+            .code = "scsi-controller",
+            .name = "SCSI controller"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_ETHERNET,
+            .code = "ethernet",
+            .name = "Ethernet"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_TOKEN_RING,
+            .code = "token-ring",
+            .name = "Token ring"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_SOUND,
+            .code = "sound",
+            .name = "Sound"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_PATA_CONTROLLER,
+            .code = "pata-controller",
+            .name = "PATA controller"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_SATA_CONTROLLER,
+            .code = "sata-controller",
+            .name = "SATA controller"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_SAS_CONTROLLER,
+            .code = "sas-controller",
+            .name = "SAS controller"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_WIRELESS_LAN,
+            .code = "wireless lan",
+            .name = "Wireless LAN"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_BLUETOOTH,
+            .code = "bluetooth",
+            .name = "Bluetooth"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_WIRELESS_WAN,
+            .code = "wireless-wan",
+            .name = "Wireless WAN"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_EMM_CONTROLLER,
+            .code = "emm-controller",
+            .name = "eMM controller"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_NVME_CONTROLLER,
+            .code = "nvme-controller",
+            .name = "NVMe controller"
+        },
+        {
+            .id   = DMI_ONBOARD_DEVICE_TYPE_UFS_CONTROLLER,
+            .code = "ufs-controller",
+            .name = "UFS controller"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 static const dmi_attribute_t dmi_onboard_device_instance_attrs[] =
@@ -95,7 +98,7 @@ static const dmi_attribute_t dmi_onboard_device_instance_attrs[] =
         .name    = "Type",
         .unspec  = DMI_VALUE_PTR(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
-        .values  = dmi_onboard_device_type_names
+        .values  = &dmi_onboard_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_onboard_device_instance_t, is_enabled, BOOL, {
         .code    = "is-enabled",
@@ -137,7 +140,7 @@ const dmi_table_spec_t dmi_onboard_device_table =
 
 const char *dmi_onboard_device_type_name(enum dmi_onboard_device_type value)
 {
-    return dmi_name_lookup(dmi_onboard_device_type_names, value);
+    return dmi_name_lookup(&dmi_onboard_device_type_names, value);
 }
 
 dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_table_t *table, dmi_version_t *plevel)

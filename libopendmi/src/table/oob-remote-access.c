@@ -10,19 +10,22 @@
 
 #include <opendmi/table/oob-remote-access.h>
 
-static const dmi_name_t dmi_oob_connection_names[] =
+static const dmi_name_set_t dmi_oob_connection_names =
 {
-    {
-        .id   = 0,
-        .code = "is-inbound-enabled",
-        .name = "Inbound connections enabled"
-    },
-    {
-        .id   = 1,
-        .code = "is-outbound-enabled",
-        .name = "Outbound connections enabled"
-    },
-    DMI_NAME_NULL
+    .code  = "oob-connections",
+    .names = {
+        {
+            .id   = 0,
+            .code = "is-inbound-enabled",
+            .name = "Inbound connections enabled"
+        },
+        {
+            .id   = 1,
+            .code = "is-outbound-enabled",
+            .name = "Outbound connections enabled"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 static const dmi_attribute_t dmi_oob_remote_access_attrs[] =
@@ -34,7 +37,7 @@ static const dmi_attribute_t dmi_oob_remote_access_attrs[] =
     DMI_ATTRIBUTE(dmi_oob_remote_access_t, connections, SET, {
         .code   = "connections",
         .name   = "Connections",
-        .values = dmi_oob_connection_names
+        .values = &dmi_oob_connection_names
     }),
     DMI_ATTRIBUTE_NULL
 };

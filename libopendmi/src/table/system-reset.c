@@ -13,25 +13,28 @@
 
 #include <opendmi/table/system-reset.h>
 
-static const dmi_name_t dmi_boot_option_names[] =
+static const dmi_name_set_t dmi_boot_option_names =
 {
-    DMI_NAME_RESERVED(DMI_BOOT_OPTION_RESERVED),
-    {
-        .id   = DMI_BOOT_OPTION_OPERATING_SYSTEM,
-        .code = "operating-system",
-        .name = "Operating system"
-    },
-    {
-        .id   = DMI_BOOT_OPTION_SYSTEM_UTILS,
-        .code = "system-utils",
-        .name = "System utilities"
-    },
-    {
-        .id   = DMI_BOOT_OPTION_AVOID_REBOOT,
-        .code = "avoid-reboot",
-        .name = "Do not reboot"
-    },
-    DMI_NAME_NULL
+    .code  = "boot-options",
+    .names = {
+        DMI_NAME_RESERVED(DMI_BOOT_OPTION_RESERVED),
+        {
+            .id   = DMI_BOOT_OPTION_OPERATING_SYSTEM,
+            .code = "operating-system",
+            .name = "Operating system"
+        },
+        {
+            .id   = DMI_BOOT_OPTION_SYSTEM_UTILS,
+            .code = "system-utils",
+            .name = "System utilities"
+        },
+        {
+            .id   = DMI_BOOT_OPTION_AVOID_REBOOT,
+            .code = "avoid-reboot",
+            .name = "Do not reboot"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 static const dmi_attribute_t dmi_system_reset_attrs[] =
@@ -43,12 +46,12 @@ static const dmi_attribute_t dmi_system_reset_attrs[] =
     DMI_ATTRIBUTE(dmi_system_reset_t, boot_on_watchdog, ENUM, {
         .code    = "boot-on-watchdog",
         .name    = "Boot option on watchdog",
-        .values  = dmi_boot_option_names
+        .values  = &dmi_boot_option_names
     }),
     DMI_ATTRIBUTE(dmi_system_reset_t, boot_on_limit, ENUM, {
         .code    = "boot-on-limit",
         .name    = "Boot option on reset limit",
-        .values  = dmi_boot_option_names
+        .values  = &dmi_boot_option_names
     }),
     DMI_ATTRIBUTE(dmi_system_reset_t, watchdog_present, BOOL, {
         .code    = "watchdog-present",
@@ -95,7 +98,7 @@ const dmi_table_spec_t dmi_system_reset_table =
 
 const char *dmi_boot_option_name(dmi_boot_option_t value)
 {
-    return dmi_name_lookup(dmi_boot_option_names, value);
+    return dmi_name_lookup(&dmi_boot_option_names, value);
 }
 
 dmi_system_reset_t *dmi_system_reset_decode(const dmi_table_t *table, dmi_version_t *plevel)

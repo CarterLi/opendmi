@@ -10,98 +10,110 @@
 
 #include <opendmi/table/firmware-inventory.h>
 
-static const dmi_name_t dmi_version_format_names[] =
+static const dmi_name_set_t dmi_version_format_names =
 {
-    {
-        .id   = DMI_VERSION_FORMAT_FREE,
-        .code = "free-form",
-        .name = "Free form"
-    },
-    {
-        .id   = DMI_VERSION_FORMAT_SEMANTIC,
-        .code = "semantic",
-        .name = "Semantic"
-    },
-    {
-        .id   = DMI_VERSION_FORMAT_HEX_32,
-        .code = "hexadecimal-32",
-        .name = "Hexadecimal (32-bit)"
-    },
-    {
-        .id   = DMI_VERSION_FORMAT_HEX_64,
-        .code = "hexadecimal-64",
-        .name = "Hexadecimal (64-bit)"
-    },
-    DMI_NAME_NULL
+    .code  = "version-formats",
+    .names = {
+        {
+            .id   = DMI_VERSION_FORMAT_FREE,
+            .code = "free-form",
+            .name = "Free form"
+        },
+        {
+            .id   = DMI_VERSION_FORMAT_SEMANTIC,
+            .code = "semantic",
+            .name = "Semantic"
+        },
+        {
+            .id   = DMI_VERSION_FORMAT_HEX_32,
+            .code = "hexadecimal-32",
+            .name = "Hexadecimal (32-bit)"
+        },
+        {
+            .id   = DMI_VERSION_FORMAT_HEX_64,
+            .code = "hexadecimal-64",
+            .name = "Hexadecimal (64-bit)"
+        },
+        DMI_NAME_NULL
+    }
 };
 
-static const dmi_name_t dmi_firmware_ident_format_names[] =
+static const dmi_name_set_t dmi_firmware_ident_format_names =
 {
-    DMI_NAME_UNSPEC(DMI_FIRMWARE_IDENT_FORMAT_UNSPEC),
-    {
-        .id   = DMI_FIRMWARE_IDENT_FORMAT_FREE,
-        .code = "free-form",
-        .name = "Free form"
-    },
-    {
-        .id   = DMI_FIRMWARE_IDENT_FORMAT_GUID,
-        .code = "guid",
-        .name = "GUID"
-    },
-    DMI_NAME_NULL
+    .code  = "firwmare-ident-formats",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_FIRMWARE_IDENT_FORMAT_UNSPEC),
+        {
+            .id   = DMI_FIRMWARE_IDENT_FORMAT_FREE,
+            .code = "free-form",
+            .name = "Free form"
+        },
+        {
+            .id   = DMI_FIRMWARE_IDENT_FORMAT_GUID,
+            .code = "guid",
+            .name = "GUID"
+        },
+        DMI_NAME_NULL
+    }
 };
 
-static const dmi_name_t dmi_firmware_inventory_feature_names[] =
+static const dmi_name_set_t dmi_firmware_inventory_feature_names =
 {
-    {
-        .id   = 0,
-        .code = "is-updatable",
-        .name = "Updatable"
-    },
-    {
-        .id   = 1,
-        .code = "is-write-protected",
-        .name = "Write-protected"
-    },
-    DMI_NAME_NULL
+    .code  = "firmware-inventory-features",
+    .names = {
+        {
+            .id   = 0,
+            .code = "is-updatable",
+            .name = "Updatable"
+        },
+        {
+            .id   = 1,
+            .code = "is-write-protected",
+            .name = "Write-protected"
+        },
+        DMI_NAME_NULL
+    }
 };
 
-static const dmi_name_t dmi_firmware_inventory_state_names[] = 
+static const dmi_name_set_t dmi_firmware_inventory_state_names = 
 {
-    DMI_NAME_UNSPEC(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
-    DMI_NAME_OTHER(DMI_FIRMWARE_INVENTORY_STATE_OTHER),
-    DMI_NAME_UNKNOWN(DMI_FIRMWARE_INVENTORY_STATE_UNKNOWN),
-    {
-        .id   = DMI_FIRMWARE_INVENTORY_STATE_DISABLED,
-        .code = "disabled",
-        .name = "Disabled"
-    },
-    {
-        .id   = DMI_FIRMWARE_INVENTORY_STATE_ENABLED,
-        .code = "enabled",
-        .name = "Enabled"
-    },
-    {
-        .id   = DMI_FIRMWARE_INVENTORY_STATE_ABSENT,
-        .code = "absent",
-        .name = "Absent"
-    },
-    {
-        .id   = DMI_FIRMWARE_INVENTORY_STATE_STANDBY_OFFLINE,
-        .code = "standby-offline",
-        .name = "Standby offline"
-    },
-    {
-        .id   = DMI_FIRMWARE_INVENTORY_STATE_STANDBY_SPARE,
-        .code = "standby-spare",
-        .name = "Standby spare"
-    },
-    {
-        .id   = DMI_FIRMWARE_INVENTORY_STATE_UNAVAIL_OFFLINE,
-        .code = "unavail-offline",
-        .name = "Unavailable offline"
-    },
-    DMI_NAME_NULL
+    .code  = "firmware-inventory-states",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
+        DMI_NAME_OTHER(DMI_FIRMWARE_INVENTORY_STATE_OTHER),
+        DMI_NAME_UNKNOWN(DMI_FIRMWARE_INVENTORY_STATE_UNKNOWN),
+        {
+            .id   = DMI_FIRMWARE_INVENTORY_STATE_DISABLED,
+            .code = "disabled",
+            .name = "Disabled"
+        },
+        {
+            .id   = DMI_FIRMWARE_INVENTORY_STATE_ENABLED,
+            .code = "enabled",
+            .name = "Enabled"
+        },
+        {
+            .id   = DMI_FIRMWARE_INVENTORY_STATE_ABSENT,
+            .code = "absent",
+            .name = "Absent"
+        },
+        {
+            .id   = DMI_FIRMWARE_INVENTORY_STATE_STANDBY_OFFLINE,
+            .code = "standby-offline",
+            .name = "Standby offline"
+        },
+        {
+            .id   = DMI_FIRMWARE_INVENTORY_STATE_STANDBY_SPARE,
+            .code = "standby-spare",
+            .name = "Standby spare"
+        },
+        {
+            .id   = DMI_FIRMWARE_INVENTORY_STATE_UNAVAIL_OFFLINE,
+            .code = "unavail-offline",
+            .name = "Unavailable offline"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 const dmi_attribute_t dmi_firmware_inventory_attrs[] =
@@ -117,7 +129,7 @@ const dmi_attribute_t dmi_firmware_inventory_attrs[] =
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, version_format, ENUM, {
         .code    = "version-format",
         .name    = "Version format",
-        .values  = dmi_version_format_names
+        .values  = &dmi_version_format_names
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, ident, STRING, {
         .code    = "ident",
@@ -127,7 +139,7 @@ const dmi_attribute_t dmi_firmware_inventory_attrs[] =
         .code    = "ident-format",
         .name    = "identifier format",
         .unspec  = DMI_VALUE_PTR(DMI_FIRMWARE_IDENT_FORMAT_UNSPEC),
-        .values  = dmi_firmware_ident_format_names
+        .values  = &dmi_firmware_ident_format_names
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, release_date, STRING, {
         .code    = "release-date",
@@ -148,14 +160,14 @@ const dmi_attribute_t dmi_firmware_inventory_attrs[] =
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, features, SET, {
         .code    = "characteristics",
         .name    = "Characteristics",
-        .values  = dmi_firmware_inventory_feature_names
+        .values  = &dmi_firmware_inventory_feature_names
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, state, ENUM, {
         .code    = "state",
         .name    = "State",
         .unspec  = DMI_VALUE_PTR(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
-        .values  = dmi_firmware_inventory_state_names
+        .values  = &dmi_firmware_inventory_state_names
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, component_count, INTEGER, {
         .code    = "component-count",
@@ -183,17 +195,17 @@ const dmi_table_spec_t dmi_firmware_inventory_table =
 
 const char *dmi_version_format_name(dmi_version_format_t value)
 {
-    return dmi_name_lookup(dmi_version_format_names, value);
+    return dmi_name_lookup(&dmi_version_format_names, value);
 }
 
 const char *dmi_firmware_ident_format_name(dmi_firmware_ident_format_t value)
 {
-    return dmi_name_lookup(dmi_firmware_ident_format_names, value);
+    return dmi_name_lookup(&dmi_firmware_ident_format_names, value);
 }
 
 const char *dmi_firmware_inventory_state_name(dmi_firmware_inventory_state_t value)
 {
-    return dmi_name_lookup(dmi_firmware_inventory_state_names, value);
+    return dmi_name_lookup(&dmi_firmware_inventory_state_names, value);
 }
 
 dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_table_t *table, dmi_version_t *plevel)

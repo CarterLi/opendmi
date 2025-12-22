@@ -14,82 +14,85 @@
 
 static short dmi_probe_value(dmi_word_t value);
 
-const dmi_name_t dmi_probe_location_names[] =
+const dmi_name_set_t dmi_probe_location_names =
 {
-    DMI_NAME_UNSPEC(DMI_PROBE_LOCATION_UNSPEC),
-    DMI_NAME_OTHER(DMI_PROBE_LOCATION_OTHER),
-    DMI_NAME_UNKNOWN(DMI_PROBE_LOCATION_UNKNOWN),
-    {
-        .id   = DMI_PROBE_LOCATION_PROCESSOR,
-        .code = "processor",
-        .name = "Processor"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_DISK,
-        .code = "disk",
-        .name = "Disk"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_PERIPHERAL_BAY,
-        .code = "peripheral-bay",
-        .name = "Peripheral bay"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_SYSTEM_MGMT_MODULE,
-        .code = "system-mgmt-module",
-        .name = "System management module"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_MOTHERBOARD,
-        .code = "motherboard",
-        .name = "Motherboard"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_MEMORY_MODULE,
-        .code = "memory-module",
-        .name = "Memory module"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_PROCESSOR_MODULE,
-        .code = "processor-module",
-        .name = "Processor module"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_POWER_UNIT,
-        .code = "power-unit",
-        .name = "Power unit"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_ADDIN_CARD,
-        .code = "addin-card",
-        .name = "Add-in card"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_FRONT_PANEL_BOARD,
-        .code = "front-panel-board",
-        .name = "Front panel board"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_BACK_PANEL_BOARD,
-        .code = "back-panel-board",
-        .name = "Back panel board"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_POWER_SYSTEM_BOARD,
-        .code = "power-system-board",
-        .name = "Power system board"
-    },
-    {
-        .id   = DMI_PROBE_LOCATION_DRIVE_BACK_PLANE,
-        .code = "drive-back-plane",
-        .name = "Drive back plane"
-    },
-    DMI_NAME_NULL
+    .code  = "probe-locations",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_PROBE_LOCATION_UNSPEC),
+        DMI_NAME_OTHER(DMI_PROBE_LOCATION_OTHER),
+        DMI_NAME_UNKNOWN(DMI_PROBE_LOCATION_UNKNOWN),
+        {
+            .id   = DMI_PROBE_LOCATION_PROCESSOR,
+            .code = "processor",
+            .name = "Processor"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_DISK,
+            .code = "disk",
+            .name = "Disk"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_PERIPHERAL_BAY,
+            .code = "peripheral-bay",
+            .name = "Peripheral bay"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_SYSTEM_MGMT_MODULE,
+            .code = "system-mgmt-module",
+            .name = "System management module"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_MOTHERBOARD,
+            .code = "motherboard",
+            .name = "Motherboard"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_MEMORY_MODULE,
+            .code = "memory-module",
+            .name = "Memory module"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_PROCESSOR_MODULE,
+            .code = "processor-module",
+            .name = "Processor module"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_POWER_UNIT,
+            .code = "power-unit",
+            .name = "Power unit"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_ADDIN_CARD,
+            .code = "addin-card",
+            .name = "Add-in card"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_FRONT_PANEL_BOARD,
+            .code = "front-panel-board",
+            .name = "Front panel board"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_BACK_PANEL_BOARD,
+            .code = "back-panel-board",
+            .name = "Back panel board"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_POWER_SYSTEM_BOARD,
+            .code = "power-system-board",
+            .name = "Power system board"
+        },
+        {
+            .id   = DMI_PROBE_LOCATION_DRIVE_BACK_PLANE,
+            .code = "drive-back-plane",
+            .name = "Drive back plane"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 const char *dmi_probe_location_name(dmi_probe_location_t value)
 {
-    return dmi_name_lookup(dmi_probe_location_names, value);
+    return dmi_name_lookup(&dmi_probe_location_names, value);
 }
 
 dmi_probe_t * dmi_probe_decode(dmi_table_t *table, dmi_version_t *plevel)

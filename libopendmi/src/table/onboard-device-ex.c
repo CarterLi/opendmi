@@ -22,7 +22,7 @@ const dmi_attribute_t dmi_onboard_device_ex_attrs[] =
         .name    = "Type",
         .unspec  = DMI_VALUE_PTR(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
-        .values  = dmi_onboard_device_type_names
+        .values  = &dmi_onboard_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_onboard_device_ex_t, is_enabled, BOOL, {
         .code    = "is-enabled",

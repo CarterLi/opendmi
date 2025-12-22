@@ -13,42 +13,45 @@
 
 #include <opendmi/table/battery.h>
 
-const dmi_name_t dmi_battery_chemistry_names[] =
+static const dmi_name_set_t dmi_battery_chemistry_names =
 {
-    DMI_NAME_UNSPEC(DMI_BATTERY_CHEMISTRY_UNSPEC),
-    DMI_NAME_OTHER(DMI_BATTERY_CHEMISTRY_OTHER),
-    DMI_NAME_UNKNOWN(DMI_BATTERY_CHEMISTRY_UNKNOWN),
-    {
-        .id   = DMI_BATTERY_CHEMISTRY_LEAD_ACID,
-        .code = "lead-acid",
-        .name = "Lead acid"
-    },
-    {
-        .id   = DMI_BATTERY_CHEMISTRY_NI_CD,
-        .code = "ni-cd",
-        .name = "Nickel cadmium"
-    },
-    {
-        .id   = DMI_BATTERY_CHEMISTRY_NI_MH,
-        .code = "ni-mh",
-        .name = "Nickel metal hyrdide"
-    },
-    {
-        .id   = DMI_BATTERY_CHEMISTRY_LI_ION,
-        .code = "li-ion",
-        .name = "Lithium-ion"
-    },
-    {
-        .id   = DMI_BATTERY_CHEMISTRY_ZN_AIR,
-        .code = "zn-air",
-        .name = "Zinc air"
-    },
-    {
-        .id   = DMI_BATTERY_CHEMISTRY_LI_PO,
-        .code = "li-po",
-        .name = "Lithium polymer"
-    },
-    DMI_NAME_NULL
+    .code  = "battery-chemistries",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_BATTERY_CHEMISTRY_UNSPEC),
+        DMI_NAME_OTHER(DMI_BATTERY_CHEMISTRY_OTHER),
+        DMI_NAME_UNKNOWN(DMI_BATTERY_CHEMISTRY_UNKNOWN),
+        {
+            .id   = DMI_BATTERY_CHEMISTRY_LEAD_ACID,
+            .code = "lead-acid",
+            .name = "Lead acid"
+        },
+        {
+            .id   = DMI_BATTERY_CHEMISTRY_NI_CD,
+            .code = "ni-cd",
+            .name = "Nickel cadmium"
+        },
+        {
+            .id   = DMI_BATTERY_CHEMISTRY_NI_MH,
+            .code = "ni-mh",
+            .name = "Nickel metal hyrdide"
+        },
+        {
+            .id   = DMI_BATTERY_CHEMISTRY_LI_ION,
+            .code = "li-ion",
+            .name = "Lithium-ion"
+        },
+        {
+            .id   = DMI_BATTERY_CHEMISTRY_ZN_AIR,
+            .code = "zn-air",
+            .name = "Zinc air"
+        },
+        {
+            .id   = DMI_BATTERY_CHEMISTRY_LI_PO,
+            .code = "li-po",
+            .name = "Lithium polymer"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 const dmi_attribute_t dmi_battery_attrs[] =
@@ -78,7 +81,7 @@ const dmi_attribute_t dmi_battery_attrs[] =
         .name    = "Chemistry",
         .unspec  = DMI_VALUE_PTR(DMI_BATTERY_CHEMISTRY_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_BATTERY_CHEMISTRY_UNKNOWN),
-        .values  = dmi_battery_chemistry_names,
+        .values  = &dmi_battery_chemistry_names,
     }),
     DMI_ATTRIBUTE(dmi_battery_t, capacity, DECIMAL, {
         .code    = "capacity",
@@ -145,7 +148,7 @@ const dmi_table_spec_t dmi_battery_table =
 
 const char *dmi_battery_chemistry_name(dmi_battery_chemistry_t value)
 {
-    return dmi_name_lookup(dmi_battery_chemistry_names, value);
+    return dmi_name_lookup(&dmi_battery_chemistry_names, value);
 }
 
 dmi_battery_t *dmi_battery_decode(const dmi_table_t *table, dmi_version_t *plevel)

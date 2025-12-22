@@ -13,57 +13,60 @@
 
 #include <opendmi/table/cooling-device.h>
 
-static const dmi_name_t dmi_cooling_device_type_names[] =
+static const dmi_name_set_t dmi_cooling_device_type_names =
 {
-    DMI_NAME_UNSPEC(DMI_COOLING_DEVICE_TYPE_UNSPEC),
-    DMI_NAME_OTHER(DMI_COOLING_DEVICE_TYPE_OTHER),
-    DMI_NAME_UNKNOWN(DMI_COOLING_DEVICE_TYPE_UNKNOWN),
-    {
-        .id   = DMI_COOLING_DEVICE_TYPE_FAN,
-        .code = "fan",
-        .name = "Fan"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_TYPE_CENTRIFUGAL_BLOWER,
-        .code = "centrifugal-blower",
-        .name = "Centrifugal blower"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_TYPE_CHIP_FAN,
-        .code = "chip-fan",
-        .name = "Chip fan"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_TYPE_CABINET_FAN,
-        .code = "cabinet-fan",
-        .name = "Cabinet fan"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_TYPE_POWER_SUPPLY_FAN,
-        .code = "power-supply-fan",
-        .name = "Power supply fan"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_TYPE_HEAT_PIPE,
-        .code = "heat-pipe",
-        .name = "Heat pipe"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_TYPE_INTEGRATED_REFRIGERATION,
-        .code = "integrated-refrigeration",
-        .name = "Integrated refrigeration"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_TYPE_ACTIVE_COOLING,
-        .code = "active-cooling",
-        .name = "Active cooling"
-    },
-    {
-        .id   = DMI_COOLING_DEVICE_TYPE_PASSIVE_COOLING,
-        .code = "passive-cooling",
-        .name = "Passive cooling"
-    },
-    DMI_NAME_NULL
+    .code  = "cooling-device-types",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_COOLING_DEVICE_TYPE_UNSPEC),
+        DMI_NAME_OTHER(DMI_COOLING_DEVICE_TYPE_OTHER),
+        DMI_NAME_UNKNOWN(DMI_COOLING_DEVICE_TYPE_UNKNOWN),
+        {
+            .id   = DMI_COOLING_DEVICE_TYPE_FAN,
+            .code = "fan",
+            .name = "Fan"
+        },
+        {
+            .id   = DMI_COOLING_DEVICE_TYPE_CENTRIFUGAL_BLOWER,
+            .code = "centrifugal-blower",
+            .name = "Centrifugal blower"
+        },
+        {
+            .id   = DMI_COOLING_DEVICE_TYPE_CHIP_FAN,
+            .code = "chip-fan",
+            .name = "Chip fan"
+        },
+        {
+            .id   = DMI_COOLING_DEVICE_TYPE_CABINET_FAN,
+            .code = "cabinet-fan",
+            .name = "Cabinet fan"
+        },
+        {
+            .id   = DMI_COOLING_DEVICE_TYPE_POWER_SUPPLY_FAN,
+            .code = "power-supply-fan",
+            .name = "Power supply fan"
+        },
+        {
+            .id   = DMI_COOLING_DEVICE_TYPE_HEAT_PIPE,
+            .code = "heat-pipe",
+            .name = "Heat pipe"
+        },
+        {
+            .id   = DMI_COOLING_DEVICE_TYPE_INTEGRATED_REFRIGERATION,
+            .code = "integrated-refrigeration",
+            .name = "Integrated refrigeration"
+        },
+        {
+            .id   = DMI_COOLING_DEVICE_TYPE_ACTIVE_COOLING,
+            .code = "active-cooling",
+            .name = "Active cooling"
+        },
+        {
+            .id   = DMI_COOLING_DEVICE_TYPE_PASSIVE_COOLING,
+            .code = "passive-cooling",
+            .name = "Passive cooling"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 const dmi_attribute_t dmi_cooling_device_attrs[] =
@@ -77,14 +80,14 @@ const dmi_attribute_t dmi_cooling_device_attrs[] =
         .name    = "Type",
         .unspec  = DMI_VALUE_PTR(DMI_COOLING_DEVICE_TYPE_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_COOLING_DEVICE_TYPE_UNKNOWN),
-        .values  = dmi_cooling_device_type_names
+        .values  = &dmi_cooling_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, status, ENUM, {
         .code    = "status",
         .name    = "Status",
         .unspec  = DMI_VALUE_PTR(DMI_STATUS_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_STATUS_UNKNOWN),
-        .values  = dmi_status_names
+        .values  = &dmi_status_names
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, group, INTEGER, {
         .code    = "group",
@@ -125,7 +128,7 @@ const dmi_table_spec_t dmi_cooling_device_table =
 
 const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value)
 {
-    return dmi_name_lookup(dmi_cooling_device_type_names, value);
+    return dmi_name_lookup(&dmi_cooling_device_type_names, value);
 }
 
 dmi_cooling_device_t *dmi_cooling_device_decode(dmi_table_t *table, dmi_version_t *plevel)

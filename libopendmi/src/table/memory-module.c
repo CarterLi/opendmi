@@ -12,79 +12,85 @@
 
 #include <opendmi/table/memory-module.h>
 
-const dmi_name_t dmi_memory_module_type_names[] =
+const dmi_name_set_t dmi_memory_module_type_names =
 {
-    DMI_NAME_OTHER(0),
-    DMI_NAME_UNKNOWN(1),
-    {
-        .id   = 2,
-        .code = "standard",
-        .name = "Standard"
-    },
-    {
-        .id   = 3,
-        .code = "fpm",
-        .name = "Fast page mode"
-    },
-    {
-        .id   = 4,
-        .code = "edo",
-        .name = "EDO"
-    },
-    {
-        .id   = 5,
-        .code = "parity",
-        .name = "Parity"
-    },
-    {
-        .id   = 6,
-        .code = "ecc",
-        .name = "ECC"
-    },
-    {
-        .id   = 7,
-        .code = "simm",
-        .name = "SIMM"
-    },
-    {
-        .id   = 8,
-        .code = "dimm",
-        .name = "DIMM"
-    },
-    {
-        .id   = 9,
-        .code = "burst-edo",
-        .name = "Burst EDO"
-    },
-    {
-        .id   = 10,
-        .code = "sdram",
-        .name = "SDRAM"
-    },
-    DMI_NAME_NULL
+    .code  = "memory-module-types",
+    .names = {
+        DMI_NAME_OTHER(0),
+        DMI_NAME_UNKNOWN(1),
+        {
+            .id   = 2,
+            .code = "standard",
+            .name = "Standard"
+        },
+        {
+            .id   = 3,
+            .code = "fpm",
+            .name = "Fast page mode"
+        },
+        {
+            .id   = 4,
+            .code = "edo",
+            .name = "EDO"
+        },
+        {
+            .id   = 5,
+            .code = "parity",
+            .name = "Parity"
+        },
+        {
+            .id   = 6,
+            .code = "ecc",
+            .name = "ECC"
+        },
+        {
+            .id   = 7,
+            .code = "simm",
+            .name = "SIMM"
+        },
+        {
+            .id   = 8,
+            .code = "dimm",
+            .name = "DIMM"
+        },
+        {
+            .id   = 9,
+            .code = "burst-edo",
+            .name = "Burst EDO"
+        },
+        {
+            .id   = 10,
+            .code = "sdram",
+            .name = "SDRAM"
+        },
+        DMI_NAME_NULL
+    }
 };
 
-const dmi_name_t dmi_memory_module_error_names[] =
+static const dmi_name_set_t dmi_memory_module_error_names =
 {
-    {
-        .id   = 0,
-        .code = "uncorrectable",
-        .name = "Uncorrectable"
-    },
-    {
-        .id   = 1,
-        .code = "correctable",
-        .name = "Correctable"
-    },
-    {
-        .id   = 2,
-        .code = "event-log",
-        .name = "Event log"
-    },
-    DMI_NAME_NULL
+    .code  = "memory-module-errors",
+    .names = {
+        {
+            .id   = 0,
+            .code = "uncorrectable",
+            .name = "Uncorrectable"
+        },
+        {
+            .id   = 1,
+            .code = "correctable",
+            .name = "Correctable"
+        },
+        {
+            .id   = 2,
+            .code = "event-log",
+            .name = "Event log"
+        },
+        DMI_NAME_NULL
+    }
 };
 
-const dmi_attribute_t dmi_memory_module_attrs[] =
+static const dmi_attribute_t dmi_memory_module_attrs[] =
 {
     DMI_ATTRIBUTE(dmi_memory_module_t, socket, STRING, {
         .code   = "socket",
@@ -103,7 +109,7 @@ const dmi_attribute_t dmi_memory_module_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_module_t, current_type, SET, {
         .code   = "current-type",
         .name   = "Current type",
-        .values = dmi_memory_module_type_names
+        .values = &dmi_memory_module_type_names
     }),
     DMI_ATTRIBUTE(dmi_memory_module_t, installed_size, SIZE, {
         .code   = "installed-size",
@@ -124,7 +130,7 @@ const dmi_attribute_t dmi_memory_module_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_module_t, error_status, SET, {
         .code   = "error-status",
         .name   = "Error status",
-        .values = dmi_memory_module_error_names
+        .values = &dmi_memory_module_error_names
     }),
     DMI_ATTRIBUTE_NULL
 };

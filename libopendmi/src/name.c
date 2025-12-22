@@ -6,12 +6,12 @@
 //
 #include <opendmi/name.h>
 
-const char *dmi_code_lookup(const dmi_name_t *dictionary, int id)
+const char *dmi_code_lookup(const dmi_name_set_t *dict, int id)
 {
-    if ((dictionary == nullptr) or (id < 0))
+    if ((dict == nullptr) or (id < 0))
         return nullptr;
 
-    for (const dmi_name_t *entry = dictionary; entry->id >= 0; entry++) {
+    for (const dmi_name_t *entry = dict->names; entry->id >= 0; entry++) {
         if (entry->id == id)
             return entry->code;
     }
@@ -19,12 +19,12 @@ const char *dmi_code_lookup(const dmi_name_t *dictionary, int id)
     return nullptr;
 }
 
-const char *dmi_name_lookup(const dmi_name_t *dictionary, int id)
+const char *dmi_name_lookup(const dmi_name_set_t *dict, int id)
 {
-    if ((dictionary == nullptr) or (id < 0))
+    if ((dict == nullptr) or (id < 0))
         return nullptr;
 
-    for (const dmi_name_t *entry = dictionary; entry->id >= 0; entry++) {
+    for (const dmi_name_t *entry = dict->names; entry->id >= 0; entry++) {
         if (entry->id == id)
             return entry->name;
     }

@@ -16,11 +16,22 @@
 typedef struct dmi_name dmi_name_t;
 #endif // !DMI_NAME_T
 
+#ifndef DMI_NAME_SET_T
+#define DMI_NAME_SET_T
+typedef struct dmi_name_set dmi_name_set_t;
+#endif // !DMI_NAME_SET_T
+
 struct dmi_name
 {
     int id;
     const char *code;
     const char *name;
+};
+
+struct dmi_name_set
+{
+    const char *code;
+    const dmi_name_t names[];
 };
 
 #define DMI_NAME_NULL { -1, nullptr, nullptr }
@@ -34,8 +45,8 @@ struct dmi_name
 
 __BEGIN_DECLS
 
-const char *dmi_code_lookup(const dmi_name_t *dictionary, int id);
-const char *dmi_name_lookup(const dmi_name_t *dictionary, int id);
+const char *dmi_code_lookup(const dmi_name_set_t *dict, int id);
+const char *dmi_name_lookup(const dmi_name_set_t *dict, int id);
 
 __END_DECLS
 

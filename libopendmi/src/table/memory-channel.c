@@ -10,22 +10,25 @@
 
 #include <opendmi/table/memory-channel.h>
 
-static const dmi_name_t dmi_memory_channel_type_names[] =
+static const dmi_name_set_t dmi_memory_channel_type_names =
 {
-    DMI_NAME_UNSPEC(DMI_MEMORY_CHANNEL_TYPE_UNSPEC),
-    DMI_NAME_OTHER(DMI_MEMORY_CHANNEL_TYPE_OTHER),
-    DMI_NAME_UNKNOWN(DMI_MEMORY_CHANNEL_TYPE_UNKNOWN),
-    {
-        .id   = DMI_MEMORY_CHANNEL_TYPE_RAMBUS,
-        .code = "rambus",
-        .name = "RamBus"
-    },
-    {
-        .id   = DMI_MEMORY_CHANNEL_TYPE_SYNCLINK,
-        .code = "synclink",
-        .name = "SyncLink"
-    },
-    DMI_NAME_NULL
+    .code  = "memory-channel-types",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_MEMORY_CHANNEL_TYPE_UNSPEC),
+        DMI_NAME_OTHER(DMI_MEMORY_CHANNEL_TYPE_OTHER),
+        DMI_NAME_UNKNOWN(DMI_MEMORY_CHANNEL_TYPE_UNKNOWN),
+        {
+            .id   = DMI_MEMORY_CHANNEL_TYPE_RAMBUS,
+            .code = "rambus",
+            .name = "RamBus"
+        },
+        {
+            .id   = DMI_MEMORY_CHANNEL_TYPE_SYNCLINK,
+            .code = "synclink",
+            .name = "SyncLink"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 static const dmi_attribute_t dmi_memory_device_channel_attrs[] =
@@ -48,7 +51,7 @@ static const dmi_attribute_t dmi_memory_channel_attrs[] =
         .name    = "Type",
         .unspec  = DMI_VALUE_PTR(DMI_MEMORY_CHANNEL_TYPE_UNSPEC),
         .unknown = DMI_VALUE_PTR(DMI_MEMORY_CHANNEL_TYPE_UNKNOWN),
-        .values  = dmi_memory_channel_type_names,
+        .values  = &dmi_memory_channel_type_names,
     }),
     DMI_ATTRIBUTE(dmi_memory_channel_t, maximum_load, INTEGER, {
         .code    = "maximum-load",
@@ -83,7 +86,7 @@ const dmi_table_spec_t dmi_memory_channel_table =
 
 const char *dmi_memory_channel_type_name(dmi_memory_channel_type_t value)
 {
-    return dmi_name_lookup(dmi_memory_channel_type_names, value);
+    return dmi_name_lookup(&dmi_memory_channel_type_names, value);
 }
 
 dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_table_t *table, dmi_version_t *plevel)

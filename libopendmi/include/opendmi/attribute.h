@@ -105,7 +105,7 @@ struct dmi_attribute_params
     /**
      * @brief Enumeration or boolean value names.
      */
-    const dmi_name_t *values;
+    const dmi_name_set_t *values;
 
     /**
      * @brief Structure attribute descriptors.

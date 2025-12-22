@@ -13,70 +13,76 @@
 
 #include <opendmi/table/power-supply.h>
 
-static const dmi_name_t dmi_power_supply_type_names[] =
+static const dmi_name_set_t dmi_power_supply_type_names =
 {
-    DMI_NAME_UNSPEC(DMI_POWER_SUPPLY_TYPE_UNSPEC),
-    DMI_NAME_OTHER(DMI_POWER_SUPPLY_TYPE_OTHER),
-    DMI_NAME_UNKNOWN(DMI_POWER_SUPPLY_TYPE_UNKNOWN),
-    {
-        .id   = DMI_POWER_SUPPLY_TYPE_LINEAR,
-        .code = "linear",
-        .name = "Linear"
-    },
-    {
-        .id   = DMI_POWER_SUPPLY_TYPE_SWITCHING,
-        .code = "switching",
-        .name = "Switching"
-    },
-    {
-        .id   = DMI_POWER_SUPPLY_TYPE_BATTERY,
-        .code = "battery",
-        .name = "Battery"
-    },
-    {
-        .id   = DMI_POWER_SUPPLY_TYPE_UPS,
-        .code = "ups",
-        .name = "UPS"
-    },
-    {
-        .id   = DMI_POWER_SUPPLY_TYPE_CONVERTER,
-        .code = "converter",
-        .name = "Converter"
-    },
-    {
-        .id   = DMI_POWER_SUPPLY_TYPE_REGULATOR,
-        .code = "regulator",
-        .name = "Regulator"
-    },
-    DMI_NAME_NULL
+    .code  = "power-supply-types",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_POWER_SUPPLY_TYPE_UNSPEC),
+        DMI_NAME_OTHER(DMI_POWER_SUPPLY_TYPE_OTHER),
+        DMI_NAME_UNKNOWN(DMI_POWER_SUPPLY_TYPE_UNKNOWN),
+        {
+            .id   = DMI_POWER_SUPPLY_TYPE_LINEAR,
+            .code = "linear",
+            .name = "Linear"
+        },
+        {
+            .id   = DMI_POWER_SUPPLY_TYPE_SWITCHING,
+            .code = "switching",
+            .name = "Switching"
+        },
+        {
+            .id   = DMI_POWER_SUPPLY_TYPE_BATTERY,
+            .code = "battery",
+            .name = "Battery"
+        },
+        {
+            .id   = DMI_POWER_SUPPLY_TYPE_UPS,
+            .code = "ups",
+            .name = "UPS"
+        },
+        {
+            .id   = DMI_POWER_SUPPLY_TYPE_CONVERTER,
+            .code = "converter",
+            .name = "Converter"
+        },
+        {
+            .id   = DMI_POWER_SUPPLY_TYPE_REGULATOR,
+            .code = "regulator",
+            .name = "Regulator"
+        },
+        DMI_NAME_NULL
+    }
 };
 
-static const dmi_name_t dmi_range_switching_type_names[] =
+static const dmi_name_set_t dmi_range_switching_type_names =
 {
-    DMI_NAME_UNSPEC(DMI_RANGE_SWITCHING_TYPE_UNSPEC),
-    DMI_NAME_OTHER(DMI_RANGE_SWITCHING_TYPE_OTHER),
-    DMI_NAME_UNKNOWN(DMI_RANGE_SWITCHING_TYPE_UNKNOWN),
-    {
-        .id   = DMI_RANGE_SWITCHING_TYPE_MANUAL,
-        .code = "manual",
-        .name = "Manual"
-    },
-    {
-        .id   = DMI_RANGE_SWITCHING_TYPE_AUTO,
-        .code = "auto",
-        .name = "Auto-switch"
-    },
-    {
-        .id   = DMI_RANGE_SWITCHING_TYPE_WIDE,
-        .code = "wide-range",
-        .name = "Wide range"
-    },
-    {
-        .id   = DMI_RANGE_SWITCHING_TYPE_NOT_APPLICABLE,
-        .code = "not-applicable",
-        .name = "Not applicable"
-    },
-    DMI_NAME_NULL
+    .code  = "range-switching-types",
+    .names = {
+        DMI_NAME_UNSPEC(DMI_RANGE_SWITCHING_TYPE_UNSPEC),
+        DMI_NAME_OTHER(DMI_RANGE_SWITCHING_TYPE_OTHER),
+        DMI_NAME_UNKNOWN(DMI_RANGE_SWITCHING_TYPE_UNKNOWN),
+        {
+            .id   = DMI_RANGE_SWITCHING_TYPE_MANUAL,
+            .code = "manual",
+            .name = "Manual"
+        },
+        {
+            .id   = DMI_RANGE_SWITCHING_TYPE_AUTO,
+            .code = "auto",
+            .name = "Auto-switch"
+        },
+        {
+            .id   = DMI_RANGE_SWITCHING_TYPE_WIDE,
+            .code = "wide-range",
+            .name = "Wide range"
+        },
+        {
+            .id   = DMI_RANGE_SWITCHING_TYPE_NOT_APPLICABLE,
+            .code = "not-applicable",
+            .name = "Not applicable"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 static const dmi_attribute_t dmi_power_supply_attrs[] =
@@ -135,17 +141,17 @@ static const dmi_attribute_t dmi_power_supply_attrs[] =
     DMI_ATTRIBUTE(dmi_power_supply_t, range_switching, ENUM, {
         .code    = "range-switching",
         .name    = "Input voltage range switching",
-        .values  = dmi_range_switching_type_names
+        .values  = &dmi_range_switching_type_names
     }),
     DMI_ATTRIBUTE(dmi_power_supply_t, status, ENUM, {
         .code    = "status",
         .name    = "Status",
-        .values  = dmi_status_names
+        .values  = &dmi_status_names
     }),
     DMI_ATTRIBUTE(dmi_power_supply_t, type, ENUM, {
         .code    = "type",
         .name    = "Type",
-        .values  = dmi_power_supply_type_names
+        .values  = &dmi_power_supply_type_names
     }),
     DMI_ATTRIBUTE(dmi_power_supply_t, voltage_probe_handle, HANDLE, {
         .code    = "voltage-probe-handle",
@@ -178,12 +184,12 @@ const dmi_table_spec_t dmi_power_supply_table =
 
 const char *dmi_power_supply_type_name(enum dmi_power_supply_type value)
 {
-    return dmi_name_lookup(dmi_power_supply_type_names, value);
+    return dmi_name_lookup(&dmi_power_supply_type_names, value);
 }
 
 const char *dmi_range_switching_type_name(dmi_range_switching_type_t value)
 {
-    return dmi_name_lookup(dmi_range_switching_type_names, value);
+    return dmi_name_lookup(&dmi_range_switching_type_names, value);
 }
 
 dmi_power_supply_t *dmi_power_supply_decode(const dmi_table_t *table, dmi_version_t *plevel)

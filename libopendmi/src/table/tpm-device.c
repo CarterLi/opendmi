@@ -10,29 +10,32 @@
 
 #include <opendmi/table/tpm-device.h>
 
-static const dmi_name_t dmi_tpm_device_feature_names[] =
+static const dmi_name_set_t dmi_tpm_device_feature_names =
 {
-    {
-        .id   = 2,
-        .code = "is-unsupported",
-        .name = "Characteristics are not supported"
-    },
-    {
-        .id   = 3,
-        .code = "is-update-configurable",
-        .name = "Configurable via firmware update"
-    },
-    {
-        .id   = 4,
-        .code = "is-software-configurable",
-        .name = "Configurable via platform software support"
-    },
-    {
-        .id = 5,
-        .code = "is-proprietary-configurable",
-        .name = "Configurable via OEM proprietary mechanism"
-    },
-    DMI_NAME_NULL
+    .code  = "tpm-device-features",
+    .names = {
+        {
+            .id   = 2,
+            .code = "is-unsupported",
+            .name = "Characteristics are not supported"
+        },
+        {
+            .id   = 3,
+            .code = "is-update-configurable",
+            .name = "Configurable via firmware update"
+        },
+        {
+            .id   = 4,
+            .code = "is-software-configurable",
+            .name = "Configurable via platform software support"
+        },
+        {
+            .id = 5,
+            .code = "is-proprietary-configurable",
+            .name = "Configurable via OEM proprietary mechanism"
+        },
+        DMI_NAME_NULL
+    }
 };
 
 static const dmi_attribute_t dmi_tpm_device_attrs[] =
@@ -54,7 +57,7 @@ static const dmi_attribute_t dmi_tpm_device_attrs[] =
     DMI_ATTRIBUTE(dmi_tpm_device_t, features, SET, {
         .code   = "characteristics",
         .name   = "Characteristics",
-        .values = dmi_tpm_device_feature_names
+        .values = &dmi_tpm_device_feature_names
     }),
     DMI_ATTRIBUTE(dmi_tpm_device_t, oem_defined, INTEGER, {
         .code   = "oem-defined",

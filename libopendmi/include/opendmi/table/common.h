@@ -99,8 +99,8 @@ struct dmi_pci_addr
     uint8_t function_number;
 };
 
-extern const dmi_name_t dmi_status_names[];
-extern const dmi_name_t dmi_error_correct_type_names[];
+extern const dmi_name_set_t dmi_status_names;
+extern const dmi_name_set_t dmi_error_correct_type_names;
 
 extern const dmi_attribute_t dmi_pci_addr_attrs[];
 

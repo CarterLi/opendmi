@@ -200,7 +200,7 @@ struct dmi_probe
 typedef struct dmi_probe dmi_probe_t;
 #endif // !DMI_PROBE_T
 
-extern const dmi_name_t dmi_probe_location_names[];
+extern const dmi_name_set_t dmi_probe_location_names;
 
 __BEGIN_DECLS
 

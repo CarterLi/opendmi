@@ -158,7 +158,7 @@ struct dmi_onboard_device
 /**
  * @brief Onboard device type names.
  */
-extern const dmi_name_t dmi_onboard_device_type_names[];
+extern const dmi_name_set_t dmi_onboard_device_type_names;
 
 /**
  * @brief Onboard devices information table specification.

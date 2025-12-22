@@ -10,25 +10,28 @@
 
 #include <opendmi/table/hardware-security.h>
 
-static const dmi_name_t dmi_hardware_security_status_names[] =
+static const dmi_name_set_t dmi_hardware_security_status_names =
 {
-    {
-        .id   = DMI_HARDWARE_SECURITY_STATUS_DISABLED,
-        .code = "disabled",
-        .name = "Disabled"
-    },
-    {
-        .id   = DMI_HARDWARE_SECURITY_STATUS_ENABLED,
-        .code = "enabled",
-        .name = "Enabled"
-    },
-    {
-        .id   = DMI_HARDWARE_SECURITY_STATUS_NOT_IMPLEMENTED,
-        .code = "not-implemented",
-        .name = "Not implemented"
-    },
-    DMI_NAME_UNKNOWN(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN),
-    DMI_NAME_NULL
+    .code  = "hardware-security-statuses",
+    .names = {
+        {
+            .id   = DMI_HARDWARE_SECURITY_STATUS_DISABLED,
+            .code = "disabled",
+            .name = "Disabled"
+        },
+        {
+            .id   = DMI_HARDWARE_SECURITY_STATUS_ENABLED,
+            .code = "enabled",
+            .name = "Enabled"
+        },
+        {
+            .id   = DMI_HARDWARE_SECURITY_STATUS_NOT_IMPLEMENTED,
+            .code = "not-implemented",
+            .name = "Not implemented"
+        },
+        DMI_NAME_UNKNOWN(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN),
+        DMI_NAME_NULL
+    }
 };
 
 const dmi_attribute_t dmi_hardware_security_attrs[] =
@@ -36,25 +39,25 @@ const dmi_attribute_t dmi_hardware_security_attrs[] =
     DMI_ATTRIBUTE(dmi_hardware_security_t, front_panel_reset, ENUM, {
         .code    = "front-panel-reset",
         .name    = "Front panel reset status",
-        .values  = dmi_hardware_security_status_names,
+        .values  = &dmi_hardware_security_status_names,
         .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE(dmi_hardware_security_t, admin_password, ENUM, {
         .code    = "admin-password",
         .name    = "Administrator password status",
-        .values  = dmi_hardware_security_status_names,
+        .values  = &dmi_hardware_security_status_names,
         .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE(dmi_hardware_security_t, keyboard_password, ENUM, {
         .code    = "keyboard-password",
         .name    = "Keyboard password status",
-        .values  = dmi_hardware_security_status_names,
+        .values  = &dmi_hardware_security_status_names,
         .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE(dmi_hardware_security_t, poweron_password, ENUM, {
         .code    = "poweron-password",
         .name    = "Power-on password status",
-        .values  = dmi_hardware_security_status_names,
+        .values  = &dmi_hardware_security_status_names,
         .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE_NULL
@@ -76,7 +79,7 @@ const dmi_table_spec_t dmi_hardware_security_table =
 
 const char *dmi_hardware_security_status_name(dmi_hardware_security_status_t value)
 {
-    return dmi_name_lookup(dmi_hardware_security_status_names, value);
+    return dmi_name_lookup(&dmi_hardware_security_status_names, value);
 }
 
 dmi_hardware_security_t *dmi_hardware_security_decode(dmi_table_t *table, dmi_version_t *plevel)

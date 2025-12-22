@@ -216,7 +216,7 @@ struct dmi_memory_module
     dmi_memory_module_error_t error_status;
 };
 
-extern const dmi_name_t dmi_memory_module_type_names[];
+extern const dmi_name_set_t dmi_memory_module_type_names;
 
 /**
  * @brief Memory module information table specification.
