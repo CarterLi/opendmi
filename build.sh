@@ -79,6 +79,8 @@ _usage() {
     echo "        --enable-dbus    Build with D-bus support (opendmi-dbus, default=${ENABLE_DBUS})"
     echo "    Features:"
     echo "        --with-curses    Build with Curses support (default=${ENABLE_CURSES})"
+    echo "    Miscellaneous:"
+    echo "        --verbose        Generate verbose Makefiles"
     echo
     echo "Defaults:"
     echo "    Build directory: ${BUILD_DIR}"
@@ -123,6 +125,9 @@ _configure() {
             --with-curses)
                 ENABLE_CURSES=ON
                 ;;
+            --verbose)
+                VERBOSE=ON
+                ;;
             *)
                 _invalid_option ${OPTION}
                 ;;
@@ -132,6 +137,9 @@ _configure() {
     FEATURES=""
     if [ "${ENABLE_CURSES}" != "AUTO" ]; then
         FEATURES="${FEATURES} -DENABLE_CURSES=${ENABLE_CURSES}"
+    fi
+    if [ "${VERBOSE}" == "ON" ]; then
+        FEATURES="${FEATURES} -DCMAKE_VERBOSE_MAKEFILE=TRUE"
     fi
 
     cmake -B ${BUILD_DIR} \
