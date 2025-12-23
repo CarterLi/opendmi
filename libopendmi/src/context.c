@@ -4,7 +4,10 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <unistd.h>
 #include <string.h>
+#include <fcntl.h>
+#include <errno.h>
 #include <assert.h>
 
 #include <opendmi/context.h>
@@ -205,8 +208,13 @@ bool dmi_dump_load(dmi_context_t *context, const char *path)
     return dmi_open_ex(context, &dmi_dump_backend, path);
 }
 
-bool dmi_dump_save(dmi_context_t *context, const char *path)
+bool dmi_dump_save(dmi_context_t *context, const char *path, bool overwrite)
 {
+    int flags;
+    int fd;
+    bool success;
+    ssize_t nwrite;
+
     if (context == nullptr)
         return false;
 
@@ -214,8 +222,52 @@ bool dmi_dump_save(dmi_context_t *context, const char *path)
         dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "path");
         return false;
     }
+    if (context->entry_size > DMI_ENTRY_MAX_SIZE) {
+        dmi_error_raise(context, DMI_ERROR_INVALID_EPS_LENGTH);
+        return false;
+    }
 
-    return true;
+    flags = O_CREAT | O_WRONLY | O_TRUNC;
+    if (!overwrite)
+        flags |= O_EXCL;
+
+    fd = open(path, flags, 0666);
+    if (fd < 0) {
+        dmi_error_raise_ex(context, DMI_ERROR_FILE_OPEN, "%s: %s", path, strerror(errno));
+        return false;
+    }
+
+    success = false;
+    do {
+        dmi_byte_t entry[DMI_ENTRY_MAX_SIZE] = { 0 };
+        memcpy(entry, context->entry_data, context->entry_size);
+
+    write_entry:
+        nwrite = write(fd, entry, sizeof(entry));
+        if (nwrite < 0) {
+            if (errno == EINTR)
+                goto write_entry;
+
+            dmi_error_raise_ex(context, DMI_ERROR_FILE_WRITE, "%s: %s", path, strerror(errno));
+            break;
+        }
+
+    write_tables:
+        nwrite = write(fd, context->table_data, context->table_area_size);
+        if (nwrite < 0) {
+            if (errno == EINTR)
+                goto write_tables;
+
+            dmi_error_raise_ex(context, DMI_ERROR_FILE_WRITE, "%s: %s", path, strerror(errno));
+            break;
+        }
+
+        success = true;
+    } while (false);
+
+    close(fd);
+
+    return success;
 }
 
 const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type)

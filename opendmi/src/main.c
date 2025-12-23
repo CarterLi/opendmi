@@ -47,8 +47,8 @@ static bool parse_args(int argc, char *argv[], int *rv);
 static void show_version(void);
 static void show_usage(const char *proc);
 
-static void list_keywords(dmi_context_t *context);
-static void list_types(dmi_context_t *context);
+static bool list_keywords(dmi_context_t *context);
+static bool list_types(dmi_context_t *context);
 
 static void print_all(dmi_context_t *context);
 static void print_table(const dmi_table_t *table);
@@ -78,6 +78,7 @@ static bool tty = false;
 int main(int argc, char *argv[])
 {
     dmi_context_t *context;
+    bool status;
 
     int rv = EXIT_SUCCESS;
     if (!parse_args(argc, argv, &rv))
@@ -108,34 +109,41 @@ int main(int argc, char *argv[])
         dmi_set_log_level(context, DMI_LOG_DEBUG);
 
     if (config.command == DMI_COMMAND_LIST_KEYWORDS) {
-        list_keywords(context);
-        return EXIT_SUCCESS;
+        status = list_keywords(context);
+        goto exit;
     }
     
     if (config.command == DMI_COMMAND_LIST_TYPES) {
-        list_types(context);
-        return EXIT_SUCCESS;
+        status = list_types(context);
+        goto exit;
     }
 
     // Open DMI context
-    bool status;
-    if (config.input_path != nullptr)
-        status = dmi_dump_load(context, config.input_path);
-    else
-        status = dmi_open(context);
+    do {
+        if (config.input_path != nullptr)
+            status = dmi_dump_load(context, config.input_path);
+        else
+            status = dmi_open(context);
 
-    if (!status) {
-        dmi_destroy(context);
-        return EXIT_FAILURE;
-    }
+        if (!status)
+            break;
 
-    // Print all SMBIOS tables
-    print_all(context);
+        if (config.output_path != nullptr) {
+            status = dmi_dump_save(context, config.output_path, false);
+            if (!status)
+                break;
+        } else {
+            print_all(context);
+        }
 
+        status = true;
+    } while (false);
+
+exit:
     // Close DMI context
     dmi_destroy(context);
 
-    return EXIT_SUCCESS;
+    return status ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
 static bool parse_args(int argc, char *argv[], int *rv)
@@ -229,11 +237,12 @@ static void show_usage(const char *proc)
     printf("    %s [options]\n", proc);
 }
 
-static void list_keywords(dmi_context_t *context __attribute__((unused)))
+static bool list_keywords(dmi_context_t *context __attribute__((unused)))
 {
+    return true;
 }
 
-static void list_types(dmi_context_t *context)
+static bool list_types(dmi_context_t *context)
 {
     const char *format;
 
@@ -250,6 +259,8 @@ static void list_types(dmi_context_t *context)
 
         printf(format, (int)spec->type, spec->code, spec->name);
     }
+
+    return true;
 }
 
 static void print_all(dmi_context_t *context)

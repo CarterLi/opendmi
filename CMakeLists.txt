@@ -44,6 +44,10 @@ else()
     endif()
 endif()
 
+if(UNIX)
+    add_compile_definitions(_GNU_SOURCE)
+endif()
+
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
     set(CMAKE_BUILD_TYPE Debug)
 endif()

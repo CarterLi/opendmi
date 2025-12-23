@@ -141,12 +141,13 @@ bool dmi_dump_load(dmi_context_t *context, const char *path);
 /**
  * @brief Save DMI context to dump file.
  *
- * @param[in] context DMI context handle.
- * @param[in] path Path to dump file.
+ * @param[in] context   DMI context handle.
+ * @param[in] path      Path to dump file.
+ * @param[in] overwrite Overwrite existing files flag
  *
  * @return The function returns `true` on success and `false` otherwise.
  */
-bool dmi_dump_save(dmi_context_t *context, const char *path);
+bool dmi_dump_save(dmi_context_t *context, const char *path, bool overwrite);
 
 /**
  * @brief Get table type specification.
