@@ -21,14 +21,26 @@ typedef struct dmi_ipmi_device_data dmi_ipmi_device_data_t;
 typedef struct dmi_ipmi_device dmi_ipmi_device_t;
 #endif // !DMI_IPMI_DEVICE_T
 
-enum dmi_bmc_interface
+typedef enum dmi_bmc_interface
 {
     DMI_BMC_INTERFACE_UNKNOWN = 0x00, ///< Unknown
     DMI_BMC_INTERFACE_KCS     = 0x01, ///< KCS: Keyboard Controller Style
     DMI_BMC_INTERFACE_SMIC    = 0x02, ///< SMIC: Server Management Interface Chip
     DMI_BMC_INTERFACE_BT      = 0x03, ///< BT: Block Transfer
     DMI_BMC_INTERFACE_SSIF    = 0x04, ///< SSIF: SMBus System Interface
-};
+} dmi_bmc_interface_t;
+
+typedef enum dmi_interrupt_trigger_mode
+{
+    DMI_INTERRUPT_TRIGGER_MODE_EDGE  = 0x0, ///< Edge
+    DMI_INTERRUPT_TRIGGER_MODE_LEVEL = 0x1  ///< Level
+} dmi_interrupt_trigger_mode_t;
+
+typedef enum dmi_interrupt_polarity
+{
+    DMI_INTERRUPT_POLARITY_LOW  = 0x0, ///< Active low
+    DMI_INTERRUPT_POLARITY_HIGH = 0x1  ///< Active high
+} dmi_interrupt_polarity_t;
 
 /**
  * @brief IPMI device information table (type 38).
@@ -63,18 +75,18 @@ DMI_PACKED_STRUCT(dmi_ipmi_device_data)
      * while bits 3:0 hold the least significant bits. Example: A value of 0x10
      * indicates revision 1.0.
      */
-    dmi_byte_t ipmi_revision;
+    dmi_byte_t spec_version;
 
     /**
      * @brief Target address on the I2C bus of this BMC.
      */
-    uint8_t i2c_target_addr;
+    dmi_byte_t i2c_target_addr;
 
     /**
      * @brief Bus ID of the NV storage device If no storage device exists for
      * this BMC, the field is set to 0xFF.
      */
-    uint8_t nv_storage_addr;
+    dmi_byte_t nv_storage_addr;
 
     /**
      * @brief Base address (either memory-mapped or I/O) of the BMC. If the
@@ -102,7 +114,47 @@ struct dmi_ipmi_device
     /**
      * @brief Baseboard Management Controller (BMC) interface type.
      */
-    enum dmi_bmc_interface interface_type;
+    dmi_bmc_interface_t interface_type;
+
+    /**
+     * @brief IPMI specification revision.
+     */
+    dmi_version_t spec_version;
+
+    /**
+     * @brief Target address on the I2C bus of this BMC.
+     */
+    unsigned short i2c_target_addr;
+
+    /**
+     * @brief Bus ID of the NV storage device If no storage device exists for
+     * this BMC, the field is set to `USHRT_MAX`.
+     */
+    unsigned short nv_storage_addr;
+
+    /**
+     * @brief Base address (either memory-mapped or I/O) of the BMC. If the
+     * least-significant bit of the field is a 1, the address is in I/O space.
+     * Otherwise, the address is memory-mapped. See the IPMI Interface
+     * Specification for usage details.
+     */
+    dmi_size_t base_addr;
+
+    /**
+     * @brief Interrupt trigger mode.
+     */
+    dmi_interrupt_trigger_mode_t interrupt_trigger_mode;
+
+    /**
+     * @brief Interrupt polarity.
+     */
+    dmi_interrupt_polarity_t interrupt_polarity;
+
+    /**
+     * @brief Interrupt number for IPMI System Interface. Zero means that IPMI
+     * interrupt is unspecified or unsupported.
+     */
+    unsigned short interrupt_number;
 };
 
 /**
