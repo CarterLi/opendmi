@@ -420,6 +420,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      * @brief Size of the cache portion of the memory device in bytes, if any.
      * If the value is 0, there is no cache portion. If the cache size is
      * unknown, the field is set to 0xFFFFFFFFFFFFFFFF.
+     *
      * @since SMBIOS 3.2
      */
     dmi_qword_t cache_size;
@@ -502,15 +503,44 @@ struct dmi_memory_device
     dmi_size_t size;
     dmi_memory_device_form_factor_t form_factor;
     unsigned short device_set;
+
+    /**
+     * @brief The string that identifies the physically labeled socket or board
+     * position where the memory device is located. Example: "SIMM 3".
+     */
     const char *device_locator;
+
+    /**
+     * @brief The string that identifies the physically labeled bank where the
+     * memory device is located. Example: "Bank 0" or "A".
+     */
     const char *bank_locator;
+
+    /**
+     * @brief Type of memory used in this device.
+     */
     dmi_memory_device_type_t memory_type;
     dmi_memory_device_type_detail_t memory_type_detail;
     unsigned long maximum_speed;
     const char *vendor;
+
+    /**
+     * @brief Serial number of this memory device. This value is set by the
+     * manufacturer and normally is not changeable.
+     */
     const char *serial_number;
+
+    /**
+     * @brief Asset tag of this memory device.
+     */
     const char *asset_tag;
+
+    /**
+     * @brief Part number of this memory device. This value is set by the
+     * manufacturer and normally is not changeable.
+     */
     const char *part_number;
+
     unsigned short rank;
     unsigned long configured_speed;
     unsigned short minimum_voltage;
@@ -523,13 +553,55 @@ struct dmi_memory_device
     uint16_t module_product_id;
     uint16_t controller_vendor_id;
     uint16_t controller_product_id;
+
+    /**
+     * @brief Size of the non-volatile portion of the memory device in bytes,
+     * if any. If the value is 0, there is no non-volatile portion. If the
+     * non-volatile Size is unknown, the field is set to `UINT64_MAX`.
+     */
     dmi_size_t non_volatile_size;
+
+    /**
+     * @brief Size of the volatile portion of the memory device in bytes, if
+     * any. If the value is 0, there is no volatile portion. If the volatile
+     * size is unknown, the field is set to `UINT64_MAX`.
+     */
     dmi_size_t volatile_size;
+
+    /**
+     * @brief Size of the cache portion of the memory device in bytes, if any.
+     * If the value is 0, there is no cache portion. If the cache size is
+     * unknown, the field is set to `UINT64_MAX`.
+     */
     dmi_size_t cache_size;
+
+    /**
+     * @brief Size of the logical memory device in bytes. If the size is
+     * unknown, the field is set to `UINT64_MAX`.
+     */
     dmi_size_t logical_size;
+
+    /**
+     * @brief The two-byte PMIC0 manufacturer ID found in the SPD of this
+     * memory device, LSB first.
+     */
     uint16_t pmic0_vendor_id;
+
+    /**
+     * @brief The PMIC 0 Revision Number found in the SPD of this memory
+     * device.
+     */
     uint16_t pmic0_revision;
+
+    /**
+     * @brief The two-byte RCD manufacturer ID found in the SPD of this memory
+     * device.
+     */
     uint16_t rcd_vendor_id;
+
+    /**
+     * @brief The RCD Revision Number found in the SPD of this memory device.
+     */
     uint16_t rcd_revision;
 };
 
