@@ -356,40 +356,40 @@ static const dmi_name_set_t dmi_memory_device_form_factor_names =
     }
 };
 
-static const dmi_name_set_t dmi_memory_device_technology_names =
+static const dmi_name_set_t dmi_memory_device_tech_names =
 {
     .code  = "memory-device-technologies",
     .names = {
-        DMI_NAME_UNSPEC(DMI_MEMORY_DEVICE_TECHNOLOGY_UNSPEC),
-        DMI_NAME_OTHER(DMI_MEMORY_DEVICE_TECHNOLOGY_OTHER),
-        DMI_NAME_UNKNOWN(DMI_MEMORY_DEVICE_TECHNOLOGY_UNKNOWN),
+        DMI_NAME_UNSPEC(DMI_MEMORY_DEVICE_TECH_UNSPEC),
+        DMI_NAME_OTHER(DMI_MEMORY_DEVICE_TECH_OTHER),
+        DMI_NAME_UNKNOWN(DMI_MEMORY_DEVICE_TECH_UNKNOWN),
         {
-            .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_DRAM,
+            .id   = DMI_MEMORY_DEVICE_TECH_DRAM,
             .code = "dram",
             .name = "DRAM"
         },
         {
-            .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_N,
+            .id   = DMI_MEMORY_DEVICE_TECH_NVDIMM_N,
             .code = "nvdimm-n",
             .name = "NVDIMM-N"
         },
         {
-            .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_F,
+            .id   = DMI_MEMORY_DEVICE_TECH_NVDIMM_F,
             .code = "nvdimm-f",
             .name = "NVDIMM-F"
         },
         {
-            .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_P,
+            .id   = DMI_MEMORY_DEVICE_TECH_NVDIMM_P,
             .code = "nvdimm-p",
             .name = "NVDIMM-P"
         },
         {
-            .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_OPTANE,
+            .id   = DMI_MEMORY_DEVICE_TECH_OPTANE,
             .code = "optane",
             .name = "Intel Optane persistent memory"
         },
         {
-            .id   = DMI_MEMORY_DEVICE_TECHNOLOGY_MRDIMM,
+            .id   = DMI_MEMORY_DEVICE_TECH_MRDIMM,
             .code = "mrdimm",
             .name = "MRDIMM"
         },
@@ -520,12 +520,12 @@ const dmi_attribute_t dmi_memory_device_attrs[] =
         .unknown = DMI_VALUE_PTR((unsigned short)0),
         .level   = DMI_VERSION(2, 8, 0)
     }),
-    DMI_ATTRIBUTE(dmi_memory_device_t, memory_technology, ENUM, {
+    DMI_ATTRIBUTE(dmi_memory_device_t, memory_tech, ENUM, {
         .code    = "memory-technology",
         .name    = "Memory technology",
-        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_DEVICE_TECHNOLOGY_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_MEMORY_DEVICE_TECHNOLOGY_UNKNOWN),
-        .values  = &dmi_memory_device_technology_names,
+        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_DEVICE_TECH_UNSPEC),
+        .unknown = DMI_VALUE_PTR(DMI_MEMORY_DEVICE_TECH_UNKNOWN),
+        .values  = &dmi_memory_device_tech_names,
         .level   = DMI_VERSION(3, 2, 0)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_t, memory_mode_caps, INTEGER, {
@@ -637,19 +637,19 @@ const dmi_table_spec_t dmi_memory_device_table =
     }
 };
 
-const char *dmi_memory_device_type_name(enum dmi_memory_device_type value)
+const char *dmi_memory_device_type_name(dmi_memory_device_type_t value)
 {
     return dmi_name_lookup(&dmi_memory_device_type_names, value);
 }
 
-const char *dmi_memory_device_form_factor_name(enum dmi_memory_device_form_factor value)
+const char *dmi_memory_device_form_factor_name(dmi_memory_device_form_factor_t value)
 {
     return dmi_name_lookup(&dmi_memory_device_form_factor_names, value);
 }
 
-const char *dmi_memory_device_technology_name(enum dmi_memory_device_technology value)
+const char *dmi_memory_device_technology_name(dmi_memory_device_tech_t value)
 {
-    return dmi_name_lookup(&dmi_memory_device_technology_names, value);
+    return dmi_name_lookup(&dmi_memory_device_tech_names, value);
 }
 
 dmi_size_t dmi_memory_device_size(uint16_t value)
@@ -755,7 +755,7 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_table_t *table, dmi_version_t 
     if (table->body_length >= 0x28) {
         level = dmi_version(3, 2, 0);
 
-        info->memory_technology = data->memory_technology;
+        info->memory_tech       = dmi_value(data->memory_tech);
         info->memory_mode_caps  = dmi_value(data->memory_mode_caps);
 
         info->firmware_version = dmi_table_string(table, data->firmware_version);

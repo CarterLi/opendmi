@@ -84,18 +84,18 @@ typedef enum dmi_memory_device_form_factor
 /**
  * @brief Memory device technologies.
  */
-typedef enum dmi_memory_device_technology
+typedef enum dmi_memory_device_tech
 {
-    DMI_MEMORY_DEVICE_TECHNOLOGY_UNSPEC   = 0x00, ///< Unspecified
-    DMI_MEMORY_DEVICE_TECHNOLOGY_OTHER    = 0x01, ///< Other
-    DMI_MEMORY_DEVICE_TECHNOLOGY_UNKNOWN  = 0x02, ///< Unknown
-    DMI_MEMORY_DEVICE_TECHNOLOGY_DRAM     = 0x03, ///< DRAM
-    DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_N = 0x04, ///< NVDIMM-N
-    DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_F = 0x05, ///< NVDIMM-F
-    DMI_MEMORY_DEVICE_TECHNOLOGY_NVDIMM_P = 0x06, ///< NVDIMM-P
-    DMI_MEMORY_DEVICE_TECHNOLOGY_OPTANE   = 0x07, ///< Intel Optane persistent memory
-    DMI_MEMORY_DEVICE_TECHNOLOGY_MRDIMM   = 0x08, ///< MRDIMM (deprecated)
-} dmi_memory_device_technology_t;
+    DMI_MEMORY_DEVICE_TECH_UNSPEC   = 0x00, ///< Unspecified
+    DMI_MEMORY_DEVICE_TECH_OTHER    = 0x01, ///< Other
+    DMI_MEMORY_DEVICE_TECH_UNKNOWN  = 0x02, ///< Unknown
+    DMI_MEMORY_DEVICE_TECH_DRAM     = 0x03, ///< DRAM
+    DMI_MEMORY_DEVICE_TECH_NVDIMM_N = 0x04, ///< NVDIMM-N
+    DMI_MEMORY_DEVICE_TECH_NVDIMM_F = 0x05, ///< NVDIMM-F
+    DMI_MEMORY_DEVICE_TECH_NVDIMM_P = 0x06, ///< NVDIMM-P
+    DMI_MEMORY_DEVICE_TECH_OPTANE   = 0x07, ///< Intel Optane persistent memory
+    DMI_MEMORY_DEVICE_TECH_MRDIMM   = 0x08, ///< MRDIMM (deprecated)
+} dmi_memory_device_tech_t;
 
 /**
  * @brief Memory device type details.
@@ -352,7 +352,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      * @brief Memory technology type for this memory device.
      * @since SMBIOS 3.2
      */
-    dmi_byte_t memory_technology;
+    dmi_byte_t memory_tech;
 
     /**
      * @brief The operating modes supported by this memory device.
@@ -516,7 +516,7 @@ struct dmi_memory_device
     unsigned short minimum_voltage;
     unsigned short maximum_voltage;
     unsigned short configured_voltage;
-    dmi_memory_device_technology_t memory_technology;
+    dmi_memory_device_tech_t memory_tech;
     uint16_t memory_mode_caps;
     const char *firmware_version;
     uint16_t module_vendor_id;
@@ -545,9 +545,9 @@ extern const dmi_table_spec_t dmi_memory_device_table;
 
 __BEGIN_DECLS
 
-const char *dmi_memory_device_type_name(enum dmi_memory_device_type value);
+const char *dmi_memory_device_type_name(dmi_memory_device_type_t value);
 const char *dmi_memory_device_form_factor_name(enum dmi_memory_device_form_factor value);
-const char *dmi_memory_device_technology_name(enum dmi_memory_device_technology value);
+const char *dmi_memory_device_tech_name(dmi_memory_device_tech_t value);
 
 dmi_size_t dmi_memory_device_size(uint16_t value);
 dmi_size_t dmi_memory_device_size_ex(uint32_t value);
