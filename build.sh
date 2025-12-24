@@ -79,6 +79,9 @@ _usage() {
     echo "        --enable-dbus    Build with D-bus support (opendmi-dbus, default=${ENABLE_DBUS})"
     echo "    Features:"
     echo "        --with-curses    Build with Curses support (default=${ENABLE_CURSES})"
+    echo "        --with-json      Build with JSON support (default=${ENABLE_JSON})"
+    echo "        --with-xml       Build with XML support (default=${ENABLE_XML})"
+    echo "        --with-yaml      Build with YAML support (default=${ENABLE_YAML})"
     echo "    Miscellaneous:"
     echo "        --verbose        Generate verbose Makefiles"
     echo
@@ -124,6 +127,15 @@ _configure() {
                 ;;
             --with-curses)
                 ENABLE_CURSES=ON
+                ;;
+            --with-json)
+                ENABLE_JSON=ON
+                ;;
+            --with-xml)
+                ENABLE_XML=ON
+                ;;
+            --with-yaml)
+                ENABLE_YAML=ON
                 ;;
             --verbose)
                 VERBOSE=ON

@@ -23,7 +23,12 @@ configure_file(
     ${PROJECT_SOURCE_DIR}/src/config.h
     USE_SOURCE_PERMISSIONS)
 
-add_executable(opendmi src/main.c)
+add_executable(opendmi
+    src/main.c
+    src/format/json.c
+    src/format/xml.c
+    src/format/yaml.c
+)
 
 target_include_directories(opendmi PRIVATE include)
 target_link_libraries(opendmi PRIVATE opendmi-shared Curses::Curses)
