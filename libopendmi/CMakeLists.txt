@@ -92,6 +92,8 @@ target_sources(opendmi-object
                 include/opendmi/entry.h
                 include/opendmi/error.h
                 include/opendmi/extension.h
+                include/opendmi/filter.h
+                include/opendmi/keyword.h
                 include/opendmi/log.h
                 include/opendmi/name.h
                 include/opendmi/registry.h
