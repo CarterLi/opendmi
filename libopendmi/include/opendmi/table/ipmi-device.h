@@ -11,36 +11,76 @@
 
 #include <opendmi/table.h>
 
-#ifndef DMI_IPMI_DEVICE_DATA_T
-#define DMI_IPMI_DEVICE_DATA_T
-typedef struct dmi_ipmi_device_data dmi_ipmi_device_data_t;
-#endif // !DMI_IPMI_DEVICE_DATA_T
-
 #ifndef DMI_IPMI_DEVICE_T
 #define DMI_IPMI_DEVICE_T
 typedef struct dmi_ipmi_device dmi_ipmi_device_t;
 #endif // !DMI_IPMI_DEVICE_T
 
-typedef enum dmi_bmc_interface
-{
-    DMI_BMC_INTERFACE_UNKNOWN = 0x00, ///< Unknown
-    DMI_BMC_INTERFACE_KCS     = 0x01, ///< KCS: Keyboard Controller Style
-    DMI_BMC_INTERFACE_SMIC    = 0x02, ///< SMIC: Server Management Interface Chip
-    DMI_BMC_INTERFACE_BT      = 0x03, ///< BT: Block Transfer
-    DMI_BMC_INTERFACE_SSIF    = 0x04, ///< SSIF: SMBus System Interface
-} dmi_bmc_interface_t;
+#ifndef DMI_IPMI_DEVICE_DATA_T
+#define DMI_IPMI_DEVICE_DATA_T
+typedef struct dmi_ipmi_device_data dmi_ipmi_device_data_t;
+#endif // !DMI_IPMI_DEVICE_DATA_T
 
-typedef enum dmi_interrupt_trigger_mode
-{
-    DMI_INTERRUPT_TRIGGER_MODE_EDGE  = 0x0, ///< Edge
-    DMI_INTERRUPT_TRIGGER_MODE_LEVEL = 0x1  ///< Level
-} dmi_interrupt_trigger_mode_t;
+#ifndef DMI_IPMI_DEVICE_DETAILS_T
+#define DMI_IPMI_DEVICE_DETAILS_T
+typedef union dmi_ipmi_device_details dmi_ipmi_device_details_t;
+#endif // !DMI_IPMI_DEVICE_DETAILS_T
 
-typedef enum dmi_interrupt_polarity
+typedef enum dmi_ipmi_interface
 {
-    DMI_INTERRUPT_POLARITY_LOW  = 0x0, ///< Active low
-    DMI_INTERRUPT_POLARITY_HIGH = 0x1  ///< Active high
-} dmi_interrupt_polarity_t;
+    DMI_IPMI_INTERFACE_UNKNOWN = 0x00, ///< Unknown
+    DMI_IPMI_INTERFACE_KCS     = 0x01, ///< KCS: Keyboard Controller Style
+    DMI_IPMI_INTERFACE_SMIC    = 0x02, ///< SMIC: Server Management Interface Chip
+    DMI_IPMI_INTERFACE_BT      = 0x03, ///< BT: Block Transfer
+    DMI_IPMI_INTERFACE_SSIF    = 0x04, ///< SSIF: SMBus System Interface
+} dmi_ipmi_interface_t;
+
+typedef enum dmi_ipmi_addr_type
+{
+    DMI_IPMI_ADDR_TYPE_MEMORY = 0x0,
+    DMI_IPMI_ADDR_TYPE_IO     = 0x1
+} dmi_ipmi_addr_type_t;
+
+typedef enum dmi_ipmi_intr_trigger
+{
+    DMI_IPMI_INTR_TRIGGER_UNSPEC = 0x0, ///< Unspecified
+    DMI_IPMI_INTR_TRIGGER_EDGE   = 0x1, ///< Edge
+    DMI_IPMI_INTR_TRIGGER_LEVEL  = 0x2  ///< Level
+} dmi_ipmi_intr_trigger_t;
+
+typedef enum dmi_ipmi_intr_polarity
+{
+    DMI_IPMI_INTR_POLARITY_UNSPEC = 0x0, ///< Unspecified
+    DMI_IPMI_INTR_POLARITY_LOW    = 0x1, ///< Active low
+    DMI_IPMI_INTR_POLARITY_HIGH   = 0x2  ///< Active high
+} dmi_ipmi_intr_polarity_t;
+
+typedef enum dmi_ipmi_register_spacing
+{
+    DMI_IPMI_REGISTER_SPACING_1        = 0x0, ///< 1 byte
+    DMI_IPMI_REGISTER_SPACING_4        = 0x1, ///< 4 bytes
+    DMI_IPMI_REGISTER_SPACING_16       = 0x2, ///< 16 bytes
+    DMI_IPMI_REGISTER_SPACING_RESERVED = 0x3, ///< Reserved
+} dmi_ipmi_register_spacing_t;
+
+DMI_PACKED_UNION(dmi_ipmi_device_details)
+{
+    /**
+     * @brief Raw value.
+     */
+    uint8_t _value;
+
+    DMI_PACKED_STRUCT()
+    {
+        bool       is_intr_level_triggered : 1;
+        bool       is_intr_active_high     : 1;
+        dmi_byte_t __reserved_1            : 1; ///< Reserved for future use, set to 0.
+        bool       is_intr_info_specified  : 1;
+        bool       base_addr_lsb           : 1;
+        dmi_byte_t __reserved_2            : 1; ///< Reserved for future use, set to 0.
+        dmi_byte_t register_spacing        : 2;
+    };
+};
 
 /**
  * @brief IPMI device information table (type 38).
@@ -96,17 +136,16 @@ DMI_PACKED_STRUCT(dmi_ipmi_device_data)
      */
     dmi_qword_t base_addr;
 
-    DMI_PACKED_STRUCT()
-    {
-        dmi_byte_t interrupt_info : 4;
-        dmi_byte_t base_addr_modifier : 4;
-    };
+    /**
+     * @brief Base address modifier and interrupt info.
+     */
+    dmi_byte_t details;
 
     /**
      * @brief Interrupt number for IPMI System Interface. Zero means that IPMI
      * interrupt is unspecified or unsupported.
      */
-    dmi_byte_t interrupt_number;
+    dmi_byte_t intr_number;
 };
 
 struct dmi_ipmi_device
@@ -114,7 +153,7 @@ struct dmi_ipmi_device
     /**
      * @brief Baseboard Management Controller (BMC) interface type.
      */
-    dmi_bmc_interface_t interface_type;
+    dmi_ipmi_interface_t interface_type;
 
     /**
      * @brief IPMI specification revision.
@@ -124,7 +163,7 @@ struct dmi_ipmi_device
     /**
      * @brief Target address on the I2C bus of this BMC.
      */
-    unsigned short i2c_target_addr;
+    dmi_i2c_addr_t i2c_target_addr;
 
     /**
      * @brief Bus ID of the NV storage device If no storage device exists for
@@ -141,25 +180,56 @@ struct dmi_ipmi_device
     dmi_size_t base_addr;
 
     /**
+     * @brief Base address type.
+     */
+    dmi_ipmi_addr_type_t base_addr_type;
+
+    /**
+     * @brief Base address LSB state.
+     */
+    bool base_addr_lsb;
+
+    /**
      * @brief Interrupt trigger mode.
      */
-    dmi_interrupt_trigger_mode_t interrupt_trigger_mode;
+    dmi_ipmi_intr_trigger_t intr_trigger;
 
     /**
      * @brief Interrupt polarity.
      */
-    dmi_interrupt_polarity_t interrupt_polarity;
+    dmi_ipmi_intr_polarity_t intr_polarity;
+
+    /**
+     * @brief Register spacing in bytes.
+     */
+    unsigned short register_spacing;
 
     /**
      * @brief Interrupt number for IPMI System Interface. Zero means that IPMI
      * interrupt is unspecified or unsupported.
      */
-    unsigned short interrupt_number;
+    unsigned short intr_number;
 };
 
 /**
  * @brief IPMI device information table specification.
  */
 extern const dmi_table_spec_t dmi_ipmi_device_table;
+
+__BEGIN_DECLS
+
+const char *dmi_ipmi_interface_name(dmi_ipmi_interface_t value);
+const char *dmi_ipmi_addr_type_name(dmi_ipmi_addr_type_t value);
+const char *dmi_ipmi_intr_trigger_name(dmi_ipmi_intr_trigger_t value);
+const char *dmi_ipmi_intr_polarity_name(dmi_ipmi_intr_polarity_t value);
+
+dmi_ipmi_device_t *dmi_ipmi_device_decode(const dmi_table_t *table, dmi_version_t *plevel);
+
+/**
+ * @internal
+ */
+void dmi_ipmi_device_free(dmi_ipmi_device_t *info);
+
+__END_DECLS
 
 #endif // !OPENDMI_TABLE_IPMI_DEVICE_H

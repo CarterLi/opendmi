@@ -79,6 +79,11 @@ typedef dmi_byte_t dmi_string_t;
  */
 typedef uint64_t dmi_size_t;
 
+/**
+ * @brief I2C address (7- or 10-bit).
+ */
+typedef uint16_t dmi_i2c_addr_t;
+
 #ifndef DMI_UUID_T
 #define DMI_UUID_T
 typedef union dmi_uuid dmi_uuid_t;
