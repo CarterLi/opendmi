@@ -25,7 +25,7 @@ struct test_vector test_data[] =
 int main(void)
 {
     for (unsigned i = 0; i < DMI_ARRAY_SIZE(test_data); i++) {
-        if (dmi_decode_word(*(dmi_word_t *)test_data[i].value) != test_data[i].result)
+        if (dmi_word_decode(*(dmi_word_t *)test_data[i].value) != test_data[i].result)
             return EXIT_FAILURE;
     }
 

@@ -205,17 +205,26 @@ uint64_t dmi_decode_bcd(const dmi_byte_t *value, size_t length)
     return result;
 }
 
-dmi_uuid_t dmi_decode_uuid(const dmi_byte_t value[16])
+dmi_uuid_t dmi_uuid_decode(const dmi_byte_t value[16])
 {
     dmi_uuid_t uuid;
 
     memcpy(uuid._value, value, sizeof(uuid._value));
 
-    uuid.time_low            = dmi_value(uuid.time_low);
-    uuid.time_mid            = dmi_value(uuid.time_mid);
-    uuid.time_hi_and_version = dmi_value(uuid.time_hi_and_version);
+    uuid.time_low            = dmi_bswap(uuid.time_low);
+    uuid.time_mid            = dmi_bswap(uuid.time_mid);
+    uuid.time_hi_and_version = dmi_bswap(uuid.time_hi_and_version);
 
     return uuid;
+}
+
+void dmi_uuid_encode(dmi_uuid_t value, uint8_t out[16])
+{
+    value.time_low            = dmi_bswap(value.time_low);
+    value.time_mid            = dmi_bswap(value.time_mid);
+    value.time_hi_and_version = dmi_bswap(value.time_hi_and_version);
+
+    memcpy(out, value._value, sizeof(value._value));
 }
 
 int dmi_asprintf(char **strp, const char *fmt, ...)
@@ -274,7 +283,7 @@ dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plen
     }
     if (plength == nullptr) {
         dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "plength");
-        return nullptr; 
+        return nullptr;
     }
 
     int         fd   = -1;
@@ -293,7 +302,7 @@ dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plen
             break;
         }
 #endif
- 
+
         if (fstat(fd, &st) < 0) {
             dmi_error_raise_ex(context, DMI_ERROR_FILE_STAT, "%s: %s", path, strerror(errno));
             break;
@@ -355,7 +364,7 @@ dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *pleng
             dmi_error_raise_ex(context, DMI_ERROR_FILE_OPEN, "%s: %s", path, strerror(errno));
             break;
         }
- 
+
         if (fstat(fd, &st) < 0) {
             dmi_error_raise_ex(context, DMI_ERROR_FILE_STAT, "%s: %s", path, strerror(errno));
             break;

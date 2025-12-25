@@ -104,32 +104,32 @@ DMI_PACKED_UNION(dmi_uuid)
         /**
          * @brief Low field of the timestamp.
          */
-        dmi_dword_t time_low;
+        uint32_t time_low;
 
         /**
          * @brief Middle field of the timestamp.
          */
-        dmi_word_t time_mid;
+        uint16_t time_mid;
 
         /**
          * @brief High field of the timestamp multiplexed with the version number.
          */
-        dmi_word_t time_hi_and_version;
+        uint16_t time_hi_and_version;
 
         /**
          * @brief High field of the clock sequence multiplexed with the variant.
          */
-        dmi_byte_t clock_seq_hi_and_reserved;
+        uint8_t clock_seq_hi_and_reserved;
 
         /**
          * @brief Low field of the clock sequence.
          */
-        dmi_byte_t clock_seq_low;
+        uint8_t clock_seq_low;
 
         /**
          * @brief Spatially unique node identifier.
          */
-        dmi_byte_t node[6];
+        uint8_t node[6];
     };
 };
 
