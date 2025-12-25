@@ -24,6 +24,8 @@ set(OPENDMI_PYTHON OFF CACHE BOOL "Enable Python support (libopendmi-python)")
 set(OPENDMI_RUST OFF CACHE BOOL "Enable Rust support (libopendmi-rust)")
 set(OPENDMI_DBUS OFF CACHE BOOL "Enable D-bus support (opendmi-dbus)")
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_EXTENSIONS ON)
 
@@ -66,14 +68,10 @@ else()
     add_compile_definitions(NDEBUG)
 endif()
 
-if(NOT DEFINED ENABLE_CURSES)
-    find_package(Curses)
-    if(Curses_FOUND)
-        set(ENABLE_CURSES ON)
-    endif()
-elseif(ENABLE_CURSES)
-    find_package(Curses REQUIRED)
-endif()
+include(FindPackageEx)
+
+find_package_ex(Curses ENABLE_CURSES)
+find_package_ex(LibXml2 ENABLE_XML)
 
 include(CheckIncludeFile)
 

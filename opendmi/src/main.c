@@ -6,7 +6,10 @@
 //
 #include "config.h"
 
-#include <unistd.h>
+#ifdef HAVE_UNISTD_H
+#   include <unistd.h>
+#endif // HAVE_UNISTD_H
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -16,7 +19,15 @@
 #include <getopt.h>
 
 #ifdef ENABLE_CURSES
-#   include <curses.h>
+#   if defined(CURSES_HAVE_NCURSES_NCURSES_H)
+#       include <ncurses/ncurses.h>
+#   elif defined(CURSES_HAVE_NCURSES_CURSES_H)
+#       include <ncurses/curses.h>
+#   elif defined(CURSES_HAVE_NCURSES_H)
+#       include <ncurses.h>
+#   elif defined(CURSES_HAVE_CURSES_H)
+#       include <curses.h>
+#   endif
 #   include <term.h>
 #endif // ENABLE_CURSES
 
@@ -31,6 +42,7 @@ enum dmi_command
     DMI_COMMAND_LIST_KEYWORDS,
     DMI_COMMAND_LIST_TYPES
 };
+
 struct dmi_config
 {
     enum dmi_command command;
