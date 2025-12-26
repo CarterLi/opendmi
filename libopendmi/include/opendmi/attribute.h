@@ -27,7 +27,11 @@ typedef struct dmi_attribute_params dmi_attribute_params_t;
 typedef struct dmi_attribute_ops dmi_attribute_ops_t;
 #endif // !DMI_ATTRIBUTE_OPS_T
 
-typedef char *(*dmi_attribute_format_fn_t)(const dmi_attribute_t *attr, const void *value);
+typedef char *(*dmi_attribute_format_fn_t)(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty);
+
 typedef void (*dmi_attribute_parse_fn_t)(const dmi_attribute_t *attr);
 
 typedef enum dmi_attribute_type
@@ -158,7 +162,7 @@ __BEGIN_DECLS
 bool dmi_attribute_is_unspecified(const dmi_attribute_t *attr, const void *value);
 bool dmi_attribute_is_unknown(const dmi_attribute_t *attr, const void *value);
 
-char *dmi_attribute_format(const dmi_attribute_t *attr, const void *value);
+char *dmi_attribute_format(const dmi_attribute_t *attr, const void *value, bool pretty);
 
 __END_DECLS
 

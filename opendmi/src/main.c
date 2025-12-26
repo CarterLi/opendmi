@@ -17,6 +17,7 @@
 #include <limits.h>
 #include <libgen.h>
 #include <getopt.h>
+#include <assert.h>
 
 #ifdef ENABLE_CURSES
 #   if defined(CURSES_HAVE_NCURSES_NCURSES_H)
@@ -63,17 +64,14 @@ static void show_usage(const char *proc);
 static bool list_keywords(dmi_context_t *context);
 static bool list_types(dmi_context_t *context);
 
-static void print_all(dmi_context_t *context);
-static void print_table(const dmi_table_t *table);
-static void print_table_attrs(const dmi_table_t *table);
-static void print_table_attr_array(const dmi_attribute_t *attr, const dmi_data_t *info, const void *value);
-static void print_table_attr_struct(const dmi_attribute_t *attr, const void *value);
-static void print_table_attr_value(const dmi_attribute_t *attr, const void *value);
-static void print_table_attr_set(const dmi_attribute_t *attr, const void *value);
-static void print_table_dump(const dmi_table_t *table);
-static void print_hex_data(const void *data, size_t length);
+static void print_all(dmi_context_t *context, const dmi_format_t *format);
+static void print_table(const dmi_format_t *format, const dmi_table_t *table, void *session);
 
-static void log_error(dmi_context_t *context, dmi_log_level_t level, const char *format, va_list args);
+static void log_error(
+        dmi_context_t   *context,
+        dmi_log_level_t  level,
+        const char      *format,
+        va_list          args);
 
 dmi_config_t config =
 {
@@ -147,7 +145,7 @@ int main(int argc, char *argv[])
             if (not status)
                 break;
         } else {
-            print_all(context);
+            print_all(context, config.output_format);
         }
 
         status = true;
@@ -287,193 +285,75 @@ static bool list_types(dmi_context_t *context)
     return true;
 }
 
-static void print_all(dmi_context_t *context)
+static void print_all(dmi_context_t *context, const dmi_format_t *format)
 {
+    void *session;
     dmi_registry_entry_t *entry;
 
+    session = format->handlers.initialize(context, stdout);
+    if (!session)
+        return;
+
+    if (format->handlers.dump_start != nullptr)
+        format->handlers.dump_start(session);
+
+    format->handlers.entry(session);
+
     for (entry = context->registry->head; entry; entry = entry->seq_next) {
-        print_table(entry->table);
+        print_table(format, entry->table, session);
     }
+
+    if (format->handlers.dump_end != nullptr)
+        format->handlers.dump_end(session);
+
+    format->handlers.finalize(session);
 }
 
-static void print_table(const dmi_table_t *table)
+static void print_table(
+        const dmi_format_t *format,
+        const dmi_table_t  *table,
+        void               *session)
 {
-#ifdef ENABLE_CURSES
-    if (tty)
-        tputs(tparm(tigetstr("setaf"), COLOR_YELLOW), 1, putchar);
-#endif // ENABLE_CURSES
+    assert(format != nullptr);
+    assert(table != nullptr);
+    assert(session != nullptr);
 
-    printf("Handle 0x%04x, DMI type %d, %zu bytes\n",
-           (unsigned int)dmi_table_handle(table),
-           dmi_table_type(table),
-           table->total_length);
-    printf("%s\n", dmi_table_name(table));
-
-#ifdef ENABLE_CURSES
-    if (tty)
-        tputs(tparm(tigetstr("sgr0")), 1, putchar);
-#endif // ENABLE_CURSES
-
-    if (table->info and !config.dump)
-        print_table_attrs(table);
-    else
-        print_table_dump(table);
-
-    printf("\n");
-}
-
-static void print_table_attrs(const dmi_table_t *table)
-{
     const dmi_table_spec_t *spec = table->spec;
     const dmi_attribute_t *attr = nullptr;
 
-    // Process all attributes
-    for (attr = spec->attributes; attr->params.name; attr++) {
-        const dmi_data_t *ptr = (dmi_data_t *)table->info + attr->offset;
+    format->handlers.table_start(session, table);
 
-        // Check attribute level
-        if (attr->params.level != DMI_VERSION_NONE) {
-            if (table->level < attr->params.level)
-                continue;
+    if (table->info and not config.dump) {
+        if (format->handlers.table_attrs_start != nullptr)
+            format->handlers.table_attrs_start(session, table);
+
+        for (attr = spec->attributes; attr->params.name; attr++) {
+            const dmi_data_t *value = (dmi_data_t *)table->info + attr->offset;
+
+            // Check attribute level
+            if (attr->params.level != DMI_VERSION_NONE) {
+                if (table->level < attr->params.level)
+                    continue;
+            }
+
+            format->handlers.table_attr(session, table, attr, value);
         }
 
-        // Print attribute name
-        printf("\t%s: ", attr->params.name);
-
-        // Print attribute value
-        if (attr->counter < 0) {
-            if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT)
-                print_table_attr_struct(attr, ptr);
-            else
-                print_table_attr_value(attr, ptr);
-        } else {
-            print_table_attr_array(attr, table->info, ptr);
-        }
+        if (format->handlers.table_attrs_end != nullptr)
+            format->handlers.table_attrs_end(session, table);
+    } else {
+        format->handlers.table_data(session, table);
+        format->handlers.table_strings(session, table);
     }
+
+    format->handlers.table_end(session, table);
 }
 
-static void print_table_attr_array(const dmi_attribute_t *attr, const dmi_data_t *info, const void *value)
-{
-    size_t count = *(size_t *)(info + attr->counter);
-
-    printf("%zu items\n", count);
-
-    const dmi_data_t *ptr = *(const dmi_data_t **)value;
-
-    for (size_t i = 0; i < count; i++, ptr += attr->size) {
-        printf("\t\t%zu: ", i);
-
-        if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT)
-            print_table_attr_struct(attr, ptr);
-        else
-            print_table_attr_value(attr, ptr);
-    }
-}
-
-static void print_table_attr_struct(const dmi_attribute_t *attr, const void *value)
-{
-    const dmi_attribute_t *child_attr = nullptr;
-
-    printf("\n");
-    for (child_attr = attr->params.attrs; child_attr->params.name; child_attr++) {
-        const dmi_data_t *ptr = (dmi_data_t *)value + child_attr->offset;
-
-        printf("\t\t\t%s: ", child_attr->params.name);
-        print_table_attr_value(child_attr, ptr);
-    }
-}
-
-static void print_table_attr_value(const dmi_attribute_t *attr, const void *value)
-{
-    char *str;
-
-    if (dmi_attribute_is_unspecified(attr, value)) {
-        printf("<unspecified>\n");
-        return;
-    }
-    if (dmi_attribute_is_unknown(attr, value)) {
-        printf("<unknown>\n");
-        return;
-    }
-
-    str = dmi_attribute_format(attr, value);
-    if (str == nullptr) {
-        printf("<error>\n");
-        return;
-    }
-
-    if (attr->params.unit)
-        printf("%s %s\n", str, attr->params.unit);
-    else
-        printf("%s\n", str);
-
-    free(str);
-
-    if (attr->type == DMI_ATTRIBUTE_TYPE_SET)
-        print_table_attr_set(attr, value);
-}
-
-static void print_table_attr_set(const dmi_attribute_t *attr, const void *value)
-{
-    uint64_t mask;
-
-    if (attr->size == sizeof(int8_t))
-        mask = *(uint8_t *)value;
-    else if (attr->size == sizeof(uint16_t))
-        mask = *(uint16_t *)value;
-    else if (attr->size == sizeof(uint32_t))
-        mask = *(uint32_t *)value;
-    else if (attr->size == sizeof(uint64_t))
-        mask = *(uint64_t *)value;
-    else
-        return;
-
-    for (unsigned i = 0; i < attr->size * CHAR_BIT; i++) {
-        const char *name = dmi_name_lookup(attr->params.values, i);
-        if (!name)
-            continue;
-
-        bool flag = mask & (1 << i);
-        printf("\t\t%s: %s\n", name, flag ? "yes" : "no");
-    }
-}
-
-static void print_table_dump(const dmi_table_t *table)
-{
-    printf("\tHeader and data:\n");
-    print_hex_data(table->data, table->body_length);
-
-    if (table->string_count > 0) {
-        printf("\tStrings:\n");
-        for (dmi_string_t i = 1; i <= table->string_count; i++) {
-            const char *str = dmi_table_string(table, i);
-
-            print_hex_data(str, strlen(str) + 1);
-            printf("\t\t\"%s\"\n", str);
-        }
-    }
-}
-
-static void print_hex_data(const void *data, size_t length)
-{
-    const unsigned char *ptr = dmi_cast(ptr, data);
-
-    for (size_t i = 0; i < length; i++) {
-        char sp = ' ';
-
-        if (i % 0x10 == 0)
-            printf("\t\t");
-        if (i % 0x10 == 0x0f)
-            sp = '\n';
-
-        printf("%02X%c", (int)ptr[i], sp);
-    }
-
-    if (length % 0x10 != 0)
-        printf("\n");
-}
-
-static void log_error(dmi_context_t *context __attribute__((unused)), dmi_log_level_t level, const char *format, va_list args)
+static void log_error(
+        dmi_context_t   *context __attribute__((unused)),
+        dmi_log_level_t  level,
+        const char      *format,
+        va_list          args)
 {
     FILE *out = stderr;
 

@@ -4,24 +4,83 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include "../config.h"
+
+#include <string.h>
+#include <stdio.h>
+#include <limits.h>
+#include <inttypes.h>
+#include <assert.h>
+
+#ifdef HAVE_UNISTD_H
+#   include <unistd.h>
+#endif // HAVE_UNISTD_H
+
+#ifdef ENABLE_CURSES
+#   if defined(CURSES_HAVE_NCURSES_NCURSES_H)
+#       include <ncurses/ncurses.h>
+#   elif defined(CURSES_HAVE_NCURSES_CURSES_H)
+#       include <ncurses/curses.h>
+#   elif defined(CURSES_HAVE_NCURSES_H)
+#       include <ncurses.h>
+#   elif defined(CURSES_HAVE_CURSES_H)
+#       include <curses.h>
+#   endif
+#   include <term.h>
+#endif // ENABLE_CURSES
+
+#include <opendmi/context.h>
+#include <opendmi/error.h>
+#include <opendmi/utils.h>
+
 #include <opendmi/format/text.h>
 
 typedef struct dmi_xml_session
 {
     dmi_context_t *context;
     FILE *stream;
+    bool is_tty;
 } dmi_text_session_t;
 
 static void *dmi_text_initialize(dmi_context_t *context, FILE *stream);
-static bool  dmi_text_dump_start(void *asession);
-static bool  dmi_text_entry(void *asession);
-static bool  dmi_text_table_start(void *asession);
-static bool  dmi_text_table_attr(void *asession);
-static bool  dmi_text_table_data(void *asession);
-static bool  dmi_text_table_strings(void *asession);
-static bool  dmi_text_table_end(void *asession);
-static bool  dmi_text_dump_end(void *asession);
-static void  dmi_text_finalize(void *asession);
+
+static bool dmi_text_entry(void *asession);
+static bool dmi_text_table_start(void *asession, const dmi_table_t *table);
+
+static bool dmi_text_table_attr(
+        void                  *asession,
+        const dmi_table_t     *table,
+        const dmi_attribute_t *attr,
+        const void            *data);
+
+static void dmi_text_table_attr_array(
+        void                  *asession,
+        const dmi_attribute_t *attr,
+        const dmi_data_t      *info,
+        const void            *value);
+
+static void dmi_text_table_attr_struct(
+        void                  *asession,
+        const dmi_attribute_t *attr,
+        const void            *value);
+
+static void dmi_text_table_attr_value(
+        void                  *asession,
+        const dmi_attribute_t *attr,
+        const void            *value);
+
+static void dmi_text_table_attr_set(
+        void                  *asession,
+        const dmi_attribute_t *attr,
+        const void            *value);
+
+static bool dmi_text_table_data(void *asession, const dmi_table_t *table);
+static bool dmi_text_table_strings(void *asession, const dmi_table_t *table);
+
+static bool dmi_text_table_end(void *asession, const dmi_table_t *table);
+static void dmi_text_finalize(void *asession);
+
+static void dmi_text_hex_data(void *asession, const void *data, size_t length);
 
 const dmi_format_t dmi_text_format =
 {
@@ -29,83 +88,314 @@ const dmi_format_t dmi_text_format =
     .name = "Plain text",
     .handlers = {
         .initialize    = dmi_text_initialize,
-        .dump_start    = dmi_text_dump_start,
         .entry         = dmi_text_entry,
         .table_start   = dmi_text_table_start,
         .table_attr    = dmi_text_table_attr,
         .table_data    = dmi_text_table_data,
         .table_strings = dmi_text_table_strings,
         .table_end     = dmi_text_table_end,
-        .dump_end      = dmi_text_dump_end,
         .finalize      = dmi_text_finalize
     }
 };
 
 static void *dmi_text_initialize(dmi_context_t *context, FILE *stream)
 {
-    (void)context;
-    (void)stream;
+    assert(context != nullptr);
+    assert(stream != nullptr);
 
-    return nullptr;
+    dmi_text_session_t *session;
+
+    session = dmi_alloc(context, sizeof(*session));
+    if (session == nullptr) {
+        dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);
+        return nullptr;
+    }
+
+    session->context = context;
+    session->stream  = stream;
+    session->is_tty  = isatty(fileno(session->stream));
+
+    return session;
 }
 
-static bool  dmi_text_dump_start(void *asession)
+static bool dmi_text_entry(void *asession)
 {
-    (void)asession;
+    assert(asession != nullptr);
+
+    dmi_text_session_t *session = dmi_cast(session, asession);
+    dmi_context_t      *context = session->context;
+
+    char *version = dmi_version_format(context->smbios_version);
+    if (version == nullptr) {
+        dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);
+        return false;
+    }
+
+    fprintf(session->stream, "SMBIOS %s present.\n", version);
+    fprintf(session->stream, "%zu structures occupying %zu bytes.\n",
+            context->table_count, context->table_area_size);
+    fprintf(session->stream, "Table at 0x%" PRIx64 ".\n", context->table_area_addr);
+    fprintf(session->stream, "\n");
+
+    dmi_free(version);
 
     return true;
 }
 
-static bool  dmi_text_entry(void *asession)
+static bool dmi_text_table_start(void *asession, const dmi_table_t *table)
 {
-    (void)asession;
+    assert(asession != nullptr);
+    assert(table != nullptr);
+
+    dmi_text_session_t *session = dmi_cast(session, asession);
+
+#ifdef ENABLE_CURSES
+    if (session->is_tty)
+        tputs(tparm(tigetstr("setaf"), COLOR_YELLOW), 1, putchar);
+#endif // ENABLE_CURSES
+
+    fprintf(session->stream, "Handle 0x%04x, DMI type %d, %zu bytes\n",
+           (unsigned int)dmi_table_handle(table),
+           dmi_table_type(table),
+           table->total_length);
+    fprintf(session->stream, "%s\n", dmi_table_name(table));
+
+#ifdef ENABLE_CURSES
+    if (session->is_tty)
+        tputs(tparm(tigetstr("sgr0")), 1, putchar);
+#endif // ENABLE_CURSES
 
     return true;
 }
 
-static bool  dmi_text_table_start(void *asession)
+static bool dmi_text_table_attr(
+        void                  *asession,
+        const dmi_table_t     *table,
+        const dmi_attribute_t *attr,
+        const void            *value)
 {
-    (void)asession;
+    assert(asession != nullptr);
+    assert(table != nullptr);
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    dmi_text_session_t *session = dmi_cast(session, asession);
+
+    // Print attribute name
+    fprintf(session->stream, "\t%s: ", attr->params.name);
+
+    // Print attribute value
+    if (attr->counter < 0) {
+        if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT)
+            dmi_text_table_attr_struct(session, attr, value);
+        else
+            dmi_text_table_attr_value(session, attr, value);
+    } else {
+        dmi_text_table_attr_array(session, attr, table->info, value);
+    }
 
     return true;
 }
 
-static bool  dmi_text_table_attr(void *asession)
+static void dmi_text_table_attr_array(
+        void                  *asession,
+        const dmi_attribute_t *attr,
+        const dmi_data_t      *info,
+        const void            *value)
 {
-    (void)asession;
+    assert(asession != nullptr);
+    assert(attr != nullptr);
+    assert(info != nullptr);
+    assert(value != nullptr);
+
+    dmi_text_session_t *session = dmi_cast(session, asession);
+
+    size_t count = *(size_t *)(info + attr->counter);
+
+    fprintf(session->stream, "%zu items\n", count);
+
+    const dmi_data_t *ptr = *(const dmi_data_t **)value;
+
+    for (size_t i = 0; i < count; i++, ptr += attr->size) {
+        fprintf(session->stream, "\t\t%zu: ", i);
+
+        if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT)
+            dmi_text_table_attr_struct(session, attr, ptr);
+        else
+            dmi_text_table_attr_value(session, attr, ptr);
+    }
+}
+
+static void dmi_text_table_attr_struct(
+        void                  *asession,
+        const dmi_attribute_t *attr,
+        const void            *value)
+{
+    assert(asession != nullptr);
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    dmi_text_session_t *session = dmi_cast(session, asession);
+
+    const dmi_attribute_t *child_attr = nullptr;
+
+    fprintf(session->stream, "\n");
+    for (child_attr = attr->params.attrs; child_attr->params.name; child_attr++) {
+        const dmi_data_t *ptr = (dmi_data_t *)value + child_attr->offset;
+
+        fprintf(session->stream, "\t\t\t%s: ", child_attr->params.name);
+        dmi_text_table_attr_value(session, child_attr, ptr);
+    }
+}
+
+static void dmi_text_table_attr_value(
+        void                  *asession,
+        const dmi_attribute_t *attr,
+        const void            *value)
+{
+    assert(asession != nullptr);
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    char *text;
+    dmi_text_session_t *session = dmi_cast(session, asession);
+
+    if (dmi_attribute_is_unspecified(attr, value)) {
+        fprintf(session->stream, "<unspecified>\n");
+        return;
+    }
+    if (dmi_attribute_is_unknown(attr, value)) {
+        fprintf(session->stream, "<unknown>\n");
+        return;
+    }
+
+    text = dmi_attribute_format(attr, value, true);
+    if (text == nullptr) {
+        fprintf(session->stream, "<error>\n");
+        return;
+    }
+
+    if (attr->params.unit)
+        fprintf(session->stream, "%s %s\n", text, attr->params.unit);
+    else
+        fprintf(session->stream, "%s\n", text);
+
+    dmi_free(text);
+
+    if (attr->type == DMI_ATTRIBUTE_TYPE_SET)
+        dmi_text_table_attr_set(session, attr, value);
+}
+
+static void dmi_text_table_attr_set(
+        void                  *asession,
+        const dmi_attribute_t *attr,
+        const void            *value)
+{
+    assert(asession != nullptr);
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    uint64_t mask;
+    dmi_text_session_t *session = dmi_cast(session, asession);
+
+    if (attr->size == sizeof(int8_t))
+        mask = *(uint8_t *)value;
+    else if (attr->size == sizeof(uint16_t))
+        mask = *(uint16_t *)value;
+    else if (attr->size == sizeof(uint32_t))
+        mask = *(uint32_t *)value;
+    else if (attr->size == sizeof(uint64_t))
+        mask = *(uint64_t *)value;
+    else
+        return;
+
+    for (unsigned i = 0; i < attr->size * CHAR_BIT; i++) {
+        const char *name = dmi_name_lookup(attr->params.values, i);
+        if (!name)
+            continue;
+
+        bool flag = mask & (1 << i);
+        fprintf(session->stream, "\t\t%s: %s\n", name, flag ? "yes" : "no");
+    }
+}
+
+static bool dmi_text_table_data(void *asession, const dmi_table_t *table)
+{
+    assert(asession != nullptr);
+    assert(table != nullptr);
+
+    dmi_text_session_t *session = dmi_cast(session, asession);
+
+    fprintf(session->stream, "\tHeader and data:\n");
+    dmi_text_hex_data(session, table->data, table->body_length);
 
     return true;
 }
 
-static bool  dmi_text_table_data(void *asession)
+static bool dmi_text_table_strings(void *asession, const dmi_table_t *table)
 {
-    (void)asession;
+    assert(asession != nullptr);
+    assert(table != nullptr);
+
+    dmi_text_session_t *session = dmi_cast(session, asession);
+
+    if (table->string_count == 0)
+        return true;
+
+    fprintf(session->stream, "\tStrings:\n");
+
+    for (dmi_string_t i = 1; i <= table->string_count; i++) {
+        const char *str = dmi_table_string(table, i);
+
+        dmi_text_hex_data(session, str, strlen(str) + 1);
+        fprintf(session->stream, "\t\t\"%s\"\n", str);
+    }
 
     return true;
 }
 
-static bool  dmi_text_table_strings(void *asession)
+static bool dmi_text_table_end(void *asession, const dmi_table_t *table)
 {
-    (void)asession;
+    assert(asession != nullptr);
+    assert(table != nullptr);
 
-    return true;
-}
+    DMI_UNUSED(table);
 
-static bool  dmi_text_table_end(void *asession)
-{
-    (void)asession;
+    dmi_text_session_t *session = dmi_cast(session, asession);
 
-    return true;
-}
-
-static bool  dmi_text_dump_end(void *asession)
-{
-    (void)asession;
+    fprintf(session->stream, "\n");
 
     return true;
 }
 
 static void dmi_text_finalize(void *asession)
 {
-    (void)asession;
+    assert(asession != nullptr);
+
+    dmi_text_session_t *session = dmi_cast(session, asession);
+
+    dmi_free(session);
+}
+
+static void dmi_text_hex_data(void *asession, const void *data, size_t length)
+{
+    assert(asession != nullptr);
+    assert(data != nullptr);
+
+    dmi_text_session_t *session = dmi_cast(session, asession);
+    const unsigned char *ptr = dmi_cast(ptr, data);
+
+    for (size_t i = 0; i < length; i++) {
+        char sp = ' ';
+
+        if (i % 0x10 == 0)
+            fprintf(session->stream, "\t\t");
+        if (i % 0x10 == 0x0f)
+            sp = '\n';
+
+        fprintf(session->stream, "%02X%c", (int)ptr[i], sp);
+    }
+
+    if (length % 0x10 != 0)
+        fprintf(session->stream, "\n");
 }
