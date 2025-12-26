@@ -137,7 +137,7 @@ dmi_system_t *dmi_system_decode(const dmi_table_t *table, dmi_version_t *plevel)
     // SMBIOS 2.1 features
     if (table->body_length >= 0x08) {
         level = dmi_version(2, 1, 0);
-        info->uuid        = dmi_decode_uuid(data->uuid);
+        info->uuid        = dmi_uuid_decode(data->uuid);
         info->wakeup_type = data->wakeup_type;
     }
 
