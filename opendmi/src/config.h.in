@@ -22,5 +22,6 @@
 #cmakedefine CURSES_HAVE_NCURSES_CURSES_H
 
 #cmakedefine ENABLE_XML
+#cmakedefine ENABLE_YAML
 
 #endif // !OPENDMI_CONFIG_H

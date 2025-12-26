@@ -40,7 +40,9 @@ if(ENABLE_XML)
 endif()
 
 if(ENABLE_YAML)
+    target_include_directories(opendmi PRIVATE ${LIBYAML_INCLUDE_DIRS})
     target_sources(opendmi PRIVATE src/format/yaml.c)
+    target_link_libraries(opendmi PRIVATE ${LIBYAML_LIBRARIES})
 endif()
 
 target_include_directories(opendmi PRIVATE include)
