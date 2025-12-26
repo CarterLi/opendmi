@@ -53,9 +53,10 @@ typedef enum dmi_attribute_type
 
 typedef enum dmi_attribute_flag
 {
-    DMI_ATTRIBUTE_FLAG_SIGNED = 0x01,
-    DMI_ATTRIBUTE_FLAG_HEX    = 0x02,
-    DMI_ATTRIBUTE_FLAG_BCD    = 0x04
+    DMI_ATTRIBUTE_FLAG_SIGNED    = 0x01,
+    DMI_ATTRIBUTE_FLAG_HEX       = 0x02,
+    DMI_ATTRIBUTE_FLAG_BCD       = 0x04,
+    DMI_ATTRIBUTE_FLAG_TRANSIENT = 0x08
 } dmi_attribute_flag_t;
 
 struct dmi_attribute_ops
