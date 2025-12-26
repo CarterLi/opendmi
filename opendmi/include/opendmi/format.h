@@ -9,7 +9,9 @@
 
 #pragma once
 
-#include <opendmi/defs.h>
+#include <stdio.h>
+
+#include <opendmi/types.h>
 
 #ifndef DMI_FORMAT_T
 #define DMI_FORMAT_T
@@ -23,8 +25,16 @@ typedef struct dmi_format_ops dmi_format_ops_t;
 
 struct dmi_format_ops
 {
-    void (*start)(void *context);
-    void (*end)(void *context);
+    void *(*initialize)(dmi_context_t *context, FILE *stream);
+    bool (*dump_start)(void *asession);
+    bool (*entry)(void *asession);
+    bool (*table_start)(void *asession);
+    bool (*table_attr)(void *asession);
+    bool (*table_data)(void *asession);
+    bool (*table_strings)(void *asession);
+    bool (*table_end)(void *asession);
+    bool (*dump_end)(void *asession);
+    void (*finalize)(void *asession);
 };
 
 struct dmi_format

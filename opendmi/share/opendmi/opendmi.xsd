@@ -16,12 +16,14 @@
             <xs:element name="entry" type="dmi:entryType" minOccurs="1" maxOccurs="1" />
             <xs:element name="table" type="dmi:tableType" minOccurs="0" />
         </xs:sequence>
-        <xs:attribute name="createdAt" type="xs:dateTime" use="optional" />
+        <xs:attribute name="created-at" type="xs:dateTime" use="optional" />
     </xs:complexType>
 
     <xs:complexType name="entryType">
+        <xs:attribute name="smbios-version" type="xs:string" use="required" />
     </xs:complexType>
 
     <xs:complexType name="tableType">
+        <xs:attribute name="handle" type="xs:string" use="required" />
     </xs:complexType>
 </xs:schema>
