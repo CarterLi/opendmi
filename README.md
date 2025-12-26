@@ -10,7 +10,7 @@ The project is under active development, see [ROADMAP](ROADMAP.md) and [CHANGELO
 * Full SMBIOS support up to version 3.9.
 * Bindings for C, C++, Python, Go and Rust languages.
 * Modular extensions for handling OEM-specific structures.
-* JSON and XML output support for automation purposes.
+* JSON, XML and YAML output support for automation purposes.
 * Works on Linux, MacOS, BSD and Windows platforms.
 * Small footprint, no external dependencies.
 
