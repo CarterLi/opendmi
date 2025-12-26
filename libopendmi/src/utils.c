@@ -49,8 +49,10 @@ void *dmi_alloc(dmi_context_t *context, size_t size)
     void *ptr;
 
     ptr = calloc(1, size);
-    if ((ptr == nullptr) and (context != nullptr))
+    if ((ptr == nullptr) and (context != nullptr)) {
+        dmi_log_error(context, dmi_error_message(DMI_ERROR_OUT_OF_MEMORY));
         dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);
+    }
 
     return ptr;
 }

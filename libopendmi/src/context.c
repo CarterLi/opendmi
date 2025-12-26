@@ -279,7 +279,7 @@ const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type)
 {
     const dmi_table_spec_t *spec = nullptr;
 
-    if ((type <= DMI_TYPE_INVALID) or (type >= __DMI_TYPE_COUNT)) {
+    if ((type <= DMI_TYPE_INVALID) or (type > UINT8_MAX)) {
         dmi_error_raise_ex(context, DMI_ERROR_INVALID_ARGUMENT, "type");
         return nullptr;
     }
