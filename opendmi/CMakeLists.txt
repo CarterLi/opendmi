@@ -25,10 +25,23 @@ configure_file(
 
 add_executable(opendmi
     src/main.c
-    src/format/json.c
-    src/format/xml.c
-    src/format/yaml.c
+    src/format.c
+    src/format/text.c
 )
+
+if(ENABLE_JSON)
+    target_sources(opendmi PRIVATE src/format/json.c)
+endif()
+
+if(ENABLE_XML)
+    target_include_directories(opendmi PRIVATE ${LIBXML2_INCLUDE_DIRS})
+    target_sources(opendmi PRIVATE src/format/xml.c)
+    target_link_libraries(opendmi PRIVATE ${LIBXML2_LIBRARIES})
+endif()
+
+if(ENABLE_YAML)
+    target_sources(opendmi PRIVATE src/format/yaml.c)
+endif()
 
 target_include_directories(opendmi PRIVATE include)
 target_link_libraries(opendmi PRIVATE opendmi-shared Curses::Curses)

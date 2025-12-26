@@ -14,17 +14,17 @@
 #include <opendmi/attribute.h>
 #include <opendmi/utils.h>
 
-static char *dmi_attribute_format_handle(const dmi_attribute_t *attr, const void *value);
-static char *dmi_attribute_format_string(const dmi_attribute_t *attr, const void *value);
-static char *dmi_attribute_format_bool(const dmi_attribute_t *attr, const void *value);
-static char *dmi_attribute_format_integer(const dmi_attribute_t *attr, const void *value);
-static char *dmi_attribute_format_decimal(const dmi_attribute_t *attr, const void *value);
-static char *dmi_attribute_format_size(const dmi_attribute_t *attr, const void *value);
-static char *dmi_attribute_format_address(const dmi_attribute_t *attr, const void *value);
-static char *dmi_attribute_format_enum(const dmi_attribute_t *attr, const void *value);
-static char *dmi_attribute_format_set(const dmi_attribute_t *attr, const void *value);
-static char *dmi_attribute_format_version(const dmi_attribute_t *attr, const void *value);
-static char *dmi_attribute_format_uuid(const dmi_attribute_t *attr, const void *value);
+static char *dmi_attribute_format_handle(const dmi_attribute_t *attr, const void *value, bool pretty);
+static char *dmi_attribute_format_string(const dmi_attribute_t *attr, const void *value, bool pretty);
+static char *dmi_attribute_format_bool(const dmi_attribute_t *attr, const void *value, bool pretty);
+static char *dmi_attribute_format_integer(const dmi_attribute_t *attr, const void *value, bool pretty);
+static char *dmi_attribute_format_decimal(const dmi_attribute_t *attr, const void *value, bool pretty);
+static char *dmi_attribute_format_size(const dmi_attribute_t *attr, const void *value, bool pretty);
+static char *dmi_attribute_format_address(const dmi_attribute_t *attr, const void *value, bool pretty);
+static char *dmi_attribute_format_enum(const dmi_attribute_t *attr, const void *value, bool pretty);
+static char *dmi_attribute_format_set(const dmi_attribute_t *attr, const void *value, bool pretty);
+static char *dmi_attribute_format_version(const dmi_attribute_t *attr, const void *value, bool pretty);
+static char *dmi_attribute_format_uuid(const dmi_attribute_t *attr, const void *value, bool pretty);
 
 static const dmi_attribute_ops_t dmi_attribute_type_ops[] =
 {
@@ -106,12 +106,12 @@ bool dmi_attribute_is_unknown(const dmi_attribute_t *attr, const void *value)
     return false;
 }
 
-char *dmi_attribute_format(const dmi_attribute_t *attr, const void *value)
+char *dmi_attribute_format(const dmi_attribute_t *attr, const void *value, bool pretty)
 {
-    const dmi_attribute_ops_t *ops;
-
     assert(attr != nullptr);
     assert(value != nullptr);
+
+    const dmi_attribute_ops_t *ops;
 
     if (attr->type >= DMI_ARRAY_SIZE(dmi_attribute_type_ops))
         return nullptr;
@@ -120,17 +120,21 @@ char *dmi_attribute_format(const dmi_attribute_t *attr, const void *value)
     if (!ops->format)
         return nullptr;
 
-    return ops->format(attr, value);
+    return ops->format(attr, value, pretty);
 }
 
-static char *dmi_attribute_format_handle(const dmi_attribute_t *attr, const void *value)
+static char *dmi_attribute_format_handle(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty)
 {
-    char *str = nullptr;
-
     assert(attr != nullptr);
     assert(value != nullptr);
 
     DMI_UNUSED(attr);
+    DMI_UNUSED(pretty);
+
+    char *str = nullptr;
 
     if (dmi_asprintf(&str, "0x%04" PRIX16, *(dmi_handle_t *)value) < 0)
         return nullptr;
@@ -138,12 +142,16 @@ static char *dmi_attribute_format_handle(const dmi_attribute_t *attr, const void
     return str;
 }
 
-static char *dmi_attribute_format_string(const dmi_attribute_t *attr, const void *value)
+static char *dmi_attribute_format_string(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty)
 {
     assert(attr != nullptr);
     assert(value != nullptr);
 
     DMI_UNUSED(attr);
+    DMI_UNUSED(pretty);
 
     const char *str = *(const char **)value;
     if (str == nullptr)
@@ -152,30 +160,42 @@ static char *dmi_attribute_format_string(const dmi_attribute_t *attr, const void
     return strdup(str);
 }
 
-static char *dmi_attribute_format_bool(const dmi_attribute_t *attr, const void *value)
+static char *dmi_attribute_format_bool(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty)
 {
-    const char *str = nullptr;
-
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    if (attr->params.values) {
-        str = dmi_name_lookup(attr->params.values, *(bool *)value ? 1 : 0);
+    const char *str = nullptr;
+
+    if (pretty) {
+        if (attr->params.values) {
+            str = dmi_name_lookup(attr->params.values, *(bool *)value ? 1 : 0);
+        } else {
+            str = *(bool *)value ? "yes" : "no";
+        }
     } else {
-        str = *(bool *)value ? "yes" : "no";
+        str = *(bool *)value ? "true" : "false";
     }
 
     return strdup(str);
 }
 
-static char *dmi_attribute_format_integer(const dmi_attribute_t *attr, const void *value)
+static char *dmi_attribute_format_integer(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty)
 {
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    DMI_UNUSED(pretty);
+
     int rv;
     const char *fmt = nullptr;
     char *str = nullptr;
-
-    assert(attr != nullptr);
-    assert(value != nullptr);
 
     switch (attr->size) {
     case sizeof(int8_t):
@@ -228,17 +248,22 @@ static char *dmi_attribute_format_integer(const dmi_attribute_t *attr, const voi
     return str;
 }
 
-static char *dmi_attribute_format_decimal(const dmi_attribute_t *attr, const void *value)
+static char *dmi_attribute_format_decimal(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty)
 {
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    DMI_UNUSED(pretty);
+
     char  fmt[16];
     int   rv  = 0;
     char *str = nullptr;
 
-    assert(attr != nullptr);
-    assert(value != nullptr);
-
     if (attr->params.scale == 0)
-        return dmi_attribute_format_integer(attr, value);
+        return dmi_attribute_format_integer(attr, value, pretty);
 
     int64_t src;
     if (attr->size == sizeof(int8_t))
@@ -277,7 +302,10 @@ static char *dmi_attribute_format_decimal(const dmi_attribute_t *attr, const voi
     return str;
 }
 
-static char *dmi_attribute_format_size(const dmi_attribute_t *attr, const void *value)
+static char *dmi_attribute_format_size(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty)
 {
     static const char *units[] = {
         "bytes", "KiB", "MiB", "GiB", "TiB", "PiB", nullptr
@@ -302,30 +330,40 @@ static char *dmi_attribute_format_size(const dmi_attribute_t *attr, const void *
     else
         return nullptr;
 
-    for (i = 0; units[i]; i++) {
-        if ((size < 1024) or (size % 1024 != 0))
-            break;
-        size >>= 10;
+    if (pretty) {
+        for (i = 0; units[i]; i++) {
+            if ((size < 1024) or (size % 1024 != 0))
+                break;
+            size >>= 10;
+        }
+
+        rv = dmi_asprintf(&str, "%" PRIu64 " %s", size, units[i]);
+    } else {
+        rv = dmi_asprintf(&str, "%" PRIu64, size);
     }
 
-    rv = dmi_asprintf(&str, "%" PRIu64 " %s", size, units[i]);
     if (rv < 0)
         return nullptr;
 
     return str;
 }
 
-static char *dmi_attribute_format_address(const dmi_attribute_t *attr, const void *value)
+static char *dmi_attribute_format_address(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty)
 {
     assert(attr != nullptr);
     assert(value != nullptr);
 
     // TODO: Implement address formatting
-
-    return dmi_attribute_format_integer(attr, value);
+    return dmi_attribute_format_integer(attr, value, pretty);
 }
 
-static char *dmi_attribute_format_enum(const dmi_attribute_t *attr, const void *value)
+static char *dmi_attribute_format_enum(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty)
 {
     const char *name;
     char *str = nullptr;
@@ -336,25 +374,35 @@ static char *dmi_attribute_format_enum(const dmi_attribute_t *attr, const void *
     if (!attr->params.values)
         return nullptr;
 
-    name = dmi_name_lookup(attr->params.values, *(int *)value);
+    if (pretty)
+        name = dmi_name_lookup(attr->params.values, *(int *)value);
+    else
+        name = dmi_code_lookup(attr->params.values, *(int *)value);
 
     if (name)
         str = strdup(name);
-    else
+    else if (pretty)
         dmi_asprintf(&str, "<invalid> (0x%x)", *(int *)value);
+    else
+        dmi_asprintf(&str, "0x%x", *(int *)value);
 
     return str;
 }
 
-static char *dmi_attribute_format_set(const dmi_attribute_t *attr, const void *value)
+static char *dmi_attribute_format_set(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty)
 {
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    DMI_UNUSED(pretty);
+
     uint64_t src;
     const char *fmt;
     int rv;
     char *str;
-
-    assert(attr != nullptr);
-    assert(value != nullptr);
 
     switch (attr->size) {
     case sizeof(int8_t):
@@ -384,13 +432,18 @@ static char *dmi_attribute_format_set(const dmi_attribute_t *attr, const void *v
     return str;
 }
 
-static char *dmi_attribute_format_version(const dmi_attribute_t *attr, const void *value)
+static char *dmi_attribute_format_version(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty)
 {
-    int rv = 0;
-    char *str = nullptr;
-
     assert(attr != nullptr);
     assert(value != nullptr);
+
+    DMI_UNUSED(pretty);
+
+    int rv = 0;
+    char *str = nullptr;
 
     dmi_version_t version = *(dmi_version_t *)value;
 
@@ -421,15 +474,19 @@ static char *dmi_attribute_format_version(const dmi_attribute_t *attr, const voi
     return str;
 }
 
-static char *dmi_attribute_format_uuid(const dmi_attribute_t *attr, const void *value)
+static char *dmi_attribute_format_uuid(
+        const dmi_attribute_t *attr,
+        const void            *value,
+        bool                   pretty)
 {
-    int rv = 0;
-    char *str = nullptr;
-
     assert(attr != nullptr);
     assert(value != nullptr);
 
     DMI_UNUSED(attr);
+    DMI_UNUSED(pretty);
+
+    int rv = 0;
+    char *str = nullptr;
 
     dmi_uuid_t *uuid = (dmi_uuid_t *)value;
 

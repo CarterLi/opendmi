@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    OpenDMI: Cross-platform DMI/SMBIOS framework
+    Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+
+    SPDX-License-Identifier: BSD-3-Clause
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:dmi="http://opendmi.org/schema/opendmi.xsd"
+           targetNamespace="http://opendmi.org/schema/opendmi.xsd"
+           elementFormDefault="qualified">
+    <xs:element name="dump" type="dmi:dumpType" />
+
+    <xs:complexType name="dumpType">
+        <xs:sequence>
+            <xs:element name="entry" type="dmi:entryType" minOccurs="1" maxOccurs="1" />
+            <xs:element name="table" type="dmi:tableType" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="created-at" type="xs:dateTime" use="optional" />
+    </xs:complexType>
+
+    <xs:complexType name="entryType">
+        <xs:attribute name="smbios-version" type="xs:string" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="tableType">
+        <xs:attribute name="handle" type="xs:string" use="required" />
+    </xs:complexType>
+</xs:schema>

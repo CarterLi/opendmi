@@ -19,6 +19,7 @@ add_library(opendmi-object OBJECT)
 target_include_directories(opendmi-object PUBLIC include)
 target_sources(opendmi-object
     PRIVATE
+        src/version.c
         src/name.c
         src/utils.c
         src/error.c
