@@ -251,7 +251,7 @@ int dmi_vasprintf(char **strp, const char *fmt, va_list ap)
 
     size_t size = (size_t)len + 1;
     char *str = malloc(size);
-    if (!str) {
+    if (str == nullptr) {
         *strp = nullptr;
         return -1;
     }
@@ -330,7 +330,7 @@ dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plen
     if (fd >= 0)
         close(fd);
 
-    if (!success) {
+    if (not success) {
         dmi_free(data);
         return nullptr;
     }
@@ -381,7 +381,7 @@ dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *pleng
     if (fd >= 0)
         close(fd);
 
-    if (!success)
+    if (not success)
         return nullptr;
 
     *plength = st.st_size;

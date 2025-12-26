@@ -177,14 +177,14 @@ dmi_context_t *dmi_create(void)
     context = dmi_alloc(nullptr, sizeof(dmi_context_t));
     if (context == nullptr)
         return nullptr;
-    
+
     context->log_level = DMI_LOG_INFO;
 
     // Allocate type map
     context->type_map = dmi_alloc_array(context, sizeof(dmi_table_spec_t *), 0x100);
-    if (!context->type_map) {
+    if (context->type_map == nullptr) {
         dmi_free(context);
-        return nullptr;    
+        return nullptr;
     }
 
     return context;
@@ -279,12 +279,16 @@ const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type)
 {
     const dmi_table_spec_t *spec = nullptr;
 
-    // TODO: Check bounds
+    if ((type <= DMI_TYPE_INVALID) or (type >= __DMI_TYPE_COUNT)) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ARGUMENT, "type");
+        return nullptr;
+    }
+
     if (context != nullptr)
         spec = context->type_map[type];
-    
+
     if (spec == nullptr) {
-        if ((size_t)type < sizeof(dmi_table_specs) / sizeof(dmi_table_specs[0]))
+        if ((size_t)type < DMI_ARRAY_SIZE(dmi_table_specs))
             spec = dmi_table_specs[type];
     }
 
@@ -371,7 +375,7 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
         context->backend = backend;
 
         // Initialize backend
-        if (!context->backend->open(context, arg)) {
+        if (not context->backend->open(context, arg)) {
             dmi_log_error(context, "Unable to open backend: %s", backend->name);
             break;
         }
@@ -400,7 +404,7 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
 
         // Create registry
         context->registry = dmi_registry_create(context, 0);
-        if (!context->registry)
+        if (context->registry == nullptr)
             break;
 
         // Build and link registry
@@ -412,7 +416,7 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
         success = true;
     } while (false);
 
-    if (!success) {
+    if (not success) {
         dmi_log_error(context, "Unable to open DMI context");
         dmi_close(context);
     }

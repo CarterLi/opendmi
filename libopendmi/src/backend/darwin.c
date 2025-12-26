@@ -67,7 +67,7 @@ static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute_
         success = true;
     } while (false);
 
-    if (!success) {
+    if (not success) {
         dmi_free(session);
         return false;
     }
@@ -135,7 +135,7 @@ static dmi_data_t *dmi_darwin_read_data(dmi_context_t *context, CFStringRef key,
         data = dmi_alloc(context, length);
 		if (data == nullptr)
 			break;
-    
+
         CFDataGetBytes(ref, CFRangeMake(0, length), (UInt8 *)data);
 
         success = true;
@@ -143,8 +143,8 @@ static dmi_data_t *dmi_darwin_read_data(dmi_context_t *context, CFStringRef key,
 
     if (ref != nullptr)
         CFRelease(ref);
-    
-    if (!success) {
+
+    if (not success) {
         dmi_free(data);
         return nullptr;
     }

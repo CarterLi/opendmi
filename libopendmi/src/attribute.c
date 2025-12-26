@@ -88,7 +88,7 @@ bool dmi_attribute_is_unspecified(const dmi_attribute_t *attr, const void *value
     } else if (attr->type == DMI_ATTRIBUTE_TYPE_HANDLE) {
         if (*(dmi_handle_t *)value == DMI_HANDLE_INVALID)
             return true;
-    } 
+    }
 
     return false;
 }
@@ -146,7 +146,7 @@ static char *dmi_attribute_format_string(const dmi_attribute_t *attr, const void
     (void)attr;
 
     const char *str = *(const char **)value;
-    if (!str)
+    if (str == nullptr)
         return nullptr;
 
     return strdup(str);

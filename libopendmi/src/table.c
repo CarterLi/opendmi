@@ -84,7 +84,7 @@ dmi_table_t *dmi_table_decode(dmi_context_t *context, const void *data)
         success = true;
     } while (false);
 
-    if (!success) {
+    if (not success) {
         dmi_table_destroy(table);
         return nullptr;
     }

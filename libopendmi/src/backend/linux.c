@@ -70,7 +70,7 @@ static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__
     assert(context->session == nullptr);
 
     session = dmi_alloc(context, sizeof(*session));
-    if (!session)
+    if (session == nullptr)
         return false;
 
     do {
@@ -78,12 +78,12 @@ static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__
 
         snprintf(path, sizeof(path), "%s/%s", dmi_linux_sysfs_path, dmi_linux_entry_file);
         session->entry = dmi_file_map(context, path, &session->entry_size);
-        if (!session->entry)
+        if (session->entry == nullptr)
             break;
 
         snprintf(path, sizeof(path), "%s/%s", dmi_linux_sysfs_path, dmi_linux_table_file);
         session->tables = dmi_file_map(context, path, &session->tables_size);
-        if (!session->tables)
+        if (session->tables == nullptr)
             break;
 
         context->session = session;
@@ -137,7 +137,7 @@ static bool dmi_linux_close(dmi_context_t *context)
 
 static void dmi_linux_session_free(dmi_linux_session_t *session)
 {
-    if (!session)
+    if (session == nullptr)
         return;
 
     if (session->entry)

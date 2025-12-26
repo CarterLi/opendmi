@@ -54,7 +54,7 @@ static bool dmi_dump_open(dmi_context_t *context, const void *arg)
     memset(session, 0, sizeof(dmi_dump_session_t));
 
     session->data = dmi_file_read(context, (const char *)arg, &session->data_size);
-    if (!session->data)
+    if (session->data == nullptr)
         return false;
     if (session->data_size < DMI_ENTRY_MAX_SIZE + sizeof(dmi_header_t))
         return false;

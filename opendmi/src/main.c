@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
         status = list_keywords(context);
         goto exit;
     }
-    
+
     if (config.command == DMI_COMMAND_LIST_TYPES) {
         status = list_types(context);
         goto exit;
@@ -137,12 +137,12 @@ int main(int argc, char *argv[])
         else
             status = dmi_open(context);
 
-        if (!status)
+        if (not status)
             break;
 
         if (config.output_path != nullptr) {
             status = dmi_dump_save(context, config.output_path, false);
-            if (!status)
+            if (not status)
                 break;
         } else {
             print_all(context);
@@ -221,7 +221,7 @@ static bool parse_args(int argc, char *argv[], int *rv)
         case 'v':
             show_version();
             return false;
-        
+
         case 'h':
             show_usage(proc);
             return false;
@@ -324,7 +324,7 @@ static void print_table_attrs(const dmi_table_t *table)
             if (table->level < attr->params.level)
                 continue;
         }
-    
+
         // Print attribute name
         printf("\t%s: ", attr->params.name);
 
@@ -385,7 +385,7 @@ static void print_table_attr_value(const dmi_attribute_t *attr, const void *valu
     }
 
     str = dmi_attribute_format(attr, value);
-    if (!str) {
+    if (str == nullptr) {
         printf("<error>\n");
         return;
     }
