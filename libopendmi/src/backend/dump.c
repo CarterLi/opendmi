@@ -37,8 +37,6 @@ dmi_backend_t dmi_dump_backend =
 
 static bool dmi_dump_open(dmi_context_t *context, const void *arg)
 {
-    (void)arg;
-
     if (context == nullptr)
         return false;
 

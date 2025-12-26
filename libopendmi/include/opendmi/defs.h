@@ -45,6 +45,9 @@
 // Value pointer macro
 #define DMI_VALUE_PTR(x) &(typeof(x)){ (x) }
 
+// Cross-platform attribute unused macro
+#define DMI_UNUSED(x) (void)(x)
+
 // Cross-compiler packed structures support
 #ifdef _MSC_VER
 #   define DMI_PACKED_STRUCT(...) __pragma(pack(push, 1)) struct __VA_ARGS__ __pragma(pack(pop))

@@ -23,7 +23,7 @@ dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity)
 
     dmi_log_debug(context, "Creating registry...");
 
-    if (!capacity)
+    if (capacity == 0)
         capacity = DMI_REGISTRY_CAPACITY;
 
     registry = dmi_alloc(context, sizeof(*registry));
@@ -36,13 +36,13 @@ dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity)
     bool success = false;
     do {
         registry->index = dmi_alloc_array(context, sizeof(dmi_registry_entry_t *), capacity);
-        if (!registry->index)
+        if (registry->index != nullptr)
             break;
 
         success = true;
     } while (false);
 
-    if (!success) {
+    if (not success) {
         dmi_registry_destroy(registry);
         return nullptr;
     }
@@ -64,13 +64,13 @@ dmi_table_t *dmi_registry_get(dmi_registry_t *registry, dmi_handle_t handle, dmi
 
     entry = registry->index[(size_t)handle % registry->capacity];
 
-    while (entry) {
+    while (entry != nullptr) {
         if (entry->table->handle == handle)
             break;
         entry = entry->next;
     }
 
-    if (!entry) {
+    if (entry == nullptr) {
         dmi_error_raise_ex(registry->context, DMI_ERROR_TABLE_NOT_FOUND, "0x%04x", handle);
         return nullptr;
     }
@@ -115,7 +115,7 @@ dmi_table_t *dmi_registry_get_any(
 
 void dmi_registry_destroy(dmi_registry_t *registry)
 {
-    if (!registry)
+    if (registry == nullptr)
         return;
 
     if (registry->index) {
@@ -124,7 +124,7 @@ void dmi_registry_destroy(dmi_registry_t *registry)
         for (size_t i = 0; i < registry->capacity; i++) {
             entry = registry->index[i];
 
-            while (entry) {
+            while (entry != nullptr) {
                 next = entry->next;
 
                 dmi_table_destroy(entry->table);
@@ -133,7 +133,7 @@ void dmi_registry_destroy(dmi_registry_t *registry)
                 entry = next;
             }
         }
-    
+
         dmi_free(registry->index);
     }
 
@@ -173,13 +173,13 @@ bool dmi_registry_build(dmi_registry_t *registry)
         }
 
         // Add table to registry
-        if (!dmi_registry_put(registry, table)) {
+        if (not dmi_registry_put(registry, table)) {
             dmi_error_raise_ex(context, DMI_ERROR_TABLE_REGISTER,
                                "0x%04x (%s)", table->handle, table->spec->name);
             dmi_table_destroy(table);
             goto exit;
         }
-    
+
         // Update table pointer and index
         ptr += table->total_length;
         index++;
@@ -201,10 +201,10 @@ bool dmi_registry_link(dmi_registry_t *registry)
 
     dmi_log_debug(registry->context, "Linking SMBIOS structures...");
 
-    for (entry = registry->head; entry; entry = entry->seq_next) {
+    for (entry = registry->head; entry != nullptr; entry = entry->seq_next) {
         dmi_table_t *table = entry->table;
 
-        if (!table->spec or !table->spec->handlers.link)
+        if ((table->spec == nullptr) or (table->spec->handlers.link == nullptr))
             continue;
 
         dmi_log_debug(registry->context, "%p: Handle 0x%04x, length %d, type %d (%s)",
@@ -214,7 +214,7 @@ bool dmi_registry_link(dmi_registry_t *registry)
                       (int)table->type,
                       dmi_type_name(registry->context, table->type));
 
-        if (!table->spec->handlers.link(table)) {
+        if (not table->spec->handlers.link(table)) {
             dmi_error_raise_ex(table->context, DMI_ERROR_TABLE_LINK,
                                "0x%04x (%s)", table->handle, table->spec->name);
             return false;
@@ -259,7 +259,7 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
                                    "0x%04x", table->handle);
             }
 
-            if (!last->next)
+            if (last->next == nullptr)
                 break;
 
             last = last->next;
@@ -270,11 +270,11 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
 
     entry->seq_prev = registry->tail;
 
-    if (registry->tail)
+    if (registry->tail != nullptr)
         registry->tail->seq_next = entry;
     registry->tail = entry;
 
-    if (!registry->head)
+    if (registry->head == nullptr)
         registry->head = entry;
 
     return true;

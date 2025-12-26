@@ -26,31 +26,31 @@ dmi_backend_t dmi_windows_backend =
 
 static bool dmi_windows_open(dmi_context_t *context, const void *arg)
 {
-    (void)context;
-    (void)arg;
+    DMI_UNUSED(context);
+    DMI_UNUSED(arg);
 
     return false;
 }
 
 static dmi_data_t *dmi_windows_read_entry(dmi_context_t *context, size_t *plength)
 {
-    (void)context;
-    (void)plength;
+    DMI_UNUSED(context);
+    DMI_UNUSED(plength);
 
     return nullptr;
 }
 
 static dmi_data_t *dmi_windows_read_tables(dmi_context_t *context, size_t *plength)
 {
-    (void)context;
-    (void)plength;
+    DMI_UNUSED(context);
+    DMI_UNUSED(plength);
 
     return nullptr;
 }
 
 static bool dmi_windows_close(dmi_context_t *context)
 {
-    (void)context;
+    DMI_UNUSED(context);
 
     return false;
 }

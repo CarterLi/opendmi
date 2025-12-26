@@ -20,8 +20,8 @@ static PyObject *Context_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
     Context *self;
 
-    (void)args;
-    (void)kwds;
+    DMI_UNUSED(args);
+    DMI_UNUSED(kwds);
 
     self = (Context *)type->tp_alloc(type, 0);
 
@@ -30,9 +30,9 @@ static PyObject *Context_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
 static int Context_init(Context *self, PyObject *args, PyObject *kwds)
 {
-    (void)self;
-    (void)args;
-    (void)kwds;
+    DMI_UNUSED(self);
+    DMI_UNUSED(args);
+    DMI_UNUSED(kwds);
 
     return 0;
 }

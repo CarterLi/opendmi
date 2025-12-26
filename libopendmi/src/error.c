@@ -94,7 +94,7 @@ bool _dmi_error_vraise(
     dmi_error_t *error;
     int rv = -1;
 
-    if (!context)
+    if (context == nullptr)
         return false;
 
     slot = dmi_error_slot_get(&context->error_state);
@@ -105,16 +105,16 @@ bool _dmi_error_vraise(
     error->line     = line;
     error->reason   = reason;
 
-    if (message) {
+    if (message != nullptr) {
         rv = vasprintf(&error->message, message, args);
 
-        if ((rv < 0) || !error->message) {
+        if ((rv < 0) or (error->message == nullptr)) {
             dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);
             return false;
         }
     }
 
-    if (error->message)
+    if (error->message != nullptr)
         dmi_log_error(context, "%s: %s", dmi_error_message(error->reason), error->message);
     else
         dmi_log_error(context, "%s", dmi_error_message(error->reason));
@@ -126,7 +126,7 @@ dmi_error_t *dmi_error_peek(dmi_context_t *context)
 {
     dmi_error_state_t *state;
 
-    if (!context)
+    if (context == nullptr)
         return nullptr;
 
     state = &context->error_state;
@@ -140,7 +140,7 @@ dmi_error_t *dmi_error_peek_last(dmi_context_t *context)
 {
     dmi_error_state_t *state;
 
-    if (!context)
+    if (context == nullptr)
         return nullptr;
 
     state = &context->error_state;
@@ -155,7 +155,7 @@ dmi_error_t *dmi_error_get(dmi_context_t *context)
     dmi_error_state_t *state;
     dmi_error_t *error;
 
-    if (!context)
+    if (context == nullptr)
         return nullptr;
 
     state = &context->error_state;
@@ -173,7 +173,7 @@ dmi_error_t *dmi_error_get_last(dmi_context_t *context)
     dmi_error_state_t *state;
     dmi_error_t *error;
 
-    if (!context)
+    if (context == nullptr)
         return nullptr;
 
     state = &context->error_state;
@@ -194,7 +194,7 @@ void dmi_error_clear(dmi_context_t *context)
 {
     dmi_error_state_t *state;
 
-    if (!context)
+    if (context == nullptr)
         return;
 
     state = &context->error_state;
