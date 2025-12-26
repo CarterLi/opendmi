@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <opendmi/defs.h>
+
 /**
  * @brief SMBIOS version number.
  */
@@ -67,5 +69,11 @@ static inline unsigned int dmi_version_revision(dmi_version_t version)
 {
     return version & 0x0000FFU;
 }
+
+__BEGIN_DECLS
+
+char *dmi_version_format(dmi_version_t version);
+
+__END_DECLS
 
 #endif // !OPENDMI_VERSION_H
