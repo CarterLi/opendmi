@@ -78,6 +78,7 @@ $ dmidecode --dump-bin <filename>
 ## Authors
 
 * [Dmitry Sednev](https://github.com/sdnvx)
+* [Dmitry Kuzmenko](https://github.com/xerrial)
 * [Jorn](https://github.com/jornissimo)
 
 ## Licensing
