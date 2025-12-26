@@ -32,27 +32,28 @@
 #endif // ENABLE_CURSES
 
 #include <opendmi/context.h>
+#include <opendmi/format.h>
 #include <opendmi/table.h>
+#include <opendmi/format/text.h>
 
-typedef struct dmi_config dmi_config_t;
-
-enum dmi_command
+typedef enum dmi_command
 {
     DMI_COMMAND_DUMP_TABLES,
     DMI_COMMAND_LIST_KEYWORDS,
     DMI_COMMAND_LIST_TYPES
-};
+} dmi_command_t;
 
-struct dmi_config
+typedef struct dmi_config
 {
-    enum dmi_command command;
+    dmi_command_t command;
     char *memory_device;
     bool quiet;
     bool debug;
     bool dump;
     char *input_path;
     char *output_path;
-};
+    const dmi_format_t *output_format;
+} dmi_config_t;
 
 static bool parse_args(int argc, char *argv[], int *rv);
 
@@ -82,7 +83,8 @@ dmi_config_t config =
     .debug         = false,
     .dump          = false,
     .input_path    = nullptr,
-    .output_path   = nullptr
+    .output_path   = nullptr,
+    .output_format = &dmi_text_format
 };
 
 static bool tty = false;
@@ -169,6 +171,7 @@ static bool parse_args(int argc, char *argv[], int *rv)
         { "type",      optional_argument, nullptr, 't' },
         { "dump",      no_argument,       nullptr, 'u' },
         { "dump-bin",  required_argument, nullptr, 'o' },
+        { "format",    required_argument, nullptr, 'f' },
         { "from-dump", required_argument, nullptr, 'i' },
         { "help",      no_argument,       nullptr, 'h' },
         { "version",   no_argument,       nullptr, 'v' }
@@ -216,6 +219,15 @@ static bool parse_args(int argc, char *argv[], int *rv)
 
         case 'i':
             config.input_path = optarg;
+            break;
+
+        case 'f':
+            config.output_format = dmi_format_get(optarg);
+            if (config.output_format == nullptr) {
+                *rv = EXIT_FAILURE;
+                fprintf(stderr, "%s: Invalid output format: %s", proc, optarg);
+                return false;
+            }
             break;
 
         case 'v':
