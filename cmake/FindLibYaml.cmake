@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
-FIND_PATH(LibYaml_INCLUDE_DIRS
+FIND_PATH(LIBYAML_INCLUDE_DIRS
     NAMES yaml.h 
     PATHS $ENV{LIBYAML_ROOT}/include
 )

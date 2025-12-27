@@ -24,19 +24,47 @@ typedef struct dmi_yaml_session
 static void *dmi_yaml_initialize(dmi_context_t *context, FILE *stream);
 
 static bool dmi_yaml_dump_start(void *asession);
+static bool dmi_yaml_entry(void *asession);
+static bool dmi_yaml_table_start(void *asession);
+static bool dmi_yaml_entity_start(void *asession, const dmi_entity_t *entity);
+
+static bool dmi_yaml_entity_attr(
+        void                  *asession,
+        const dmi_entity_t     *entity,
+        const dmi_attribute_t *attr,
+        const void            *data);
+
+static bool dmi_yaml_entity_data(void *asession, const dmi_entity_t *entity);
+static bool dmi_yaml_entity_strings(void *asession, const dmi_entity_t *entity);
+static bool dmi_yaml_entity_end(void *asession, const dmi_entity_t *entity);
+static bool dmi_yaml_table_end(void *asession);
 static bool dmi_yaml_dump_end(void *asession);
 
 static void dmi_yaml_finalize(void *asession);
+
+static bool dmi_yaml_sequence_start(dmi_yaml_session_t *session, yaml_sequence_style_t style);
+static bool dmi_yaml_sequence_end(dmi_yaml_session_t *session);
+static bool dmi_yaml_mapping_start(dmi_yaml_session_t *session, yaml_mapping_style_t style);
+static bool dmi_yaml_mapping_end(dmi_yaml_session_t *session);
+static bool dmi_yaml_scalar(dmi_yaml_session_t *session, const char *value, yaml_scalar_style_t style);
 
 const dmi_format_t dmi_yaml_format =
 {
     .code     = "yaml",
     .name     = "YAML",
     .handlers = {
-        .initialize = dmi_yaml_initialize,
-        .dump_start = dmi_yaml_dump_start,
-        .dump_end   = dmi_yaml_dump_end,
-        .finalize   = dmi_yaml_finalize
+        .initialize     = dmi_yaml_initialize,
+        .dump_start     = dmi_yaml_dump_start,
+        .entry          = dmi_yaml_entry,
+        .table_start    = dmi_yaml_table_start,
+        .entity_start   = dmi_yaml_entity_start,
+        .entity_attr    = dmi_yaml_entity_attr,
+        .entity_data    = dmi_yaml_entity_data,
+        .entity_strings = dmi_yaml_entity_strings,
+        .entity_end     = dmi_yaml_entity_end,
+        .table_end      = dmi_yaml_table_end,
+        .dump_end       = dmi_yaml_dump_end,
+        .finalize       = dmi_yaml_finalize
     }
 };
 
@@ -94,21 +122,141 @@ static void *dmi_yaml_initialize(dmi_context_t *context, FILE *stream)
 
 static bool dmi_yaml_dump_start(void *asession)
 {
+    assert(asession != nullptr);
+
+    bool success = false;
+    dmi_yaml_session_t *session = dmi_cast(session, asession);
+    yaml_event_t event = { 0 };
+
+    do {
+        if (not yaml_document_start_event_initialize(&event, nullptr, nullptr, nullptr, true))
+            break;
+        if (not yaml_emitter_emit(session->emitter, &event))
+            break;
+
+        success = true;
+    } while (false);
+
+    if (!success)
+        dmi_error_raise_ex(session->context, DMI_ERROR_INTERNAL, "Unable to start YAML document");
+
+    return success;
+}
+
+static bool dmi_yaml_entry(void *asession)
+{
     DMI_UNUSED(asession);
 
     return true;
+}
+
+static bool dmi_yaml_table_start(void *asession)
+{
+    assert(asession != nullptr);
+
+    dmi_yaml_session_t *session = dmi_cast(session, asession);
+
+    return dmi_yaml_sequence_start(session, YAML_BLOCK_SEQUENCE_STYLE);
+}
+
+static bool dmi_yaml_entity_start(void *asession, const dmi_entity_t *entity)
+{
+    assert(asession != nullptr);
+
+    bool success = false;
+    dmi_yaml_session_t *session = dmi_cast(session, asession);
+    char buf[32];
+
+    do {
+        if (not dmi_yaml_mapping_start(session, YAML_FLOW_MAPPING_STYLE))
+            break;
+
+        snprintf(buf, sizeof(buf), "0x%04hx", entity->handle);
+
+        if (not dmi_yaml_scalar(session, "handle", YAML_PLAIN_SCALAR_STYLE))
+            break;
+        if (not dmi_yaml_scalar(session, buf, YAML_PLAIN_SCALAR_STYLE))
+            break;
+
+        success = true;
+    } while (false);
+
+    return success;
+}
+
+static bool dmi_yaml_entity_attr(
+        void                  *asession,
+        const dmi_entity_t     *entity,
+        const dmi_attribute_t *attr,
+        const void            *data)
+{
+    DMI_UNUSED(asession);
+    DMI_UNUSED(entity);
+    DMI_UNUSED(attr);
+    DMI_UNUSED(data);
+
+    return true;
+}
+
+static bool dmi_yaml_entity_data(void *asession, const dmi_entity_t *entity)
+{
+    DMI_UNUSED(asession);
+    DMI_UNUSED(entity);
+
+    return true;
+}
+
+static bool dmi_yaml_entity_strings(void *asession, const dmi_entity_t *entity)
+{
+    DMI_UNUSED(asession);
+    DMI_UNUSED(entity);
+
+    return true;
+}
+
+static bool dmi_yaml_entity_end(void *asession, const dmi_entity_t *entity)
+{
+    assert(asession != nullptr);
+
+    DMI_UNUSED(entity);
+
+    dmi_yaml_session_t *session = dmi_cast(session, asession);
+
+    return dmi_yaml_mapping_end(session);
+}
+
+static bool dmi_yaml_table_end(void *asession)
+{
+    assert(asession != nullptr);
+
+    dmi_yaml_session_t *session = dmi_cast(session, asession);
+
+    return dmi_yaml_sequence_end(session);
 }
 
 static bool dmi_yaml_dump_end(void *asession)
 {
     assert(asession != nullptr);
 
+    bool success = false;
     dmi_yaml_session_t *session = dmi_cast(session, asession);
+    yaml_event_t event = { 0 };
 
-    if (not yaml_emitter_flush(session->emitter))
-        return false;
+    do {
+        if (not yaml_document_end_event_initialize(&event, true))
+            break;
+        if (not yaml_emitter_emit(session->emitter, &event))
+            break;
+        if (not yaml_emitter_flush(session->emitter))
+            break;
 
-    return true;
+        success = true;
+    } while (false);
+
+    if (!success)
+        dmi_error_raise_ex(session->context, DMI_ERROR_INTERNAL, "Unable to end YAML document");
+
+    return success;
 }
 
 static void dmi_yaml_finalize(void *asession)
@@ -121,4 +269,100 @@ static void dmi_yaml_finalize(void *asession)
     yaml_emitter_delete(session->emitter);
 
     dmi_free(session->emitter);
+}
+
+static bool dmi_yaml_sequence_start(dmi_yaml_session_t *session, yaml_sequence_style_t style)
+{
+    assert(session != nullptr);
+
+    bool success = false;
+    yaml_event_t event = { 0 };
+
+    do {
+        if (not yaml_sequence_start_event_initialize(&event, nullptr, nullptr, true, style))
+            break;
+        if (not yaml_emitter_emit(session->emitter, &event))
+            break;
+
+        success = true;
+    } while (false);
+
+    return success;
+}
+
+static bool dmi_yaml_sequence_end(dmi_yaml_session_t *session)
+{
+    assert(session != nullptr);
+
+    bool success = false;
+    yaml_event_t event = { 0 };
+
+    do {
+        if (not yaml_sequence_end_event_initialize(&event))
+            break;
+        if (not yaml_emitter_emit(session->emitter, &event))
+            break;
+
+        success = true;
+    } while (false);
+
+    return success;
+}
+
+static bool dmi_yaml_mapping_start(dmi_yaml_session_t *session, yaml_mapping_style_t style)
+{
+    assert(session != nullptr);
+
+    bool success = false;
+    yaml_event_t event = { 0 };
+
+    do {
+        if (not yaml_mapping_start_event_initialize(&event, nullptr, nullptr, true, style))
+            break;
+        if (not yaml_emitter_emit(session->emitter, &event))
+            break;
+
+        success = true;
+    } while (false);
+
+    return success;
+}
+
+static bool dmi_yaml_mapping_end(dmi_yaml_session_t *session)
+{
+    assert(session != nullptr);
+
+    bool success = false;
+    yaml_event_t event = { 0 };
+
+    do {
+        if (not yaml_mapping_end_event_initialize(&event))
+            break;
+        if (not yaml_emitter_emit(session->emitter, &event))
+            break;
+
+        success = true;
+    } while (false);
+
+    return success;
+}
+
+static bool dmi_yaml_scalar(dmi_yaml_session_t *session, const char *value, yaml_scalar_style_t style)
+{
+    assert(session != nullptr);
+
+    bool success = false;
+    yaml_event_t event = { 0 };
+
+    do {
+        if (not yaml_scalar_event_initialize(
+                    &event, nullptr, nullptr, (const yaml_char_t *)value, strlen(value), true, false, style))
+            break;
+        if (not yaml_emitter_emit(session->emitter, &event))
+            break;
+
+        success = true;
+    } while (false);
+
+    return success;
 }
