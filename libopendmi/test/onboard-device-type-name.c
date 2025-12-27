@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/onboard-device.h>
+#include <opendmi/entity/onboard-device.h>
 
 int main(void)
 {

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/memory-channel.h>
+#include <opendmi/entity/memory-channel.h>
 
 int main(void)
 {

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/probe.h>
+#include <opendmi/entity/probe.h>
 
 int main(void)
 {

@@ -9,7 +9,7 @@
 
 #include <opendmi/context.h>
 #include <opendmi/entry.h>
-#include <opendmi/table.h>
+#include <opendmi/entity.h>
 #include <opendmi/utils.h>
 #include <opendmi/backend/dump.h>
 
@@ -23,16 +23,16 @@ struct dmi_dump_session
 
 static bool dmi_dump_open(dmi_context_t *context, const void *arg);
 static dmi_data_t *dmi_dump_read_entry(dmi_context_t *context, size_t *plength);
-static dmi_data_t *dmi_dump_read_tables(dmi_context_t *context, size_t *plength);
+static dmi_data_t *dmi_dump_read_table(dmi_context_t *context, size_t *plength);
 static bool dmi_dump_close(dmi_context_t *context);
 
 dmi_backend_t dmi_dump_backend =
 {
-    .name        = "Binary dump",
-    .open        = dmi_dump_open,
-    .read_entry  = dmi_dump_read_entry,
-    .read_tables = dmi_dump_read_tables,
-    .close       = dmi_dump_close
+    .name       = "Binary dump",
+    .open       = dmi_dump_open,
+    .read_entry = dmi_dump_read_entry,
+    .read_table = dmi_dump_read_table,
+    .close      = dmi_dump_close
 };
 
 static bool dmi_dump_open(dmi_context_t *context, const void *arg)
@@ -71,7 +71,7 @@ static dmi_data_t *dmi_dump_read_entry(dmi_context_t *context, size_t *plength)
     return session->data;
 }
 
-static dmi_data_t *dmi_dump_read_tables(dmi_context_t *context, size_t *plength)
+static dmi_data_t *dmi_dump_read_table(dmi_context_t *context, size_t *plength)
 {
     dmi_dump_session_t *session = dmi_cast(session, context->session);
 

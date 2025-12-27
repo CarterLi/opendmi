@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/slot.h>
+#include <opendmi/entity/slot.h>
 
 int main(void)
 {

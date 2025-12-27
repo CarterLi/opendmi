@@ -56,7 +56,7 @@ typedef uint32_t dmi_dword_t;
 typedef uint64_t dmi_qword_t;
 
 /**
- * @brief DMI structure handle, a unique 16-bit number in the range 0 to
+ * @brief SMBIOS structure handle, a unique 16-bit number in the range 0 to
  * 0xFFFE (for version 2.0) or 0 to 0xFEFF (for version 2.1 and later). The
  * handle numbers are not required to be contiguous. For version 2.1 and
  * later, handle values in the range 0xFF00 to 0xFFFF are reserved for use
@@ -134,7 +134,7 @@ DMI_PACKED_UNION(dmi_uuid)
 };
 
 /**
- * @brief DMI structure types identifiers. Types 0 through 127 (7Fh) are
+ * @brief SMBIOS structure types identifiers. Types 0 through 127 (7Fh) are
  * reserved for and defined by this specification. Types 128 through 256 (0x80
  * to 0xFF) are available for system- and OEM-specific information.
  */
@@ -193,14 +193,14 @@ typedef enum dmi_type
     __DMI_TYPE_COUNT
 } dmi_type_t;
 
-#ifndef DMI_TABLE_T
-#define DMI_TABLE_T
-typedef struct dmi_table dmi_table_t;
-#endif // !DMI_TABLE_T
-
 #ifndef DMI_CONTEXT_T
 #define DMI_CONTEXT_T
 typedef struct dmi_context dmi_context_t;
 #endif // !DMI_CONTEXT_T
+
+#ifndef DMI_ENTITY_T
+#define DMI_ENTITY_T
+typedef struct dmi_entity dmi_entity_t;
+#endif // !DMI_ENTITY_T
 
 #endif // !OPENDMI_TYPES_H

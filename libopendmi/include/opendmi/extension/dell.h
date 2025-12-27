@@ -4,12 +4,12 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_TABLE_DELL_H
-#define OPENDMI_TABLE_DELL_H
+#ifndef OPENDMI_ENTITY_DELL_H
+#define OPENDMI_ENTITY_DELL_H
 
 #pragma once
 
-#include <opendmi/table.h>
+#include <opendmi/entity.h>
 #include <opendmi/extension.h>
 
 enum dmi_dell_type
@@ -42,12 +42,12 @@ DMI_PACKED_STRUCT(dmi_dell_calling_interface_token)
 };
 
 /**
- * @brief Dell SMI calling interface table (type 218).
+ * @brief Dell SMI calling interface structure (type 218).
  */
-DMI_PACKED_STRUCT(dmi_dell_calling_interface_table)
+DMI_PACKED_STRUCT(dmi_dell_calling_interface_data)
 {
     /**
-     * @brief DMI table header.
+     * @brief SMBIOS structure header.
      */
     dmi_header_t header;
 
@@ -77,4 +77,4 @@ DMI_PACKED_STRUCT(dmi_dell_calling_interface_table)
  */
 extern const dmi_extension_t dmi_dell_ext;
 
-#endif // !OPENDMI_TABLE_DELL_H
+#endif // !OPENDMI_ENTITY_DELL_H

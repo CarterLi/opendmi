@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/memory-device.h>
+#include <opendmi/entity/memory-device.h>
 
 int main(void)
 {

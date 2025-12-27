@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/memory-array.h>
+#include <opendmi/entity/memory-array.h>
 
 int main(void)
 {

@@ -113,8 +113,8 @@ DMI_PACKED_STRUCT(dmi_entry_legacy)
      * @brief Structure table length.
      *
      * @details
-     * Total length of SMBIOS Structure Table, pointed to by the
-     * Structure Table Address, in bytes.
+     * Total length of SMBIOS structure table, pointed to by the structure
+     * table address, in bytes.
      */
     const dmi_word_t table_area_size;
 
@@ -122,8 +122,8 @@ DMI_PACKED_STRUCT(dmi_entry_legacy)
      * @brief Structure table address.
      *
      * @details
-     * 32-bit physical starting address of the read-only SMBIOS Structure
-     * Table, which can start at any 32-bit address. This area contains all of
+     * 32-bit physical starting address of the read-only SMBIOS structure
+     * table, which can start at any 32-bit address. This area contains all of
      * the SMBIOS structures fully packed together.
      */
     const dmi_dword_t table_area_addr;
@@ -132,9 +132,9 @@ DMI_PACKED_STRUCT(dmi_entry_legacy)
      * @brief Number of SMBIOS tables.
      *
      * @details
-     * Total number of structures present in the SMBIOS Structure Table.
+     * Total number of structures present in the SMBIOS structure table.
      */
-    const dmi_word_t table_count;
+    const dmi_word_t entity_count;
 
     /**
      * @brief SMBIOS revision (BCD).
@@ -215,7 +215,7 @@ DMI_PACKED_STRUCT(dmi_entry_v21)
      * Size of the largest SMBIOS structure, in bytes, and encompasses the
      * structure’s formatted area and text strings.
      */
-    const dmi_word_t table_max_size;
+    const dmi_word_t entity_max_size;
 
     /**
      * @brief Entry Point Structure revision.
@@ -331,8 +331,8 @@ DMI_PACKED_STRUCT(dmi_entry_v30)
     /**
      * @brief Structure table maximum size.
      *
-     * Maximum size of SMBIOS Structure Table, pointed to by the Structure
-     * Table Address, in bytes. The actual size is guaranteed to be less or
+     * Maximum size of SMBIOS structure table, pointed to by the structure
+     * table address, in bytes. The actual size is guaranteed to be less or
      * equal to the maximum size.
      */
     const dmi_dword_t table_area_max_size;
@@ -341,8 +341,8 @@ DMI_PACKED_STRUCT(dmi_entry_v30)
      * @brief Structure table address.
      *
      * @details
-     * The 64-bit physical starting address of the read-only SMBIOS Structure
-     * Table, which can start at any 64-bit address. This area contains all of
+     * The 64-bit physical starting address of the read-only SMBIOS structure
+     * table, which can start at any 64-bit address. This area contains all of
      * the SMBIOS structures fully packed together.
      */
     const dmi_qword_t table_area_addr;

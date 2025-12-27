@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/chassis.h>
+#include <opendmi/entity/chassis.h>
 
 int main(void)
 {

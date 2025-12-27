@@ -18,16 +18,16 @@ struct dmi_freebsd_session
 
 static bool dmi_freebsd_open(dmi_context_t *context, const void *arg __attribute__((unused)));
 static dmi_data_t *dmi_freebsd_read_entry(dmi_context_t *context, size_t *plength);
-static dmi_data_t *dmi_freebsd_read_tables(dmi_context_t *context, size_t *plength);
+static dmi_data_t *dmi_freebsd_read_table(dmi_context_t *context, size_t *plength);
 static bool dmi_freebsd_close(dmi_context_t *context);
 
 dmi_backend_t dmi_freebsd_backend =
 {
-    .name        = "FreeBSD",
-    .open        = dmi_freebsd_open,
-    .read_entry  = dmi_freebsd_read_entry,
-    .read_tables = dmi_freebsd_read_tables,
-    .close       = dmi_freebsd_close
+    .name       = "FreeBSD",
+    .open       = dmi_freebsd_open,
+    .read_entry = dmi_freebsd_read_entry,
+    .read_table = dmi_freebsd_read_table,
+    .close      = dmi_freebsd_close
 };
 
 static bool dmi_freebsd_open(dmi_context_t *context, const void *arg __attribute__((unused)))
@@ -40,7 +40,7 @@ static dmi_data_t *dmi_freebsd_read_entry(dmi_context_t *context, size_t *plengt
     return nullptr;
 }
 
-static dmi_data_t *dmi_freebsd_read_tables(dmi_context_t *context, size_t *plength)
+static dmi_data_t *dmi_freebsd_read_table(dmi_context_t *context, size_t *plength)
 {
     return nullptr;
 }

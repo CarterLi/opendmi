@@ -12,7 +12,7 @@
 #include <opendmi/extension.h>
 
 /**
- * @brief Apple DMI structure type identifiers.
+ * @brief Apple SMBIOS structure type identifiers.
  */
 enum dmi_apple_type
 {

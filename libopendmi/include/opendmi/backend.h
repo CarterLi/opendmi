@@ -28,7 +28,7 @@ struct dmi_backend
 
     bool (*open)(dmi_context_t *context, const void *arg);
     dmi_data_t *(*read_entry)(dmi_context_t *context, size_t *plength);
-    dmi_data_t *(*read_tables)(dmi_context_t *context, size_t *plength);
+    dmi_data_t *(*read_table)(dmi_context_t *context, size_t *plength);
     bool (*close)(dmi_context_t *context);
 };
 

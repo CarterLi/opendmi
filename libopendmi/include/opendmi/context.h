@@ -43,9 +43,9 @@ struct dmi_context
     size_t entry_size;
 
     /**
-     * @brief Total number of SMBIOS tables.
+     * @brief Total number of SMBIOS structures.
      */
-    size_t table_count;
+    size_t entity_count;
 
     /**
      * @brief Address of SMBIOS table area.
@@ -68,9 +68,9 @@ struct dmi_context
     dmi_data_t *table_data;
 
     /**
-     * @brief Maximum size of SMBIOS table.
+     * @brief Maximum size of SMBIOS structure.
      */
-    size_t table_max_size;
+    size_t entity_max_size;
 
     /**
      * @brief Logger callback.
@@ -93,12 +93,12 @@ struct dmi_context
     void *session;
 
     /**
-     * @brief DMI table specifications map.
+     * @brief Entity specifications map.
      */
-    dmi_table_spec_t **type_map;
+    dmi_entity_spec_t **type_map;
 
     /**
-     * @brief Table registry.
+     * @brief Entity registry.
      */
     dmi_registry_t *registry;
 
@@ -150,12 +150,12 @@ bool dmi_dump_load(dmi_context_t *context, const char *path);
 bool dmi_dump_save(dmi_context_t *context, const char *path, bool overwrite);
 
 /**
- * @brief Get table type specification.
+ * @brief Get entity type specification.
  */
-const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type);
+const dmi_entity_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type);
 
 /**
- * @brief Get table type name.
+ * @brief Get entity type name.
  */
 const char *dmi_type_name(dmi_context_t *context, dmi_type_t type);
 

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/common.h>
+#include <opendmi/entity/common.h>
 
 int main(void)
 {

@@ -8,14 +8,14 @@
 
 #include <opendmi/registry.h>
 #include <opendmi/context.h>
-#include <opendmi/table.h>
+#include <opendmi/entity.h>
 #include <opendmi/log.h>
 #include <opendmi/utils.h>
 
 /**
  * @internal
  */
-static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table);
+static bool dmi_registry_put(dmi_registry_t *registry, dmi_entity_t *entity);
 
 dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity)
 {
@@ -50,7 +50,7 @@ dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity)
     return registry;
 }
 
-dmi_table_t *dmi_registry_get(dmi_registry_t *registry, dmi_handle_t handle, dmi_type_t type)
+dmi_entity_t *dmi_registry_get(dmi_registry_t *registry, dmi_handle_t handle, dmi_type_t type)
 {
     dmi_registry_entry_t *entry = nullptr;
 
@@ -65,52 +65,52 @@ dmi_table_t *dmi_registry_get(dmi_registry_t *registry, dmi_handle_t handle, dmi
     entry = registry->index[(size_t)handle % registry->capacity];
 
     while (entry != nullptr) {
-        if (entry->table->handle == handle)
+        if (entry->entity->handle == handle)
             break;
         entry = entry->next;
     }
 
     if (entry == nullptr) {
-        dmi_error_raise_ex(registry->context, DMI_ERROR_TABLE_NOT_FOUND, "0x%04x", handle);
+        dmi_error_raise_ex(registry->context, DMI_ERROR_ENTITY_NOT_FOUND, "0x%04x", handle);
         return nullptr;
     }
 
-    if ((type != DMI_TYPE_INVALID) and (entry->table->type != type)) {
-        dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_TABLE_TYPE, "0x%04x", handle);
+    if ((type != DMI_TYPE_INVALID) and (entry->entity->type != type)) {
+        dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_ENTITY_TYPE, "0x%04x", handle);
         return nullptr;
     }
 
-    return entry->table;
+    return entry->entity;
 }
 
-dmi_table_t *dmi_registry_get_any(
+dmi_entity_t *dmi_registry_get_any(
         dmi_registry_t *registry,
         dmi_handle_t    handle,
         dmi_type_t     *type)
 {
-    dmi_table_t *table;
+    dmi_entity_t *entity;
 
     if (registry == nullptr)
         return nullptr;
 
-    table = dmi_registry_get(registry, handle, DMI_TYPE_INVALID);
-    if (table == nullptr)
+    entity = dmi_registry_get(registry, handle, DMI_TYPE_INVALID);
+    if (entity == nullptr)
         return nullptr;
 
     if (type != nullptr) {
         while (*type != DMI_TYPE_INVALID) {
-            if (table->type == *type)
+            if (entity->type == *type)
                 break;
             type++;
         }
 
         if (*type == DMI_TYPE_INVALID) {
-            dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_TABLE_TYPE, "0x%04x", handle);
+            dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_ENTITY_TYPE, "0x%04x", handle);
             return nullptr;
         }
     }
 
-    return table;
+    return entity;
 }
 
 void dmi_registry_destroy(dmi_registry_t *registry)
@@ -129,7 +129,7 @@ void dmi_registry_destroy(dmi_registry_t *registry)
             while (entry != nullptr) {
                 next = entry->next;
 
-                dmi_table_destroy(entry->table);
+                dmi_entity_destroy(entry->entity);
                 dmi_free(entry);
 
                 entry = next;
@@ -152,44 +152,44 @@ bool dmi_registry_build(dmi_registry_t *registry)
     dmi_log_debug(context, "Scanning SMBIOS structures...");
 
     // Scan table area
-    while ((context->table_count == 0) or (index < context->table_count)) {
-        dmi_table_t *table = nullptr;
+    while ((context->entity_count == 0) or (index < context->entity_count)) {
+        dmi_entity_t *entity = nullptr;
 
-        // Check table address
+        // Check structure address
         if ((size_t)(ptr - context->table_data) > context->table_area_size) {
-            dmi_error_raise(context, DMI_ERROR_INVALID_TABLE_ADDR);
+            dmi_error_raise(context, DMI_ERROR_INVALID_ENTITY_ADDR);
             goto exit;
         }
 
-        // Decode table
-        table = dmi_table_decode(context, ptr);
-        if (table == nullptr) {
-            dmi_error_raise_ex(context, DMI_ERROR_TABLE_DECODE,
-                               "0x%04x (%s)", table->handle, table->spec->name);
+        // Decode structure into entity
+        entity = dmi_entity_decode(context, ptr);
+        if (entity == nullptr) {
+            dmi_error_raise_ex(context, DMI_ERROR_ENTITY_DECODE,
+                               "0x%04x (%s)", entity->handle, entity->spec->name);
             goto exit;
         }
 
-        if (table->type == DMI_TYPE_END_OF_TABLE) {
-            dmi_table_destroy(table);
+        if (entity->type == DMI_TYPE_END_OF_TABLE) {
+            dmi_entity_destroy(entity);
             break;
         }
 
-        // Add table to registry
-        if (not dmi_registry_put(registry, table)) {
-            dmi_error_raise_ex(context, DMI_ERROR_TABLE_REGISTER,
-                               "0x%04x (%s)", table->handle, table->spec->name);
-            dmi_table_destroy(table);
+        // Add entity to registry
+        if (not dmi_registry_put(registry, entity)) {
+            dmi_error_raise_ex(context, DMI_ERROR_ENTITY_REGISTER,
+                               "0x%04x (%s)", entity->handle, entity->spec->name);
+            dmi_entity_destroy(entity);
             goto exit;
         }
 
-        // Update table pointer and index
-        ptr += table->total_length;
+        // Update structure pointer and index
+        ptr += entity->total_length;
         index++;
     }
 
-    // Set table count
+    // Set entity count
     registry->count = index + 1;
-    dmi_log_debug(context, "Found %zu tables", registry->count);
+    dmi_log_debug(context, "Found %zu structures", registry->count);
 
     success = true;
 
@@ -204,21 +204,21 @@ bool dmi_registry_link(dmi_registry_t *registry)
     dmi_log_debug(registry->context, "Linking SMBIOS structures...");
 
     for (entry = registry->head; entry != nullptr; entry = entry->seq_next) {
-        dmi_table_t *table = entry->table;
+        dmi_entity_t *entity = entry->entity;
 
-        if ((table->spec == nullptr) or (table->spec->handlers.link == nullptr))
+        if ((entity->spec == nullptr) or (entity->spec->handlers.link == nullptr))
             continue;
 
         dmi_log_debug(registry->context, "%p: Handle 0x%04x, length %d, type %d (%s)",
-                      table->data,
-                      (unsigned)table->handle,
-                      (int)table->body_length,
-                      (int)table->type,
-                      dmi_type_name(registry->context, table->type));
+                      entity->data,
+                      (unsigned)entity->handle,
+                      (int)entity->body_length,
+                      (int)entity->type,
+                      dmi_type_name(registry->context, entity->type));
 
-        if (not table->spec->handlers.link(table)) {
-            dmi_error_raise_ex(table->context, DMI_ERROR_TABLE_LINK,
-                               "0x%04x (%s)", table->handle, table->spec->name);
+        if (not entity->spec->handlers.link(entity)) {
+            dmi_error_raise_ex(entity->context, DMI_ERROR_ENTITY_LINK,
+                               "0x%04x (%s)", entity->handle, entity->spec->name);
             return false;
         }
     }
@@ -226,7 +226,7 @@ bool dmi_registry_link(dmi_registry_t *registry)
     return true;
 }
 
-static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
+static bool dmi_registry_put(dmi_registry_t *registry, dmi_entity_t *entity)
 {
     size_t hash;
     dmi_registry_entry_t *entry;
@@ -239,9 +239,9 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
 
     // Initialize entry
     memset(entry, 0, sizeof(dmi_registry_entry_t));
-    entry->table = table;
+    entry->entity = entity;
 
-    hash = (size_t)table->handle % registry->capacity;
+    hash = (size_t)entity->handle % registry->capacity;
     last = registry->index[hash];
 
     // Add entry to index
@@ -249,16 +249,16 @@ static bool dmi_registry_put(dmi_registry_t *registry, dmi_table_t *table)
         registry->index[hash] = entry;
     } else {
         while (true) {
-            if (last->table->data == table->data) {
+            if (last->entity->data == entity->data) {
                 dmi_free(entry);
                 dmi_error_raise_ex(registry->context, DMI_ERROR_DUPLICATE_ENTRY,
-                                   "%p (0x%04x)", table->data, table->handle);
+                                   "%p (0x%04x)", entity->data, entity->handle);
                 return false;
             }
 
-            if (last->table->handle == table->handle) {
+            if (last->entity->handle == entity->handle) {
                 dmi_error_raise_ex(registry->context, DMI_ERROR_DUPLICATE_HANDLE,
-                                   "0x%04x", table->handle);
+                                   "0x%04x", entity->handle);
             }
 
             if (last->next == nullptr)

@@ -17,57 +17,57 @@
 
 #include <opendmi/context.h>
 #include <opendmi/entry.h>
-#include <opendmi/table.h>
+#include <opendmi/entity.h>
 #include <opendmi/utils.h>
 
-#include <opendmi/table/additional-info.h>
-#include <opendmi/table/baseboard.h>
-#include <opendmi/table/battery.h>
-#include <opendmi/table/bis-entry-point.h>
-#include <opendmi/table/cache.h>
-#include <opendmi/table/chassis.h>
-#include <opendmi/table/cooling-device.h>
-#include <opendmi/table/current-probe.h>
-#include <opendmi/table/firmware.h>
-#include <opendmi/table/firmware-inventory.h>
-#include <opendmi/table/firmware-language.h>
-#include <opendmi/table/group-assoc.h>
-#include <opendmi/table/hardware-security.h>
-#include <opendmi/table/ipmi-device.h>
-#include <opendmi/table/memory-array.h>
-#include <opendmi/table/memory-array-addr.h>
-#include <opendmi/table/memory-channel.h>
-#include <opendmi/table/memory-controller.h>
-#include <opendmi/table/memory-device.h>
-#include <opendmi/table/memory-device-addr.h>
-#include <opendmi/table/memory-error-32.h>
-#include <opendmi/table/memory-error-64.h>
-#include <opendmi/table/memory-module.h>
-#include <opendmi/table/mgmt-controller.h>
-#include <opendmi/table/mgmt-device.h>
-#include <opendmi/table/mgmt-device-component.h>
-#include <opendmi/table/mgmt-device-threshold.h>
-#include <opendmi/table/oem-strings.h>
-#include <opendmi/table/onboard-device.h>
-#include <opendmi/table/onboard-device-ex.h>
-#include <opendmi/table/oob-remote-access.h>
-#include <opendmi/table/pointing-device.h>
-#include <opendmi/table/port-connector.h>
-#include <opendmi/table/power-controls.h>
-#include <opendmi/table/power-supply.h>
-#include <opendmi/table/probe.h>
-#include <opendmi/table/processor.h>
-#include <opendmi/table/slot.h>
-#include <opendmi/table/string-property.h>
-#include <opendmi/table/system.h>
-#include <opendmi/table/system-boot.h>
-#include <opendmi/table/system-config.h>
-#include <opendmi/table/system-event-log.h>
-#include <opendmi/table/system-reset.h>
-#include <opendmi/table/system-config.h>
-#include <opendmi/table/temperature-probe.h>
-#include <opendmi/table/tpm-device.h>
-#include <opendmi/table/voltage-probe.h>
+#include <opendmi/entity/additional-info.h>
+#include <opendmi/entity/baseboard.h>
+#include <opendmi/entity/battery.h>
+#include <opendmi/entity/bis-entry-point.h>
+#include <opendmi/entity/cache.h>
+#include <opendmi/entity/chassis.h>
+#include <opendmi/entity/cooling-device.h>
+#include <opendmi/entity/current-probe.h>
+#include <opendmi/entity/firmware.h>
+#include <opendmi/entity/firmware-inventory.h>
+#include <opendmi/entity/firmware-language.h>
+#include <opendmi/entity/group-assoc.h>
+#include <opendmi/entity/hardware-security.h>
+#include <opendmi/entity/ipmi-device.h>
+#include <opendmi/entity/memory-array.h>
+#include <opendmi/entity/memory-array-addr.h>
+#include <opendmi/entity/memory-channel.h>
+#include <opendmi/entity/memory-controller.h>
+#include <opendmi/entity/memory-device.h>
+#include <opendmi/entity/memory-device-addr.h>
+#include <opendmi/entity/memory-error-32.h>
+#include <opendmi/entity/memory-error-64.h>
+#include <opendmi/entity/memory-module.h>
+#include <opendmi/entity/mgmt-controller.h>
+#include <opendmi/entity/mgmt-device.h>
+#include <opendmi/entity/mgmt-device-component.h>
+#include <opendmi/entity/mgmt-device-threshold.h>
+#include <opendmi/entity/oem-strings.h>
+#include <opendmi/entity/onboard-device.h>
+#include <opendmi/entity/onboard-device-ex.h>
+#include <opendmi/entity/oob-remote-access.h>
+#include <opendmi/entity/pointing-device.h>
+#include <opendmi/entity/port-connector.h>
+#include <opendmi/entity/power-controls.h>
+#include <opendmi/entity/power-supply.h>
+#include <opendmi/entity/probe.h>
+#include <opendmi/entity/processor.h>
+#include <opendmi/entity/slot.h>
+#include <opendmi/entity/string-property.h>
+#include <opendmi/entity/system.h>
+#include <opendmi/entity/system-boot.h>
+#include <opendmi/entity/system-config.h>
+#include <opendmi/entity/system-event-log.h>
+#include <opendmi/entity/system-reset.h>
+#include <opendmi/entity/system-config.h>
+#include <opendmi/entity/temperature-probe.h>
+#include <opendmi/entity/tpm-device.h>
+#include <opendmi/entity/voltage-probe.h>
 
 #include <opendmi/backend/dump.h>
 #if defined(__linux__)
@@ -99,14 +99,14 @@ static void dmi_version_fixup(dmi_context_t *context);
  */
 static dmi_backend_t *dmi_backend = &DMI_BACKEND;
 
-static const dmi_table_spec_t dmi_inactive_table =
+static const dmi_entity_spec_t dmi_inactive_spec =
 {
     .code = "inactive",
     .name = "Inactive",
     .type = DMI_TYPE_INACTIVE
 };
 
-static const dmi_table_spec_t dmi_end_of_table =
+static const dmi_entity_spec_t dmi_end_of_table_spec =
 {
     .code = "end-of-table",
     .name = "End of table",
@@ -114,59 +114,59 @@ static const dmi_table_spec_t dmi_end_of_table =
 };
 
 /**
- * @brief Predefined table specifications map.
+ * @brief Predefined entity specifications map.
  */
-static const dmi_table_spec_t *dmi_table_specs[] =
+static const dmi_entity_spec_t *dmi_entity_specs[] =
 {
-    [DMI_TYPE_FIRMWARE]                = &dmi_firmware_table,
-    [DMI_TYPE_SYSTEM]                  = &dmi_system_table,
-    [DMI_TYPE_BASEBOARD]               = &dmi_baseboard_table,
-    [DMI_TYPE_CHASSIS]                 = &dmi_chassis_table,
-    [DMI_TYPE_PROCESSOR]               = &dmi_processor_table,
-    [DMI_TYPE_MEMORY_CONTROLLER]       = &dmi_memory_controller_table,
-    [DMI_TYPE_MEMORY_MODULE]           = &dmi_memory_module_table,
-    [DMI_TYPE_CACHE]                   = &dmi_cache_table,
-    [DMI_TYPE_PORT_CONNECTOR]          = &dmi_port_connector_table,
-    [DMI_TYPE_SYSTEM_SLOTS]            = &dmi_slot_table,
-    [DMI_TYPE_ONBOARD_DEVICE]          = &dmi_onboard_device_table,
-    [DMI_TYPE_OEM_STRINGS]             = &dmi_oem_strings_table,
-    [DMI_TYPE_SYSTEM_CONFIG_OPTIONS]   = &dmi_system_config_opts_table,
-    [DMI_TYPE_FIRMWARE_LANGUAGE]       = &dmi_firmware_language_table,
-    [DMI_TYPE_GROUP_ASSOC]             = &dmi_group_assoc_table,
-    [DMI_TYPE_SYSTEM_EVENT_LOG]        = &dmi_system_event_log_table,
-    [DMI_TYPE_MEMORY_ARRAY]            = &dmi_memory_array_table,
-    [DMI_TYPE_MEMORY_DEVICE]           = &dmi_memory_device_table,
-    [DMI_TYPE_MEMORY_ERROR_32]         = &dmi_memory_error_32_table,
-    [DMI_TYPE_MEMORY_ARRAY_ADDR]       = &dmi_memory_array_addr_table,
-    [DMI_TYPE_MEMORY_DEVICE_ADDR]      = &dmi_memory_device_addr_table,
-    [DMI_TYPE_POINTING_DEVICE]         = &dmi_pointing_device_table,
-    [DMI_TYPE_PORTABLE_BATTERY]        = &dmi_battery_table,
-    [DMI_TYPE_SYSTEM_RESET]            = &dmi_system_reset_table,
-    [DMI_TYPE_HARDWARE_SECURITY]       = &dmi_hardware_security_table,
-    [DMI_TYPE_POWER_CONTROLS]          = &dmi_power_controls_table,
-    [DMI_TYPE_VOLTAGE_PROBE]           = &dmi_voltage_probe_table,
-    [DMI_TYPE_COOLING_DEVICE]          = &dmi_cooling_device_table,
-    [DMI_TYPE_TEMPERATURE_PROBE]       = &dmi_temperature_probe_table,
-    [DMI_TYPE_CURRENT_PROBE]           = &dmi_current_probe_table,
-    [DMI_TYPE_OOB_REMOTE_ACCESS]       = &dmi_oob_remote_access_table,
-    [DMI_TYPE_BIS_ENTRY_POINT]         = &dmi_bis_entry_point_table,
-    [DMI_TYPE_SYSTEM_BOOT]             = &dmi_system_boot_table,
-    [DMI_TYPE_MEMORY_ERROR_64]         = &dmi_memory_error_64_table,
-    [DMI_TYPE_MGMT_DEVICE]             = &dmi_mgmt_device_table,
-    [DMI_TYPE_MGMT_DEVICE_COMPONENT]   = &dmi_mgmt_device_component_table,
-    [DMI_TYPE_MGMT_DEVICE_THRESHOLD]   = &dmi_mgmt_device_threshold_table,
-    [DMI_TYPE_MEMORY_CHANNEL]          = &dmi_memory_channel_table,
-    [DMI_TYPE_IPMI_DEVICE]             = &dmi_ipmi_device_table,
-    [DMI_TYPE_POWER_SUPPLY]            = &dmi_power_supply_table,
-    [DMI_TYPE_ADDITIONAL_INFO]         = &dmi_additional_info_table,
-    [DMI_TYPE_ONBOARD_DEVICE_EX]       = &dmi_onboard_device_ex_table,
-    [DMI_TYPE_MGMT_CONTROLLER_HOST_IF] = &dmi_mgmt_controller_host_if_table,
-    [DMI_TYPE_TPM_DEVICE]              = &dmi_tpm_device_table,
-    [DMI_TYPE_PROCESSOR_EX]            = &dmi_processor_ex_table,
-    [DMI_TYPE_FIRMWARE_INVENTORY]      = &dmi_firmware_inventory_table,
-    [DMI_TYPE_STRING_PROPERTY]         = &dmi_string_property_table,
-    [DMI_TYPE_INACTIVE]                = &dmi_inactive_table,
-    [DMI_TYPE_END_OF_TABLE]            = &dmi_end_of_table
+    [DMI_TYPE_FIRMWARE]                = &dmi_firmware_spec,
+    [DMI_TYPE_SYSTEM]                  = &dmi_system_spec,
+    [DMI_TYPE_BASEBOARD]               = &dmi_baseboard_spec,
+    [DMI_TYPE_CHASSIS]                 = &dmi_chassis_spec,
+    [DMI_TYPE_PROCESSOR]               = &dmi_processor_spec,
+    [DMI_TYPE_MEMORY_CONTROLLER]       = &dmi_memory_controller_spec,
+    [DMI_TYPE_MEMORY_MODULE]           = &dmi_memory_module_spec,
+    [DMI_TYPE_CACHE]                   = &dmi_cache_spec,
+    [DMI_TYPE_PORT_CONNECTOR]          = &dmi_port_connector_spec,
+    [DMI_TYPE_SYSTEM_SLOTS]            = &dmi_slot_spec,
+    [DMI_TYPE_ONBOARD_DEVICE]          = &dmi_onboard_device_spec,
+    [DMI_TYPE_OEM_STRINGS]             = &dmi_oem_strings_spec,
+    [DMI_TYPE_SYSTEM_CONFIG_OPTIONS]   = &dmi_system_config_opts_spec,
+    [DMI_TYPE_FIRMWARE_LANGUAGE]       = &dmi_firmware_language_spec,
+    [DMI_TYPE_GROUP_ASSOC]             = &dmi_group_assoc_spec,
+    [DMI_TYPE_SYSTEM_EVENT_LOG]        = &dmi_system_event_log_spec,
+    [DMI_TYPE_MEMORY_ARRAY]            = &dmi_memory_array_spec,
+    [DMI_TYPE_MEMORY_DEVICE]           = &dmi_memory_device_spec,
+    [DMI_TYPE_MEMORY_ERROR_32]         = &dmi_memory_error_32_spec,
+    [DMI_TYPE_MEMORY_ARRAY_ADDR]       = &dmi_memory_array_addr_spec,
+    [DMI_TYPE_MEMORY_DEVICE_ADDR]      = &dmi_memory_device_addr_spec,
+    [DMI_TYPE_POINTING_DEVICE]         = &dmi_pointing_device_spec,
+    [DMI_TYPE_PORTABLE_BATTERY]        = &dmi_battery_spec,
+    [DMI_TYPE_SYSTEM_RESET]            = &dmi_system_reset_spec,
+    [DMI_TYPE_HARDWARE_SECURITY]       = &dmi_hardware_security_spec,
+    [DMI_TYPE_POWER_CONTROLS]          = &dmi_power_controls_spec,
+    [DMI_TYPE_VOLTAGE_PROBE]           = &dmi_voltage_probe_spec,
+    [DMI_TYPE_COOLING_DEVICE]          = &dmi_cooling_device_spec,
+    [DMI_TYPE_TEMPERATURE_PROBE]       = &dmi_temperature_probe_spec,
+    [DMI_TYPE_CURRENT_PROBE]           = &dmi_current_probe_spec,
+    [DMI_TYPE_OOB_REMOTE_ACCESS]       = &dmi_oob_remote_access_spec,
+    [DMI_TYPE_BIS_ENTRY_POINT]         = &dmi_bis_entry_point_spec,
+    [DMI_TYPE_SYSTEM_BOOT]             = &dmi_system_boot_spec,
+    [DMI_TYPE_MEMORY_ERROR_64]         = &dmi_memory_error_64_spec,
+    [DMI_TYPE_MGMT_DEVICE]             = &dmi_mgmt_device_spec,
+    [DMI_TYPE_MGMT_DEVICE_COMPONENT]   = &dmi_mgmt_device_component_spec,
+    [DMI_TYPE_MGMT_DEVICE_THRESHOLD]   = &dmi_mgmt_device_threshold_spec,
+    [DMI_TYPE_MEMORY_CHANNEL]          = &dmi_memory_channel_spec,
+    [DMI_TYPE_IPMI_DEVICE]             = &dmi_ipmi_device_spec,
+    [DMI_TYPE_POWER_SUPPLY]            = &dmi_power_supply_spec,
+    [DMI_TYPE_ADDITIONAL_INFO]         = &dmi_additional_info_spec,
+    [DMI_TYPE_ONBOARD_DEVICE_EX]       = &dmi_onboard_device_ex_spec,
+    [DMI_TYPE_MGMT_CONTROLLER_HOST_IF] = &dmi_mgmt_controller_host_if_spec,
+    [DMI_TYPE_TPM_DEVICE]              = &dmi_tpm_device_spec,
+    [DMI_TYPE_PROCESSOR_EX]            = &dmi_processor_ex_spec,
+    [DMI_TYPE_FIRMWARE_INVENTORY]      = &dmi_firmware_inventory_spec,
+    [DMI_TYPE_STRING_PROPERTY]         = &dmi_string_property_spec,
+    [DMI_TYPE_INACTIVE]                = &dmi_inactive_spec,
+    [DMI_TYPE_END_OF_TABLE]            = &dmi_end_of_table_spec
 };
 
 dmi_context_t *dmi_create(void)
@@ -181,7 +181,7 @@ dmi_context_t *dmi_create(void)
     context->log_level = DMI_LOG_INFO;
 
     // Allocate type map
-    context->type_map = dmi_alloc_array(context, sizeof(dmi_table_spec_t *), 0x100);
+    context->type_map = dmi_alloc_array(context, sizeof(dmi_entity_spec_t *), 0x100);
     if (context->type_map == nullptr) {
         dmi_free(context);
         return nullptr;
@@ -257,11 +257,11 @@ bool dmi_dump_save(dmi_context_t *context, const char *path, bool overwrite)
             break;
         }
 
-    write_tables:
+    write_table:
         nwrite = write(fd, context->table_data, context->table_area_size);
         if (nwrite < 0) {
             if (errno == EINTR)
-                goto write_tables;
+                goto write_table;
 
             dmi_error_raise_ex(context, DMI_ERROR_FILE_WRITE, "%s: %s", path, strerror(errno));
             break;
@@ -275,9 +275,9 @@ bool dmi_dump_save(dmi_context_t *context, const char *path, bool overwrite)
     return success;
 }
 
-const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type)
+const dmi_entity_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type)
 {
-    const dmi_table_spec_t *spec = nullptr;
+    const dmi_entity_spec_t *spec = nullptr;
 
     if ((type <= DMI_TYPE_INVALID) or (type > UINT8_MAX)) {
         dmi_error_raise_ex(context, DMI_ERROR_INVALID_ARGUMENT, "type");
@@ -288,8 +288,8 @@ const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type)
         spec = context->type_map[type];
 
     if (spec == nullptr) {
-        if ((size_t)type < DMI_ARRAY_SIZE(dmi_table_specs))
-            spec = dmi_table_specs[type];
+        if ((size_t)type < DMI_ARRAY_SIZE(dmi_entity_specs))
+            spec = dmi_entity_specs[type];
     }
 
     return spec;
@@ -298,7 +298,7 @@ const dmi_table_spec_t *dmi_type_spec(dmi_context_t *context, dmi_type_t type)
 const char *dmi_type_name(dmi_context_t *context, dmi_type_t type)
 {
     const char *name;
-    const dmi_table_spec_t *spec = dmi_type_spec(context, type);
+    const dmi_entity_spec_t *spec = dmi_type_spec(context, type);
 
     if (spec != nullptr)
         name = spec->name;
@@ -395,10 +395,10 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
                      dmi_version_minor(context->smbios_version),
                      dmi_version_revision(context->smbios_version));
 
-        // Read and decode SMBIOS tables
+        // Read and decode SMBIOS structures
         // TODO: Use separate variable for size
-        dmi_log_info(context, "Reading DMI tables...");
-        context->table_data = context->backend->read_tables(context, &context->table_area_size);
+        dmi_log_info(context, "Reading DMI structures...");
+        context->table_data = context->backend->read_table(context, &context->table_area_size);
         if (context->table_data == nullptr)
             break;
 

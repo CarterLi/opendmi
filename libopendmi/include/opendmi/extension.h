@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <opendmi/table.h>
+#include <opendmi/entity.h>
 
 #ifndef DMI_EXTENSION_T
 #define DMI_EXTENSION_T
@@ -23,7 +23,7 @@ struct dmi_extension
 {
     const char *code;
     const char *name;
-    const dmi_table_spec_t *tables;
+    const dmi_entity_spec_t *entities;
 };
 
 #endif // !OPENDMI_EXTENSION_H

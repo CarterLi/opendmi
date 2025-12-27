@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/battery.h>
+#include <opendmi/entity/battery.h>
 
 int main(void)
 {

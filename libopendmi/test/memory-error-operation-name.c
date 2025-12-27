@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/memory-error.h>
+#include <opendmi/entity/memory-error.h>
 
 int main(void)
 {

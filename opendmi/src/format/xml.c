@@ -44,40 +44,40 @@ static void *dmi_xml_initialize(dmi_context_t *context, FILE *stream);
 
 static bool dmi_xml_dump_start(void *asession);
 static bool dmi_xml_entry(void *asession);
-static bool dmi_xml_table_start(void *asession, const dmi_table_t *table);
-static bool dmi_xml_table_attrs_start(void *asession, const dmi_table_t *table);
+static bool dmi_xml_entity_start(void *asession, const dmi_entity_t *entity);
+static bool dmi_xml_entity_attrs_start(void *asession, const dmi_entity_t *entity);
 
-static bool dmi_xml_table_attr(
+static bool dmi_xml_entity_attr(
         void                  *asession,
-        const dmi_table_t     *table,
+        const dmi_entity_t     *entity,
         const dmi_attribute_t *attr,
         const void            *data);
 
-static bool dmi_xml_table_attr_array(
+static bool dmi_xml_entity_attr_array(
         void                  *asession,
         const dmi_attribute_t *attr,
         const dmi_data_t      *info,
         const void            *value);
 
-static bool dmi_xml_table_attr_struct(
+static bool dmi_xml_entity_attr_struct(
         void                  *asession,
         const dmi_attribute_t *attr,
         const void            *value);
 
-static bool dmi_xml_table_attr_value(
+static bool dmi_xml_entity_attr_value(
         void                  *asession,
         const dmi_attribute_t *attr,
         const void            *value);
 
-static bool dmi_xml_table_attr_set(
+static bool dmi_xml_entity_attr_set(
         void                  *asession,
         const dmi_attribute_t *attr,
         const void            *value);
 
-static bool  dmi_xml_table_attrs_end(void *asession, const dmi_table_t *table);
-static bool  dmi_xml_table_data(void *asession, const dmi_table_t *table);
-static bool  dmi_xml_table_strings(void *asession, const dmi_table_t *table);
-static bool  dmi_xml_table_end(void *asession, const dmi_table_t *table);
+static bool  dmi_xml_entity_attrs_end(void *asession, const dmi_entity_t *entity);
+static bool  dmi_xml_entity_data(void *asession, const dmi_entity_t *entity);
+static bool  dmi_xml_entity_strings(void *asession, const dmi_entity_t *entity);
+static bool  dmi_xml_entity_end(void *asession, const dmi_entity_t *entity);
 static bool  dmi_xml_dump_end(void *asession);
 
 static void  dmi_xml_finalize(void *asession);
@@ -87,18 +87,18 @@ const dmi_format_t dmi_xml_format =
     .code     = "xml",
     .name     = "XML",
     .handlers = {
-        .initialize        = dmi_xml_initialize,
-        .dump_start        = dmi_xml_dump_start,
-        .entry             = dmi_xml_entry,
-        .table_start       = dmi_xml_table_start,
-        .table_attrs_start = dmi_xml_table_attrs_start,
-        .table_attr        = dmi_xml_table_attr,
-        .table_attrs_end   = dmi_xml_table_attrs_end,
-        .table_data        = dmi_xml_table_data,
-        .table_strings     = dmi_xml_table_strings,
-        .table_end         = dmi_xml_table_end,
-        .dump_end          = dmi_xml_dump_end,
-        .finalize          = dmi_xml_finalize
+        .initialize         = dmi_xml_initialize,
+        .dump_start         = dmi_xml_dump_start,
+        .entry              = dmi_xml_entry,
+        .entity_start       = dmi_xml_entity_start,
+        .entity_attrs_start = dmi_xml_entity_attrs_start,
+        .entity_attr        = dmi_xml_entity_attr,
+        .entity_attrs_end   = dmi_xml_entity_attrs_end,
+        .entity_data        = dmi_xml_entity_data,
+        .entity_strings     = dmi_xml_entity_strings,
+        .entity_end         = dmi_xml_entity_end,
+        .dump_end           = dmi_xml_dump_end,
+        .finalize           = dmi_xml_finalize
     }
 };
 
@@ -255,10 +255,10 @@ static bool dmi_xml_entry(void *asession)
     return success;
 }
 
-static bool dmi_xml_table_start(void *asession, const dmi_table_t *table)
+static bool dmi_xml_entity_start(void *asession, const dmi_entity_t *entity)
 {
     assert(asession != nullptr);
-    assert(table != nullptr);
+    assert(entity != nullptr);
 
     bool success = false;
     dmi_xml_session_t *session = dmi_cast(session, asession);
@@ -267,24 +267,24 @@ static bool dmi_xml_table_start(void *asession, const dmi_table_t *table)
         if (xmlTextWriterStartElementNS(
                     session->writer,
                     dmi_xml_string(DMI_XML_PREFIX),
-                    dmi_xml_string("table"),
+                    dmi_xml_string("entity"),
                     nullptr) < 0)
             break;
 
         if (xmlTextWriterWriteFormatAttribute(
                     session->writer,
                     dmi_xml_string("handle"),
-                    "0x%04hx", table->handle) < 0)
+                    "0x%04hx", entity->handle) < 0)
             break;
         if (xmlTextWriterWriteFormatAttribute(
                     session->writer,
                     dmi_xml_string("type"),
-                    "%u", table->type) < 0)
+                    "%u", entity->type) < 0)
             break;
         if (xmlTextWriterWriteFormatAttribute(
                     session->writer,
                     dmi_xml_string("length"),
-                    "%zu", table->total_length) < 0)
+                    "%zu", entity->total_length) < 0)
             break;
 
         success = true;
@@ -293,31 +293,31 @@ static bool dmi_xml_table_start(void *asession, const dmi_table_t *table)
     return success;
 }
 
-static bool dmi_xml_table_attrs_start(void *asession, const dmi_table_t *table)
+static bool dmi_xml_entity_attrs_start(void *asession, const dmi_entity_t *entity)
 {
     assert(asession != nullptr);
-    assert(table != nullptr);
+    assert(entity != nullptr);
 
     dmi_xml_session_t *session = dmi_cast(session, asession);
 
     if (xmlTextWriterStartElementNS(
                 session->writer,
                 dmi_xml_string(DMI_XML_PREFIX),
-                dmi_xml_string(table->spec->code),
+                dmi_xml_string(entity->spec->code),
                 nullptr) < 0)
         return false;
 
     return true;
 }
 
-static bool dmi_xml_table_attr(
+static bool dmi_xml_entity_attr(
         void                  *asession,
-        const dmi_table_t     *table,
+        const dmi_entity_t     *entity,
         const dmi_attribute_t *attr,
         const void            *value)
 {
     assert(asession != nullptr);
-    assert(table != nullptr);
+    assert(entity != nullptr);
     assert(attr != nullptr);
     assert(value != nullptr);
 
@@ -332,11 +332,11 @@ static bool dmi_xml_table_attr(
 
         if (attr->counter < 0) {
             if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT)
-                rv = dmi_xml_table_attr_struct(session, attr, value);
+                rv = dmi_xml_entity_attr_struct(session, attr, value);
             else
-                rv = dmi_xml_table_attr_value(session, attr, value);
+                rv = dmi_xml_entity_attr_value(session, attr, value);
         } else {
-            rv = dmi_xml_table_attr_array(session, attr, table->info, value);
+            rv = dmi_xml_entity_attr_array(session, attr, entity->info, value);
         }
         if (not rv)
             break;
@@ -350,7 +350,7 @@ static bool dmi_xml_table_attr(
     return success;
 }
 
-static bool dmi_xml_table_attr_array(
+static bool dmi_xml_entity_attr_array(
         void                  *asession,
         const dmi_attribute_t *attr,
         const dmi_data_t      *info,
@@ -371,10 +371,10 @@ static bool dmi_xml_table_attr_array(
             return false;
 
         if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT) {
-            if (not dmi_xml_table_attr_struct(session, attr, ptr))
+            if (not dmi_xml_entity_attr_struct(session, attr, ptr))
                 return false;
         } else {
-            if (not dmi_xml_table_attr_value(session, attr, ptr))
+            if (not dmi_xml_entity_attr_value(session, attr, ptr))
                 return false;
         }
 
@@ -385,7 +385,7 @@ static bool dmi_xml_table_attr_array(
     return true;
 }
 
-static bool dmi_xml_table_attr_struct(
+static bool dmi_xml_entity_attr_struct(
         void                  *asession,
         const dmi_attribute_t *attr,
         const void            *value)
@@ -403,7 +403,7 @@ static bool dmi_xml_table_attr_struct(
         if (xmlTextWriterStartElement(session->writer, dmi_xml_string(child_attr->params.code)) < 0)
             return false;
 
-        if (not dmi_xml_table_attr_value(session, child_attr, ptr))
+        if (not dmi_xml_entity_attr_value(session, child_attr, ptr))
             return false;
 
         if (xmlTextWriterFullEndElement(session->writer) < 0)
@@ -413,7 +413,7 @@ static bool dmi_xml_table_attr_struct(
     return true;
 }
 
-static bool dmi_xml_table_attr_value(
+static bool dmi_xml_entity_attr_value(
         void                  *asession,
         const dmi_attribute_t *attr,
         const void            *value)
@@ -439,7 +439,7 @@ static bool dmi_xml_table_attr_value(
 
     // Handle value sets
     if (attr->type == DMI_ATTRIBUTE_TYPE_SET)
-        return dmi_xml_table_attr_set(session, attr, value);
+        return dmi_xml_entity_attr_set(session, attr, value);
 
     do {
         text = dmi_attribute_format(attr, value, false);
@@ -465,7 +465,7 @@ static bool dmi_xml_table_attr_value(
     return success;
 }
 
-static bool dmi_xml_table_attr_set(
+static bool dmi_xml_entity_attr_set(
         void                  *asession,
         const dmi_attribute_t *attr,
         const void            *value)
@@ -512,12 +512,12 @@ static bool dmi_xml_table_attr_set(
     return true;
 }
 
-static bool dmi_xml_table_attrs_end(void *asession, const dmi_table_t *table)
+static bool dmi_xml_entity_attrs_end(void *asession, const dmi_entity_t *entity)
 {
     assert(asession != nullptr);
-    assert(table != nullptr);
+    assert(entity != nullptr);
 
-    DMI_UNUSED(table);
+    DMI_UNUSED(entity);
 
     dmi_xml_session_t *session = dmi_cast(session, asession);
 
@@ -527,10 +527,10 @@ static bool dmi_xml_table_attrs_end(void *asession, const dmi_table_t *table)
     return true;
 }
 
-static bool dmi_xml_table_data(void *asession, const dmi_table_t *table)
+static bool dmi_xml_entity_data(void *asession, const dmi_entity_t *entity)
 {
     assert(asession != nullptr);
-    assert(table != nullptr);
+    assert(entity != nullptr);
 
     bool success = false;
     dmi_xml_session_t *session = dmi_cast(session, asession);
@@ -545,7 +545,7 @@ static bool dmi_xml_table_data(void *asession, const dmi_table_t *table)
 
         if (xmlTextWriterStartCDATA(session->writer) < 0)
             break;
-        if (xmlTextWriterWriteBase64(session->writer, (const char *)table->data, 0, table->body_length) < 0)
+        if (xmlTextWriterWriteBase64(session->writer, (const char *)entity->data, 0, entity->body_length) < 0)
             break;
         if (xmlTextWriterEndCDATA(session->writer) < 0)
             break;
@@ -559,15 +559,15 @@ static bool dmi_xml_table_data(void *asession, const dmi_table_t *table)
     return success;
 }
 
-static bool dmi_xml_table_strings(void *asession, const dmi_table_t *table)
+static bool dmi_xml_entity_strings(void *asession, const dmi_entity_t *entity)
 {
     assert(asession != nullptr);
-    assert(table != nullptr);
+    assert(entity != nullptr);
 
     bool success = false;
     dmi_xml_session_t *session = dmi_cast(session, asession);
 
-    if (table->string_count == 0)
+    if (entity->string_count == 0)
         return true;
 
     do {
@@ -578,7 +578,7 @@ static bool dmi_xml_table_strings(void *asession, const dmi_table_t *table)
                     nullptr) < 0)
             break;
 
-        for (size_t i = 1; i <= table->string_count; i++) {
+        for (size_t i = 1; i <= entity->string_count; i++) {
             if (xmlTextWriterStartElementNS(
                         session->writer,
                         dmi_xml_string(DMI_XML_PREFIX),
@@ -593,7 +593,7 @@ static bool dmi_xml_table_strings(void *asession, const dmi_table_t *table)
 
             if (xmlTextWriterWriteString(
                         session->writer,
-                        dmi_xml_string(dmi_table_string(table, i))) < 0)
+                        dmi_xml_string(dmi_entity_string(entity, i))) < 0)
                 break;
 
             if (xmlTextWriterFullEndElement(session->writer) < 0)
@@ -609,12 +609,12 @@ static bool dmi_xml_table_strings(void *asession, const dmi_table_t *table)
     return success;
 }
 
-static bool dmi_xml_table_end(void *asession, const dmi_table_t *table)
+static bool dmi_xml_entity_end(void *asession, const dmi_entity_t *entity)
 {
     assert(asession != nullptr);
-    assert(table != nullptr);
+    assert(entity != nullptr);
 
-    DMI_UNUSED(table);
+    DMI_UNUSED(entity);
 
     bool success = false;
     dmi_xml_session_t *session = dmi_cast(session, asession);

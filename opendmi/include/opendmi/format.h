@@ -26,27 +26,27 @@ typedef struct dmi_format_ops dmi_format_ops_t;
 struct dmi_format_ops
 {
     void *(*initialize)(dmi_context_t *context, FILE *stream);
-
     bool (*dump_start)(void *asession);
+
     bool (*entry)(void *asession);
-    bool (*table_start)(void *asession, const dmi_table_t *table);
+    bool (*table_start)(void *asession);
 
-    bool (*table_attrs_start)(void *asession, const dmi_table_t *table);
+    bool (*entity_start)(void *asession, const dmi_entity_t *entity);
+    bool (*entity_attrs_start)(void *asession, const dmi_entity_t *entity);
 
-    bool (*table_attr)(
+    bool (*entity_attr)(
             void                  *asession,
-            const dmi_table_t     *table,
+            const dmi_entity_t     *entity,
             const dmi_attribute_t *attr,
             const void            *value);
 
-    bool (*table_attrs_end)(void *asession, const dmi_table_t *table);
+    bool (*entity_attrs_end)(void *asession, const dmi_entity_t *entity);
+    bool (*entity_data)(void *asession, const dmi_entity_t *entity);
+    bool (*entity_strings)(void *asession, const dmi_entity_t *entity);
+    bool (*entity_end)(void *asession, const dmi_entity_t *entity);
 
-    bool (*table_data)(void *asession, const dmi_table_t *table);
-    bool (*table_strings)(void *asession, const dmi_table_t *table);
-
-    bool (*table_end)(void *asession, const dmi_table_t *table);
+    bool (*table_end)(void *asession);
     bool (*dump_end)(void *asession);
-
     void (*finalize)(void *asession);
 };
 

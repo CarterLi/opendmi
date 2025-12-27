@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/cache.h>
+#include <opendmi/entity/cache.h>
 
 int main(void)
 {

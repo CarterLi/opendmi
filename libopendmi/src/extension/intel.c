@@ -8,7 +8,7 @@
 
 const dmi_extension_t dmi_intel_ext =
 {
-    .code   = "intel",
-    .name   = "Intel DMI extension",
-    .tables = nullptr
+    .code     = "intel",
+    .name     = "Intel DMI extension",
+    .entities = nullptr
 };

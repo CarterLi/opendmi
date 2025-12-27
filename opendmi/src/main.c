@@ -34,12 +34,12 @@
 
 #include <opendmi/context.h>
 #include <opendmi/format.h>
-#include <opendmi/table.h>
+#include <opendmi/entity.h>
 #include <opendmi/format/text.h>
 
 typedef enum dmi_command
 {
-    DMI_COMMAND_DUMP_TABLES,
+    DMI_COMMAND_DUMP_TABLE,
     DMI_COMMAND_LIST_KEYWORDS,
     DMI_COMMAND_LIST_TYPES
 } dmi_command_t;
@@ -65,7 +65,7 @@ static bool list_keywords(dmi_context_t *context);
 static bool list_types(dmi_context_t *context);
 
 static void print_all(dmi_context_t *context, const dmi_format_t *format);
-static void print_table(const dmi_format_t *format, const dmi_table_t *table, void *session);
+static void print_entity(const dmi_format_t *format, const dmi_entity_t *entity, void *session);
 
 static void log_error(
         dmi_context_t   *context,
@@ -75,7 +75,7 @@ static void log_error(
 
 dmi_config_t config =
 {
-    .command       = DMI_COMMAND_DUMP_TABLES,
+    .command       = DMI_COMMAND_DUMP_TABLE,
     .memory_device = nullptr,
     .quiet         = false,
     .debug         = false,
@@ -274,7 +274,7 @@ static bool list_types(dmi_context_t *context)
         format = "%d\t%s\t%s\n";
 
     for (unsigned int type = 0; type < 0x100; type++) {
-        const dmi_table_spec_t *spec = dmi_type_spec(context, (dmi_type_t)type);
+        const dmi_entity_spec_t *spec = dmi_type_spec(context, (dmi_type_t)type);
 
         if (spec == nullptr)
             continue;
@@ -299,9 +299,15 @@ static void print_all(dmi_context_t *context, const dmi_format_t *format)
 
     format->handlers.entry(session);
 
+    if (format->handlers.table_start != nullptr)
+        format->handlers.table_start(session);
+
     for (entry = context->registry->head; entry; entry = entry->seq_next) {
-        print_table(format, entry->table, session);
+        print_entity(format, entry->entity, session);
     }
+
+    if (format->handlers.table_end != nullptr)
+        format->handlers.table_end(session);
 
     if (format->handlers.dump_end != nullptr)
         format->handlers.dump_end(session);
@@ -309,44 +315,44 @@ static void print_all(dmi_context_t *context, const dmi_format_t *format)
     format->handlers.finalize(session);
 }
 
-static void print_table(
+static void print_entity(
         const dmi_format_t *format,
-        const dmi_table_t  *table,
+        const dmi_entity_t *entity,
         void               *session)
 {
     assert(format != nullptr);
-    assert(table != nullptr);
+    assert(entity != nullptr);
     assert(session != nullptr);
 
-    const dmi_table_spec_t *spec = table->spec;
-    const dmi_attribute_t *attr = nullptr;
+    const dmi_entity_spec_t *spec = entity->spec;
+    const dmi_attribute_t   *attr = nullptr;
 
-    format->handlers.table_start(session, table);
+    format->handlers.entity_start(session, entity);
 
-    if (table->info and not config.dump) {
-        if (format->handlers.table_attrs_start != nullptr)
-            format->handlers.table_attrs_start(session, table);
+    if (entity->info and not config.dump) {
+        if (format->handlers.entity_attrs_start != nullptr)
+            format->handlers.entity_attrs_start(session, entity);
 
         for (attr = spec->attributes; attr->params.name; attr++) {
-            const dmi_data_t *value = (dmi_data_t *)table->info + attr->offset;
+            const dmi_data_t *value = (dmi_data_t *)entity->info + attr->offset;
 
             // Check attribute level
             if (attr->params.level != DMI_VERSION_NONE) {
-                if (table->level < attr->params.level)
+                if (entity->level < attr->params.level)
                     continue;
             }
 
-            format->handlers.table_attr(session, table, attr, value);
+            format->handlers.entity_attr(session, entity, attr, value);
         }
 
-        if (format->handlers.table_attrs_end != nullptr)
-            format->handlers.table_attrs_end(session, table);
+        if (format->handlers.entity_attrs_end != nullptr)
+            format->handlers.entity_attrs_end(session, entity);
     } else {
-        format->handlers.table_data(session, table);
-        format->handlers.table_strings(session, table);
+        format->handlers.entity_data(session, entity);
+        format->handlers.entity_strings(session, entity);
     }
 
-    format->handlers.table_end(session, table);
+    format->handlers.entity_end(session, entity);
 }
 
 static void log_error(

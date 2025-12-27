@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/baseboard.h>
+#include <opendmi/entity/baseboard.h>
 
 int main(void)
 {

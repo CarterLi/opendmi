@@ -1,0 +1,221 @@
+//
+// OpenDMI: Cross-platform DMI/SMBIOS framework
+// Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+//
+// SPDX-License-Identifier: BSD-3-Clause
+//
+#ifndef OPENDMI_ENTITY_PROBE_H
+#define OPENDMI_ENTITY_PROBE_H
+
+#pragma once
+
+#include <opendmi/entity.h>
+#include <opendmi/entity/common.h>
+
+#ifndef DMI_PROBE_T
+#define DMI_PROBE_T
+typedef struct dmi_probe dmi_probe_t;
+#endif // !DMI_PROBE_T
+
+#ifndef DMI_PROBE_DATA_T
+#define DMI_PROBE_DATA_T
+typedef struct dmi_probe_data dmi_probe_data_t;
+#endif // !DMI_PROBE_DATA_T
+
+#define DMI_PROBE_VALUE_UNKNOWN ((dmi_word_t)0x8000U)
+
+/**
+ * @brief Probe locations.
+ */
+typedef enum dmi_probe_location
+{
+    DMI_PROBE_LOCATION_UNSPEC             = 0x00, ///< Unspecified
+    DMI_PROBE_LOCATION_OTHER              = 0x01, ///< Other
+    DMI_PROBE_LOCATION_UNKNOWN            = 0x02, ///< Unknown
+    DMI_PROBE_LOCATION_PROCESSOR          = 0x03, ///< Processor
+    DMI_PROBE_LOCATION_DISK               = 0x04, ///< Disk
+    DMI_PROBE_LOCATION_PERIPHERAL_BAY     = 0x05, ///< Peripheral bay
+    DMI_PROBE_LOCATION_SYSTEM_MGMT_MODULE = 0x06, ///< System management module
+    DMI_PROBE_LOCATION_MOTHERBOARD        = 0x07, ///< Motherboard
+    DMI_PROBE_LOCATION_MEMORY_MODULE      = 0x08, ///< Memory module
+    DMI_PROBE_LOCATION_PROCESSOR_MODULE   = 0x09, ///< Processor module
+    DMI_PROBE_LOCATION_POWER_UNIT         = 0x0A, ///< Power unit
+    DMI_PROBE_LOCATION_ADDIN_CARD         = 0x0B, ///< Add-in card
+    DMI_PROBE_LOCATION_FRONT_PANEL_BOARD  = 0x0C, ///< Front panel board
+    DMI_PROBE_LOCATION_BACK_PANEL_BOARD   = 0x0D, ///< Back panel board
+    DMI_PROBE_LOCATION_POWER_SYSTEM_BOARD = 0x0E, ///< Power system board
+    DMI_PROBE_LOCATION_DRIVE_BACK_PLANE   = 0x0F, ///< Drive back plane
+    __DMI_PROBE_LOCATION_COUNT
+} dmi_probe_location_t;
+
+/**
+ * @brief Probe location and status details.
+ */
+DMI_PACKED_UNION(dmi_probe_details)
+{
+    /**
+     * @brief Raw value.
+     */
+    dmi_type_t _value;
+
+    DMI_PACKED_STRUCT() {
+        /**
+         * @brief Physical location.
+         */
+        dmi_byte_t location : 5;
+
+        /**
+         * @brief Status.
+         */
+        dmi_byte_t status : 3;
+    };
+};
+
+#ifndef DMI_PROBE_DETAILS_T
+#define DMI_PROBE_DETAILS_T
+typedef union dmi_probe_details dmi_probe_details_t;
+#endif // !DMI_PROBE_DETAILS_T
+
+/**
+ * @brief Probe structure.
+ */
+DMI_PACKED_STRUCT(dmi_probe_data)
+{
+    /**
+     * @brief SMBIOS structure header.
+     */
+    dmi_header_t header;
+
+    /**
+     * @brief Number of the string that contains additional descriptive
+     * information about the probe or its location.
+     */
+    dmi_string_t description;
+
+    /**
+     * @brief Location and status details.
+     */
+    dmi_byte_t details;
+
+    /**
+     * @brief Maximum value readable by this probe. If the value is unknown,
+     * the field is set to `0x8000`.
+     */
+    dmi_word_t maximum_value;
+
+    /**
+     * @brief Minimum value readable by this probe. If the value is unknown,
+     * the field is set to `0x8000`.
+     */
+    dmi_word_t minimum_value;
+
+    /**
+     * @brief Resolution for the probe's reading. If the value is unknown,
+     * the field is set to `0x8000`.
+     */
+    dmi_word_t resolution;
+
+    /**
+     * @brief Tolerance for reading from this probe. If the value is unknown,
+     * the field is set to `0x8000`.
+     */
+    dmi_word_t tolerance;
+
+    /**
+     * @brief Accuracy for reading from this probe. If the value is unknown,
+     * the field is set to `0x8000`.
+     */
+    dmi_word_t accuracy;
+
+    /**
+     * @brief OEM- or firmware vendor-specific information.
+     */
+    dmi_dword_t oem_defined;
+
+    /**
+     * @brief Nominal value for the probe’s reading. If the value is unknown,
+     * the field is set to `0x8000`. This field is present in the structure
+     * only if the structure’s Length is larger than `0x14`.
+     */
+    dmi_word_t nominal_value;
+};
+
+struct dmi_probe
+{
+    /**
+     * @brief Additional descriptive information about the probe or its
+     * location.
+     */
+    const char *description;
+
+    /**
+     * @brief Physical location.
+     */
+    dmi_probe_location_t location;
+
+    /**
+     * @brief Status.
+     */
+    dmi_status_t status;
+
+    /**
+     * @brief Maximum value readable by this probe. If the value is unknown,
+     * the field is set to `SHRT_MIN`.
+     */
+    short maximum_value;
+
+    /**
+     * @brief Minimum value readable by this probe. If the value is unknown,
+     * the field is set to `SHRT_MIN`.
+     */
+    short minimum_value;
+
+    /**
+     * @brief Resolution for the probe's reading. If the value is unknown,
+     * the field is set to `SHRT_MIN`.
+     */
+    short resolution;
+
+    /**
+     * @brief Tolerance for reading from this probe. If the value is unknown,
+     * the field is set to `SHRT_MIN`.
+     */
+    short tolerance;
+
+    /**
+     * @brief Accuracy for reading from this probe. If the value is unknown,
+     * the field is set to `SHRT_MIN`.
+     */
+    short accuracy;
+
+    /**
+     * @brief OEM- or firmware vendor-specific information.
+     */
+    uint32_t oem_defined;
+
+    /**
+     * @brief Nominal value for the probe’s reading. If the value is unknown,
+     * the field is set to `SHRT_MIN`.
+     */
+    short nominal_value;
+};
+
+extern const dmi_name_set_t dmi_probe_location_names;
+
+__BEGIN_DECLS
+
+const char *dmi_probe_location_name(dmi_probe_location_t value);
+
+/**
+ * @internal
+ */
+dmi_probe_t *dmi_probe_decode(dmi_entity_t *entity, dmi_version_t *plevel);
+
+/**
+ * @internal
+ */
+void dmi_probe_free(dmi_probe_t *info);
+
+__END_DECLS
+
+#endif // !OPENDMI_ENTITY_PROBE_H

@@ -37,17 +37,17 @@ struct dmi_registry
     dmi_context_t *context;
 
     /**
-     * @brief Table index capacity.
+     * @brief Structure index capacity.
      */
     size_t capacity;
 
     /**
-     * @brief Table count.
+     * @brief Structure count.
      */
     size_t count;
 
     /**
-     * @brief Table index.
+     * @brief Structure index.
      */
     dmi_registry_entry_t **index;
 
@@ -68,9 +68,9 @@ struct dmi_registry
 struct dmi_registry_entry
 {
     /**
-     * @brief DMI table.
+     * @brief Entity descriptor.
      */
-    dmi_table_t *table;
+    dmi_entity_t *entity;
 
     /**
      * @brief Pointer to next entry in the hash table cell.
@@ -78,12 +78,12 @@ struct dmi_registry_entry
     dmi_registry_entry_t *next;
 
     /**
-     * @brief Pointer to previous entry in table sequence.
+     * @brief Pointer to previous entry in entity sequence.
      */
     dmi_registry_entry_t *seq_prev;
 
     /**
-     * @brief Pointer to next entry in table sequence.
+     * @brief Pointer to next entry in entity sequence.
      */
     dmi_registry_entry_t *seq_next;
 };
@@ -91,9 +91,9 @@ struct dmi_registry_entry
 __BEGIN_DECLS
 
 /**
- * @brief Create DMI registry.
+ * @brief Create registry.
  *
- * @param[in] context DMI context handle.
+ * @param[in] context  Context handle.
  * @param[in] capacity Registry hash-table capacity. Zero means default value
  *                     of `DMI_REGISTRY_CAPACITY`.
  */
@@ -110,26 +110,26 @@ bool dmi_registry_build(dmi_registry_t *registry);
 bool dmi_registry_link(dmi_registry_t *registry);
 
 /**
- * @brief Get table from DMI registry.
+ * @brief Get entity from registry.
  *
- * @param[in] registry DMI registry handle.
- * @param[in] handle   DMI table identifier.
- * @param[in] type     Expected table type.
+ * @param[in] registry Registry handle.
+ * @param[in] handle   Entity handle.
+ * @param[in] type     Expected structure type.
  */
-dmi_table_t *dmi_registry_get(
+dmi_entity_t *dmi_registry_get(
         dmi_registry_t *registry,
         dmi_handle_t    handle,
         dmi_type_t      type);
 
-dmi_table_t *dmi_registry_get_any(
+dmi_entity_t *dmi_registry_get_any(
         dmi_registry_t *registry,
         dmi_handle_t    handle,
         dmi_type_t     *type);
 
 /**
- * @brief Destroy DMI registry.
+ * @brief Destroy registry.
  *
- * @param[in] registry DMI registry handle.
+ * @param[in] registry Registry handle.
  */
 void dmi_registry_destroy(dmi_registry_t *registry);
 

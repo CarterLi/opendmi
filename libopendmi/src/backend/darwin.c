@@ -28,18 +28,18 @@ struct dmi_darwin_session
 
 static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute__((unused)));
 static dmi_data_t *dmi_darwin_read_entry(dmi_context_t *context, size_t *plength);
-static dmi_data_t *dmi_darwin_read_tables(dmi_context_t *context, size_t *plength);
+static dmi_data_t *dmi_darwin_read_table(dmi_context_t *context, size_t *plength);
 static bool dmi_darwin_close(dmi_context_t *context);
 
 static dmi_data_t *dmi_darwin_read_data(dmi_context_t *context, CFStringRef key, size_t *plength);
 
 dmi_backend_t dmi_darwin_backend =
 {
-    .name        = "Apple SMBIOS service",
-    .open        = dmi_darwin_open,
-    .read_entry  = dmi_darwin_read_entry,
-    .read_tables = dmi_darwin_read_tables,
-    .close       = dmi_darwin_close
+    .name       = "Apple SMBIOS service",
+    .open       = dmi_darwin_open,
+    .read_entry = dmi_darwin_read_entry,
+    .read_table = dmi_darwin_read_table,
+    .close      = dmi_darwin_close
 };
 
 static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute__((unused)))
@@ -82,7 +82,7 @@ static dmi_data_t *dmi_darwin_read_entry(dmi_context_t *context, size_t *plength
     return dmi_darwin_read_data(context, CFSTR("SMBIOS-EPS"), plength);
 }
 
-static dmi_data_t *dmi_darwin_read_tables(dmi_context_t *context, size_t *plength)
+static dmi_data_t *dmi_darwin_read_table(dmi_context_t *context, size_t *plength)
 {
     return dmi_darwin_read_data(context, CFSTR("SMBIOS"), plength);
 }

@@ -28,33 +28,33 @@ typedef struct dmi_error_state dmi_error_state_t;
  */
 typedef enum dmi_error_code
 {
-    DMI_ERROR_NONE,                 ///< Success
-    DMI_ERROR_NULL_ARGUMENT,        ///< Argument is NULL
-    DMI_ERROR_INVALID_ARGUMENT,     ///< Invalid argument
-    DMI_ERROR_INVALID_STATE,        ///< Invalid state
-    DMI_ERROR_FILE_OPEN,            ///< Unable to open file
-    DMI_ERROR_FILE_STAT,            ///< Unable to stat file
-    DMI_ERROR_FILE_READ,            ///< Unable to read file
-    DMI_ERROR_FILE_WRITE,           ///< Unable to write file
-    DMI_ERROR_FILE_MAP,             ///< Unable to map file
-    DMI_ERROR_UNKNOWN_EPS_ANCHOR,   ///< Unknown entry point structure anchor
-    DMI_ERROR_INVALID_EPS_LENGTH,   ///< Invalid entry point structure length
-    DMI_ERROR_INVALID_EPS_CHECKSUM, ///< Invalid entry point structure checksum
-    DMI_ERROR_INVALID_TABLE_ADDR,   ///< Invalid table address
-    DMI_ERROR_INVALID_TABLE_LENGTH, ///< Invalid table length
-    DMI_ERROR_INVALID_TABLE_TYPE,   ///< Invalid table type
-    DMI_ERROR_TABLE_DECODE,         ///< Unable to decode table
-    DMI_ERROR_TABLE_REGISTER,       ///< Unable to register table
-    DMI_ERROR_TABLE_LINK,           ///< Unable to link table
-    DMI_ERROR_TABLE_NOT_FOUND,      ///< Table not found
-    DMI_ERROR_STRING_NOT_FOUND,     ///< String not found
-    DMI_ERROR_DUPLICATE_ENTRY,      ///< Duplicate entry
-    DMI_ERROR_DUPLICATE_HANDLE,     ///< Duplicate handle
-    DMI_ERROR_NO_MORE_ENTRIES,      ///< No more entries
-    DMI_ERROR_OUT_OF_MEMORY,        ///< Out of memory
-    DMI_ERROR_SERVICE_UNAVAILABLE,  ///< Service unavailable
-    DMI_ERROR_SYSTEM,               ///< System error
-    DMI_ERROR_INTERNAL,             ///< Internal error
+    DMI_ERROR_NONE,                  ///< Success
+    DMI_ERROR_NULL_ARGUMENT,         ///< Argument is NULL
+    DMI_ERROR_INVALID_ARGUMENT,      ///< Invalid argument
+    DMI_ERROR_INVALID_STATE,         ///< Invalid state
+    DMI_ERROR_FILE_OPEN,             ///< Unable to open file
+    DMI_ERROR_FILE_STAT,             ///< Unable to stat file
+    DMI_ERROR_FILE_READ,             ///< Unable to read file
+    DMI_ERROR_FILE_WRITE,            ///< Unable to write file
+    DMI_ERROR_FILE_MAP,              ///< Unable to map file
+    DMI_ERROR_UNKNOWN_EPS_ANCHOR,    ///< Unknown entry point structure anchor
+    DMI_ERROR_INVALID_EPS_LENGTH,    ///< Invalid entry point structure length
+    DMI_ERROR_INVALID_EPS_CHECKSUM,  ///< Invalid entry point structure checksum
+    DMI_ERROR_INVALID_ENTITY_ADDR,   ///< Invalid structure address
+    DMI_ERROR_INVALID_ENTITY_LENGTH, ///< Invalid structure length
+    DMI_ERROR_INVALID_ENTITY_TYPE,   ///< Invalid structure type
+    DMI_ERROR_ENTITY_DECODE,         ///< Unable to decode structure
+    DMI_ERROR_ENTITY_REGISTER,       ///< Unable to register structure
+    DMI_ERROR_ENTITY_LINK,           ///< Unable to link structure
+    DMI_ERROR_ENTITY_NOT_FOUND,      ///< Structure not found
+    DMI_ERROR_STRING_NOT_FOUND,      ///< String not found
+    DMI_ERROR_DUPLICATE_ENTRY,       ///< Duplicate entry
+    DMI_ERROR_DUPLICATE_HANDLE,      ///< Duplicate handle
+    DMI_ERROR_NO_MORE_ENTRIES,       ///< No more entries
+    DMI_ERROR_OUT_OF_MEMORY,         ///< Out of memory
+    DMI_ERROR_SERVICE_UNAVAILABLE,   ///< Service unavailable
+    DMI_ERROR_SYSTEM,                ///< System error
+    DMI_ERROR_INTERNAL,              ///< Internal error
     __DMI_ERROR_COUNT
 } dmi_error_code_t;
 

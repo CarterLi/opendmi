@@ -14,7 +14,7 @@
     <xs:complexType name="dumpType">
         <xs:sequence>
             <xs:element name="entry" type="dmi:entryType" minOccurs="1" maxOccurs="1" />
-            <xs:element name="table" type="dmi:tableType" minOccurs="0" />
+            <xs:element name="entity" type="dmi:entityType" minOccurs="0" />
         </xs:sequence>
         <xs:attribute name="created-at" type="xs:dateTime" use="optional" />
     </xs:complexType>
@@ -23,7 +23,9 @@
         <xs:attribute name="smbios-version" type="xs:string" use="required" />
     </xs:complexType>
 
-    <xs:complexType name="tableType">
+    <xs:complexType name="entityType">
         <xs:attribute name="handle" type="xs:string" use="required" />
+        <xs:attribute name="type" type="xs:unsignedInt" use="required" />
+        <xs:attribute name="length" type="xs:unsignedInt" use="required" />
     </xs:complexType>
 </xs:schema>

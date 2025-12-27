@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/table/memory-controller.h>
+#include <opendmi/entity/memory-controller.h>
 
 int main(void)
 {

@@ -25,13 +25,13 @@ typedef struct dmi_linux_session
 {
     dmi_data_t *entry;
     size_t entry_size;
-    dmi_data_t *tables;
-    size_t tables_size;
+    dmi_data_t *table;
+    size_t table_size;
 } dmi_linux_session_t;
 
 static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__((unused)));
 static dmi_data_t *dmi_linux_read_entry(dmi_context_t *context, size_t *plength);
-static dmi_data_t *dmi_linux_read_tables(dmi_context_t *context, size_t *plength);
+static dmi_data_t *dmi_linux_read_table(dmi_context_t *context, size_t *plength);
 static bool dmi_linux_close(dmi_context_t *context);
 static void dmi_linux_session_free(dmi_linux_session_t *session);
 
@@ -48,17 +48,17 @@ static const char *dmi_linux_sysfs_path = "/sys/firmware/dmi/tables";
 static const char *dmi_linux_entry_file = "smbios_entry_point";
 
 /**
- * @brief SMBIOS tables file name (SYSFS).
+ * @brief SMBIOS table file name (SYSFS).
  */
 static const char *dmi_linux_table_file = "DMI";
 
 dmi_backend_t dmi_linux_backend =
 {
-    .name        = "Linux SysFS",
-    .open        = dmi_linux_open,
-    .read_entry  = dmi_linux_read_entry,
-    .read_tables = dmi_linux_read_tables,
-    .close       = dmi_linux_close
+    .name       = "Linux SysFS",
+    .open       = dmi_linux_open,
+    .read_entry = dmi_linux_read_entry,
+    .read_table = dmi_linux_read_table,
+    .close      = dmi_linux_close
 };
 
 static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__((unused)))
@@ -82,8 +82,8 @@ static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__
             break;
 
         snprintf(path, sizeof(path), "%s/%s", dmi_linux_sysfs_path, dmi_linux_table_file);
-        session->tables = dmi_file_map(context, path, &session->tables_size);
-        if (session->tables == nullptr)
+        session->table = dmi_file_map(context, path, &session->table_size);
+        if (session->table == nullptr)
             break;
 
         context->session = session;
@@ -109,7 +109,7 @@ static dmi_data_t *dmi_linux_read_entry(dmi_context_t *context, size_t *plength)
     return session->entry;
 }
 
-static dmi_data_t *dmi_linux_read_tables(dmi_context_t *context, size_t *plength)
+static dmi_data_t *dmi_linux_read_table(dmi_context_t *context, size_t *plength)
 {
     assert(context != nullptr);
     assert(context->session != nullptr);
@@ -117,9 +117,9 @@ static dmi_data_t *dmi_linux_read_tables(dmi_context_t *context, size_t *plength
 
     dmi_linux_session_t *session = dmi_cast(session, context->session);
 
-    *plength = session->tables_size;
+    *plength = session->table_size;
 
-    return session->tables;
+    return session->table;
 }
 
 static bool dmi_linux_close(dmi_context_t *context)
@@ -142,8 +142,8 @@ static void dmi_linux_session_free(dmi_linux_session_t *session)
 
     if (session->entry)
         munmap(session->entry, session->entry_size);
-    if (session->tables)
-        munmap(session->tables, session->tables_size);
+    if (session->table)
+        munmap(session->table, session->table_size);
 
     dmi_free(session);
 }
