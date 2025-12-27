@@ -164,11 +164,11 @@ dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table, dmi_version_t *p
     const dmi_baseboard_data_t *data;
 
     data = dmi_cast(data, dmi_table_data(table, DMI_TYPE_BASEBOARD));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(table->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->vendor        = dmi_table_string(table, data->vendor);
@@ -193,7 +193,7 @@ dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table, dmi_version_t *p
     info->children_count = dmi_value(data->children_count);
 
     info->children = dmi_alloc_array(table->context, sizeof(dmi_handle_t), info->children_count);
-    if (!info->children) {
+    if (info->children == nullptr) {
         dmi_free(info);
         return nullptr;
     }
@@ -201,7 +201,7 @@ dmi_baseboard_t *dmi_baseboard_decode(const dmi_table_t *table, dmi_version_t *p
     for (size_t i = 0; i < info->children_count; i++)
         info->children[i] = dmi_value(data->children_handles[i]);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 0, 0);
 
     return info;
