@@ -74,13 +74,13 @@ static bool dmi_xml_entity_attr_set(
         const dmi_attribute_t *attr,
         const void            *value);
 
-static bool  dmi_xml_entity_attrs_end(void *asession, const dmi_entity_t *entity);
-static bool  dmi_xml_entity_data(void *asession, const dmi_entity_t *entity);
-static bool  dmi_xml_entity_strings(void *asession, const dmi_entity_t *entity);
-static bool  dmi_xml_entity_end(void *asession, const dmi_entity_t *entity);
-static bool  dmi_xml_dump_end(void *asession);
+static bool dmi_xml_entity_attrs_end(void *asession, const dmi_entity_t *entity);
+static bool dmi_xml_entity_data(void *asession, const dmi_entity_t *entity);
+static bool dmi_xml_entity_strings(void *asession, const dmi_entity_t *entity);
+static bool dmi_xml_entity_end(void *asession, const dmi_entity_t *entity);
+static bool dmi_xml_dump_end(void *asession);
 
-static void  dmi_xml_finalize(void *asession);
+static void dmi_xml_finalize(void *asession);
 
 const dmi_format_t dmi_xml_format =
 {
