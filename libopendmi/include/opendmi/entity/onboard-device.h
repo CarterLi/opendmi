@@ -42,14 +42,14 @@ typedef enum dmi_onboard_device_type
     __DMI_ONBOARD_DEVICE_TYPE_COUNT
 } dmi_onboard_device_type_t;
 
-DMI_PACKED_UNION(dmi_onboard_device_instance_details)
+dmi_packed_union(dmi_onboard_device_instance_details)
 {
     /**
      * @brief Raw value.
      */
     dmi_byte_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Device type;
@@ -63,7 +63,7 @@ DMI_PACKED_UNION(dmi_onboard_device_instance_details)
     };
 };
 
-DMI_PACKED_STRUCT(dmi_onboard_device_instance_data)
+dmi_packed_struct(dmi_onboard_device_instance_data)
 {
     /**
      * @brief Device type and status.
@@ -92,7 +92,7 @@ DMI_PACKED_STRUCT(dmi_onboard_device_instance_data)
  * structure type, a brand-new structure must be defined to add a device
  * count field, carry over the existing fields, and add the new information.
  */
-DMI_PACKED_STRUCT(dmi_onboard_device_data)
+dmi_packed_struct(dmi_onboard_device_data)
 {
     /**
      * @brief SMBIOS structure header.

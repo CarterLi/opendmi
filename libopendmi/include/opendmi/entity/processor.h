@@ -390,7 +390,7 @@ typedef enum dmi_processor_upgrade
     DMI_PROCESSOR_UPGRADE_SOCKET_BGA2833   = 0x57, ///< Socket BGA2833
 } dmi_processor_upgrade_t;
 
-DMI_PACKED_STRUCT(dmi_processor_data)
+dmi_packed_struct(dmi_processor_data)
 {
     /**
      * @brief SMBIOS structure header.

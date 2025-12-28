@@ -161,7 +161,7 @@ typedef enum dmi_slot_length
  * The information in this structure defines the attributes of a system slot.
  * One structure is provided for each slot in the system.
  */
-DMI_PACKED_STRUCT(dmi_slot_data)
+dmi_packed_struct(dmi_slot_data)
 {
     /**
      * @brief SMBIOS structure header.

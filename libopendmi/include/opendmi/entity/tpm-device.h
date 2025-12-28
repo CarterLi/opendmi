@@ -18,7 +18,7 @@ typedef struct dmi_tpm_device_data     dmi_tpm_device_data_t;
 /**
  * @brief TPM device structure (type 43).
  */
-DMI_PACKED_STRUCT(dmi_tpm_device_data)
+dmi_packed_struct(dmi_tpm_device_data)
 {
     /**
      * @brief SMBIOS structure header.
@@ -79,14 +79,14 @@ DMI_PACKED_STRUCT(dmi_tpm_device_data)
 /**
  * @brief TPM device characteristics.
  */
-DMI_PACKED_UNION(dmi_tpm_device_features)
+dmi_packed_union(dmi_tpm_device_features)
 {
     /**
      * @brief Raw value.
      */
     uint64_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Reserved for future use.

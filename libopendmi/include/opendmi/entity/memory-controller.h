@@ -45,14 +45,14 @@ typedef enum dmi_memory_interleave
     __DMI_MEMORY_INTERLEAVE_COUNT
 } dmi_memory_interleave_t;
 
-DMI_PACKED_UNION(dmi_error_correct_caps)
+dmi_packed_union(dmi_error_correct_caps)
 {
     /**
      * @brief Raw value.
      */
     dmi_byte_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         bool is_other      : 1; ///< Other
         bool is_unknown    : 1; ///< Unknown
@@ -68,14 +68,14 @@ DMI_PACKED_UNION(dmi_error_correct_caps)
 /**
  * @brief The speed of the memory modules supported by the system.
  */
-DMI_PACKED_UNION(dmi_memory_module_speed)
+dmi_packed_union(dmi_memory_module_speed)
 {
     /**
      * @brief Raw value.
      */
     dmi_word_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         bool       is_other   : 1;  ///< Other
         bool       is_unknown : 1;  ///< Unknown
@@ -91,14 +91,14 @@ DMI_PACKED_UNION(dmi_memory_module_speed)
  * controlled by this controller. Setting of multiple bits indicates that the
  * sockets are configurable.
  */
-DMI_PACKED_UNION(dmi_memory_module_voltage)
+dmi_packed_union(dmi_memory_module_voltage)
 {
     /**
      * @brief Raw value.
      */
     dmi_byte_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         bool is_5v : 1;
         bool is_3v3 : 1;
@@ -126,7 +126,7 @@ DMI_PACKED_UNION(dmi_memory_module_voltage)
  * types to allow existing DMI browsers to properly display the system’s memory
  * attributes.
  */
-DMI_PACKED_STRUCT(dmi_memory_controller_data)
+dmi_packed_struct(dmi_memory_controller_data)
 {
     /**
      * @brief SMBIOS structure header.
@@ -195,7 +195,7 @@ DMI_PACKED_STRUCT(dmi_memory_controller_data)
 /**
  * @since SMBIOS 2.1
  */
-DMI_PACKED_STRUCT(dmi_memory_controller_extra)
+dmi_packed_struct(dmi_memory_controller_extra)
 {
     dmi_byte_t enabled_error_correction;
 };

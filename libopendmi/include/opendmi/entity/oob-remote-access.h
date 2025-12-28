@@ -18,14 +18,14 @@ typedef union  dmi_oob_connections        dmi_oob_connections_t;
 /**
  * @brief Out-of-band remote access connections.
  */
-DMI_PACKED_UNION(dmi_oob_connections)
+dmi_packed_union(dmi_oob_connections)
 {
     /**
      * @brief Raw value.
      */
     dmi_byte_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Inbound connection enabled. Identifies whether (`true`) or
@@ -61,7 +61,7 @@ DMI_PACKED_UNION(dmi_oob_connections)
  *
  * @since SMBIOS 2.2
  */
-DMI_PACKED_STRUCT(dmi_oob_remote_access_data)
+dmi_packed_struct(dmi_oob_remote_access_data)
 {
     /**
      * @brief SMBIOS structure header.

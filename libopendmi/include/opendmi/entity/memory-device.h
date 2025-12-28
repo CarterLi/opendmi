@@ -104,11 +104,11 @@ typedef enum dmi_memory_device_tech
 /**
  * @brief Memory device type details.
  */
-DMI_PACKED_UNION(dmi_memory_device_type_detail)
+dmi_packed_union(dmi_memory_device_type_detail)
 {
     dmi_word_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         bool reserved      : 1; ///< Reserved
         bool other         : 1; ///< Other
@@ -139,7 +139,7 @@ DMI_PACKED_UNION(dmi_memory_device_type_detail)
  *
  * @since SMBIOS 2.1
  */
-DMI_PACKED_STRUCT(dmi_memory_device_data)
+dmi_packed_struct(dmi_memory_device_data)
 {
     /**
      * @brief SMBIOS structure header.
@@ -295,7 +295,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
      */
     dmi_string_t part_number;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Rank. Zero means unknown rank information.

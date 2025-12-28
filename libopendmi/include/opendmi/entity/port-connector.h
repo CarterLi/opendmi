@@ -106,7 +106,7 @@ typedef enum dmi_port_type
 /**
  * @brief Port connector information structure (type 8).
  */
-DMI_PACKED_STRUCT(dmi_port_connector_data)
+dmi_packed_struct(dmi_port_connector_data)
 {
     /**
      * @brief SMBIOS structure header.

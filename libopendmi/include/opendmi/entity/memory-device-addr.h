@@ -15,7 +15,7 @@
  * @brief Memory device mapped address structure (type 20).
  * @since SMBIOS 2.1
  */
-DMI_PACKED_STRUCT(dmi_memory_device_addr_data)
+dmi_packed_struct(dmi_memory_device_addr_data)
 {
     /**
      * @brief SMBIOS structure header.

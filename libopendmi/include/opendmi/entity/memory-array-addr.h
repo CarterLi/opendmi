@@ -18,7 +18,7 @@ typedef struct dmi_memory_array_addr      dmi_memory_array_addr_t;
  * @brief Memory array mapped address structure (type 19).
  * @since SMBIOS 2.1
  */
-DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
+dmi_packed_struct(dmi_memory_array_addr_data)
 {
     /**
      * @brief SMBIOS structure header.

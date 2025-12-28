@@ -17,7 +17,7 @@ typedef struct dmi_group_assoc_data dmi_group_assoc_data_t;
 /**
  * @brief Group associations structure (type 14).
  */
-DMI_PACKED_STRUCT(dmi_group_assoc_data)
+dmi_packed_struct(dmi_group_assoc_data)
 {
     /**
      * @brief SMBIOS structure header.

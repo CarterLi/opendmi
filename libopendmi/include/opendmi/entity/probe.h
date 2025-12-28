@@ -44,14 +44,14 @@ typedef enum dmi_probe_location
 /**
  * @brief Probe location and status details.
  */
-DMI_PACKED_UNION(dmi_probe_details)
+dmi_packed_union(dmi_probe_details)
 {
     /**
      * @brief Raw value.
      */
     dmi_type_t _value;
 
-    DMI_PACKED_STRUCT() {
+    dmi_packed_struct() {
         /**
          * @brief Physical location.
          */
@@ -69,7 +69,7 @@ typedef union dmi_probe_details dmi_probe_details_t;
 /**
  * @brief Probe structure.
  */
-DMI_PACKED_STRUCT(dmi_probe_data)
+dmi_packed_struct(dmi_probe_data)
 {
     /**
      * @brief SMBIOS structure header.

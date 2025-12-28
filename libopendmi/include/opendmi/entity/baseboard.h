@@ -40,14 +40,14 @@ typedef enum dmi_baseboard_type
 /**
  * @brief Baseboard feature flags.
  */
-DMI_PACKED_UNION(dmi_baseboard_features)
+dmi_packed_union(dmi_baseboard_features)
 {
     /**
      * @brief Raw value.
      */
     dmi_byte_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Set to `true` if the board is a hosting board (for example, a
@@ -106,7 +106,7 @@ DMI_PACKED_UNION(dmi_baseboard_features)
  * provided, all system elements identified by the SMBIOS implementation are
  * associated with a single motherboard.
  */
-DMI_PACKED_STRUCT(dmi_baseboard_data)
+dmi_packed_struct(dmi_baseboard_data)
 {
     /**
      * @brief SMBIOS structure header.

@@ -46,7 +46,7 @@ typedef enum dmi_error_correct_type
     __DMI_ERROR_CORRECT_TYPE_COUNT
 } dmi_error_correct_type_t;
 
-DMI_PACKED_STRUCT(dmi_pci_addr_data)
+dmi_packed_struct(dmi_pci_addr_data)
 {
     /**
      * @brief Segment group number. The value is 0 for a single-segment topology.

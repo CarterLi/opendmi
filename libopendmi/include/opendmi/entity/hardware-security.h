@@ -28,11 +28,11 @@ typedef enum dmi_hardware_security_status
 /**
  * @brief Hardware security settings.
  */
-DMI_PACKED_STRUCT(dmi_hardware_security_settings)
+dmi_packed_struct(dmi_hardware_security_settings)
 {
     dmi_byte_t raw_value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief front panel reset status.
@@ -59,7 +59,7 @@ DMI_PACKED_STRUCT(dmi_hardware_security_settings)
 /**
  * @brief Hardware security structure (type 24).
  */
-DMI_PACKED_STRUCT(dmi_hardware_security_data)
+dmi_packed_struct(dmi_hardware_security_data)
 {
     /**
      * @brief SMBIOS structure header.

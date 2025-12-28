@@ -57,7 +57,7 @@ typedef enum dmi_pointing_device_interface
 /**
  * @brief Built-in pointing device structure (type 21).
  */
-DMI_PACKED_STRUCT(dmi_pointing_device_data)
+dmi_packed_struct(dmi_pointing_device_data)
 {
     /**
      * @brief SMBIOS structure header.

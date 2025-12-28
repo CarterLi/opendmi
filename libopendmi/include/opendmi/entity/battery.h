@@ -40,7 +40,7 @@ typedef enum dmi_battery_chemistry
  *
  * @since SMBIOS 2.1
  */
-DMI_PACKED_STRUCT(dmi_battery_data)
+dmi_packed_struct(dmi_battery_data)
 {
     /**
      * @brief SMBIOS structure header.

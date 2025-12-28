@@ -30,7 +30,7 @@ typedef enum dmi_system_wakeup_type
 /**
  * @brief System information structure (type 1).
  */
-DMI_PACKED_STRUCT(dmi_system_data)
+dmi_packed_struct(dmi_system_data)
 {
     /**
      * @brief SMBIOS structure header.

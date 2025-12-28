@@ -133,11 +133,11 @@ typedef enum dmi_firmware_inventory_state
 /**
  * @brief Firmware characteristics.
  */
-DMI_PACKED_UNION(dmi_firmware_inventory_features)
+dmi_packed_union(dmi_firmware_inventory_features)
 {
     dmi_word_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Updatable: This firmware can be updated by software.
@@ -159,7 +159,7 @@ DMI_PACKED_UNION(dmi_firmware_inventory_features)
 /**
  * @brief Firmware inventory information structure (type 45).
  */
-DMI_PACKED_STRUCT(dmi_firmware_inventory_data)
+dmi_packed_struct(dmi_firmware_inventory_data)
 {
     /**
      * @brief SMBIOS structure header.

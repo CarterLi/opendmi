@@ -22,7 +22,7 @@
  * of the system. The presence of this structure implies that a timed power-on
  * facility is available for the system.
  */
-DMI_PACKED_STRUCT(dmi_power_controls_data)
+dmi_packed_struct(dmi_power_controls_data)
 {
     /**
      * @brief SMBIOS structure header.

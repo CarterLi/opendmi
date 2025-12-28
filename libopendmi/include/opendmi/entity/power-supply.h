@@ -47,14 +47,14 @@ typedef enum dmi_range_switching_type
 /**
  * @brief Power supply characteristics.
  */
-DMI_PACKED_UNION(dmi_power_supply_details)
+dmi_packed_union(dmi_power_supply_details)
 {
     /**
      * @brief Raw value.
      */
     dmi_word_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Power supply is hot-replaceable.
@@ -98,7 +98,7 @@ typedef union dmi_power_supply_details dmi_power_supply_details_t;
 /**
  * @brief System power supply structure (type 39).
  */
-DMI_PACKED_STRUCT(dmi_power_supply_data)
+dmi_packed_struct(dmi_power_supply_data)
 {
     /**
      * @brief SMBIOS structure header.

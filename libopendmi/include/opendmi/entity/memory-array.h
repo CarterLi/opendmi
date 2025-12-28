@@ -57,7 +57,7 @@ typedef enum dmi_memory_array_usage
  * @brief Physical memory array structure (type 16).
  * @since SMBIOS 2.1
  */
-DMI_PACKED_STRUCT(dmi_memory_array_data)
+dmi_packed_struct(dmi_memory_array_data)
 {
     /**
      * @brief SMBIOS structure header.

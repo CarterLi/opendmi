@@ -26,7 +26,7 @@ typedef struct dmi_mgmt_device_threshold_data dmi_mgmt_device_threshold_data_t;
  *
  * - If the value is unavailable, the field is set to `0x8000`.
  */
-DMI_PACKED_STRUCT(dmi_mgmt_device_threshold_data)
+dmi_packed_struct(dmi_mgmt_device_threshold_data)
 {
     /**
      * @brief SMBIOS structure header.

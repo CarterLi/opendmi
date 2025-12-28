@@ -16,7 +16,7 @@ typedef struct dmi_oem_strings_data dmi_oem_strings_data_t;
 /**
  * @brief OEM strings structure (type 11).
  */
-DMI_PACKED_STRUCT(dmi_oem_strings_data)
+dmi_packed_struct(dmi_oem_strings_data)
 {
     /**
      * @brief SMBIOS structure header.

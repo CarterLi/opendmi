@@ -50,7 +50,7 @@ typedef enum dmi_mgmt_device_addr_type
 /**
  * @brief Management device structure (type 34).
  */
-DMI_PACKED_STRUCT(dmi_mgmt_device_data)
+dmi_packed_struct(dmi_mgmt_device_data)
 {
     /**
      * @brief SMBIOS structure header.

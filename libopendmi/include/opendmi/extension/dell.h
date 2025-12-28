@@ -23,7 +23,7 @@ enum dmi_dell_type
 /**
  * @brief Dell SMI calling interface token.
  */
-DMI_PACKED_STRUCT(dmi_dell_calling_interface_token)
+dmi_packed_struct(dmi_dell_calling_interface_token)
 {
     /**
      * @brief Token identifier.
@@ -44,7 +44,7 @@ DMI_PACKED_STRUCT(dmi_dell_calling_interface_token)
 /**
  * @brief Dell SMI calling interface structure (type 218).
  */
-DMI_PACKED_STRUCT(dmi_dell_calling_interface_data)
+dmi_packed_struct(dmi_dell_calling_interface_data)
 {
     /**
      * @brief SMBIOS structure header.

@@ -25,14 +25,14 @@ typedef enum dmi_boot_option
 /**
  * @brief System reset capabilities.
  */
-DMI_PACKED_UNION(dmi_system_reset_caps)
+dmi_packed_union(dmi_system_reset_caps)
 {
     /**
      * @brief Raw value;
      */
     dmi_byte_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Status. Identifies whether (`true`) or not (`false`) the
@@ -70,7 +70,7 @@ typedef union dmi_system_reset_caps dmi_system_reset_caps_t;
 /**
  * @brief System reset structure (type 23).
  */
-DMI_PACKED_STRUCT(dmi_system_reset_data)
+dmi_packed_struct(dmi_system_reset_data)
 {
     /**
      * @brief SMBIOS structure header.

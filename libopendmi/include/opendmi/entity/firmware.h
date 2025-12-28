@@ -14,11 +14,11 @@
 /**
  * @brief Platform firmware features.
  */
-DMI_PACKED_UNION(dmi_firmware_features)
+dmi_packed_union(dmi_firmware_features)
 {
     dmi_qword_t _value;
 
-    DMI_PACKED_STRUCT() {
+    dmi_packed_struct() {
         dmi_qword_t reserved : 2;
         bool unknown : 1;
         bool unsupported : 1;
@@ -58,14 +58,14 @@ typedef union dmi_firmware_features dmi_firmware_features_t;
 /**
  * @brief Platform firmware extended features.
  */
-DMI_PACKED_UNION(dmi_firmware_features_ex)
+dmi_packed_union(dmi_firmware_features_ex)
 {
     /**
      * @brief Raw value.
      */
     dmi_byte_t _value[2];
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         bool acpi_support         : 1;
         bool usb_legacy_support   : 1;
@@ -91,7 +91,7 @@ typedef union dmi_firmware_features_ex dmi_firmware_features_ex_t;
 /**
  * @brief Platform firmware information structure (type 0).
  */
-DMI_PACKED_STRUCT(dmi_firmware_data)
+dmi_packed_struct(dmi_firmware_data)
 {
     /**
      * @brief SMBIOS structure header.

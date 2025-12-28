@@ -20,14 +20,14 @@ typedef union  dmi_memory_module_error dmi_memory_module_error_t;
 /**
  * @brief Memory module type details.
  */
-DMI_PACKED_UNION(dmi_memory_module_type)
+dmi_packed_union(dmi_memory_module_type)
 {
     /**
      * @brief Raw value.
      */
     dmi_word_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         bool is_other      : 1; ///< Other
         bool is_unknown    : 1; ///< Unknown
@@ -48,11 +48,11 @@ DMI_PACKED_UNION(dmi_memory_module_type)
 /**
  * @brief Memory module error status.
  */
-DMI_PACKED_UNION(dmi_memory_module_error)
+dmi_packed_union(dmi_memory_module_error)
 {
     dmi_byte_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Uncorrectable errors received for the module, if set. All or

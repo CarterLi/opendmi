@@ -32,7 +32,7 @@ typedef enum dmi_memory_channel_type
 /**
  * @brief Memory channel device data.
  */
-DMI_PACKED_STRUCT(dmi_memory_channel_device_data)
+dmi_packed_struct(dmi_memory_channel_device_data)
 {
     /**
      * @brief Channel load provided by the memory device associated with
@@ -57,7 +57,7 @@ DMI_PACKED_STRUCT(dmi_memory_channel_device_data)
  *
  * @since SMBIOS 2.3
  */
-DMI_PACKED_STRUCT(dmi_memory_channel_data)
+dmi_packed_struct(dmi_memory_channel_data)
 {
     /**
      * @brief SMBIOS structure header.

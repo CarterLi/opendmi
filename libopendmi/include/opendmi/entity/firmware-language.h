@@ -18,14 +18,14 @@ typedef union  dmi_firmware_language_flags dmi_firmware_language_flags_t;
 /**
  * @brief Firmware language flags
  */
-DMI_PACKED_UNION(dmi_firmware_language_flags)
+dmi_packed_union(dmi_firmware_language_flags)
 {
     /**
      * @brief Raw value.
      */
     dmi_byte_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief If set to `true`, the current language strings use the
@@ -43,7 +43,7 @@ DMI_PACKED_UNION(dmi_firmware_language_flags)
 /**
  * @brief Firmware language information structure (type 13).
  */
-DMI_PACKED_STRUCT(dmi_firmware_language_data)
+dmi_packed_struct(dmi_firmware_language_data)
 {
     /**
      * @brief SMBIOS structure header.

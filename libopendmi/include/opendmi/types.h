@@ -89,14 +89,14 @@ typedef union dmi_uuid dmi_uuid_t;
 /**
  * DMI UUID type.
  */
-DMI_PACKED_UNION(dmi_uuid)
+dmi_packed_union(dmi_uuid)
 {
     /**
      * @brief Raw value;
      */
     dmi_byte_t _value[16];
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Low field of the timestamp.

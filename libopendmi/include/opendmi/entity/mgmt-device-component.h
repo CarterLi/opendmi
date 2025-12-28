@@ -16,7 +16,7 @@ typedef struct dmi_mgmt_device_component_data dmi_mgmt_device_component_data_t;
 /**
  * @brief Management device component structure (type 35).
  */
-DMI_PACKED_STRUCT(dmi_mgmt_device_component_data)
+dmi_packed_struct(dmi_mgmt_device_component_data)
 {
     /**
      * @brief SMBIOS structure header.

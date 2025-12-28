@@ -74,7 +74,7 @@ struct dmi_entry_spec
  * On modern 32-bit systems with SMBIOS v2.1 or newer, this is also used as a
  * part of EPS called IEPS (Intermediate EPS) for compatibility reasons.
  */
-DMI_PACKED_STRUCT(dmi_entry_legacy)
+dmi_packed_struct(dmi_entry_legacy)
 {
     /**
      * @brief Anchor string.
@@ -139,7 +139,7 @@ DMI_PACKED_STRUCT(dmi_entry_legacy)
 /**
  * @brief The 32-bit SMBIOS 2.1+ Entry Point Structure (EPS).
  */
-DMI_PACKED_STRUCT(dmi_entry_v21)
+dmi_packed_struct(dmi_entry_v21)
 {
     /**
      * @brief Anchor string.
@@ -233,7 +233,7 @@ DMI_PACKED_STRUCT(dmi_entry_v21)
 /**
  * @brief The 64-bit SMBIOS 3.0+ Entry Point Structure (EPS).
  */
-DMI_PACKED_STRUCT(dmi_entry_v30)
+dmi_packed_struct(dmi_entry_v30)
 {
     /**
      * @brief Anchor string.

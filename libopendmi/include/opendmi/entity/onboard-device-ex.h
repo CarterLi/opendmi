@@ -18,7 +18,7 @@ typedef struct dmi_onboard_device_ex_data dmi_onboard_device_ex_data_t;
 /**
  * @brief Onboard devices extended information structure (type 41).
  */
-DMI_PACKED_STRUCT(dmi_onboard_device_ex_data)
+dmi_packed_struct(dmi_onboard_device_ex_data)
 {
     /**
      * @brief SMBIOS structure header.

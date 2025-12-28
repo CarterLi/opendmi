@@ -24,7 +24,7 @@ typedef struct dmi_string_property_data dmi_string_property_data_t;
  *
  * @since SMBIOS 3.5
  */
-DMI_PACKED_STRUCT(dmi_string_property_data)
+dmi_packed_struct(dmi_string_property_data)
 {
     /**
      * @brief SMBIOS structure header.

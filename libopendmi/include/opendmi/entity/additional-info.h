@@ -17,7 +17,7 @@ typedef struct dmi_additional_info      dmi_additional_info_t;
 /**
  * @brief Additional information entry.
  */
-DMI_PACKED_STRUCT(dmi_additional_info_entry_data)
+dmi_packed_struct(dmi_additional_info_entry_data)
 {
     /**
      * @brief Length of this additional information entry instance; a minimum
@@ -58,7 +58,7 @@ DMI_PACKED_STRUCT(dmi_additional_info_entry_data)
 /**
  * @brief Additional information structure (type 40).
  */
-DMI_PACKED_STRUCT(dmi_additional_info_data)
+dmi_packed_struct(dmi_additional_info_data)
 {
     /**
      * @brief SMBIOS structure header.

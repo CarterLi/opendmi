@@ -110,7 +110,7 @@ struct dmi_entity_spec
 /**
  * @brief SMBIOS structure header.
  */
-DMI_PACKED_STRUCT(dmi_header)
+dmi_packed_struct(dmi_header)
 {
     /**
      * @brief Specifies the type of structure. Types 0 through 127 (7Fh) are

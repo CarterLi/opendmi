@@ -15,7 +15,7 @@
  * @brief 64-Bit memory error information structure (type 33).
  * @since SMBIOS 2.3
  */
-DMI_PACKED_STRUCT(dmi_memory_error_64_data)
+dmi_packed_struct(dmi_memory_error_64_data)
 {
     /**
      * @brief SMBIOS structure header.

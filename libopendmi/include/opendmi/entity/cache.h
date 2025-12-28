@@ -79,14 +79,14 @@ typedef enum dmi_cache_location
 /**
  * @brief Cache configuration.
  */
-DMI_PACKED_UNION(dmi_cache_config)
+dmi_packed_union(dmi_cache_config)
 {
     /**
      * @brief Raw value.
      */
     dmi_word_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Cache Level – 1 through 8. For example, an L1 cache would use
@@ -126,14 +126,14 @@ typedef union dmi_cache_config dmi_cache_config_t;
 /**
  * @brief Cache SRAM type.
  */
-DMI_PACKED_UNION(dmi_cache_sram_type)
+dmi_packed_union(dmi_cache_sram_type)
 {
     /**
      * @brief Encoded type value.
      */
     dmi_word_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         bool other          : 1; ///< Other
         bool unknown        : 1; ///< Unknown
@@ -159,7 +159,7 @@ typedef union dmi_cache_sram_type dmi_cache_sram_type_t;
  * modules can be associated with a processor structure in one or two ways
  * depending on the SMBIOS version.
  */
-DMI_PACKED_STRUCT(dmi_cache_data)
+dmi_packed_struct(dmi_cache_data)
 {
     /**
      * @brief SMBIOS structure header.

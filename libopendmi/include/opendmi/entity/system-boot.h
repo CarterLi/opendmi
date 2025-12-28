@@ -39,7 +39,7 @@ typedef enum dmi_boot_status
 /**
  * @brief System boot information structure (type 32).
  */
-DMI_PACKED_STRUCT(dmi_system_boot_data)
+dmi_packed_struct(dmi_system_boot_data)
 {
     /**
      * @brief SMBIOS structure header.

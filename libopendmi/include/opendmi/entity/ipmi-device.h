@@ -52,14 +52,14 @@ typedef enum dmi_ipmi_register_spacing
     DMI_IPMI_REGISTER_SPACING_RESERVED = 0x3, ///< Reserved
 } dmi_ipmi_register_spacing_t;
 
-DMI_PACKED_UNION(dmi_ipmi_device_details)
+dmi_packed_union(dmi_ipmi_device_details)
 {
     /**
      * @brief Raw value.
      */
     uint8_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         bool       is_intr_level_triggered : 1;
         bool       is_intr_active_high     : 1;
@@ -86,7 +86,7 @@ DMI_PACKED_UNION(dmi_ipmi_device_details)
  * or the type 42 structures can be used. Providing Type 38 is recommended for
  * backward compatibility.
  */
-DMI_PACKED_STRUCT(dmi_ipmi_device_data)
+dmi_packed_struct(dmi_ipmi_device_data)
 {
     /**
      * @brief SMBIOS structure header.

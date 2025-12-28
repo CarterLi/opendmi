@@ -38,14 +38,14 @@ typedef enum dmi_cooling_device_type
 /**
  * @brief Cooling device type and status details.
  */
-DMI_PACKED_UNION(dmi_cooling_device_details)
+dmi_packed_union(dmi_cooling_device_details)
 {
     /**
      * @brief Raw value.
      */
     dmi_byte_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Cooling device type.
@@ -74,7 +74,7 @@ typedef union dmi_cooling_device_details dmi_cooling_device_details_t;
  *
  * @since SMBIOS 2.2
  */
-DMI_PACKED_STRUCT(dmi_cooling_device_data)
+dmi_packed_struct(dmi_cooling_device_data)
 {
     /**
      * @brief SMBIOS structure header.

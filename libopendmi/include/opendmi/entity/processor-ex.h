@@ -35,7 +35,7 @@ typedef enum dmi_processor_arch
  * @brief The Processor-specific Block is the standard container of
  * processor-specific data.
  */
-DMI_PACKED_STRUCT(dmi_processor_specific_block)
+dmi_packed_struct(dmi_processor_specific_block)
 {
     /**
      * @brief Length of processor-specific data.
@@ -57,7 +57,7 @@ DMI_PACKED_STRUCT(dmi_processor_specific_block)
 /**
  * @brief Processor Additional Information (type 44).
  */
-DMI_PACKED_STRUCT(dmi_processor_ex_data)
+dmi_packed_struct(dmi_processor_ex_data)
 {
     /**
      * @brief SMBIOS structure header.
@@ -86,14 +86,14 @@ typedef enum dmi_processor_aarch64_data_subtype
 /**
  * @brief Revision of the 64-bit Arm (Aarch64) Processor Specific Data.
  */
-DMI_PACKED_UNION(dmi_processor_aarch64_data_revision)
+dmi_packed_union(dmi_processor_aarch64_data_revision)
 {
     /**
      * @brief Raw value.
      */
     dmi_word_t __value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         /**
          * @brief Bits 7:0 Minor revision.
@@ -110,7 +110,7 @@ DMI_PACKED_UNION(dmi_processor_aarch64_data_revision)
 /**
  * @brief The 64-bit ARM (Aarch64) processor-specific data.
  */
-DMI_PACKED_STRUCT(dmi_processor_aarch64_data)
+dmi_packed_struct(dmi_processor_aarch64_data)
 {
     /**
      * @brief Revision of the 64-bit Arm (Aarch64) Processor Specific Data.
@@ -139,7 +139,7 @@ DMI_PACKED_STRUCT(dmi_processor_aarch64_data)
     dmi_byte_t subtype_specific_data[];
 };
 
-DMI_PACKED_STRUCT(dmi_processor_aarch64_arch_data)
+dmi_packed_struct(dmi_processor_aarch64_arch_data)
 {
 
 };

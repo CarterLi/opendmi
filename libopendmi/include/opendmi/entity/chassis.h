@@ -82,21 +82,21 @@ typedef enum dmi_rack_type
     __DMI_RACK_TYPE_COUNT
 } dmi_rack_type_t;
 
-DMI_PACKED_UNION(dmi_chassis_type_data)
+dmi_packed_union(dmi_chassis_type_data)
 {
     /**
      * @brief Raw value.
      */
     dmi_byte_t _value;
 
-    DMI_PACKED_STRUCT()
+    dmi_packed_struct()
     {
         dmi_byte_t type : 7;
         bool is_lock_present : 1;
     };
 };
 
-DMI_PACKED_STRUCT(dmi_chassis_element_data)
+dmi_packed_struct(dmi_chassis_element_data)
 {
     /**
      * @brief Specifies the type of element associated with this record.
@@ -133,7 +133,7 @@ DMI_PACKED_STRUCT(dmi_chassis_element_data)
  *
  * @since SMBIOS 2.0
  */
-DMI_PACKED_STRUCT(dmi_chassis_data)
+dmi_packed_struct(dmi_chassis_data)
 {
     /**
      * @brief SMBIOS structure header.
@@ -212,7 +212,7 @@ DMI_PACKED_STRUCT(dmi_chassis_data)
     dmi_byte_t element_size;
 };
 
-DMI_PACKED_STRUCT(dmi_chassis_extra)
+dmi_packed_struct(dmi_chassis_extra)
 {
     /**
      * @brief Number of null-terminated string describing the chassis or

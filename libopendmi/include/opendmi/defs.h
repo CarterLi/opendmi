@@ -50,11 +50,11 @@
 
 // Cross-compiler packed structures support
 #ifdef _MSC_VER
-#   define DMI_PACKED_STRUCT(...) __pragma(pack(push, 1)) struct __VA_ARGS__ __pragma(pack(pop))
-#   define DMI_PACKED_UNION(...) __pragma(pack(push, 1)) union __VA_ARGS__ __pragma(pack(pop))
+#   define dmi_packed_struct(...) __pragma(pack(push, 1)) struct __VA_ARGS__ __pragma(pack(pop))
+#   define dmi_packed_union(...) __pragma(pack(push, 1)) union __VA_ARGS__ __pragma(pack(pop))
 #else
-#   define DMI_PACKED_STRUCT(...) struct __attribute__((packed)) __VA_ARGS__
-#   define DMI_PACKED_UNION(...) union __attribute__((packed)) __VA_ARGS__
+#   define dmi_packed_struct(...) struct __attribute__((packed)) __VA_ARGS__
+#   define dmi_packed_union(...) union __attribute__((packed)) __VA_ARGS__
 #endif
 
 // Cross-compiler thread-local specifier support
