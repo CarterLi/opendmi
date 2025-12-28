@@ -96,8 +96,8 @@ static const dmi_attribute_t dmi_onboard_device_instance_attrs[] =
     DMI_ATTRIBUTE(dmi_onboard_device_instance_t, type, ENUM, {
         .code    = "type",
         .name    = "Type",
-        .unspec  = DMI_VALUE_PTR(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
         .values  = &dmi_onboard_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_onboard_device_instance_t, is_enabled, BOOL, {

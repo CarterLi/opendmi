@@ -75,7 +75,7 @@ static const dmi_name_set_t dmi_firmware_inventory_feature_names =
     }
 };
 
-static const dmi_name_set_t dmi_firmware_inventory_state_names = 
+static const dmi_name_set_t dmi_firmware_inventory_state_names =
 {
     .code  = "firmware-inventory-states",
     .names = {
@@ -138,7 +138,7 @@ const dmi_attribute_t dmi_firmware_inventory_attrs[] =
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, ident_format, ENUM, {
         .code    = "ident-format",
         .name    = "identifier format",
-        .unspec  = DMI_VALUE_PTR(DMI_FIRMWARE_IDENT_FORMAT_UNSPEC),
+        .unspec  = dmi_value_ptr(DMI_FIRMWARE_IDENT_FORMAT_UNSPEC),
         .values  = &dmi_firmware_ident_format_names
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, release_date, STRING, {
@@ -165,8 +165,8 @@ const dmi_attribute_t dmi_firmware_inventory_attrs[] =
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, state, ENUM, {
         .code    = "state",
         .name    = "State",
-        .unspec  = DMI_VALUE_PTR(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
+        .unspec  = dmi_value_ptr(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
         .values  = &dmi_firmware_inventory_state_names
     }),
     DMI_ATTRIBUTE(dmi_firmware_inventory_t, component_count, INTEGER, {

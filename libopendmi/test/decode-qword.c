@@ -24,7 +24,7 @@ struct test_vector test_data[] =
 
 int main(void)
 {
-    for (unsigned i = 0; i < DMI_ARRAY_SIZE(test_data); i++) {
+    for (unsigned i = 0; i < dmi_array_size(test_data); i++) {
         if (dmi_qword_decode(*(dmi_qword_t *)test_data[i].value) != test_data[i].result)
             return EXIT_FAILURE;
     }

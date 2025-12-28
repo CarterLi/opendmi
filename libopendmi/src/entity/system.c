@@ -78,7 +78,7 @@ const dmi_attribute_t dmi_system_attrs[] =
         .code    = "wakeup-type",
         .name    = "Wakeup type",
         .values  = &dmi_system_wakeup_type_names,
-        .unknown = DMI_VALUE_PTR(DMI_SYSTEM_WAKEUP_TYPE_UNKNOWN),
+        .unknown = dmi_value_ptr(DMI_SYSTEM_WAKEUP_TYPE_UNKNOWN),
         .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_system_t, sku_number, STRING, {

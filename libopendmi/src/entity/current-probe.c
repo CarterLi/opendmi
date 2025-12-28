@@ -16,15 +16,15 @@ const dmi_attribute_t dmi_current_probe_attrs[] =
     DMI_ATTRIBUTE(dmi_current_probe_t, location, ENUM, {
         .code    = "location",
         .name    = "Location",
-        .unspec  = DMI_VALUE_PTR(DMI_PROBE_LOCATION_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_PROBE_LOCATION_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_PROBE_LOCATION_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_PROBE_LOCATION_UNKNOWN),
         .values  = &dmi_probe_location_names
     }),
-    DMI_ATTRIBUTE(dmi_current_probe_t, status, ENUM, {  
+    DMI_ATTRIBUTE(dmi_current_probe_t, status, ENUM, {
         .code    = "status",
         .name    = "Status",
-        .unspec  = DMI_VALUE_PTR(DMI_STATUS_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_STATUS_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_STATUS_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_STATUS_UNKNOWN),
         .values  = &dmi_status_names
     }),
     DMI_ATTRIBUTE(dmi_current_probe_t, maximum_value, DECIMAL, {
@@ -32,7 +32,7 @@ const dmi_attribute_t dmi_current_probe_attrs[] =
         .name    = "Maximum value",
         .scale   = 1,
         .unit    = DMI_UNIT_MILLIAMPERE,
-        .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
+        .unknown = dmi_value_ptr(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
     DMI_ATTRIBUTE(dmi_current_probe_t, minimum_value, DECIMAL, {
@@ -40,7 +40,7 @@ const dmi_attribute_t dmi_current_probe_attrs[] =
         .name    = "Minimum value",
         .scale   = 1,
         .unit    = DMI_UNIT_MILLIAMPERE,
-        .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
+        .unknown = dmi_value_ptr(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
     DMI_ATTRIBUTE(dmi_current_probe_t, resolution, DECIMAL, {
@@ -48,7 +48,7 @@ const dmi_attribute_t dmi_current_probe_attrs[] =
         .name    = "Resolution",
         .scale   = 3,
         .unit    = DMI_UNIT_MILLIAMPERE,
-        .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
+        .unknown = dmi_value_ptr(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
     DMI_ATTRIBUTE(dmi_current_probe_t, tolerance, DECIMAL, {
@@ -56,7 +56,7 @@ const dmi_attribute_t dmi_current_probe_attrs[] =
         .name    = "Tolerance",
         .scale   = 1,
         .unit    = DMI_UNIT_MILLIAMPERE,
-        .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
+        .unknown = dmi_value_ptr(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
     DMI_ATTRIBUTE(dmi_current_probe_t, accuracy, DECIMAL, {
@@ -64,7 +64,7 @@ const dmi_attribute_t dmi_current_probe_attrs[] =
         .name    = "Accuracy",
         .scale   = 2,
         .unit    = DMI_UNIT_MILLIAMPERE,
-        .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
+        .unknown = dmi_value_ptr(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
     DMI_ATTRIBUTE(dmi_current_probe_t, oem_defined, INTEGER, {
@@ -77,7 +77,7 @@ const dmi_attribute_t dmi_current_probe_attrs[] =
         .name    = "Nominal value",
         .scale   = 1,
         .unit    = DMI_UNIT_MILLIAMPERE,
-        .unknown = DMI_VALUE_PTR(DMI_PROBE_VALUE_UNKNOWN),
+        .unknown = dmi_value_ptr(DMI_PROBE_VALUE_UNKNOWN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
     DMI_ATTRIBUTE_NULL

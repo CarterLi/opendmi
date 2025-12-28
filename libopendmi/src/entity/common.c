@@ -51,17 +51,17 @@ const dmi_name_set_t dmi_error_correct_type_names =
         {
             .id   = DMI_ERROR_CORRECT_TYPE_PARITY,
             .code = "parity",
-            .name = "Parity" 
+            .name = "Parity"
         },
         {
             .id   = DMI_ERROR_CORRECT_TYPE_SINGLE_BIT,
             .code = "single-bit",
-            .name = "Single-bit ECC" 
+            .name = "Single-bit ECC"
         },
         {
             .id   = DMI_ERROR_CORRECT_TYPE_MULTI_BIT,
             .code = "multi-bit",
-            .name = "Multi-bit ECC" 
+            .name = "Multi-bit ECC"
         },
         {
             .id   = DMI_ERROR_CORRECT_TYPE_CRC,
@@ -77,25 +77,25 @@ const dmi_attribute_t dmi_pci_addr_attrs[] =
     DMI_ATTRIBUTE(dmi_pci_addr_t, segment_group, INTEGER, {
         .code   = "segment-group",
         .name   = "Segment group",
-        .unspec = DMI_VALUE_PTR((uint16_t)UINT16_MAX),
+        .unspec = dmi_value_ptr((uint16_t)UINT16_MAX),
         .flags  = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_pci_addr_t, bus_number, INTEGER, {
         .code   = "bus-number",
         .name   = "Bus number",
-        .unspec = DMI_VALUE_PTR((uint8_t)UINT8_MAX),
+        .unspec = dmi_value_ptr((uint8_t)UINT8_MAX),
         .flags  = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_pci_addr_t, device_number, INTEGER, {
         .code   = "device-number",
         .name   = "Device number",
-        .unspec = DMI_VALUE_PTR((uint8_t)UINT8_MAX),
+        .unspec = dmi_value_ptr((uint8_t)UINT8_MAX),
         .flags  = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE(dmi_pci_addr_t, function_number, INTEGER, {
         .code   = "function-number",
         .name   = "Function number",
-        .unspec = DMI_VALUE_PTR((uint8_t)UINT8_MAX),
+        .unspec = dmi_value_ptr((uint8_t)UINT8_MAX),
         .flags  = DMI_ATTRIBUTE_FLAG_HEX
     }),
     DMI_ATTRIBUTE_NULL

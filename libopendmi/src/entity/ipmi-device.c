@@ -146,13 +146,13 @@ const dmi_attribute_t dmi_ipmi_device_attrs[] =
     DMI_ATTRIBUTE(dmi_ipmi_device_t, intr_number, INTEGER, {
         .code   = "interrupt-number",
         .name   = "Interrupt number",
-        .unspec = DMI_VALUE_PTR((unsigned short)0)
+        .unspec = dmi_value_ptr((unsigned short)0)
     }),
     DMI_ATTRIBUTE(dmi_ipmi_device_t, register_spacing, INTEGER, {
         .code   = "register-spacing",
         .name   = "Register spacing",
         .unit   = "bytes",
-        .unspec = DMI_VALUE_PTR((unsigned short)0)
+        .unspec = dmi_value_ptr((unsigned short)0)
     }),
     DMI_ATTRIBUTE_NULL
 };

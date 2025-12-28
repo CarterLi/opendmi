@@ -256,8 +256,8 @@ static const dmi_attribute_t dmi_chassis_attrs[] =
     DMI_ATTRIBUTE(dmi_chassis_t, type, ENUM, {
         .code    = "type",
         .name    = "Type",
-        .unspec  = DMI_VALUE_PTR(DMI_CHASSIS_TYPE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_CHASSIS_TYPE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_CHASSIS_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_CHASSIS_TYPE_UNKNOWN),
         .values  = &dmi_chassis_type_names
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, is_lock_present, BOOL, {
@@ -279,32 +279,32 @@ static const dmi_attribute_t dmi_chassis_attrs[] =
     DMI_ATTRIBUTE(dmi_chassis_t, bootup_state, ENUM, {
         .code    = "bootup-state",
         .name    = "Boot-up state",
-        .unspec  = DMI_VALUE_PTR(DMI_STATUS_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_STATUS_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_STATUS_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_STATUS_UNKNOWN),
         .values  = &dmi_status_names,
         .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, power_supply_state, ENUM, {
         .code    = "power-supply-state",
         .name    = "Power supply state",
-        .unspec  = DMI_VALUE_PTR(DMI_STATUS_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_STATUS_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_STATUS_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_STATUS_UNKNOWN),
         .values  = &dmi_status_names,
         .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, thermal_state, ENUM, {
         .code    = "thermal-state",
         .name    = "Thermal state",
-        .unspec  = DMI_VALUE_PTR(DMI_STATUS_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_STATUS_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_STATUS_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_STATUS_UNKNOWN),
         .values  = &dmi_status_names,
         .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, security_status, ENUM, {
         .code    = "security-status",
         .name    = "Security status",
-        .unspec  = DMI_VALUE_PTR(DMI_CHASSIS_SECURITY_STATUS_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_CHASSIS_SECURITY_STATUS_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_CHASSIS_SECURITY_STATUS_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_CHASSIS_SECURITY_STATUS_UNKNOWN),
         .values  = &dmi_chassis_security_status_names,
         .level   = DMI_VERSION(2, 1, 0)
     }),
@@ -318,13 +318,13 @@ static const dmi_attribute_t dmi_chassis_attrs[] =
         .code    = "height",
         .name    = "Height",
         .unit    = DMI_UNIT_RACK,
-        .unspec  = DMI_VALUE_PTR((unsigned short)0),
+        .unspec  = dmi_value_ptr((unsigned short)0),
         .level   = DMI_VERSION(2, 3, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, power_cord_count, INTEGER, {
         .code    = "power-cord-count",
         .name    = "Power cord count",
-        .unspec  = DMI_VALUE_PTR((unsigned short)0),
+        .unspec  = dmi_value_ptr((unsigned short)0),
         .level   = DMI_VERSION(2, 3, 0)
     }),
     DMI_ATTRIBUTE(dmi_chassis_t, element_count, INTEGER, {
@@ -351,7 +351,7 @@ static const dmi_attribute_t dmi_chassis_attrs[] =
     DMI_ATTRIBUTE(dmi_chassis_t, rack_type, ENUM, {
         .code    = "rack-type",
         .name    = "Rack type",
-        .unspec  = DMI_VALUE_PTR(DMI_RACK_TYPE_UNSPEC),
+        .unspec  = dmi_value_ptr(DMI_RACK_TYPE_UNSPEC),
         .values  = &dmi_rack_type_names,
         .level   = DMI_VERSION(3, 9, 0)
     }),

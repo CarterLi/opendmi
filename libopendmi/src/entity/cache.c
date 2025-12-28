@@ -64,7 +64,7 @@ static const dmi_name_set_t dmi_cache_mode_names =
 static const dmi_name_set_t dmi_cache_assoc_names =
 {
     .code  = "cache-assocs",
-    .names = { 
+    .names = {
         DMI_NAME_UNSPEC(DMI_CACHE_ASSOC_UNSPEC),
         DMI_NAME_OTHER(DMI_CACHE_ASSOC_OTHER),
         DMI_NAME_UNKNOWN(DMI_CACHE_ASSOC_UNKNOWN),
@@ -204,7 +204,7 @@ const dmi_attribute_t dmi_cache_attrs[] =
     DMI_ATTRIBUTE(dmi_cache_t, location, ENUM, {
         .code    = "location",
         .name    = "Location",
-        .unknown = DMI_VALUE_PTR(DMI_CACHE_LOCATION_UNKNOWN),
+        .unknown = dmi_value_ptr(DMI_CACHE_LOCATION_UNKNOWN),
         .values  = &dmi_cache_location_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, enabled, BOOL, {
@@ -214,7 +214,7 @@ const dmi_attribute_t dmi_cache_attrs[] =
     DMI_ATTRIBUTE(dmi_cache_t, mode, ENUM, {
         .code    = "mode",
         .name    = "Operational mode",
-        .unknown = DMI_VALUE_PTR(DMI_CACHE_MODE_UNKNOWN),
+        .unknown = dmi_value_ptr(DMI_CACHE_MODE_UNKNOWN),
         .values  = &dmi_cache_mode_names
     }),
     DMI_ATTRIBUTE(dmi_cache_t, maximum_size, SIZE, {
@@ -244,24 +244,24 @@ const dmi_attribute_t dmi_cache_attrs[] =
     DMI_ATTRIBUTE(dmi_cache_t, error_correction, ENUM, {
         .code    = "error-correction",
         .name    = "Error correction type",
-        .unspec  = DMI_VALUE_PTR(DMI_ERROR_CORRECT_TYPE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_ERROR_CORRECT_TYPE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNKNOWN),
         .values  = &dmi_error_correct_type_names,
         .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_cache_t, type, ENUM, {
         .code    = "type",
         .name    = "System cache type",
-        .unspec  = DMI_VALUE_PTR(DMI_CACHE_TYPE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_CACHE_TYPE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_CACHE_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_CACHE_TYPE_UNKNOWN),
         .values  = &dmi_cache_type_names,
         .level   = DMI_VERSION(2, 1, 0)
     }),
     DMI_ATTRIBUTE(dmi_cache_t, associativity, ENUM, {
         .code    = "associativity",
         .name    = "Associativity",
-        .unspec  = DMI_VALUE_PTR(DMI_CACHE_ASSOC_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_CACHE_ASSOC_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_CACHE_ASSOC_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_CACHE_ASSOC_UNKNOWN),
         .values  = &dmi_cache_assoc_names,
         .level   = DMI_VERSION(2, 1, 0)
     }),

@@ -445,7 +445,7 @@ static bool dmi_xml_entity_attr_value(
         text = dmi_attribute_format(attr, value, false);
         if (text == nullptr)
             break;
-    
+
         if (attr->params.unit) {
             if (xmlTextWriterWriteAttribute(
                         session->writer,
@@ -517,7 +517,7 @@ static bool dmi_xml_entity_attrs_end(void *asession, const dmi_entity_t *entity)
     assert(asession != nullptr);
     assert(entity != nullptr);
 
-    DMI_UNUSED(entity);
+    dmi_unused(entity);
 
     dmi_xml_session_t *session = dmi_cast(session, asession);
 
@@ -614,7 +614,7 @@ static bool dmi_xml_entity_end(void *asession, const dmi_entity_t *entity)
     assert(asession != nullptr);
     assert(entity != nullptr);
 
-    DMI_UNUSED(entity);
+    dmi_unused(entity);
 
     bool success = false;
     dmi_xml_session_t *session = dmi_cast(session, asession);

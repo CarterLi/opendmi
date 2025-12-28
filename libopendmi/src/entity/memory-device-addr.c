@@ -36,17 +36,17 @@ const dmi_attribute_t dmi_memory_device_addr_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_device_addr_t, partition_pos, INTEGER, {
         .code    = "partition-pos",
         .name    = "Partition row position",
-        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
+        .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_addr_t, interleave_pos, INTEGER, {
         .code    = "interleave-pos",
         .name    = "Interleave position",
-        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
+        .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_memory_device_addr_t, interleave_depth, INTEGER, {
         .code    = "interleave-depth",
         .name    = "Interleave data depth",
-        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
+        .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE_NULL
 };

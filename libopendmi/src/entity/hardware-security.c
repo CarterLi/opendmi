@@ -40,25 +40,25 @@ const dmi_attribute_t dmi_hardware_security_attrs[] =
         .code    = "front-panel-reset",
         .name    = "Front panel reset status",
         .values  = &dmi_hardware_security_status_names,
-        .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
+        .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE(dmi_hardware_security_t, admin_password, ENUM, {
         .code    = "admin-password",
         .name    = "Administrator password status",
         .values  = &dmi_hardware_security_status_names,
-        .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
+        .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE(dmi_hardware_security_t, keyboard_password, ENUM, {
         .code    = "keyboard-password",
         .name    = "Keyboard password status",
         .values  = &dmi_hardware_security_status_names,
-        .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
+        .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE(dmi_hardware_security_t, poweron_password, ENUM, {
         .code    = "poweron-password",
         .name    = "Power-on password status",
         .values  = &dmi_hardware_security_status_names,
-        .unknown = DMI_VALUE_PTR(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
+        .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
     }),
     DMI_ATTRIBUTE_NULL
 };

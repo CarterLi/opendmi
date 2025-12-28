@@ -36,7 +36,7 @@ int main(void)
 
 static bool test_bswap(uint32_t (*func)(uint32_t))
 {
-    for (unsigned i = 0; i < DMI_ARRAY_SIZE(test_data); i++) {
+    for (unsigned i = 0; i < dmi_array_size(test_data); i++) {
         if (func(test_data[i].value) != test_data[i].result)
             return false;
     }

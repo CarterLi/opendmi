@@ -127,22 +127,22 @@ const dmi_attribute_t dmi_memory_array_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_array_t, location, ENUM, {
         .code    = "location",
         .name    = "Location",
-        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_ARRAY_LOCATION_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_MEMORY_ARRAY_LOCATION_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_MEMORY_ARRAY_LOCATION_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_MEMORY_ARRAY_LOCATION_UNKNOWN),
         .values  = &dmi_memory_array_location_names
     }),
     DMI_ATTRIBUTE(dmi_memory_array_t, usage, ENUM, {
         .code    = "use",
         .name    = "Use",
-        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_ARRAY_USAGE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_MEMORY_ARRAY_USAGE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_MEMORY_ARRAY_USAGE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_MEMORY_ARRAY_USAGE_UNKNOWN),
         .values  = &dmi_memory_array_usage_names
     }),
     DMI_ATTRIBUTE(dmi_memory_array_t, error_correction, ENUM, {
         .code    = "error-correction",
         .name    = "Memory error correction",
-        .unspec  = DMI_VALUE_PTR(DMI_ERROR_CORRECT_TYPE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_ERROR_CORRECT_TYPE_UNSPEC),
+        .unspec  = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNSPEC),
         .values  = &dmi_error_correct_type_names
     }),
     DMI_ATTRIBUTE(dmi_memory_array_t, maximum_capacity, SIZE, {
@@ -214,7 +214,7 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_entity_t *entity, dmi_vers
         if (maximum_capacity & 0x80000000)
             info->maximum_capacity = dmi_value(data->maximum_capacity_ex);
     }
-        
+
     if (plevel)
         *plevel = level;
 

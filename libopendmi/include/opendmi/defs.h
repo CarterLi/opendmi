@@ -40,13 +40,13 @@
 #endif // _MSC_VER
 
 // Array size macro
-#define DMI_ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+#define dmi_array_size(x) (sizeof(x) / sizeof((x)[0]))
 
 // Value pointer macro
-#define DMI_VALUE_PTR(x) &(typeof(x)){ (x) }
+#define dmi_value_ptr(x) &(typeof(x)){ (x) }
 
 // Cross-platform attribute unused macro
-#define DMI_UNUSED(x) (void)(x)
+#define dmi_unused(x) (void)(x)
 
 // Cross-compiler packed structures support
 #ifdef _MSC_VER

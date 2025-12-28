@@ -111,8 +111,8 @@ const dmi_attribute_t dmi_mgmt_device_attrs[] =
     DMI_ATTRIBUTE(dmi_mgmt_device_t, type, ENUM, {
         .code    = "type",
         .name    = "Type",
-        .unspec  = DMI_VALUE_PTR(DMI_MGMT_DEVICE_TYPE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_MGMT_DEVICE_TYPE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_MGMT_DEVICE_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_MGMT_DEVICE_TYPE_UNKNOWN),
         .values  = &dmi_mgmt_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_mgmt_device_t, addr, ADDRESS, {
@@ -122,8 +122,8 @@ const dmi_attribute_t dmi_mgmt_device_attrs[] =
     DMI_ATTRIBUTE(dmi_mgmt_device_t, addr_type, ENUM, {
         .code    = "address-type",
         .name    = "Address type",
-        .unspec  = DMI_VALUE_PTR(DMI_MGMT_DEVICE_ADDR_TYPE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_MGMT_DEVICE_ADDR_TYPE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_MGMT_DEVICE_ADDR_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_MGMT_DEVICE_ADDR_TYPE_UNKNOWN),
         .values  = &dmi_mgmt_device_addr_type_names
     }),
     DMI_ATTRIBUTE_NULL

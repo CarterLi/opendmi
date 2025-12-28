@@ -30,13 +30,13 @@ int main(void)
         return EXIT_FAILURE;
     if (!test_bswap(dmi_bswap64))
         return EXIT_FAILURE;
-    
+
     return EXIT_SUCCESS;
 }
 
 static bool test_bswap(uint64_t (*func)(uint64_t))
 {
-    for (unsigned i = 0; i < DMI_ARRAY_SIZE(test_data); i++) {
+    for (unsigned i = 0; i < dmi_array_size(test_data); i++) {
         if (func(test_data[i].value) != test_data[i].result)
             return false;
     }

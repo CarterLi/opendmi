@@ -127,15 +127,15 @@ const dmi_attribute_t dmi_pointing_device_attrs[] =
     DMI_ATTRIBUTE(dmi_pointing_device_t, type, ENUM, {
         .code    = "type",
         .name    = "Type",
-        .unspec  = DMI_VALUE_PTR(DMI_POINTING_DEVICE_TYPE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_POINTING_DEVICE_TYPE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_POINTING_DEVICE_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_POINTING_DEVICE_TYPE_UNKNOWN),
         .values  = &dmi_pointing_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_pointing_device_t, interface, ENUM, {
         .code    = "interface",
         .name    = "Interface type",
-        .unspec  = DMI_VALUE_PTR(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),
         .values  = &dmi_pointing_device_interface_names
     }),
     DMI_ATTRIBUTE(dmi_pointing_device_t, button_count, INTEGER, {

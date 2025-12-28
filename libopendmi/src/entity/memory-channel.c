@@ -49,8 +49,8 @@ static const dmi_attribute_t dmi_memory_channel_attrs[] =
     DMI_ATTRIBUTE(dmi_memory_channel_t, type, ENUM, {
         .code    = "type",
         .name    = "Type",
-        .unspec  = DMI_VALUE_PTR(DMI_MEMORY_CHANNEL_TYPE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_MEMORY_CHANNEL_TYPE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_MEMORY_CHANNEL_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_MEMORY_CHANNEL_TYPE_UNKNOWN),
         .values  = &dmi_memory_channel_type_names,
     }),
     DMI_ATTRIBUTE(dmi_memory_channel_t, maximum_load, INTEGER, {

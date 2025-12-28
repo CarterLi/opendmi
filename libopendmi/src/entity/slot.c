@@ -543,29 +543,29 @@ const dmi_attribute_t dmi_slot_attrs[] =
     DMI_ATTRIBUTE(dmi_slot_t, type, ENUM, {
         .code    = "type",
         .name    = "Type",
-        .unspec  = DMI_VALUE_PTR(DMI_SLOT_TYPE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_SLOT_TYPE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_SLOT_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_SLOT_TYPE_UNKNOWN),
         .values  = &dmi_slot_type_names
     }),
     DMI_ATTRIBUTE(dmi_slot_t, width, ENUM, {
         .code    = "width",
         .name    = "Data bus width",
-        .unspec  = DMI_VALUE_PTR(DMI_SLOT_WIDTH_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_SLOT_WIDTH_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_SLOT_WIDTH_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_SLOT_WIDTH_UNKNOWN),
         .values  = &dmi_slot_width_names
     }),
     DMI_ATTRIBUTE(dmi_slot_t, usage, ENUM, {
         .code    = "usage",
         .name    = "Current usage",
-        .unspec  = DMI_VALUE_PTR(DMI_SLOT_USAGE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_SLOT_USAGE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_SLOT_USAGE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_SLOT_USAGE_UNKNOWN),
         .values  = &dmi_slot_usage_names
     }),
     DMI_ATTRIBUTE(dmi_slot_t, length, ENUM, {
         .code    = "length",
         .name    = "Slot length",
-        .unspec  = DMI_VALUE_PTR(DMI_SLOT_LENGTH_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_SLOT_LENGTH_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_SLOT_LENGTH_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_SLOT_LENGTH_UNKNOWN),
         .values  = &dmi_slot_length_names
     }),
     DMI_ATTRIBUTE(dmi_slot_t, ident, INTEGER, {

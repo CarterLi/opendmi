@@ -110,7 +110,7 @@ static bool dmi_entry_decode_legacy(dmi_context_t *context,
     assert(data != nullptr);
     assert(length >= sizeof(dmi_entry_legacy_t));
 
-    DMI_UNUSED(length);
+    dmi_unused(length);
 
     const dmi_entry_legacy_t *entry = dmi_cast(entry, data);
 
@@ -145,7 +145,7 @@ static bool dmi_entry_decode_v21(dmi_context_t *context,
     assert(data != nullptr);
     assert(length >= sizeof(dmi_entry_v21_t));
 
-    DMI_UNUSED(length);
+    dmi_unused(length);
 
     const dmi_entry_v21_t *entry = dmi_cast(entry, data);
     size_t entry_length = dmi_value(entry->length);
@@ -189,7 +189,7 @@ static bool dmi_entry_decode_v30(dmi_context_t *context,
     assert(data != nullptr);
     assert(length >= sizeof(dmi_entry_v30_t));
 
-    DMI_UNUSED(length);
+    dmi_unused(length);
 
     const dmi_entry_v30_t *entry = dmi_cast(entry, data);
     size_t entry_length = dmi_value(entry->length);

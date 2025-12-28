@@ -78,15 +78,15 @@ const dmi_attribute_t dmi_cooling_device_attrs[] =
     DMI_ATTRIBUTE(dmi_cooling_device_t, type, ENUM, {
         .code    = "type",
         .name    = "Type",
-        .unspec  = DMI_VALUE_PTR(DMI_COOLING_DEVICE_TYPE_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_COOLING_DEVICE_TYPE_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_COOLING_DEVICE_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_COOLING_DEVICE_TYPE_UNKNOWN),
         .values  = &dmi_cooling_device_type_names
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, status, ENUM, {
         .code    = "status",
         .name    = "Status",
-        .unspec  = DMI_VALUE_PTR(DMI_STATUS_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_STATUS_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_STATUS_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_STATUS_UNKNOWN),
         .values  = &dmi_status_names
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, group, INTEGER, {
@@ -102,7 +102,7 @@ const dmi_attribute_t dmi_cooling_device_attrs[] =
         .code    = "nominal-speed",
         .name    = "Nominal speed",
         .unit    = DMI_UNIT_REVOLUTION,
-        .unknown = DMI_VALUE_PTR((short)SHRT_MIN)
+        .unknown = dmi_value_ptr((short)SHRT_MIN)
     }),
     DMI_ATTRIBUTE(dmi_cooling_device_t, description, STRING, {
         .code    = "description",

@@ -1751,7 +1751,7 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     dmi_processor_t *info;
     const dmi_processor_data_t *data;
 
-    DMI_UNUSED(plevel);
+    dmi_unused(plevel);
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_PROCESSOR));
     if (data == nullptr)

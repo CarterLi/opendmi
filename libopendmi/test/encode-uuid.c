@@ -72,7 +72,7 @@ struct test_vector test_data[] =
 
 int main(void)
 {
-    for (unsigned i = 0; i < DMI_ARRAY_SIZE(test_data); i++) {
+    for (unsigned i = 0; i < dmi_array_size(test_data); i++) {
         uint8_t uuid[16];
         dmi_uuid_encode(test_data[i].value, uuid);
         if (memcmp(uuid, test_data[i].result, sizeof(uuid)) != 0)

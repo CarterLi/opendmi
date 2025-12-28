@@ -123,7 +123,7 @@ static const dmi_attribute_t dmi_power_supply_attrs[] =
         .code    = "maximum-capacity",
         .name    = "Maximum capacity",
         .unit    = DMI_UNIT_WATT,
-        .unknown = DMI_VALUE_PTR((short)SHRT_MIN),
+        .unknown = dmi_value_ptr((short)SHRT_MIN),
         .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
     }),
     DMI_ATTRIBUTE(dmi_power_supply_t, hot_swappable, BOOL, {

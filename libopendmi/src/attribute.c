@@ -113,7 +113,7 @@ char *dmi_attribute_format(const dmi_attribute_t *attr, const void *value, bool 
 
     const dmi_attribute_ops_t *ops;
 
-    if (attr->type >= DMI_ARRAY_SIZE(dmi_attribute_type_ops))
+    if (attr->type >= dmi_array_size(dmi_attribute_type_ops))
         return nullptr;
 
     ops = &dmi_attribute_type_ops[attr->type];
@@ -131,8 +131,8 @@ static char *dmi_attribute_format_handle(
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    DMI_UNUSED(attr);
-    DMI_UNUSED(pretty);
+    dmi_unused(attr);
+    dmi_unused(pretty);
 
     char *str = nullptr;
 
@@ -150,8 +150,8 @@ static char *dmi_attribute_format_string(
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    DMI_UNUSED(attr);
-    DMI_UNUSED(pretty);
+    dmi_unused(attr);
+    dmi_unused(pretty);
 
     const char *str = *(const char **)value;
     if (str == nullptr)
@@ -191,7 +191,7 @@ static char *dmi_attribute_format_integer(
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    DMI_UNUSED(pretty);
+    dmi_unused(pretty);
 
     int rv;
     const char *fmt = nullptr;
@@ -256,7 +256,7 @@ static char *dmi_attribute_format_decimal(
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    DMI_UNUSED(pretty);
+    dmi_unused(pretty);
 
     char  fmt[16];
     int   rv  = 0;
@@ -397,7 +397,7 @@ static char *dmi_attribute_format_set(
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    DMI_UNUSED(pretty);
+    dmi_unused(pretty);
 
     uint64_t src;
     const char *fmt;
@@ -440,7 +440,7 @@ static char *dmi_attribute_format_version(
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    DMI_UNUSED(pretty);
+    dmi_unused(pretty);
 
     int rv = 0;
     char *str = nullptr;
@@ -482,8 +482,8 @@ static char *dmi_attribute_format_uuid(
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    DMI_UNUSED(attr);
-    DMI_UNUSED(pretty);
+    dmi_unused(attr);
+    dmi_unused(pretty);
 
     int rv = 0;
     char *str = nullptr;

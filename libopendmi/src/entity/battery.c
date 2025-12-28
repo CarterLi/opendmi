@@ -79,8 +79,8 @@ const dmi_attribute_t dmi_battery_attrs[] =
     DMI_ATTRIBUTE(dmi_battery_t, chemistry, ENUM, {
         .code    = "chemistry",
         .name    = "Chemistry",
-        .unspec  = DMI_VALUE_PTR(DMI_BATTERY_CHEMISTRY_UNSPEC),
-        .unknown = DMI_VALUE_PTR(DMI_BATTERY_CHEMISTRY_UNKNOWN),
+        .unspec  = dmi_value_ptr(DMI_BATTERY_CHEMISTRY_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_BATTERY_CHEMISTRY_UNKNOWN),
         .values  = &dmi_battery_chemistry_names,
     }),
     DMI_ATTRIBUTE(dmi_battery_t, capacity, DECIMAL, {
@@ -88,14 +88,14 @@ const dmi_attribute_t dmi_battery_attrs[] =
         .name    = "Design capacity",
         .unit    = DMI_UNIT_WATT_HOUR,
         .scale   = 3,
-        .unknown = DMI_VALUE_PTR((unsigned int)0)
+        .unknown = dmi_value_ptr((unsigned int)0)
     }),
     DMI_ATTRIBUTE(dmi_battery_t, voltage, DECIMAL, {
         .code    = "voltage",
         .name    = "Design voltage",
         .unit    = DMI_UNIT_VOLT,
         .scale   = 3,
-        .unknown = DMI_VALUE_PTR((unsigned short)0)
+        .unknown = dmi_value_ptr((unsigned short)0)
     }),
     DMI_ATTRIBUTE(dmi_battery_t, sbds_version, STRING, {
         .code    = "sbds-version",
@@ -105,7 +105,7 @@ const dmi_attribute_t dmi_battery_attrs[] =
         .code    = "maximum-error",
         .name    = "Maximum error",
         .unit    = DMI_UNIT_PERCENT,
-        .unknown = DMI_VALUE_PTR((unsigned short)USHRT_MAX)
+        .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
     }),
     DMI_ATTRIBUTE(dmi_battery_t, sbds_serial_number, INTEGER, {
         .code    = "sbds-serial-number",
