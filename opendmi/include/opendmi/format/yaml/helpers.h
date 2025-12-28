@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_FORMAT_YAML_UTILS_H
-#define OPENDMI_FORMAT_YAML_UTILS_H
+#ifndef OPENDMI_FORMAT_YAML_HELPERS_H
+#define OPENDMI_FORMAT_YAML_HELPERS_H
 
 #pragma once
 
@@ -24,4 +24,4 @@ bool dmi_yaml_mapping_end(dmi_yaml_session_t *session);
 
 __END_DECLS
 
-#endif // !OPENDMI_FORMAT_YAML_UTILS_H
+#endif // !OPENDMI_FORMAT_YAML_HELPERS_H

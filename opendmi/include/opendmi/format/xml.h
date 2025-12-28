@@ -11,9 +11,6 @@
 
 #include <opendmi/format.h>
 
-#define DMI_XML_PREFIX    "dmi"
-#define DMI_XML_NAMESPACE "http://opendmi.org/schema/opendmi.xsd"
-
 /**
  * @brief XML format specification.
  */

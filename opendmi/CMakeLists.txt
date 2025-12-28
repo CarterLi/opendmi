@@ -27,6 +27,8 @@ add_executable(opendmi
     src/main.c
     src/format.c
     src/format/text.c
+    src/format/text/handlers.c
+    src/format/text/helpers.c
 )
 
 if(ENABLE_JSON)
@@ -35,7 +37,12 @@ endif()
 
 if(ENABLE_XML)
     target_include_directories(opendmi PRIVATE ${LIBXML2_INCLUDE_DIRS})
-    target_sources(opendmi PRIVATE src/format/xml.c)
+    target_sources(opendmi
+        PRIVATE
+            src/format/xml.c
+            src/format/xml/handlers.c
+            src/format/xml/helpers.c
+    )
     target_link_libraries(opendmi PRIVATE ${LIBXML2_LIBRARIES})
 endif()
 
@@ -45,7 +52,7 @@ if(ENABLE_YAML)
         PRIVATE
             src/format/yaml.c
             src/format/yaml/handlers.c
-            src/format/yaml/utils.c
+            src/format/yaml/helpers.c
     )
     target_link_libraries(opendmi PRIVATE ${LIBYAML_LIBRARIES})
 endif()

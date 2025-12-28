@@ -7,7 +7,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include <opendmi/format/yaml/utils.h>
+#include <opendmi/format/yaml/helpers.h>
 
 bool dmi_yaml_label(dmi_yaml_session_t *session, const char *value)
 {

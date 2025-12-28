@@ -4,8 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <assert.h>
-
 #include <opendmi/format/yaml.h>
 #include <opendmi/format/yaml/handlers.h>
 

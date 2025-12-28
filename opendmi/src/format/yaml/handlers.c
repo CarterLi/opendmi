@@ -11,7 +11,7 @@
 #include <opendmi/utils.h>
 
 #include <opendmi/format/yaml/handlers.h>
-#include <opendmi/format/yaml/utils.h>
+#include <opendmi/format/yaml/helpers.h>
 
 void *dmi_yaml_initialize(dmi_context_t *context, FILE *stream)
 {
