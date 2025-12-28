@@ -94,7 +94,7 @@ dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_entity_t *entity, dmi_version_
         return nullptr;
 
     // Copy vendor identifier
-    for (unsigned int i = 0; i < sizeof(data->vendor_id); i++)
+    for (size_t i = 0; i < sizeof(data->vendor_id); i++)
         info->vendor_id[i] = data->vendor_id[i];
     info->vendor_id[sizeof(info->vendor_id) - 1] = 0;
 

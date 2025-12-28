@@ -368,7 +368,7 @@ bool dmi_yaml_entity_attr_set(
     if (not dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE))
         return false;
 
-    for (unsigned i = 0; i < attr->size * CHAR_BIT; i++) {
+    for (size_t i = 0; i < attr->size * CHAR_BIT; i++) {
         const char *name = dmi_code_lookup(attr->params.values, i);
         if (!name)
             continue;

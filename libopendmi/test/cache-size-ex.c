@@ -11,7 +11,7 @@
 
 int main(void)
 {
-    for (unsigned i = 0; i < 31; i++) {
+    for (size_t i = 0; i < 31; i++) {
         if (dmi_cache_size_ex(1u << i) != (dmi_size_t)(1u << i) * 1024)
             return EXIT_FAILURE;
 

@@ -392,7 +392,7 @@ bool dmi_xml_entity_attr_set(
                 "0x%" PRIx64, mask) < 0)
         return false;
 
-    for (unsigned i = 0; i < attr->size * CHAR_BIT; i++) {
+    for (size_t i = 0; i < attr->size * CHAR_BIT; i++) {
         const char *name = dmi_code_lookup(attr->params.values, i);
         if (!name)
             continue;

@@ -273,7 +273,7 @@ static bool list_types(dmi_context_t *context)
     else
         format = "%d\t%s\t%s\n";
 
-    for (unsigned int type = 0; type < 0x100; type++) {
+    for (size_t type = 0; type < 0x100; type++) {
         const dmi_entity_spec_t *spec = dmi_type_spec(context, (dmi_type_t)type);
 
         if (spec == nullptr)
