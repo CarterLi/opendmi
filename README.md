@@ -32,6 +32,17 @@ The project is under active development, see [ROADMAP](ROADMAP.md) and [CHANGELO
 * CMake 3.30 or newer
 * AsciiDoctor (used to generate documentation and man pages)
 
+### Dependencies
+
+#### opendmi
+
+* `libxml2` (optional, only when XML support is enabled)
+* `libyaml` (optional, only when YAML support is enabled)
+
+#### libopendmi
+
+* None
+
 ### Configuring
 
 Use the following command to configure OpenDMI build:
