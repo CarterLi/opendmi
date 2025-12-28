@@ -41,7 +41,12 @@ endif()
 
 if(ENABLE_YAML)
     target_include_directories(opendmi PRIVATE ${LIBYAML_INCLUDE_DIRS})
-    target_sources(opendmi PRIVATE src/format/yaml.c)
+    target_sources(opendmi
+        PRIVATE
+            src/format/yaml.c
+            src/format/yaml/handlers.c
+            src/format/yaml/utils.c
+    )
     target_link_libraries(opendmi PRIVATE ${LIBYAML_LIBRARIES})
 endif()
 
