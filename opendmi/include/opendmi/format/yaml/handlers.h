@@ -25,7 +25,7 @@ bool dmi_yaml_entity_attr(
         dmi_yaml_session_t    *session,
         const dmi_entity_t    *entity,
         const dmi_attribute_t *attr,
-        const void            *data);
+        const void            *value);
 
 bool dmi_yaml_entity_attr_array(
         dmi_yaml_session_t    *session,

@@ -4,6 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <limits.h>
 #include <assert.h>
 
 #include <opendmi/context.h>
@@ -200,14 +201,37 @@ bool dmi_yaml_entity_attr(
         dmi_yaml_session_t    *session,
         const dmi_entity_t    *entity,
         const dmi_attribute_t *attr,
-        const void            *data)
+        const void            *value)
 {
-    dmi_unused(session);
-    dmi_unused(entity);
-    dmi_unused(attr);
-    dmi_unused(data);
+    assert(session != nullptr);
+    assert(entity != nullptr);
+    assert(attr != nullptr);
+    assert(value != nullptr);
 
-    return true;
+    bool success = false;
+
+    do {
+        bool rv;
+
+        if (not dmi_yaml_label(session, attr->params.code))
+            break;
+
+        if (attr->counter < 0) {
+            if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT)
+                rv = dmi_yaml_entity_attr_struct(session, attr, value);
+            else
+                rv = dmi_yaml_entity_attr_value(session, attr, value);
+        } else {
+            rv = dmi_yaml_entity_attr_array(session, attr, entity->info, value);
+        }
+
+        if (not rv)
+            break;
+
+        success = true;
+    } while (false);
+
+    return success;
 }
 
 bool dmi_yaml_entity_attr_array(
@@ -216,10 +240,29 @@ bool dmi_yaml_entity_attr_array(
         const dmi_data_t      *info,
         const void            *value)
 {
-    dmi_unused(session);
-    dmi_unused(attr);
-    dmi_unused(info);
-    dmi_unused(value);
+    assert(session != nullptr);
+    assert(attr != nullptr);
+    assert(info != nullptr);
+    assert(value != nullptr);
+
+    size_t count = *(size_t *)(info + attr->counter);
+    const dmi_data_t *ptr = *(const dmi_data_t **)value;
+
+    if (not dmi_yaml_sequence_start(session, YAML_BLOCK_SEQUENCE_STYLE))
+        return false;
+
+    for (size_t i = 0; i < count; i++, ptr += attr->size) {
+        if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT) {
+            if (not dmi_yaml_entity_attr_struct(session, attr, ptr))
+                return false;
+        } else {
+            if (not dmi_yaml_entity_attr_value(session, attr, ptr))
+                return false;
+        }
+    }
+
+    if (not dmi_yaml_sequence_end(session))
+        return false;
 
     return true;
 }
@@ -229,9 +272,26 @@ bool dmi_yaml_entity_attr_struct(
         const dmi_attribute_t *attr,
         const void            *value)
 {
-    dmi_unused(session);
-    dmi_unused(attr);
-    dmi_unused(value);
+    assert(session != nullptr);
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    const dmi_attribute_t *child_attr = nullptr;
+
+    if (not dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE))
+        return false;
+
+    for (child_attr = attr->params.attrs; child_attr->params.name; child_attr++) {
+        const dmi_data_t *ptr = (dmi_data_t *)value + child_attr->offset;
+
+        if (not dmi_yaml_label(session, child_attr->params.code))
+            return false;
+        if (not dmi_yaml_entity_attr_value(session, child_attr, ptr))
+            return false;
+    }
+
+    if (not dmi_yaml_mapping_end(session))
+        return false;
 
     return true;
 }
@@ -241,11 +301,46 @@ bool dmi_yaml_entity_attr_value(
         const dmi_attribute_t *attr,
         const void            *value)
 {
-    dmi_unused(session);
-    dmi_unused(attr);
-    dmi_unused(value);
+    assert(session != nullptr);
+    assert(attr != nullptr);
+    assert(value != nullptr);
 
-    return true;
+    bool success = false;
+    char *text = nullptr;
+
+    // Write empty tag if the value is unspecified
+    if (dmi_attribute_is_unspecified(attr, value))
+        return dmi_yaml_scalar(session, "null", YAML_PLAIN_SCALAR_STYLE);
+
+    // Handle unknown values
+    if (dmi_attribute_is_unknown(attr, value))
+        return dmi_yaml_scalar(session, "unknown", YAML_PLAIN_SCALAR_STYLE);
+
+    // Handle value sets
+    if (attr->type == DMI_ATTRIBUTE_TYPE_SET)
+        return dmi_yaml_entity_attr_set(session, attr, value);
+
+    do {
+        yaml_scalar_style_t style;
+
+        text = dmi_attribute_format(attr, value, false);
+        if (text == nullptr)
+            break;
+
+        if (attr->type == DMI_ATTRIBUTE_TYPE_STRING)
+            style = YAML_SINGLE_QUOTED_SCALAR_STYLE;
+        else
+            style = YAML_PLAIN_SCALAR_STYLE;
+
+        if (not dmi_yaml_scalar(session, text, style))
+            break;
+
+        success = true;
+    } while (false);
+
+    dmi_free(text);
+
+    return success;
 }
 
 bool dmi_yaml_entity_attr_set(
@@ -253,9 +348,41 @@ bool dmi_yaml_entity_attr_set(
         const dmi_attribute_t *attr,
         const void            *value)
 {
-    dmi_unused(session);
-    dmi_unused(attr);
-    dmi_unused(value);
+    assert(session != nullptr);
+    assert(attr != nullptr);
+    assert(value != nullptr);
+
+    uint64_t mask;
+
+    if (attr->size == sizeof(int8_t))
+        mask = *(uint8_t *)value;
+    else if (attr->size == sizeof(uint16_t))
+        mask = *(uint16_t *)value;
+    else if (attr->size == sizeof(uint32_t))
+        mask = *(uint32_t *)value;
+    else if (attr->size == sizeof(uint64_t))
+        mask = *(uint64_t *)value;
+    else
+        return false;
+
+    if (not dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE))
+        return false;
+
+    for (unsigned i = 0; i < attr->size * CHAR_BIT; i++) {
+        const char *name = dmi_code_lookup(attr->params.values, i);
+        if (!name)
+            continue;
+
+        bool flag = mask & (1 << i);
+
+        if (not dmi_yaml_label(session, name))
+            return false;
+        if (not dmi_yaml_scalar(session, flag ? "true" : "false", YAML_PLAIN_SCALAR_STYLE))
+            return false;
+    }
+
+    if (not dmi_yaml_mapping_end(session))
+        return false;
 
     return true;
 }
