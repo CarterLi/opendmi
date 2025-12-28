@@ -1,0 +1,81 @@
+%YAML 1.1
+#
+# OpenDMI: Cross-platform DMI/SMBIOS framework
+# Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+---
+$schema: "http://json-schema.org/draft-04/schema"
+id: "http://opendmi.org/schemas/opendmi.yml"
+title: OpenDMI YAML schema
+
+type: object
+properties:
+  entry:
+    type: object
+    properties:
+      smbios-version:
+        type: string
+        description: SMBIOS version number
+      table-area-address:
+        type: integer
+        minimum: 0
+      table-area-size:
+        type: integer
+        minimum: 0
+      required:
+      - smbios-version
+
+  entities:
+    type: array
+    items:
+      type: object
+      properties:
+        handle:
+          type: integer
+          minimum: 0
+          maximum: 65535
+        type:
+        length:
+          type: integer
+          minimum: 0
+        data:
+        strings:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+                minimum: 0
+                maximum: 255
+              value:
+                type: string
+        attributes:
+          type: object
+      required:
+      - handle
+      - type
+      - length
+
+  types:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 0
+          maximum: 255
+        code:
+          type: string
+        name:
+          type: string
+      required:
+      - id
+      - code
+      - name
+
+required:
+- entry

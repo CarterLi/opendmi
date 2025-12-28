@@ -6,8 +6,8 @@
     SPDX-License-Identifier: BSD-3-Clause
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:dmi="http://opendmi.org/schema/opendmi.xsd"
-           targetNamespace="http://opendmi.org/schema/opendmi.xsd"
+           xmlns:dmi="http://opendmi.org/schemas/opendmi.xsd"
+           targetNamespace="http://opendmi.org/schemas/opendmi.xsd"
            elementFormDefault="qualified">
     <xs:element name="dump" type="dmi:dumpType" />
 
