@@ -70,7 +70,7 @@ dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_entity_t *entity
     info->designator = dmi_entity_string(entity, data->designator);
 
     dmi_onboard_device_instance_details_t details = {
-        ._value = dmi_value(data->details)
+        .__value = dmi_value(data->details)
     };
 
     info->type       = details.type;

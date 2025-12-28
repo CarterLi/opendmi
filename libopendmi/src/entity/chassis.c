@@ -405,7 +405,7 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
         return nullptr;
 
     dmi_chassis_type_data_t type = {
-        ._value = dmi_value(data->type)
+        .__value = dmi_value(data->type)
     };
 
     info->vendor             = dmi_entity_string(entity,  data->vendor);

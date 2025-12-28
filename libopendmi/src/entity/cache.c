@@ -343,7 +343,7 @@ dmi_cache_t *dmi_cache_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
     info->socket_designator = dmi_entity_string(entity, data->socket_designator);
 
     dmi_cache_config_t config = {
-        ._value = dmi_value(data->config)
+        .__value = dmi_value(data->config)
     };
 
     info->level     = config.level + 1;
@@ -354,8 +354,8 @@ dmi_cache_t *dmi_cache_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
 
     info->maximum_size          = dmi_cache_size(dmi_value(data->maximum_size));
     info->installed_size        = dmi_cache_size(dmi_value(data->installed_size));
-    info->supported_sram._value = dmi_value(data->supported_sram);
-    info->current_sram._value   = dmi_value(data->current_sram);
+    info->supported_sram.__value = dmi_value(data->supported_sram);
+    info->current_sram.__value   = dmi_value(data->current_sram);
 
     // SMBIOS 2.1 features
     if (data->header.length >= 0x0F) {

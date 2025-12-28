@@ -211,7 +211,7 @@ dmi_uuid_t dmi_uuid_decode(const dmi_byte_t value[16])
 {
     dmi_uuid_t uuid;
 
-    memcpy(uuid._value, value, sizeof(uuid._value));
+    memcpy(uuid.__value, value, sizeof(uuid.__value));
 
     uuid.time_low            = dmi_bswap(uuid.time_low);
     uuid.time_mid            = dmi_bswap(uuid.time_mid);
@@ -226,7 +226,7 @@ void dmi_uuid_encode(dmi_uuid_t value, uint8_t out[16])
     value.time_mid            = dmi_bswap(value.time_mid);
     value.time_hi_and_version = dmi_bswap(value.time_hi_and_version);
 
-    memcpy(out, value._value, sizeof(value._value));
+    memcpy(out, value.__value, sizeof(value.__value));
 }
 
 int dmi_asprintf(char **strp, const char *fmt, ...)

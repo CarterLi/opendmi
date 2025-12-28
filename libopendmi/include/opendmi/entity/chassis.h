@@ -87,7 +87,7 @@ dmi_packed_union(dmi_chassis_type_data)
     /**
      * @brief Raw value.
      */
-    dmi_byte_t _value;
+    dmi_byte_t __value;
 
     dmi_packed_struct()
     {

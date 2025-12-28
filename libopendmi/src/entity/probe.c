@@ -107,7 +107,7 @@ dmi_probe_t * dmi_probe_decode(dmi_entity_t *entity, dmi_version_t *plevel)
     info->description = dmi_entity_string(entity, data->description);
 
     dmi_probe_details_t details = {
-        ._value = dmi_value(data->details)
+        .__value = dmi_value(data->details)
     };
 
     info->location      = details.location;

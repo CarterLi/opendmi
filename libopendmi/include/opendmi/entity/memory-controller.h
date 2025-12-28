@@ -50,7 +50,7 @@ dmi_packed_union(dmi_error_correct_caps)
     /**
      * @brief Raw value.
      */
-    dmi_byte_t _value;
+    dmi_byte_t __value;
 
     dmi_packed_struct()
     {
@@ -73,7 +73,7 @@ dmi_packed_union(dmi_memory_module_speed)
     /**
      * @brief Raw value.
      */
-    dmi_word_t _value;
+    dmi_word_t __value;
 
     dmi_packed_struct()
     {
@@ -96,7 +96,7 @@ dmi_packed_union(dmi_memory_module_voltage)
     /**
      * @brief Raw value.
      */
-    dmi_byte_t _value;
+    dmi_byte_t __value;
 
     dmi_packed_struct()
     {

@@ -57,7 +57,7 @@ dmi_packed_union(dmi_ipmi_device_details)
     /**
      * @brief Raw value.
      */
-    uint8_t _value;
+    uint8_t __value;
 
     dmi_packed_struct()
     {

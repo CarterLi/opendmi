@@ -69,7 +69,7 @@ dmi_firmware_language_t *dmi_firmware_language_decode(const dmi_entity_t *entity
     }
 
     dmi_firmware_language_flags_t flags = {
-        ._value = dmi_value(data->flags)
+        .__value = dmi_value(data->flags)
     };
 
     info->is_abbreviated   = flags.is_abbreviated;

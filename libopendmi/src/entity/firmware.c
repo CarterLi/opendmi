@@ -343,7 +343,7 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_entity_t *entity, dmi_version_t *p
         return nullptr;
 
     dmi_firmware_features_t features = {
-        ._value = dmi_value(data->features)
+        .__value = dmi_value(data->features)
     };
 
     info->vendor       = dmi_entity_string(entity, data->vendor);
@@ -359,7 +359,7 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_entity_t *entity, dmi_version_t *p
         level = dmi_version(2, 1, 0);
 
         dmi_firmware_features_ex_t features_ex = {
-            ._value = {
+            .__value = {
                 extra > 0 ? data->features_ex[0] : 0,
                 extra > 1 ? data->features_ex[1] : 0
             }

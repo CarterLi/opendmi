@@ -30,7 +30,7 @@ dmi_packed_union(dmi_system_reset_caps)
     /**
      * @brief Raw value;
      */
-    dmi_byte_t _value;
+    dmi_byte_t __value;
 
     dmi_packed_struct()
     {

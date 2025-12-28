@@ -49,7 +49,7 @@ dmi_packed_union(dmi_probe_details)
     /**
      * @brief Raw value.
      */
-    dmi_type_t _value;
+    dmi_type_t __value;
 
     dmi_packed_struct() {
         /**

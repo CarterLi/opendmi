@@ -148,7 +148,7 @@ dmi_cooling_device_t *dmi_cooling_device_decode(dmi_entity_t *entity, dmi_versio
     info->probe_handle = dmi_value(data->probe_handle);
 
     dmi_cooling_device_details_t details = {
-        ._value = dmi_value(data->details)
+        .__value = dmi_value(data->details)
     };
 
     info->type        = details.type;

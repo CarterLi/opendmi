@@ -74,7 +74,7 @@ int main(void)
 {
     for (unsigned i = 0; i < dmi_array_size(test_data); i++) {
         dmi_uuid_t uuid = dmi_uuid_decode(test_data[i].value);
-        if (memcmp(uuid._value, test_data[i].result._value, sizeof(uuid)) != 0)
+        if (memcmp(uuid.__value, test_data[i].result.__value, sizeof(uuid)) != 0)
             return EXIT_FAILURE;
     }
 

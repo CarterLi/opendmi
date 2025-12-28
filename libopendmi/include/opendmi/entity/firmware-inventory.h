@@ -135,7 +135,7 @@ typedef enum dmi_firmware_inventory_state
  */
 dmi_packed_union(dmi_firmware_inventory_features)
 {
-    dmi_word_t _value;
+    dmi_word_t __value;
 
     dmi_packed_struct()
     {

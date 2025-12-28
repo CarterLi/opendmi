@@ -84,7 +84,7 @@ dmi_packed_union(dmi_cache_config)
     /**
      * @brief Raw value.
      */
-    dmi_word_t _value;
+    dmi_word_t __value;
 
     dmi_packed_struct()
     {
@@ -131,7 +131,7 @@ dmi_packed_union(dmi_cache_sram_type)
     /**
      * @brief Encoded type value.
      */
-    dmi_word_t _value;
+    dmi_word_t __value;
 
     dmi_packed_struct()
     {

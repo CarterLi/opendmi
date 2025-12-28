@@ -52,7 +52,7 @@ dmi_packed_union(dmi_power_supply_details)
     /**
      * @brief Raw value.
      */
-    dmi_word_t _value;
+    dmi_word_t __value;
 
     dmi_packed_struct()
     {

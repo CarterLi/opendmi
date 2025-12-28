@@ -216,7 +216,7 @@ dmi_power_supply_t *dmi_power_supply_decode(const dmi_entity_t *entity, dmi_vers
     info->maximum_capacity = dmi_value(data->maximum_capacity);
 
     dmi_power_supply_details_t details = {
-        ._value = dmi_value(data->characteristics)
+        .__value = dmi_value(data->characteristics)
     };
 
     info->hot_swappable   = details.hot_swappable;

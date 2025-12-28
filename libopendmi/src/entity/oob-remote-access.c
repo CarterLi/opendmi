@@ -72,7 +72,7 @@ dmi_oob_remote_access_t *dmi_oob_remote_access_decode(
         return nullptr;
 
     dmi_oob_connections_t connections = {
-        ._value = dmi_value(data->connections)
+        .__value = dmi_value(data->connections)
     };
 
     info->vendor      = dmi_entity_string(entity, data->vendor);

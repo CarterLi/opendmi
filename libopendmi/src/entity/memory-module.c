@@ -171,7 +171,7 @@ dmi_memory_module_t *dmi_memory_module_decode(const dmi_entity_t *entity, dmi_ve
     // Decode speed and type
     info->current_speed = dmi_value(data->current_speed);
     info->current_type  = (dmi_memory_module_type_t){
-        ._value = dmi_value(data->current_type)
+        .__value = dmi_value(data->current_type)
     };
 
     // Decode installed size
@@ -197,7 +197,7 @@ dmi_memory_module_t *dmi_memory_module_decode(const dmi_entity_t *entity, dmi_ve
 
     // Decode error status
     info->error_status = (dmi_memory_module_error_t){
-        ._value = dmi_value(data->error_status)
+        .__value = dmi_value(data->error_status)
     };
 
     if (plevel)

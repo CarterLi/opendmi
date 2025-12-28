@@ -178,7 +178,7 @@ dmi_baseboard_t *dmi_baseboard_decode(const dmi_entity_t *entity, dmi_version_t 
     info->asset_tag     = dmi_entity_string(entity, data->asset_tag);
 
     dmi_baseboard_features_t features = {
-        ._value = dmi_value(data->features)
+        .__value = dmi_value(data->features)
     };
 
     info->is_hosting_board       = features.is_hosting_board;

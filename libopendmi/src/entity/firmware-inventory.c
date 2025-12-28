@@ -232,7 +232,7 @@ dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_entity_t *enti
     info->image_size     = dmi_value(data->image_size);
 
     dmi_firmware_inventory_features_t features = {
-        ._value = dmi_value(data->features)
+        .__value = dmi_value(data->features)
     };
     info->features = features;
 

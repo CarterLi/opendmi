@@ -115,7 +115,7 @@ dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_entity_t *entity, dmi_version_
 
     // Decode characteristics
     dmi_tpm_device_features_t features = {
-        ._value = dmi_value(data->features)
+        .__value = dmi_value(data->features)
     };
 
     info->features    = features;

@@ -25,7 +25,7 @@ dmi_packed_union(dmi_memory_module_type)
     /**
      * @brief Raw value.
      */
-    dmi_word_t _value;
+    dmi_word_t __value;
 
     dmi_packed_struct()
     {
@@ -50,7 +50,7 @@ dmi_packed_union(dmi_memory_module_type)
  */
 dmi_packed_union(dmi_memory_module_error)
 {
-    dmi_byte_t _value;
+    dmi_byte_t __value;
 
     dmi_packed_struct()
     {

@@ -106,7 +106,7 @@ typedef enum dmi_memory_device_tech
  */
 dmi_packed_union(dmi_memory_device_type_detail)
 {
-    dmi_word_t _value;
+    dmi_word_t __value;
 
     dmi_packed_struct()
     {

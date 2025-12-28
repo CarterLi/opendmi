@@ -47,7 +47,7 @@ dmi_packed_union(dmi_onboard_device_instance_details)
     /**
      * @brief Raw value.
      */
-    dmi_byte_t _value;
+    dmi_byte_t __value;
 
     dmi_packed_struct()
     {

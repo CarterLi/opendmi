@@ -713,7 +713,7 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_entity_t *entity, dmi_version_
     info->device_locator            = dmi_entity_string(entity, data->device_locator);
     info->bank_locator              = dmi_entity_string(entity, data->bank_locator);
     info->memory_type               = dmi_value(data->memory_type);
-    info->memory_type_detail._value = dmi_value(data->memory_type_detail);
+    info->memory_type_detail.__value = dmi_value(data->memory_type_detail);
 
     // SMBIOS 2.3 features
     if (entity->body_length >= 0x15) {

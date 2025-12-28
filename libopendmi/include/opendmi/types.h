@@ -94,7 +94,7 @@ dmi_packed_union(dmi_uuid)
     /**
      * @brief Raw value;
      */
-    dmi_byte_t _value[16];
+    dmi_byte_t __value[16];
 
     dmi_packed_struct()
     {

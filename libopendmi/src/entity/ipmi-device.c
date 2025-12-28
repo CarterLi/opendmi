@@ -220,7 +220,7 @@ dmi_ipmi_device_t *dmi_ipmi_device_decode(const dmi_entity_t *entity, dmi_versio
         info->base_addr_type = DMI_IPMI_ADDR_TYPE_MEMORY;
 
     dmi_ipmi_device_details_t details = {
-        ._value = dmi_value(data->details)
+        .__value = dmi_value(data->details)
     };
 
     if (details.is_intr_info_specified) {

@@ -84,7 +84,7 @@ dmi_packed_union(dmi_tpm_device_features)
     /**
      * @brief Raw value.
      */
-    uint64_t _value;
+    uint64_t __value;
 
     dmi_packed_struct()
     {

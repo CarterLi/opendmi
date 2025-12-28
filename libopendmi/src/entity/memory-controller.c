@@ -98,7 +98,7 @@ static const dmi_name_set_t dmi_memory_module_speed_names =
     }
 };
 
-static const dmi_name_set_t dmi_memory_interleave_names = 
+static const dmi_name_set_t dmi_memory_interleave_names =
 {
     .code  = "memory-interleaves",
     .names = {
@@ -259,7 +259,7 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_entity_t *entity
 
     info->error_detection  = dmi_value(data->error_detection);
     info->error_correction = (dmi_error_correct_caps_t) {
-        ._value = dmi_value(data->error_correction)
+        .__value = dmi_value(data->error_correction)
     };
 
     info->supported_interleave = dmi_value(data->supported_interleave);
@@ -269,15 +269,15 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_entity_t *entity
     info->maximum_memory_size  = info->maximum_module_size * info->slot_count;
 
     info->supported_speeds = (dmi_memory_module_speed_t) {
-        ._value = dmi_value(data->supported_speeds)
+        .__value = dmi_value(data->supported_speeds)
     };
 
     info->supported_types = (dmi_memory_module_type_t) {
-        ._value = dmi_value(data->supported_types)
+        .__value = dmi_value(data->supported_types)
     };
 
     info->required_voltages = (dmi_memory_module_voltage_t) {
-        ._value = dmi_value(data->required_voltages)
+        .__value = dmi_value(data->required_voltages)
     };
 
     info->module_handles = dmi_alloc_array(entity->context, sizeof(dmi_handle_t),
@@ -299,7 +299,7 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_entity_t *entity
         extra = dmi_cast(extra, extra_start);
 
         info->enabled_error_correction = (dmi_error_correct_caps_t) {
-            ._value = dmi_value(extra->enabled_error_correction)
+            .__value = dmi_value(extra->enabled_error_correction)
         };
     }
 

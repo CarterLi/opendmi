@@ -16,7 +16,7 @@
  */
 dmi_packed_union(dmi_firmware_features)
 {
-    dmi_qword_t _value;
+    dmi_qword_t __value;
 
     dmi_packed_struct() {
         dmi_qword_t reserved : 2;
@@ -63,7 +63,7 @@ dmi_packed_union(dmi_firmware_features_ex)
     /**
      * @brief Raw value.
      */
-    dmi_byte_t _value[2];
+    dmi_byte_t __value[2];
 
     dmi_packed_struct()
     {

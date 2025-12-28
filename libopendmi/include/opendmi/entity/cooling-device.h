@@ -43,7 +43,7 @@ dmi_packed_union(dmi_cooling_device_details)
     /**
      * @brief Raw value.
      */
-    dmi_byte_t _value;
+    dmi_byte_t __value;
 
     dmi_packed_struct()
     {
