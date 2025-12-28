@@ -62,7 +62,7 @@ const char *dmi_error_message(dmi_error_code_t reason)
     return dmi_error_messages[reason];
 }
 
-bool _dmi_error_raise(
+bool __dmi_error_raise(
         dmi_context_t    *context,
         const char       *file,
         const char       *function,
@@ -75,13 +75,13 @@ bool _dmi_error_raise(
     bool rv;
 
     va_start(args, message);
-    rv = _dmi_error_vraise(context, file, function, line, reason, message, args);
+    rv = __dmi_error_vraise(context, file, function, line, reason, message, args);
     va_end(args);
 
     return rv;
 }
 
-bool _dmi_error_vraise(
+bool __dmi_error_vraise(
         dmi_context_t    *context,
         const char       *file,
         const char       *function,

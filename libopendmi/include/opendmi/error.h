@@ -90,9 +90,9 @@ struct dmi_error_state
 };
 
 #define dmi_error_raise(context, reason) \
-        _dmi_error_raise(context, __FILE__, __func__, __LINE__, reason, nullptr)
+        __dmi_error_raise(context, __FILE__, __func__, __LINE__, reason, nullptr)
 #define dmi_error_raise_ex(context, reason, message, ...) \
-        _dmi_error_raise(context, __FILE__, __func__, __LINE__, reason, message, ##__VA_ARGS__)
+        __dmi_error_raise(context, __FILE__, __func__, __LINE__, reason, message, ##__VA_ARGS__)
 
 __BEGIN_DECLS
 
@@ -104,7 +104,7 @@ const char *dmi_error_message(dmi_error_code_t reason);
 /**
  * @internal
  */
-bool _dmi_error_raise(
+bool __dmi_error_raise(
         dmi_context_t    *context,
         const char       *file,
         const char       *function,
@@ -116,7 +116,7 @@ bool _dmi_error_raise(
 /**
  * @internal
  */
-bool _dmi_error_vraise(
+bool __dmi_error_vraise(
         dmi_context_t    *context,
         const char       *file,
         const char       *function,

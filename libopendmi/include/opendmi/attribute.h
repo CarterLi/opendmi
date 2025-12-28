@@ -121,21 +121,21 @@ struct dmi_attribute
     dmi_attribute_params_t params;
 };
 
-#define DMI_ATTRIBUTE(_entity, _member, _type, ...)     \
+#define DMI_ATTRIBUTE(__entity, __member, __type, ...)     \
     {                                                   \
-        .offset  = dmi_member_offset(_entity, _member), \
-        .size    = dmi_member_size(_entity, _member),   \
+        .offset  = dmi_member_offset(__entity, __member), \
+        .size    = dmi_member_size(__entity, __member),   \
         .counter = -1,                                  \
-        .type    = DMI_ATTRIBUTE_TYPE_ ## _type,        \
+        .type    = DMI_ATTRIBUTE_TYPE_ ## __type,        \
         .params  = __VA_ARGS__                          \
     }
 
-#define DMI_ATTRIBUTE_ARRAY(_entity, _member, _counter, _type, ...) \
+#define DMI_ATTRIBUTE_ARRAY(__entity, __member, __counter, __type, ...) \
     {                                                               \
-        .offset  = dmi_member_offset(_entity, _member),             \
-        .size    = dmi_element_size(_entity, _member),              \
-        .counter = offsetof(_entity, _counter),                     \
-        .type    = DMI_ATTRIBUTE_TYPE_ ## _type,                    \
+        .offset  = dmi_member_offset(__entity, __member),             \
+        .size    = dmi_element_size(__entity, __member),              \
+        .counter = offsetof(__entity, __counter),                     \
+        .type    = DMI_ATTRIBUTE_TYPE_ ## __type,                    \
         .params  = __VA_ARGS__                                      \
     }
 
