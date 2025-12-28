@@ -5,17 +5,21 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 FIND_PATH(LIBYAML_INCLUDE_DIRS
-    NAMES yaml.h 
+    NAMES yaml.h
     PATHS $ENV{LIBYAML_ROOT}/include
+    OPTIONAL
 )
 
 FIND_LIBRARY(LIBYAML_LIBRARIES
     NAMES yaml
     PATHS $ENV{LIBYAML_ROOT}/lib
+    OPTIONAL
 )
 
 if(NOT LIBYAML_INCLUDE_DIRS OR NOT LIBYAML_LIBRARIES)
-    message(SEND_ERROR "libyaml library/include file not found, set LIBYAML_ROOT")
+    if(LibYaml_FIND_REQUIRED)
+        message(SEND_ERROR "libyaml library/include file not found, set LIBYAML_ROOT")
+    endif()
 else()
     set(LibYaml_FOUND TRUE)
     message(STATUS "Found LibYaml: ${LibYaml_LIBRARIES}")
