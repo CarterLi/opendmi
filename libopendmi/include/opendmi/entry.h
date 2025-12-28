@@ -311,7 +311,7 @@ dmi_packed_struct(dmi_entry_v30)
      * @details
      * Reserved for assignment by SMBIOS specification, set to 0.
      */
-    const dmi_byte_t reserved;
+    const dmi_byte_t __reserved;
 
     /**
      * @brief Structure table maximum size.

@@ -110,7 +110,7 @@ dmi_packed_union(dmi_memory_device_type_detail)
 
     dmi_packed_struct()
     {
-        bool reserved      : 1; ///< Reserved
+        bool __reserved    : 1; ///< Reserved
         bool other         : 1; ///< Other
         bool unknown       : 1; ///< Unknown
         bool fast_paged    : 1; ///< Fast-paged

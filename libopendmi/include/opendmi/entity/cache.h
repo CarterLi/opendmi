@@ -102,7 +102,7 @@ dmi_packed_union(dmi_cache_config)
         /**
          * @brief Reserved.
          */
-        dmi_word_t reserved : 1;
+        dmi_word_t __reserved : 1;
 
         /**
          * @brief Location, relative to the CPU module.

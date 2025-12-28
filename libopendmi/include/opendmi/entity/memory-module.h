@@ -41,7 +41,7 @@ dmi_packed_union(dmi_memory_module_type)
         bool is_burst_edo  : 1; ///< Burst EDO
         bool is_sdram      : 1; ///< SDRAM
 
-        dmi_word_t reserved : 5;
+        dmi_word_t __reserved : 5;
     };
 };
 
@@ -76,7 +76,7 @@ dmi_packed_union(dmi_memory_module_error)
         /**
          * @brief Reserved, set to zero.
          */
-        dmi_byte_t reserved : 5;
+        dmi_byte_t __reserved : 5;
     };
 };
 

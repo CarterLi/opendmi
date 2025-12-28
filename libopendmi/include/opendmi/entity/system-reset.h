@@ -61,7 +61,7 @@ dmi_packed_union(dmi_system_reset_caps)
          * @brief Reserved for future assignment by this specification, set to
          * zero.
          */
-        dmi_byte_t reserved : 2;
+        dmi_byte_t __reserved : 2;
     };
 };
 

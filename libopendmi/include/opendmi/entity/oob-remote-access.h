@@ -47,7 +47,7 @@ dmi_packed_union(dmi_oob_connections)
          * @brief Reserved for future definition by this specification. Set to
          * all zeros.
          */
-        dmi_byte_t reserved : 6;
+        dmi_byte_t __reserved : 6;
     };
 };
 

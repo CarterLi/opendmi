@@ -152,7 +152,7 @@ dmi_packed_union(dmi_firmware_inventory_features)
         /**
          * @brief Reserved for future user.
          */
-        dmi_word_t reserved : 14;
+        dmi_word_t __reserved : 14;
     };
 };
 

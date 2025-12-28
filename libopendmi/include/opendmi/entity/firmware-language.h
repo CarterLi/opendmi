@@ -36,7 +36,7 @@ dmi_packed_union(dmi_firmware_language_flags)
         /**
          * @brief Reserved for future use.
          */
-        dmi_byte_t reserved: 7;
+        dmi_byte_t __reserved: 7;
     };
 };
 
@@ -69,7 +69,7 @@ dmi_packed_struct(dmi_firmware_language_data)
      * @brief Reserved for future use.
      * @since SMBIOS 2.0
      */
-    dmi_byte_t reserved[15];
+    dmi_byte_t __reserved[15];
 
     /**
      * @brief String number (one-based) of the currently installed language.

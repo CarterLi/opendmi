@@ -19,7 +19,7 @@ dmi_packed_union(dmi_firmware_features)
     dmi_qword_t __value;
 
     dmi_packed_struct() {
-        dmi_qword_t reserved : 2;
+        dmi_qword_t __reserved : 2;
         bool unknown : 1;
         bool unsupported : 1;
         bool isa_support : 1;

@@ -86,7 +86,7 @@ dmi_packed_union(dmi_baseboard_features)
         /**
          * @brief Reserved for future definition by SMBIOS specification, set to 0.
          */
-        dmi_byte_t reserved : 3;
+        dmi_byte_t __reserved : 3;
     };
 };
 

@@ -61,7 +61,7 @@ dmi_packed_union(dmi_error_correct_caps)
         bool is_double_bit : 1; ///< Double-bit error correcting
         bool is_scrubbing  : 1; ///< Error scrubbing
 
-        dmi_byte_t reserved      : 2; ///< Reserved
+        dmi_byte_t __reserved : 2; ///< Reserved
     };
 };
 
@@ -82,7 +82,7 @@ dmi_packed_union(dmi_memory_module_speed)
         bool       is_70ns    : 1;  ///< 70 ns
         bool       is_60ns    : 1;  ///< 60 ns
         bool       is_50ns    : 1;  ///< 50 ns
-        dmi_word_t reserved   : 11; ///< Reserved
+        dmi_word_t __reserved : 11; ///< Reserved
     };
 };
 
@@ -100,14 +100,14 @@ dmi_packed_union(dmi_memory_module_voltage)
 
     dmi_packed_struct()
     {
-        bool is_5v : 1;
+        bool is_5v  : 1;
         bool is_3v3 : 1;
         bool is_2v9 : 1;
 
         /**
          * @brief Reserved for future use.
          */
-        dmi_byte_t reserved : 5;
+        dmi_byte_t __reserved : 5;
     };
 };
 

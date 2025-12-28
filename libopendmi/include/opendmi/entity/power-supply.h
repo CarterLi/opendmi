@@ -89,7 +89,7 @@ dmi_packed_union(dmi_power_supply_details)
         /**
          * @brief Reserved for future use, set to zero.
          */
-        dmi_word_t reserved : 2;
+        dmi_word_t __reserved : 2;
     };
 };
 
