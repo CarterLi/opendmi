@@ -150,6 +150,12 @@ _configure() {
     if [ "${ENABLE_CURSES}" != "AUTO" ]; then
         FEATURES="${FEATURES} -DENABLE_CURSES=${ENABLE_CURSES}"
     fi
+    if [ "${ENABLE_XML}" != "AUTO" ]; then
+        FEATURES="${FEATURES} -DENABLE_XML=${ENABLE_XML}"
+    fi
+    if [ "${ENABLE_YAML}" != "AUTO" ]; then
+        FEATURES="${FEATURES} -DENABLE_YAML=${ENABLE_YAML}"
+    fi
     if [ "${VERBOSE}" == "ON" ]; then
         FEATURES="${FEATURES} -DCMAKE_VERBOSE_MAKEFILE=TRUE"
     fi

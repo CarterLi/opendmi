@@ -12,7 +12,7 @@ macro(find_package_ex PACKAGE FLAG)
         if (${PACKAGE}_FOUND)
             set(${FLAG} ON)
         endif()
-    elseif($<BOOL:${${FLAG}}>)
+    elseif(${FLAG})
         message(STATUS "Looking for ${PACKAGE} (required)...")
 
         find_package(${PACKAGE} REQUIRED ${ARGN})
