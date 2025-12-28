@@ -12,15 +12,8 @@
 #include <opendmi/entity.h>
 #include <opendmi/entity/common.h>
 
-#ifndef DMI_COOLING_DEVICE_T
-#define DMI_COOLING_DEVICE_T
-typedef struct dmi_cooling_device dmi_cooling_device_t;
-#endif // !DMI_COOLING_DEVICE_T
-
-#ifndef DMI_COOLING_DEVICE_DATA_T
-#define DMI_COOLING_DEVICE_DATA_T
+typedef struct dmi_cooling_device      dmi_cooling_device_t;
 typedef struct dmi_cooling_device_data dmi_cooling_device_data_t;
-#endif // !DMI_COOLING_DEVICE_DATA_T
 
 /**
  * @brief Cooling device types.
@@ -56,31 +49,29 @@ DMI_PACKED_UNION(dmi_cooling_device_details)
     {
         /**
          * @brief Cooling device type.
-         * 
+         *
          * @since SMBIOS 2.2
          */
         dmi_byte_t type : 5;
 
         /**
          * @brief Cooling device status.
-         * 
+         *
          * @since SMBIOS 2.2
          */
         dmi_byte_t status : 3;
     };
 };
 
-#ifndef DMI_COOLING_DEVICE_DETAILS_T
-#define DMI_COOLING_DEVICE_DETAILS_T
+
 typedef union dmi_cooling_device_details dmi_cooling_device_details_t;
-#endif // !DMI_COOLING_DEVICE_DETAILS_T
 
 /**
  * @brief Cooling device structure.
- * 
+ *
  * This structure describes the attributes for a cooling device in the system.
  * Each structure describes a single cooling device.
- * 
+ *
  * @since SMBIOS 2.2
  */
 DMI_PACKED_STRUCT(dmi_cooling_device_data)
@@ -93,7 +84,7 @@ DMI_PACKED_STRUCT(dmi_cooling_device_data)
     /**
      * @brief Handle, or instance number, of the temperature probe monitoring
      * this cooling device.
-     * 
+     *
      * @since SMBIOS 2.2
      */
     dmi_handle_t probe_handle;
@@ -105,20 +96,20 @@ DMI_PACKED_STRUCT(dmi_cooling_device_data)
 
     /**
      * @brief Cooling unit group to which this cooling device is associated.
-     * 
+     *
      * Having multiple cooling devices in the same cooling unit implies a
      * redundant configuration. The value is `0x00` if the cooling device is
      * not a member of a redundant cooling unit. Non-zero values imply
      * redundancy and that at least one other cooling device will be enumerated
      * with the same value.
-     * 
+     *
      * @since SMBIOS 2.2
      */
     dmi_byte_t group;
 
     /**
      * @brief OEM- or firmware vendor-specific information.
-     * 
+     *
      * @since SMBIOS 2.2
      */
     dmi_dword_t oem_defined;
@@ -127,11 +118,11 @@ DMI_PACKED_STRUCT(dmi_cooling_device_data)
      * @brief Nominal value for the cooling device’s rotational speed, in
      * revolutions-per-minute (rpm). If the value is unknown or the cooling
      * device is non-rotating, the field is set to `0x8000`.
-     * 
+     *
      * @note
      * This field is present in the structure only if the structure’s length is
      * larger than `0x0C`.
-     * 
+     *
      * @since SMBIOS 2.2
      */
     dmi_word_t nominal_speed;
@@ -139,11 +130,11 @@ DMI_PACKED_STRUCT(dmi_cooling_device_data)
     /**
      * @brief Number of the string that contains additional descriptive
      * information about the cooling device or its location.
-     * 
+     *
      * @note
      * This field is present in the structure only if the structure's length is
      * `0x0F` or larger.
-     * 
+     *
      * @since SMBIOS 2.7
      */
     dmi_string_t description;
@@ -174,7 +165,7 @@ struct dmi_cooling_device
 
     /**
      * @brief Cooling unit group to which this cooling device is associated.
-     * 
+     *
      * Having multiple cooling devices in the same cooling unit implies a
      * redundant configuration. The value is `0` if the cooling device is
      * not a member of a redundant cooling unit. Non-zero values imply

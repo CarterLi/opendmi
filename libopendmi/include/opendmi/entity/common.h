@@ -12,15 +12,8 @@
 #include <opendmi/name.h>
 #include <opendmi/attribute.h>
 
-#ifndef DMI_PCI_ADDR_T
-#define DMI_PCI_ADDR_T
-typedef struct dmi_pci_addr dmi_pci_addr_t;
-#endif // !DMI_PCI_ADDR_T
-
-#ifndef DMI_PCI_ADDR_DATA_T
-#define DMI_PCI_ADDR_DATA_T
+typedef struct dmi_pci_addr      dmi_pci_addr_t;
 typedef struct dmi_pci_addr_data dmi_pci_addr_data_t;
-#endif // !DMI_PCI_ADDR_DATA_T
 
 /**
  * @brief Status types.

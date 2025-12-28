@@ -11,15 +11,8 @@
 
 #include <opendmi/entity/memory-array.h>
 
-#ifndef DMI_MEMORY_ARRAY_ADDR_DATA_T
-#define DMI_MEMORY_ARRAT_ADDR_DATA_T
 typedef struct dmi_memory_array_addr_data dmi_memory_array_addr_data_t;
-#endif // !DMI_MEMORY_ARRAT_ADDR_DATA_T
-
-#ifndef DMI_MEMORY_ARRAY_ADDR_T
-#define DMI_MEMORY_ARRAT_ADDR_T
-typedef struct dmi_memory_array_addr dmi_memory_array_addr_t;
-#endif // !DMI_MEMORY_ARRAT_ADDR_DATA_T
+typedef struct dmi_memory_array_addr      dmi_memory_array_addr_t;
 
 /**
  * @brief Memory array mapped address structure (type 19).
@@ -35,13 +28,13 @@ DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
     /**
      * @brief Physical address, in kibibytes, of a range of memory mapped to
      * the specified physical memory array.
-     * 
+     *
      * When the field value is `0xFFFFFFFF`, the actual address is stored in
      * the extended starting address field. When this field contains a valid
      * address, ending address must also contain a valid address. When this
      * field contains `0xFFFFFFFF`, ending address must also contain
      * `0xFFFFFFFF`.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_dword_t start_addr;
@@ -54,7 +47,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
      * also contains FFFF FFFFh, the actual address is stored in the extended
      * ending address field. When this field contains a valid address, starting
      * address must also contain a valid address.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_dword_t end_addr;
@@ -71,7 +64,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
     /**
      * @brief Number of memory devices that form a single row of memory for the
      * address partition defined by this structure.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_byte_t partition_width;
@@ -85,7 +78,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_addr_data)
      * `0xFFFFFFFF`, this field contains zeros. When this field contains a
      * valid address, extended ending address must also contain a valid
      * address.
-     * 
+     *
      * @since SMBIOS 2.7
      */
     dmi_qword_t start_addr_ex;

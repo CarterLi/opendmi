@@ -12,35 +12,12 @@
 #include <opendmi/entity/common.h>
 #include <opendmi/entity/baseboard.h>
 
-#ifndef DMI_CHASSIS_T
-#define DMI_CHASSIS_T
-typedef struct dmi_chassis dmi_chassis_t;
-#endif // !DMI_CHASSIS_T
-
-#ifndef DMI_CHASSIS_DATA_T
-#define DMI_CHASSIS_DATA_T
-typedef struct dmi_chassis_data dmi_chassis_data_t;
-#endif // !DMI_CHASSIS_DATA_T
-
-#ifndef DMI_CHASSIS_TYPE_DATA_T
-#define DMI_CHASSIS_TYPE_DATA_T
-typedef union dmi_chassis_type_data dmi_chassis_type_data_t;
-#endif // !DMI_CHASSIS_TYPE_DATA_T
-
-#ifndef DMI_CHASSIS_EXTRA_T
-#define DMI_CHASSIS_EXTRA_T
-typedef struct dmi_chassis_extra dmi_chassis_extra_t;
-#endif // !DMI_CHASSIS_EXTRA_T
-
-#ifndef DMI_CHASSIS_ELEMENT_T
-#define DMI_CHASSIS_ELEMENT_T
-typedef struct dmi_chassis_element dmi_chassis_element_t;
-#endif // !DMI_CHASSIS_ELEMENT_T
-
-#ifndef DMI_CHASSIS_ELEMENT_DATA_T
-#define DMI_CHASSIS_ELEMENT_DATA_T
+typedef struct dmi_chassis              dmi_chassis_t;
+typedef struct dmi_chassis_data         dmi_chassis_data_t;
+typedef union  dmi_chassis_type_data    dmi_chassis_type_data_t;
+typedef struct dmi_chassis_extra        dmi_chassis_extra_t;
+typedef struct dmi_chassis_element      dmi_chassis_element_t;
 typedef struct dmi_chassis_element_data dmi_chassis_element_data_t;
-#endif // !DMI_CHASSIS_ELEMENT_DATA_T
 
 /**
  * @brief System enclosure or chassis types.
@@ -90,11 +67,11 @@ typedef enum dmi_chassis_type
 typedef enum dmi_chassis_security_status
 {
     DMI_CHASSIS_SECURITY_STATUS_UNSPEC         = 0x00, ///< Unspecified
-    DMI_CHASSIS_SECURITY_STATUS_OTHER          = 0x01, ///< Other 
-    DMI_CHASSIS_SECURITY_STATUS_UNKNOWN        = 0x02, ///< Unknown 
-    DMI_CHASSIS_SECURITY_STATUS_NONE           = 0x03, ///< None 
-    DMI_CHASSIS_SECURITY_STATUS_EXT_IF_LOCKED  = 0x04, ///< External interface locked out 
-    DMI_CHASSIS_SECURITY_STATUS_EXT_IF_ENABLED = 0x05, ///< External interface enabled 
+    DMI_CHASSIS_SECURITY_STATUS_OTHER          = 0x01, ///< Other
+    DMI_CHASSIS_SECURITY_STATUS_UNKNOWN        = 0x02, ///< Unknown
+    DMI_CHASSIS_SECURITY_STATUS_NONE           = 0x03, ///< None
+    DMI_CHASSIS_SECURITY_STATUS_EXT_IF_LOCKED  = 0x04, ///< External interface locked out
+    DMI_CHASSIS_SECURITY_STATUS_EXT_IF_ENABLED = 0x05, ///< External interface enabled
     __DMI_CHASSIS_SECURITY_STATUS_COUNT
 } dmi_chassis_security_status_t;
 
@@ -127,7 +104,7 @@ DMI_PACKED_STRUCT(dmi_chassis_element_data)
     dmi_byte_t type;
 
     /**
-     * @brief Specifies the minimum number of the element type that can be 
+     * @brief Specifies the minimum number of the element type that can be
      * installed in the chassis for the chassis to properly operate, in the
      * range 0 to 254. The value 255 (`0xFF`) is reserved for future definition
      * by this specification.
@@ -135,7 +112,7 @@ DMI_PACKED_STRUCT(dmi_chassis_element_data)
     dmi_byte_t minimum_count;
 
     /**
-     * @brief Specifies the maximum number of the element type that can be 
+     * @brief Specifies the maximum number of the element type that can be
      * installed in the chassis, in the range 1 to 255. The value 0 is reserved
      * for future definition by this specification.
      */
@@ -144,16 +121,16 @@ DMI_PACKED_STRUCT(dmi_chassis_element_data)
 
 /**
  * @brief System enclosure or chassis structure (type 3).
- * 
+ *
  * The information in this structure defines attributes of the system’s
  * mechanical enclosure(s). For example, if a system included a separate
  * enclosure for its peripheral devices, two structures would be returned: one
  * for the main system enclosure and the second for the peripheral device
  * enclosure.
- * 
+ *
  * The additions to this structure in version 2.1 of SMBIOS
  * specification support the population of the CIM_Chassis class.
- * 
+ *
  * @since SMBIOS 2.0
  */
 DMI_PACKED_STRUCT(dmi_chassis_data)

@@ -65,10 +65,7 @@ DMI_PACKED_UNION(dmi_system_reset_caps)
     };
 };
 
-#ifndef DMI_SYSTEM_RESET_CAPS_T
-#define DMI_SYSTEM_RESET_CAPS_T
 typedef union dmi_system_reset_caps dmi_system_reset_caps_t;
-#endif // !DMI_SYSTEM_RESET_CAPS_T
 
 /**
  * @brief System reset structure (type 23).
@@ -112,10 +109,7 @@ DMI_PACKED_STRUCT(dmi_system_reset_data)
     dmi_word_t timeout;
 };
 
-#ifndef DMI_SYSTEM_RESET_DATA_T
-#define DMI_SYSTEM_RESET_DATA_T
 typedef struct dmi_system_reset_data dmi_system_reset_data_t;
-#endif // !DMI_SYSTEM_RESET_DATA_T
 
 struct dmi_system_reset
 {
@@ -169,10 +163,7 @@ struct dmi_system_reset
     unsigned short timeout;
 };
 
-#ifndef DMI_SYSTEM_RESET_T
-#define DMI_SYSTEM_RESET_T
 typedef struct dmi_system_reset dmi_system_reset_t;
-#endif // !DMI_SYSTEM_RESET_T
 
 /**
  * @brief System reset entity specification.

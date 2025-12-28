@@ -11,15 +11,8 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_SYSTEM_CONFIG_OPTS_T
-#define DMI_SYSTEM_CONFIG_OPTS_T
-typedef struct dmi_system_config_opts dmi_system_config_opts_t;
-#endif // !DMI_SYSTEM_CONFIG_OPTIONS_T
-
-#ifndef DMI_SYSTEM_CONFIG_OPTS_DATA_T
-#define DMI_SYSTEM_CONFIG_OPTS_DATA_T
+typedef struct dmi_system_config_opts      dmi_system_config_opts_t;
 typedef struct dmi_system_config_opts_data dmi_system_config_opts_data_t;
-#endif // !DMI_SYSTEM_CONFIG_OPTIONS_DATA_T
 
 /**
  * @brief System configuration options structure (type 12).

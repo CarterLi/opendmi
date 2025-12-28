@@ -12,15 +12,8 @@
 #include <opendmi/entity/common.h>
 #include <opendmi/entity/onboard-device.h>
 
-#ifndef DMI_ONBOARD_DEVICE_EX_T
-#define DMI_ONBOARD_DEVICE_EX_T
-typedef struct dmi_onboard_device_ex dmi_onboard_device_ex_t;
-#endif // !DMI_ONBOARD_DEVICE_EX_T
-
-#ifndef DMI_ONBOARD_DEVICE_EX_DATA_T
-#define DMI_ONBOARD_DEVICE_EX_DATA_T
+typedef struct dmi_onboard_device_ex      dmi_onboard_device_ex_t;
 typedef struct dmi_onboard_device_ex_data dmi_onboard_device_ex_data_t;
-#endif // !DMI_ONBOARD_DEVICE_EX_DATA_T
 
 /**
  * @brief Onboard devices extended information structure (type 41).
@@ -46,7 +39,7 @@ DMI_PACKED_STRUCT(dmi_onboard_device_ex_data)
      * @brief Device type instance. An unique value (within a given onboard
      * device type) used to indicate the order the device is designated by the
      * system.
-     * 
+     *
      * For example, a system with two identical ethernet NICs may designate one
      * NIC (with higher Bus/Device/Function=15/0/0) as the first onboard NIC
      * (instance 1) and the other NIC (with lower Bus/Device/Function = 3/0/0)
@@ -84,7 +77,7 @@ struct dmi_onboard_device_ex
      * @brief Device type instance. An unique value (within a given onboard
      * device type) used to indicate the order the device is designated by the
      * system.
-     * 
+     *
      * For example, a system with two identical ethernet NICs may designate one
      * NIC (with higher Bus/Device/Function=15/0/0) as the first onboard NIC
      * (instance 1) and the other NIC (with lower Bus/Device/Function = 3/0/0)

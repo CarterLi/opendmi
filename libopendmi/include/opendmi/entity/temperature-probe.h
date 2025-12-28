@@ -11,10 +11,7 @@
 
 #include <opendmi/entity/probe.h>
 
-#ifndef DMI_TEMPERATURE_PROBE_T
-#define DMI_TEMPERATURE_PROBE_T
 typedef struct dmi_probe dmi_temperature_probe_t;
-#endif // !DMI_TEMPERATURE_PROBE_T
 
 /**
  * @brief Temperature probe entity specification.

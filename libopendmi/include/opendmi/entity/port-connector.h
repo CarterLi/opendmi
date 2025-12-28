@@ -141,10 +141,7 @@ DMI_PACKED_STRUCT(dmi_port_connector_data)
     dmi_byte_t port_type;
 };
 
-#ifndef DMI_PORT_CONNECTOR_DATA_T
-#define DMI_PORT_CONNECTOR_DATA_T
 typedef struct dmi_port_connector_data dmi_port_connector_data_t;
-#endif // !DMI_PORT_CONNECTOR_DATA_T
 
 /**
  * @brief Port connector information.
@@ -179,10 +176,7 @@ struct dmi_port_connector
     dmi_port_type_t port_type;
 };
 
-#ifndef DMI_PORT_CONNECTOR_T
-#define DMI_PORT_CONNECTOR_T
 typedef struct dmi_port_connector dmi_port_connector_t;
-#endif // !DMI_PORT_CONNECTOR_T
 
 /**
  * @brief Port connector information entity specification.

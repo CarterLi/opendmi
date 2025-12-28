@@ -11,10 +11,7 @@
 
 #include <opendmi/types.h>
 
-#ifndef DMI_FILTER_T
-#define DMI_FILTER_T
 typedef struct dmi_filter dmi_filter_t;
-#endif // !DMI_FILTER_T
 
 struct dmi_filter
 {

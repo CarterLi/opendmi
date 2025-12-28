@@ -84,10 +84,7 @@ typedef uint64_t dmi_size_t;
  */
 typedef uint16_t dmi_i2c_addr_t;
 
-#ifndef DMI_UUID_T
-#define DMI_UUID_T
 typedef union dmi_uuid dmi_uuid_t;
-#endif // !DMI_UUID_T
 
 /**
  * DMI UUID type.
@@ -193,14 +190,7 @@ typedef enum dmi_type
     __DMI_TYPE_COUNT
 } dmi_type_t;
 
-#ifndef DMI_CONTEXT_T
-#define DMI_CONTEXT_T
 typedef struct dmi_context dmi_context_t;
-#endif // !DMI_CONTEXT_T
-
-#ifndef DMI_ENTITY_T
-#define DMI_ENTITY_T
-typedef struct dmi_entity dmi_entity_t;
-#endif // !DMI_ENTITY_T
+typedef struct dmi_entity  dmi_entity_t;
 
 #endif // !OPENDMI_TYPES_H

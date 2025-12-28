@@ -11,20 +11,9 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_OOB_REMOTE_ACCESS_T
-#define DMI_OOB_REMOTE_ACCESS_T
-typedef struct dmi_oob_remote_access dmi_oob_remote_access_t;
-#endif // !DMI_OOB_REMOTE_ACCESS_T
-
-#ifndef DMI_OOB_REMOTE_ACCESS_DATA_T
-#define DMI_OOB_REMOTE_ACCESS_DATA_T
+typedef struct dmi_oob_remote_access      dmi_oob_remote_access_t;
 typedef struct dmi_oob_remote_access_data dmi_oob_remote_access_data_t;
-#endif // !DMI_OOB_REMOTE_ACCESS_DATA_T
-
-#ifndef DMI_OOB_CONNECTIONS_T
-#define DMI_OOB_CONNECTIONS_T
-typedef union dmi_oob_connections dmi_oob_connections_t;
-#endif // !DMI_OOB_CONNECTIONS_T
+typedef union  dmi_oob_connections        dmi_oob_connections_t;
 
 /**
  * @brief Out-of-band remote access connections.
@@ -64,12 +53,12 @@ DMI_PACKED_UNION(dmi_oob_connections)
 
 /**
  * @brief Out-of-band remote access structure (type 30).
- * 
+ *
  * This structure describes the attributes and policy settings of a hardware
  * facility that may be used to gain remote access to a hardware system when
  * the operating system is not available due to power-down status, hardware
  * failures, or boot failures.
- * 
+ *
  * @since SMBIOS 2.2
  */
 DMI_PACKED_STRUCT(dmi_oob_remote_access_data)

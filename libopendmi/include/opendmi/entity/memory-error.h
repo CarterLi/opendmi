@@ -109,10 +109,7 @@ struct dmi_memory_error
     dmi_size_t resolution;
 };
 
-#ifndef DMI_MEMORY_ERROR_T
-#define DMI_MEMORY_ERROR_T
 typedef struct dmi_memory_error dmi_memory_error_t;
-#endif // !DMI_MEMORY_ERROR_T
 
 /**
  * @brief Memory error attributes.

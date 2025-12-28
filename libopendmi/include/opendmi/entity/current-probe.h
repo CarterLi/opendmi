@@ -11,10 +11,7 @@
 
 #include <opendmi/entity/probe.h>
 
-#ifndef DMI_CURRENT_PROBE_T
-#define DMI_CURRENT_PROBE_T
 typedef struct dmi_probe dmi_current_probe_t;
-#endif // !DMI_CURRENT_PROBE_T
 
 /**
  * @brief Electrical current probe entity specification.

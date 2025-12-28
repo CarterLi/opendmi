@@ -11,15 +11,8 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_SYSTEM_DATA_T
-#define DMI_SYSTEM_DATA_T
 typedef struct dmi_system_data dmi_system_data_t;
-#endif // !DMI_SYSTEM_DATA_T
-
-#ifndef DMI_SYSTEM_T
-#define DMI_SYSTEM_T
-typedef struct dmi_system dmi_system_t;
-#endif // !DMI_SYSTEM_T
+typedef struct dmi_system      dmi_system_t;
 
 typedef enum dmi_system_wakeup_type
 {
@@ -89,7 +82,7 @@ DMI_PACKED_STRUCT(dmi_system_data)
      * standard format. Typically for a given system board from a given OEM,
      * there are tens of unique processor, memory, hard drive, and optical
      * drive configurations.
-     * 
+     *
      * @since SMBIOS 2.4
      */
     dmi_string_t sku_number;
@@ -103,7 +96,7 @@ DMI_PACKED_STRUCT(dmi_system_data)
      * is composed of different computer models, which have different
      * configurations and pricing points. Computers in the same family often
      * have similar branding and cosmetic features.
-     * 
+     *
      * @since SMBIOS 2.4
      */
     dmi_string_t family;

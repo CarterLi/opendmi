@@ -11,15 +11,8 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_BATTERY_DATA_T
-#define DMI_BATTERY_DATA_T
 typedef struct dmi_battery_data dmi_battery_data_t;
-#endif // !DMI_BATTERY_DATA_T
-
-#ifndef DMI_BATTERY_T
-#define DMI_BATTERY_T
-typedef struct dmi_battery dmi_battery_t;
-#endif // !DMI_BATTERY_T
+typedef struct dmi_battery      dmi_battery_t;
 
 /**
  * @brief Battery chemistry types.
@@ -40,11 +33,11 @@ typedef enum dmi_battery_chemistry
 
 /**
  * @brief Portable battery structure.
- * 
+ *
  * This structure describes the attributes of the portable battery or batteries
  * for the system. The structure contains the static attributes for the group.
  * Each structure describes attributes for a single battery pack.
- * 
+ *
  * @since SMBIOS 2.1
  */
 DMI_PACKED_STRUCT(dmi_battery_data)
@@ -57,7 +50,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
     /**
      * @brief Number of the string that identifies the location of the battery.
      * Example: "in the back, on the left-hand side".
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_string_t location;
@@ -65,7 +58,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
     /**
      * @brief Number of the string that names the company that manufactured the
      * battery.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_string_t vendor;
@@ -73,12 +66,12 @@ DMI_PACKED_STRUCT(dmi_battery_data)
     /**
      * @brief Number of the string that identifies the date on which the
      * battery was manufactured.
-     * 
+     *
      * @note
      * SMBIOS 2.2+ implementations that use a smart battery set this field to
      * `0` (no string) to indicate that the SBDS manufacture date field
      * contains the information.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_string_t manufacture_date;
@@ -86,12 +79,12 @@ DMI_PACKED_STRUCT(dmi_battery_data)
     /**
      * @brief Number of the string that contains the serial number for the
      * battery.
-     * 
+     *
      * @note
      * SMBIOS 2.2+ implementations that use a smart battery set this field to
      * `0` (no string) to indicate that the SBDS serial number field contains
      * the information.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_string_t serial_number;
@@ -99,19 +92,19 @@ DMI_PACKED_STRUCT(dmi_battery_data)
     /**
      * @brief Number of the string that names the battery device. Example:
      * "DR-36".
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_string_t name;
 
     /**
      * @brief The battery chemistry.
-     * 
+     *
      * @note
      * SMBIOS 2.2+ implementations that use a smart battery set this field to
      * `0x02` (Unknown) to indicate that the SBDS Device Chemistry field
      * contains the information.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_byte_t chemistry;
@@ -119,11 +112,11 @@ DMI_PACKED_STRUCT(dmi_battery_data)
     /**
      * @brief Design capacity of the battery in mWatt-hours. If the value is
      * unknown, the field contains `0`.
-     * 
+     *
      * @note
      * For SMBIOS 2.2+ implementations, this value is multiplied by the design
      * capacity multiplier to produce the actual value.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_word_t capacity;
@@ -131,7 +124,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
     /**
      * @brief Design voltage of the battery in mVolts. If the value is unknown,
      * the field contains `0`.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_word_t voltage;
@@ -140,7 +133,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * @brief Number of the string that contains the Smart Battery Data
      * Specification version number supported by this battery. If the battery
      * does not support the function, no string is supplied.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_string_t sbds_version;
@@ -150,25 +143,25 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * Watt-hour data reported by the battery, indicating an upper bound on how
      * much additional energy the battery might have above the energy it
      * reports having. If the value is unknown, the field contains `0xFF`.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_byte_t maximum_error;
 
     /**
      * @brief 16-bit value that identifies the battery’s serial number.
-     * 
+     *
      * This value, when combined with the manufacturer, device name, and
      * manufacture date, uniquely identifies the battery. The serial number
      * field must be set to `0` (no string) for this field to be valid.
-     * 
+     *
      * @since SMBIOS 2.2
      */
     dmi_word_t sbds_serial_number;
 
     /**
      * @brief Date the cell pack was manufactured, in packed format.
-     * 
+     *
      * @since SMBIOS 2.2
      */
     dmi_word_t sbds_manufacture_date;
@@ -177,7 +170,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * @brief Number of the string that identifies the battery chemistry (for
      * example, "PbAc"). The device chemistry field must be set to `0x02`
      * (Unknown) for this field to be valid.
-     * 
+     *
      * @since SMBIOS 2.2
      */
     dmi_string_t sbds_chemistry;
@@ -186,7 +179,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
      * @brief Multiplication factor of the Design Capacity value, which
      * assures that the mWatt hours value does not overflow for SBDS
      * implementations.
-     * 
+     *
      * The multiplier default is `1`, SBDS implementations use the value
      * `10` to correspond to the data as returned from the SBDS Function
      * `0x18`.
@@ -197,7 +190,7 @@ DMI_PACKED_STRUCT(dmi_battery_data)
 
     /**
      * @brief Contains OEM- or firmware vendor-specific information.
-     * 
+     *
      * @since SMBIOS 2.2
      */
     dmi_dword_t oem_defined;
@@ -267,7 +260,7 @@ struct dmi_battery
 
     /**
      * @brief 16-bit value that identifies the battery’s serial number.
-     * 
+     *
      * This value, when combined with the manufacturer, device name, and
      * manufacture date, uniquely identifies the battery. The serial number
      * field must be set to `0` (no string) for this field to be valid.

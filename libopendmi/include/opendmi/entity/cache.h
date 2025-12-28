@@ -121,10 +121,7 @@ DMI_PACKED_UNION(dmi_cache_config)
     };
 };
 
-#ifndef DMI_CACHE_CONFIG_T
-#define DMI_CACHE_CONFIG_T
 typedef union dmi_cache_config dmi_cache_config_t;
-#endif // !DMI_CACHE_CONFIG_T
 
 /**
  * @brief Cache SRAM type.
@@ -155,7 +152,7 @@ typedef union dmi_cache_sram_type dmi_cache_sram_type_t;
 
 /**
  * @brief Cache information structure (type 7).
- * 
+ *
  * The information in this structure defines the attributes of CPU cache
  * device in the system. One structure is specified for each such device,
  * whether the device is internal to or external to the CPU module. Cache
@@ -245,10 +242,7 @@ DMI_PACKED_STRUCT(dmi_cache_data)
     dmi_dword_t installed_size_ex;
 };
 
-#ifndef DMI_CACHE_DATA_T
-#define DMI_CACHE_DATA_T
 typedef struct dmi_cache_data dmi_cache_data_t;
-#endif // !DMI_CACHE_DATA_T
 
 /**
  * @brief Decoded cache information.

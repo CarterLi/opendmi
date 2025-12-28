@@ -11,35 +11,12 @@
 
 #include <opendmi/entity/memory-module.h>
 
-#ifndef DMI_MEMORY_CONTROLLER_T
-#define DMI_MEMORY_CONTROLLER_T
-typedef struct dmi_memory_controller dmi_memory_controller_t;
-#endif // !DMI_MEMORY_CONTROLLER_T
-
-#ifndef DMI_MEMORY_CONTROLLER_DATA_T
-#define DMI_MEMORY_CONTROLLER_DATA_T
-typedef struct dmi_memory_controller_data dmi_memory_controller_data_t;
-#endif // !DMI_MEMORY_CONTROLLER_DATA_T
-
-#ifndef DMI_MEMORY_CONTROLLER_EXTRA_T
-#define DMI_MEMORY_CONTROLLER_EXTRA_T
+typedef struct dmi_memory_controller       dmi_memory_controller_t;
+typedef struct dmi_memory_controller_data  dmi_memory_controller_data_t;
 typedef struct dmi_memory_controller_extra dmi_memory_controller_extra_t;
-#endif // !DMI_MEMORY_CONTROLLER_EXTRA_T
-
-#ifndef DMI_MEMORY_MODULE_SPEED_T
-#define DMI_MEMORY_MODULE_SPEED_T
-typedef union dmi_memory_module_speed dmi_memory_module_speed_t;
-#endif // !DMI_MEMORY_MODULE_SPEED_T
-
-#ifndef DMI_MEMORY_MODULE_VOLTAGE_T
-#define DMI_MEMORY_MODULE_VOLTAGE_T
-typedef union dmi_memory_module_voltage dmi_memory_module_voltage_t;
-#endif // !DMI_MEMORY_MODULE_VOLTAGE_T
-
-#ifndef DMI_ERROR_CORRECT_CAPS_T
-#define DMI_ERROR_CORRECT_CAPS_T
-typedef union dmi_error_correct_caps dmi_error_correct_caps_t;
-#endif // !DMI_ERROR_CORRECT_CAPS_T
+typedef union  dmi_memory_module_speed     dmi_memory_module_speed_t;
+typedef union  dmi_memory_module_voltage   dmi_memory_module_voltage_t;
+typedef union  dmi_error_correct_caps      dmi_error_correct_caps_t;
 
 typedef enum dmi_error_detect_method
 {

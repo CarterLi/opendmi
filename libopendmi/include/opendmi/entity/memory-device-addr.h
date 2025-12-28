@@ -43,7 +43,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_addr_data)
      * When the field value is `0xFFFFFFFF` the actual address is stored in the
      * extended ending address field. When this field contains a valid address,
      * starting address must also contain a valid address.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_dword_t end_addr;
@@ -135,10 +135,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_addr_data)
     dmi_qword_t end_addr_ex;
 };
 
-#ifndef DMI_MEMORY_DEVICE_ADDR_DATA_T
-#define DMI_MEMORY_DEVICE_ADDR_DATA_T
 typedef struct dmi_memory_device_addr_data dmi_memory_device_addr_data_t;
-#endif // !DMI_MEMORY_DEVICE_ADDR_DATA_T
 
 struct dmi_memory_device_addr
 {
@@ -217,10 +214,7 @@ struct dmi_memory_device_addr
     unsigned short interleave_depth;
 };
 
-#ifndef DMI_MEMORY_DEVICE_ADDR_T
-#define DMI_MEMORY_DEVICE_ADDR_T
 typedef struct dmi_memory_device_addr dmi_memory_device_addr_t;
-#endif // !DMI_MEMORY_DEVICE_ADDR_T
 
 /**
  * @brief Memory device mapped address entity specification.

@@ -26,25 +26,10 @@
  */
 #define DMI_ANCHOR_V30 "_SM3_"
 
-#ifndef DMI_ENTRY_SPEC_T
-#define DMI_ENTRY_SPEC_T
-typedef struct dmi_entry_spec dmi_entry_spec_t;
-#endif // !DMI_ENTRY_SPEC_T
-
-#ifndef DMI_ENTRY_LEGACY_T
-#define DMI_ENTRY_LEGACY_T
+typedef struct dmi_entry_spec   dmi_entry_spec_t;
 typedef struct dmi_entry_legacy dmi_entry_legacy_t;
-#endif // !DMI_ENTRY_LEGACY_T
-
-#ifndef DMI_ENTRY_V21_T
-#define DMI_ENTRY_V21_T
-typedef struct dmi_entry_v21 dmi_entry_v21_t;
-#endif // !DMI_ENTRY_V21_T
-
-#ifndef DMI_ENTRY_V30_T
-#define DMI_ENTRY_V30_T
-typedef struct dmi_entry_v30 dmi_entry_v30_t;
-#endif // !DMI_ENTRY_V30_T
+typedef struct dmi_entry_v21    dmi_entry_v21_t;
+typedef struct dmi_entry_v30    dmi_entry_v30_t;
 
 /**
  * @brief Maximum size of SMBIOS entry point structure.
@@ -353,11 +338,11 @@ __BEGIN_DECLS
 /**
  * @internal
  * @brief Decode DMI entry point and initialize related context properties.
- * 
+ *
  * @param[in] context Context handle to initialize.
  * @param[in] data Pointer to entry point data.
  * @param[in] length Entry point data length.
- * 
+ *
  * @return The function returns `true` on success and `false` otherwise.
  */
 bool dmi_entry_decode(dmi_context_t *context, const void *data, size_t length);

@@ -10,15 +10,8 @@
 #include <opendmi/entity.h>
 #include <opendmi/entity/common.h>
 
-#ifndef DMI_SLOT_T
-#define DMI_SLOT_T
-typedef struct dmi_slot dmi_slot_t;
-#endif // !DMI_SLOT_T
-
-#ifndef DMI_SLOT_DATA_T
-#define DMI_SLOT_DATA_T
+typedef struct dmi_slot      dmi_slot_t;
 typedef struct dmi_slot_data dmi_slot_data_t;
-#endif // !DMI_SLOT_DATA_T
 
 /**
  * @brief Slot type identifiers.
@@ -164,7 +157,7 @@ typedef enum dmi_slot_length
 
 /**
  * @brief System slots structure (type 9).
- * 
+ *
  * The information in this structure defines the attributes of a system slot.
  * One structure is provided for each slot in the system.
  */
@@ -226,7 +219,7 @@ DMI_PACKED_STRUCT(dmi_slot_data)
      * @since SMBIOS 2.6
      */
     dmi_pci_addr_t address;
-    
+
     dmi_byte_t data_bus_width;
 
     dmi_byte_t peer_group_count;

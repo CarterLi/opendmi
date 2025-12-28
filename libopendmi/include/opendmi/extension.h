@@ -11,10 +11,7 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_EXTENSION_T
-#define DMI_EXTENSION_T
 typedef struct dmi_extension dmi_extension_t;
-#endif // !DMI_EXTENSION_SPEC_T
 
 /**
  * @brief DMI extension.

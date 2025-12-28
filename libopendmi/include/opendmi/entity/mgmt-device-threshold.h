@@ -11,10 +11,7 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_MGMT_DEVICE_THRESHOLD_DATA_T
-#define DMI_MGMT_DEVICE_THRESHOLD_DATA_T
 typedef struct dmi_mgmt_device_threshold_data dmi_mgmt_device_threshold_data_t;
-#endif // !DMI_MGMT_DEVICE_THRESHOLD_DATA_T
 
 /**
  * @brief Management device threshold data structure (type 36).
@@ -67,10 +64,7 @@ DMI_PACKED_STRUCT(dmi_mgmt_device_threshold_data)
     dmi_word_t upper_non_recoverable;
 };
 
-#ifndef DMI_MGMT_DEVICE_THRESHOLD_T
-#define DMI_MGMT_DEVICE_THRESHOLD_T
 typedef struct dmi_mgmt_device_threshold dmi_mgmt_device_threshold_t;
-#endif // !DMI_MGMT_DEVICE_THRESHOLD_T
 
 struct dmi_mgmt_device_threshold
 {

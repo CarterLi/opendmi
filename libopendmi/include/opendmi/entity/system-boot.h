@@ -11,15 +11,8 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_SYSTEM_BOOT_T
-#define DMI_SYSTEM_BOOT_T
-typedef struct dmi_system_boot dmi_system_boot_t;
-#endif // !DMI_SYSTEM_BOOT_T
-
-#ifndef DMI_SYSTEM_BOOT_DATA_T
-#define DMI_SYSTEM_BOOT_DATA_T
+typedef struct dmi_system_boot      dmi_system_boot_t;
 typedef struct dmi_system_boot_data dmi_system_boot_data_t;
-#endif // !DMI_SYSTEM_BOOT_DATA_T
 
 /**
  * @brief System boot status values.

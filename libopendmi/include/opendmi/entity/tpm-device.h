@@ -11,21 +11,9 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_TPM_DEVICE_T
-#define DMI_TPM_DEVICE_T
-typedef struct dmi_tpm_device dmi_tpm_device_t;
-#endif // !DMI_TPM_DEVICE_T
-
-
-#ifndef DMI_TPM_DEVICE_FEATURES_T
-#define DMI_TPM_DEVICE_FEATURES_T
-typedef union dmi_tpm_device_features dmi_tpm_device_features_t;
-#endif // !DMI_TPM_DEVICE_FEATURES_T
-
-#ifndef DMI_TPM_DEVICE_DATA_T
-#define DMI_TPM_DEVICE_DATA_T
-typedef struct dmi_tpm_device_data dmi_tpm_device_data_t;
-#endif // !DMI_TPM_DEVICE_DATA_T
+typedef struct dmi_tpm_device          dmi_tpm_device_t;
+typedef union  dmi_tpm_device_features dmi_tpm_device_features_t;
+typedef struct dmi_tpm_device_data     dmi_tpm_device_data_t;
 
 /**
  * @brief TPM device structure (type 43).

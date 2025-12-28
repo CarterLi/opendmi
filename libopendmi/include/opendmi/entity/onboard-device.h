@@ -11,30 +11,11 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_ONBOARD_DEVICE_T
-#define DMI_ONBOARD_DEVICE_T
-typedef struct dmi_onboard_device dmi_onboard_device_t;
-#endif // !DMI_ONBOARD_DEVICE_T
-
-#ifndef DMI_ONBOARD_DEVICE_DATA_T
-#define DMI_ONBOARD_DEVICE_DATA_T
-typedef struct dmi_onboard_device_data dmi_onboard_device_data_t;
-#endif // !DMI_ONBOARD_DEVICE_DATA_T
-
-#ifndef DMI_ONBOARD_DEVICE_INSTANCE_T
-#define DMI_ONBOARD_DEVICE_INSTANCE_T
-typedef struct dmi_onboard_device_instance dmi_onboard_device_instance_t;
-#endif // !DMI_ONBOARD_DEVICE_INSTANCE_T
-
-#ifndef DMI_ONBOARD_DEVICE_INSTANCE_DATA_T
-#define DMI_ONBOARD_DEVICE_INSTANCE_DATA_T
-typedef struct dmi_onboard_device_instance_data dmi_onboard_device_instance_data_t;
-#endif // !DMI_ONBOARD_DEVICE_INSTANCE_DATA_T
-
-#ifndef DMI_ONBOARD_DEVICE_INSTANCE_DETAILS_T
-#define DMI_ONBOARD_DEVICE_INSTANCE_DETAILS_T
-typedef union dmi_onboard_device_instance_details dmi_onboard_device_instance_details_t;
-#endif // !DMI_ONBOARD_DEVICE_INSTANCE_DETAILS_T
+typedef struct dmi_onboard_device                  dmi_onboard_device_t;
+typedef struct dmi_onboard_device_data             dmi_onboard_device_data_t;
+typedef struct dmi_onboard_device_instance         dmi_onboard_device_instance_t;
+typedef struct dmi_onboard_device_instance_data    dmi_onboard_device_instance_data_t;
+typedef union  dmi_onboard_device_instance_details dmi_onboard_device_instance_details_t;
 
 /**
  * @brief Onboard device types.

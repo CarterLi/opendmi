@@ -53,10 +53,7 @@ DMI_PACKED_UNION(dmi_firmware_features)
     };
 };
 
-#ifndef DMI_FIRMWARE_FEATURES_T
-#define DMI_FIRMWARE_FEATURES_T
 typedef union dmi_firmware_features dmi_firmware_features_t;
-#endif // !DMI_FIRMWARE_FEATURES_T
 
 /**
  * @brief Platform firmware extended features.
@@ -89,10 +86,7 @@ DMI_PACKED_UNION(dmi_firmware_features_ex)
     };
 };
 
-#ifndef DMI_FIRMWARE_FEATURES_EX_T
-#define DMI_FIRMWARE_FEATURES_EX_T
 typedef union dmi_firmware_features_ex dmi_firmware_features_ex_t;
-#endif // !DMI_FIRMWARE_FEATURES_EX_T
 
 /**
  * @brief Platform firmware information structure (type 0).
@@ -156,19 +150,19 @@ DMI_PACKED_STRUCT(dmi_firmware_data)
     /**
      * @brief Defines which functions the firmware supports: PCI, PCMCIA,
      * flash, and so on.
-     * 
+     *
      * @since SMBIOS 2.0
      */
     dmi_qword_t features;
 
     /**
      * @brief Optional space reserved for future supported functions.
-     * 
+     *
      * The number of extension bytes that is present is indicated by the length
      * in offset 1 minus 0x12.  For version 2.4 and later implementations, two
      * firmware characteristics extension Bytes are defined (0x12-0x13) and
      * bytes 0x14-0x17 are also defined.
-     * 
+     *
      * @since SMBIOS 2.4
      */
     dmi_byte_t features_ex[2];
@@ -181,10 +175,10 @@ DMI_PACKED_STRUCT(dmi_firmware_data)
      * This field or the platform firmware minor release field or both are
      * updated each time a platform firmware update for a given system is
      * released.
-     * 
+     *
      * If the system does not support the use of this field, the value is 0x0FF
      * for both this field and the platform firmware minor release field.
-     * 
+     *
      * @since SMBIOS 2.4
      */
     dmi_byte_t platform_release_major;
@@ -192,7 +186,7 @@ DMI_PACKED_STRUCT(dmi_firmware_data)
     /**
      * @brief Identifies the minor release of the platform firmware. For
      * example, the value is 0x16 for revision 10.22 and 0x01 for revision 2.1.
-     * 
+     *
      * @since SMBIOS 2.4
      */
     dmi_byte_t platform_release_minor;
@@ -217,7 +211,7 @@ DMI_PACKED_STRUCT(dmi_firmware_data)
      * @brief Identifies the minor release of the embedded controller firmware.
      * For example, the value is 0x16 for revision 10.22 and 0x01 for revision
      * 2.1.
-     * 
+     *
      * If the system does not have field upgradeable embedded controller
      * firmware, the value is 0xFF.
      *
@@ -228,16 +222,13 @@ DMI_PACKED_STRUCT(dmi_firmware_data)
     /**
      * @brief Extended size of the physical device(s) containing the firmware,
      * rounded up if needed.
-     * 
+     *
      * @since SMBIOS 3.1
      */
     dmi_word_t rom_size_ex;
 };
 
-#ifndef DMI_FIRMWARE_DATA_T
-#define DMI_FIRMWARE_DATA_T
 typedef struct dmi_firmware_data dmi_firmware_data_t;
-#endif // !DMI_FIRMWARE_DATA_T
 
 struct dmi_firmware
 {
@@ -294,10 +285,7 @@ struct dmi_firmware
     dmi_version_t controller_version;
 };
 
-#ifndef DMI_FIRMWARE_T
-#define DMI_FIRMWARE_T
 typedef struct dmi_firmware dmi_firmware_t;
-#endif // !DMI_FIRMWARE_T
 
 /**
  * @brief Platform firmware information entity specification.

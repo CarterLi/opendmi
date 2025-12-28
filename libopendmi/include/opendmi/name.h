@@ -11,15 +11,8 @@
 
 #include <opendmi/types.h>
 
-#ifndef DMI_NAME_T
-#define DMI_NAME_T
-typedef struct dmi_name dmi_name_t;
-#endif // !DMI_NAME_T
-
-#ifndef DMI_NAME_SET_T
-#define DMI_NAME_SET_T
+typedef struct dmi_name     dmi_name_t;
 typedef struct dmi_name_set dmi_name_set_t;
-#endif // !DMI_NAME_SET_T
 
 struct dmi_name
 {

@@ -11,15 +11,8 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_PROCESSOR_DATA_T
-#define DMI_PROCESSOR_DATA_T
 typedef struct dmi_processor_data dmi_processor_data_t;
-#endif // !DMI_PROCESSOR_DATA_T
-
-#ifndef DMI_PROCESSOR_T
-#define DMI_PROCESSOR_T
-typedef struct dmi_processor dmi_processor_t;
-#endif // !DMI_PROCESSOR_T
+typedef struct dmi_processor      dmi_processor_t;
 
 typedef enum dmi_processor_type
 {

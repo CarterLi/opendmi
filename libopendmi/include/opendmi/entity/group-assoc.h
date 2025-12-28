@@ -11,15 +11,8 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_GROUP_ASSOC_T
-#define DMI_GROUP_ASSOC_T
-typedef struct dmi_group_assoc dmi_group_assoc_t;
-#endif // !DMI_GROUP_ASSOC_T
-
-#ifndef DMI_GROUP_ASSOC_DATA_T
-#define DMI_GROUP_ASSOC_DATA_T
+typedef struct dmi_group_assoc      dmi_group_assoc_t;
 typedef struct dmi_group_assoc_data dmi_group_assoc_data_t;
-#endif // !DMI_GROUP_ASSOC_DATA_T
 
 /**
  * @brief Group associations structure (type 14).

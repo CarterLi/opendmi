@@ -13,15 +13,8 @@
 
 #define DMI_ERROR_MAX_DEPTH 32
 
-#ifndef DMI_ERROR_T
-#define DMI_ERROR_T
-typedef struct dmi_error dmi_error_t;
-#endif // !DMI_ERROR_T
-
-#ifndef DMI_ERROR_STATE_T
-#define DMI_ERROR_STATE_T
+typedef struct dmi_error       dmi_error_t;
 typedef struct dmi_error_state dmi_error_state_t;
-#endif // !DMI_ERROR_STATE_T
 
 /**
  * @brief DMI error codes

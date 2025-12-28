@@ -94,7 +94,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
      * contains 0x80000000 and the extended maximum capacity field should be
      * used. Values 2 TB (0x80000000) or greater must be represented in the
      * extended maximum capacity field.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_dword_t maximum_capacity;
@@ -118,7 +118,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
      * This value represents the number of memory device structures that
      * compose this memory array. Each memory device has a reference to the
      * "owning" memory array.
-     * 
+     *
      * @since SMBIOS 2.1
      */
     dmi_word_t device_count;
@@ -135,10 +135,7 @@ DMI_PACKED_STRUCT(dmi_memory_array_data)
     dmi_qword_t maximum_capacity_ex;
 };
 
-#ifndef DMI_MEMORY_ARRAY_DATA_T
-#define DMI_MEMORY_ARRAY_DATA_T
 typedef struct dmi_memory_array_data dmi_memory_array_data_t;
-#endif // !DMI_MEMORY_ARRAY_DATA_T
 
 /**
  * @brief Physical memory array entity.
@@ -188,10 +185,7 @@ struct dmi_memory_array
     unsigned int device_count;
 };
 
-#ifndef DMI_MEMORY_ARRAY_T
-#define DMI_MEMORY_ARRAY_T
 typedef struct dmi_memory_array dmi_memory_array_t;
-#endif // !DMI_MEMORY_ARRAY_T
 
 /**
  * @brief Physical memory array entity specification.

@@ -11,20 +11,9 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_FIRMWARE_LANGUAGE_T
-#define DMI_FIRMWARE_LANGUAGE_T
-typedef struct dmi_firmware_language dmi_firmware_language_t;
-#endif // !DMI_FIRMWARE_LANGUAGE_T
-
-#ifndef DMI_FIRMWARE_LANGUAGE_DATA_T
-#define DMI_FIRMWARE_LANGUAGE_DATA_T
-typedef struct dmi_firmware_language_data dmi_firmware_language_data_t;
-#endif // !DMI_FIRMWARE_LANGUAGE_DATA_T
-
-#ifndef DMI_FIRMWARE_LANGUAGE_FLAGS_T
-#define DMI_FIRMWARE_LANGUAGE_FLAGS_T
-typedef union dmi_firmware_language_flags dmi_firmware_language_flags_t;
-#endif // !DMI_FIRMWARE_LANGUAGE_FLAGS_T
+typedef struct dmi_firmware_language       dmi_firmware_language_t;
+typedef struct dmi_firmware_language_data  dmi_firmware_language_data_t;
+typedef union  dmi_firmware_language_flags dmi_firmware_language_flags_t;
 
 /**
  * @brief Firmware language flags
@@ -65,7 +54,7 @@ DMI_PACKED_STRUCT(dmi_firmware_language_data)
      * @brief Number of languages available. Each available language has a
      * description string. This field contains the number of strings that
      * follow the formatted area of the structure.
-     * 
+     *
      * @since SMBIOS 2.0
      */
     dmi_byte_t language_count;

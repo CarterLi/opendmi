@@ -13,7 +13,7 @@
 
 /**
  * @brief System power controls structure (type 25).
- * 
+ *
  * This structure describes the attributes for controlling the main power
  * supply to the system.
  *
@@ -60,10 +60,7 @@ DMI_PACKED_STRUCT(dmi_power_controls_data)
     dmi_byte_t poweron_second;
 };
 
-#ifndef DMI_POWER_CONTROLS_DATA_T
-#define DMI_POWER_CONTROLS_DATA_T
 typedef struct dmi_power_controls_data dmi_power_controls_data_t;
-#endif // !DMI_POWER_CONTROLS_DATA_T
 
 struct dmi_power_controls
 {
@@ -98,10 +95,7 @@ struct dmi_power_controls
     unsigned short poweron_second;
 };
 
-#ifndef DMI_POWER_CONTROLS_T
-#define DMI_POWER_CONTROLS_T
 typedef struct dmi_power_controls dmi_power_controls_t;
-#endif // !DMI_POWER_CONTROLS_T
 
 /**
  * @brief System power controls entity specification.

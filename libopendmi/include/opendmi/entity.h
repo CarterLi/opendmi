@@ -13,25 +13,10 @@
 #include <opendmi/version.h>
 #include <opendmi/attribute.h>
 
-#ifndef DMI_ENTITY_T
-#define DMI_ENTITY_T
-typedef struct dmi_entity dmi_entity_t;
-#endif // !DMI_ENTITY_T
-
-#ifndef DMI_ENTITY_SPEC_T
-#define DMI_ENTITY_SPEC_T
+typedef struct dmi_entity      dmi_entity_t;
 typedef struct dmi_entity_spec dmi_entity_spec_t;
-#endif // !DMI_ENTITY_SPEC_T
-
-#ifndef DMI_ENTITY_OPS_T
-#define DMI_ENTITY_OPS_T
-typedef struct dmi_entity_ops dmi_entity_ops_t;
-#endif // !DMI_ENTITY_OPS_T
-
-#ifndef DMI_HEADER_T
-#define DMI_HEADER_T
-typedef struct dmi_header dmi_header_t;
-#endif // !DMI_HEADER_T
+typedef struct dmi_entity_ops  dmi_entity_ops_t;
+typedef struct dmi_header      dmi_header_t;
 
 typedef bool (*dmi_entity_validate_fn_t)(dmi_entity_t *entity);
 typedef void *(*dmi_entity_decode_fn_t)(dmi_entity_t *entity, dmi_version_t *plevel);

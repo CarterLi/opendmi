@@ -11,20 +11,9 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_IPMI_DEVICE_T
-#define DMI_IPMI_DEVICE_T
-typedef struct dmi_ipmi_device dmi_ipmi_device_t;
-#endif // !DMI_IPMI_DEVICE_T
-
-#ifndef DMI_IPMI_DEVICE_DATA_T
-#define DMI_IPMI_DEVICE_DATA_T
-typedef struct dmi_ipmi_device_data dmi_ipmi_device_data_t;
-#endif // !DMI_IPMI_DEVICE_DATA_T
-
-#ifndef DMI_IPMI_DEVICE_DETAILS_T
-#define DMI_IPMI_DEVICE_DETAILS_T
-typedef union dmi_ipmi_device_details dmi_ipmi_device_details_t;
-#endif // !DMI_IPMI_DEVICE_DETAILS_T
+typedef struct dmi_ipmi_device         dmi_ipmi_device_t;
+typedef struct dmi_ipmi_device_data    dmi_ipmi_device_data_t;
+typedef union  dmi_ipmi_device_details dmi_ipmi_device_details_t;
 
 typedef enum dmi_ipmi_interface
 {
@@ -84,13 +73,13 @@ DMI_PACKED_UNION(dmi_ipmi_device_details)
 
 /**
  * @brief IPMI device information structure (type 38).
- * 
+ *
  * The information in this structure defines the attributes of an Intelligent
  * Platform Management Interface (IPMI) Baseboard Management Controller (BMC).
  * See the Intelligent Platform Management Interface (IPMI) Interface
  * Specification for full documentation of IPMI and additional information on
  * the use of this structure.
- * 
+ *
  * The type 42 structure can also be used to describe a physical management
  * controller host interface and one or more protocols that share that
  * interface. If IPMI is not shared with other protocols, either the type 38

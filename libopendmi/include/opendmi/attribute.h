@@ -12,20 +12,9 @@
 #include <opendmi/name.h>
 #include <opendmi/version.h>
 
-#ifndef DMI_ATTRIBUTE_T
-#define DMI_ATTRIBUTE_T
-typedef struct dmi_attribute dmi_attribute_t;
-#endif // !DMI_ATTRIBUTE_T
-
-#ifndef DMI_ATTRIBUTE_PARAMS_T
-#define DMI_ATTRIBUTE_PARAMS_T
+typedef struct dmi_attribute        dmi_attribute_t;
 typedef struct dmi_attribute_params dmi_attribute_params_t;
-#endif // !DMI_ATTRIBUTE_PARAMS_T
-
-#ifndef DMI_ATTRIBUTE_OPS_T
-#define DMI_ATTRIBUTE_OPS_T
-typedef struct dmi_attribute_ops dmi_attribute_ops_t;
-#endif // !DMI_ATTRIBUTE_OPS_T
+typedef struct dmi_attribute_ops    dmi_attribute_ops_t;
 
 typedef char *(*dmi_attribute_format_fn_t)(
         const dmi_attribute_t *attr,

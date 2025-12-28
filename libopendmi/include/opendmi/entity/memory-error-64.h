@@ -67,10 +67,7 @@ DMI_PACKED_STRUCT(dmi_memory_error_64_data)
     dmi_dword_t resolution;
 };
 
-#ifndef DMI_MEMORY_ERROR_64_DATA_T
-#define DMI_MEMORY_ERROR_64_DATA_T
 typedef struct dmi_memory_error_64_data dmi_memory_error_64_data_t;
-#endif // !DMI_MEMORY_ERROR_64_DATA_T
 
 /**
  * @brief 64-bit memory error information entity specification.

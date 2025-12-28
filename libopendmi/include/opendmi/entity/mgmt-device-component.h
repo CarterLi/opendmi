@@ -11,10 +11,7 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_MGMT_DEVICE_COMPONENT_DATA_T
-#define DMI_MGMT_DEVICE_COMPONENT_DATA_T
 typedef struct dmi_mgmt_device_component_data dmi_mgmt_device_component_data_t;
-#endif // !DMI_MGMT_DEVICE_COMPONENT_DATA_T
 
 /**
  * @brief Management device component structure (type 35).
@@ -51,10 +48,7 @@ DMI_PACKED_STRUCT(dmi_mgmt_device_component_data)
     dmi_handle_t threshold_handle;
 };
 
-#ifndef DMI_MGMT_DEVICE_COMPONENT_T
-#define DMI_MGMT_DEVICE_COMPONENT_T
 typedef struct dmi_mgmt_device_component dmi_mgmt_device_component_t;
-#endif // !DMI_MGMT_DEVICE_COMPONENT_T
 
 struct dmi_mgmt_device_component
 {

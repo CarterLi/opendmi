@@ -16,15 +16,8 @@
  */
 #define DMI_REGISTRY_CAPACITY 64
 
-#ifndef DMI_REGISTRY_T
-#define DMI_REGISTRY_T
-typedef struct dmi_registry dmi_registry_t;
-#endif // !DMI_REGISTRY_T
-
-#ifndef DMI_REGISTRY_ENTRY_T
-#define DMI_REGISTRY_ENTRY_T
+typedef struct dmi_registry       dmi_registry_t;
 typedef struct dmi_registry_entry dmi_registry_entry_t;
-#endif // !DMI_REGISTRY_ENTRY_T
 
 /**
  * @brief DMI registry descriptor.

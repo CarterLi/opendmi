@@ -11,15 +11,8 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_ADDITIONAL_INFO_DATA_T
-#define DMI_ADDITIONAL_INFO_DATA_T
 typedef struct dmi_additional_info_data dmi_additional_info_data_t;
-#endif // !DMI_ADDITIONAL_INFO_DATA_T
-
-#ifndef DMI_ADDITIONAL_INFO_T
-#define DMI_ADDITIONAL_INFO_T
-typedef struct dmi_additional_info dmi_additional_info_t;
-#endif // !DMI_ADDITIONAL_INFO_T
+typedef struct dmi_additional_info      dmi_additional_info_t;
 
 /**
  * @brief Additional information entry.
@@ -54,7 +47,7 @@ DMI_PACKED_STRUCT(dmi_additional_info_entry_data)
      * @brief Enumerated value or updated field content that has not yet been
      * approved for publication in this specification and therefore could not
      * be used in the field referenced by referenced offset.
-     * 
+     *
      * @note
      * This field is the same type and size as the field being referenced by
      * this additional information entry.

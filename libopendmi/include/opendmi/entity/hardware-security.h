@@ -11,15 +11,8 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_HARDWARE_SECURITY_DATA_T
-#define DMI_HARDWARE_SECURITY_DATA_T
 typedef struct dmi_hardware_security_data dmi_hardware_security_data_t;
-#endif // !DMI_HARDWARE_SECURITY_DATA_T 
-
-#ifndef DMI_HARDWARE_SECURITY_T
-#define DMI_HARDWARE_SECURITY_T
-typedef struct dmi_hardware_security dmi_hardware_security_t;
-#endif // !DMI_HARDWARE_SECURITY_T 
+typedef struct dmi_hardware_security      dmi_hardware_security_t;
 
 /**
  * @brief Hardware security status values.

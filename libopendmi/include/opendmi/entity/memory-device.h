@@ -11,20 +11,9 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_MEMORY_DEVICE_T
-#define DMI_MEMORY_DEVICE_T
-typedef struct dmi_memory_device dmi_memory_device_t;
-#endif // !DMI_MEMORY_DEVICE_T
-
-#ifndef DMI_MEMORY_DEVICE_DATA_T
-#define DMI_MEMORY_DEVICE_DATA_T
-typedef struct dmi_memory_device_data dmi_memory_device_data_t;
-#endif // !DMI_MEMORY_DEVICE_DATA_T
-
-#ifndef DMI_MEMORY_DEVICE_TYPE_DETAIL_T
-#define DMI_MEMORY_DEVICE_TYPE_DETAIL_T
-typedef union dmi_memory_device_type_detail dmi_memory_device_type_detail_t;
-#endif // !DMI_MEMORY_DEVICE_TYPE_DETAIL_T
+typedef struct dmi_memory_device             dmi_memory_device_t;
+typedef struct dmi_memory_device_data        dmi_memory_device_data_t;
+typedef union  dmi_memory_device_type_detail dmi_memory_device_type_detail_t;
 
 /**
  * @brief Memory device types.
@@ -301,7 +290,7 @@ DMI_PACKED_STRUCT(dmi_memory_device_data)
     /**
      * @brief String number for the part number of this memory device. This
      * value is set by the manufacturer and normally is not changeable.
-     * 
+     *
      * @since SMBIOS 2.3
      */
     dmi_string_t part_number;

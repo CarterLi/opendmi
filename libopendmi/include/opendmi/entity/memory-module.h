@@ -12,25 +12,10 @@
 #include <opendmi/name.h>
 #include <opendmi/entity.h>
 
-#ifndef DMI_MEMORY_MODULE_T
-#define DMI_MEMORY_MODULE_T
-typedef struct dmi_memory_module dmi_memory_module_t;
-#endif // !DMI_MEMORY_MODULE_T
-
-#ifndef DMI_MEMORY_MODULE_DATA_T
-#define DMI_MEMORY_MODULE_DATA_T
-typedef struct dmi_memory_module_data dmi_memory_module_data_t;
-#endif // !DMI_MEMORY_MODULE_DATA_T
-
-#ifndef DMI_MEMORY_MODULE_TYPE_T
-#define DMI_MEMORY_MODULE_TYPE_T
-typedef union dmi_memory_module_type dmi_memory_module_type_t;
-#endif // !DMI_MEMORY_MODULE_TYPE_T
-
-#ifndef DMI_MEMORY_MODULE_ERROR_T
-#define DMI_MEMORY_MODULE_ERROR_T
-typedef union dmi_memory_module_error dmi_memory_module_error_t;
-#endif // !DMI_MEMORY_MODULE_ERROR_T
+typedef struct dmi_memory_module       dmi_memory_module_t;
+typedef struct dmi_memory_module_data  dmi_memory_module_data_t;
+typedef union  dmi_memory_module_type  dmi_memory_module_type_t;
+typedef union  dmi_memory_module_error dmi_memory_module_error_t;
 
 /**
  * @brief Memory module type details.
@@ -113,7 +98,7 @@ struct dmi_memory_module_data
     /**
      * @brief Each nibble indicates a bank (RAS#) connection. 0x0F means no
      * connection.
-     * 
+     *
      * Example: If banks 1 & 3 (RAS# 1 & 3) were connected to a SIMM socket
      * the byte for that socket would be 13h. If only bank 2 (RAS 2) were
      * connected, the byte for that socket would be 0x2F.
@@ -159,7 +144,7 @@ struct dmi_memory_module
     /**
      * @brief Each nibble indicates a bank (RAS#) connection. 0x0F means no
      * connection.
-     * 
+     *
      * Example: If banks 1 & 3 (RAS# 1 & 3) were connected to a SIMM socket
      * the values for that socket would be { 1, 3 }. If only bank 2 (RAS# 2)
      * were connected, the values for that socket would be { USHRT_MAX, 2 }.

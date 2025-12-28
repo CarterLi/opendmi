@@ -12,15 +12,8 @@
 #include <opendmi/entity.h>
 #include <opendmi/entity/common.h>
 
-#ifndef DMI_PROBE_T
-#define DMI_PROBE_T
-typedef struct dmi_probe dmi_probe_t;
-#endif // !DMI_PROBE_T
-
-#ifndef DMI_PROBE_DATA_T
-#define DMI_PROBE_DATA_T
+typedef struct dmi_probe      dmi_probe_t;
 typedef struct dmi_probe_data dmi_probe_data_t;
-#endif // !DMI_PROBE_DATA_T
 
 #define DMI_PROBE_VALUE_UNKNOWN ((dmi_word_t)0x8000U)
 
@@ -71,10 +64,7 @@ DMI_PACKED_UNION(dmi_probe_details)
     };
 };
 
-#ifndef DMI_PROBE_DETAILS_T
-#define DMI_PROBE_DETAILS_T
 typedef union dmi_probe_details dmi_probe_details_t;
-#endif // !DMI_PROBE_DETAILS_T
 
 /**
  * @brief Probe structure.

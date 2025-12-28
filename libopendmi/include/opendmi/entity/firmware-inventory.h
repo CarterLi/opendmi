@@ -11,20 +11,9 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_FIRMWARE_INVENTORY_T
-#define DMI_FIRMWARE_INVENTORY_T
-typedef struct dmi_firmware_inventory dmi_firmware_inventory_t;
-#endif // !DMI_FIRMWARE_INVENTORY_T
-
-#ifndef DMI_FIRMWARE_INVENTORY_DATA_T
-#define DMI_FIRMWARE_INVENTORY_DATA_T
-typedef struct dmi_firmware_inventory_data dmi_firmware_inventory_data_t;
-#endif // !DMI_FIRMWARE_INVENTORY_DATA_T
-
-#ifndef DMI_FIRMWARE_INVENTORY_FEATURES_T
-#define DMI_FIRMWARE_INVENTORY_FEATURES_T
-typedef union dmi_firmware_inventory_features dmi_firmware_inventory_features_t;
-#endif // !DMI_FIRMWARE_INVENTORY_FEATURES_T
+typedef struct dmi_firmware_inventory          dmi_firmware_inventory_t;
+typedef struct dmi_firmware_inventory_data     dmi_firmware_inventory_data_t;
+typedef union  dmi_firmware_inventory_features dmi_firmware_inventory_features_t;
 
 /**
  * @brief Version number formats.
@@ -252,12 +241,12 @@ DMI_PACKED_STRUCT(dmi_firmware_inventory_data)
      * @brief Lists the SMBIOS structure handles that are associated with this
      * firmware, if any. Value of number of associated components field (n)
      * defines the count.
-     * 
+     *
      * @note
      * This list may contain zero or more handles to any SMBIOS structure that
      * represents a device with a firmware component. For example, this may
      * include:
-     * 
+     *
      * * Type 9 handle (for describing the firmware of a device in a slot).
      * * Type 17 handle (for describing the firmware of a memory device).
      * * Type 41 handle (for describing the firmware of an onboard device).
@@ -345,12 +334,12 @@ struct dmi_firmware_inventory
      * @brief Lists the SMBIOS structure handles that are associated with this
      * firmware, if any. Value of number of associated components field (n)
      * defines the count.
-     * 
+     *
      * @note
      * This list may contain zero or more handles to any SMBIOS structure that
      * represents a device with a firmware component. For example, this may
      * include:
-     * 
+     *
      * * Type 9 handle (for describing the firmware of a device in a slot).
      * * Type 17 handle (for describing the firmware of a memory device).
      * * Type 41 handle (for describing the firmware of an onboard device).

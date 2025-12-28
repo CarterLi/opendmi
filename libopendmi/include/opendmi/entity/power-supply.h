@@ -93,10 +93,7 @@ DMI_PACKED_UNION(dmi_power_supply_details)
     };
 };
 
-#ifndef DMI_POWER_SUPPLY_DETAILS_T
-#define DMI_POWER_SUPPLY_DETAILS_T
 typedef union dmi_power_supply_details dmi_power_supply_details_t;
-#endif // !DMI_POWER_SUPPLY_DETAILS_T
 
 /**
  * @brief System power supply structure (type 39).
@@ -190,10 +187,7 @@ DMI_PACKED_STRUCT(dmi_power_supply_data)
     dmi_handle_t current_probe_handle;
 };
 
-#ifndef DMI_POWER_SUPPLY_DATA_T
-#define DMI_POWER_SUPPLY_DATA_T
 typedef struct dmi_power_supply_data dmi_power_supply_data_t;
-#endif // !DMI_POWER_SUPPLY_DATA_T
 
 struct dmi_power_supply
 {
@@ -300,10 +294,7 @@ struct dmi_power_supply
     dmi_handle_t current_probe_handle;
 };
 
-#ifndef DMI_POWER_SUPPLY_T
-#define DMI_POWER_SUPPLY_T
 typedef struct dmi_power_supply dmi_power_supply_t;
-#endif // !DMI_POWER_SUPPLY_T
 
 /**
  * @brief System power supply entity specification.

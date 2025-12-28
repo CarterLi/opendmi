@@ -11,20 +11,9 @@
 
 #include <opendmi/entity.h>
 
-#ifndef DMI_BASEBOARD_T
-#define DMI_BASEBOARD_T
-typedef struct dmi_baseboard dmi_baseboard_t;
-#endif // !DMI_BASEBOARD_T
-
-#ifndef DMI_BASEBOARD_DATA_T
-#define DMI_BASEBOARD_DATA_T
-typedef struct dmi_baseboard_data dmi_baseboard_data_t;
-#endif // !DMI_BASEBOARD_DATA_T
-
-#ifndef DMI_BASEBOARD_FEATURES_T
-#define DMI_BASEBOARD_FEATURES_T
-typedef union dmi_baseboard_features dmi_baseboard_features_t;
-#endif // !DMI_BASEBOARD_FEATURES_T
+typedef struct dmi_baseboard          dmi_baseboard_t;
+typedef struct dmi_baseboard_data     dmi_baseboard_data_t;
+typedef union  dmi_baseboard_features dmi_baseboard_features_t;
 
 /**
  * @brief Baseboard type identifiers.
@@ -103,11 +92,11 @@ DMI_PACKED_UNION(dmi_baseboard_features)
 
 /**
  * @brief Baseboard or module information structure (type 2).
- * 
+ *
  * The information in this structure defines attributes of a system baseboard
  * (for example, a motherboard, planar, server blade, or other standard system
  * module).
- * 
+ *
  * @note
  * If more than one type 2 structure is provided by an SMBIOS implementation,
  * each structure shall include the Number of Contained Object Handles and
