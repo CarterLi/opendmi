@@ -57,6 +57,7 @@
 #include <opendmi/entity/power-supply.h>
 #include <opendmi/entity/probe.h>
 #include <opendmi/entity/processor.h>
+#include <opendmi/entity/processor-ex.h>
 #include <opendmi/entity/slot.h>
 #include <opendmi/entity/string-property.h>
 #include <opendmi/entity/system.h>

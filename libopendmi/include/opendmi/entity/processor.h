@@ -399,9 +399,16 @@ typedef enum dmi_processor_upgrade
 
 DMI_PACKED_STRUCT(dmi_processor_data)
 {
-    enum dmi_processor_type type;
+    /**
+     * @brief SMBIOS structure header.
+     */
+    dmi_header_t header;
 
-    enum dmi_processor_family family;
+    dmi_string_t socket_designation;
+
+    dmi_byte_t type;
+
+    dmi_byte_t family;
 
     dmi_string_t vendor;
 
@@ -419,7 +426,7 @@ DMI_PACKED_STRUCT(dmi_processor_data)
 
     dmi_byte_t status;
 
-    enum dmi_processor_upgrade upgrade;
+    dmi_byte_t upgrade;
 
     /**
      * @brief L1 cache handle.
@@ -453,7 +460,7 @@ DMI_PACKED_STRUCT(dmi_processor_data)
 
     /**
      * @brief L3 cache handle.
-     * 
+     *
      * Handle of a cache information structure that defines the attributes of
      * the tertiary (Level 3) cache for this processor.
      *
@@ -469,7 +476,7 @@ DMI_PACKED_STRUCT(dmi_processor_data)
     /**
      * @brief Serial number.
      *
-     * String number for the serial number of this processorю This value is set
+     * String number for the serial number of this processor. This value is set
      * by the manufacturer and normally not changeable.
      *
      * @since SMBIOS 2.3
@@ -519,21 +526,34 @@ DMI_PACKED_STRUCT(dmi_processor_data)
     dmi_byte_t socket_type;
 };
 
+struct dmi_processor
+{
+    dmi_processor_type_t type;
+
+    dmi_processor_family_t family;
+};
+
 /**
  * @brief Processor information entity specification.
  */
 extern const dmi_entity_spec_t dmi_processor_spec;
-
-/**
- * @brief Processor additional information entity specification.
- */
-extern const dmi_entity_spec_t dmi_processor_ex_spec;
 
 __BEGIN_DECLS
 
 const char *dmi_processor_type_name(enum dmi_processor_type value);
 const char *dmi_processor_family_name(enum dmi_processor_family value);
 const char *dmi_processor_upgrade_name(enum dmi_processor_upgrade value);
+
+/**
+ * @internal
+ */
+dmi_processor_t *
+dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
+
+/**
+ * @internal
+ */
+void dmi_processor_free(dmi_processor_t *info);
 
 __END_DECLS
 

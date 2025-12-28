@@ -68,6 +68,7 @@ target_sources(opendmi-object
         src/entity/power-supply.c
         src/entity/probe.c
         src/entity/processor.c
+        src/entity/processor-ex.c
         src/entity/slot.c
         src/entity/string-property.c
         src/entity/system.c
@@ -143,6 +144,7 @@ target_sources(opendmi-object
                 include/opendmi/entity/power-supply.h
                 include/opendmi/entity/probe.h
                 include/opendmi/entity/processor.h
+                include/opendmi/entity/processor-ex.h
                 include/opendmi/entity/slot.h
                 include/opendmi/entity/string-property.h
                 include/opendmi/entity/system.h

@@ -6,6 +6,7 @@
 //
 #include <opendmi/entity/processor.h>
 #include <opendmi/name.h>
+#include <opendmi/utils.h>
 
 static const dmi_name_set_t dmi_processor_type_names =
 {
@@ -1743,4 +1744,27 @@ const char *dmi_processor_family_name(dmi_processor_family_t value)
 const char *dmi_processor_upgrade_name(dmi_processor_upgrade_t value)
 {
     return dmi_name_lookup(&dmi_processor_upgrade_names, value);
+}
+
+dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+{
+    dmi_processor_t *info;
+    const dmi_processor_data_t *data;
+
+    DMI_UNUSED(plevel);
+
+    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_PROCESSOR));
+    if (data == nullptr)
+        return nullptr;
+
+    info = dmi_alloc(entity->context, sizeof(*info));
+    if (info == nullptr)
+        return nullptr;
+
+    return info;
+}
+
+void dmi_processor_free(dmi_processor_t *info)
+{
+    dmi_free(info);
 }
