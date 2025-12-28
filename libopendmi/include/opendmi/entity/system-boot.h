@@ -24,7 +24,7 @@ typedef struct dmi_system_boot_data dmi_system_boot_data_t;
 /**
  * @brief System boot status values.
  */
-typedef enum dmi_system_boot_status
+typedef enum dmi_boot_status
 {
     DMI_BOOT_STATUS_NO_ERRORS_DETECTED         = 0x00,
     DMI_BOOT_STATUS_NO_BOOTABLE_MEDIA          = 0x01,
@@ -41,7 +41,7 @@ typedef enum dmi_system_boot_status
     __DMI_BOOT_STATUS_VENDOR_SPECIFIC_END      = 0xBF,
     __DMI_BOOT_STATUS_PRODUCT_SPECIFIC_START   = 0xC0,
     __DMI_BOOT_STATUS_PRODUCT_SPECIFIC_END     = 0xFF
-} dmi_system_boot_status_t;
+} dmi_boot_status_t;
 
 /**
  * @brief System boot information structure (type 32).
@@ -70,7 +70,7 @@ struct dmi_system_boot
     /**
      * @brief Boot status.
      */
-    dmi_system_boot_status_t status;
+    dmi_boot_status_t status;
 
     /**
      * @brief Raw boot status data. Might be useful for vendor/OEM-specific
