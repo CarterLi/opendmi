@@ -8,12 +8,11 @@
 
 #include <opendmi/format/text/helpers.h>
 
-void dmi_text_hex_data(void *asession, const void *data, size_t length)
+void dmi_text_hex_data(dmi_text_session_t *session, const void *data, size_t length)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(data != nullptr);
 
-    dmi_text_session_t *session = dmi_cast(session, asession);
     const unsigned char *ptr = dmi_cast(ptr, data);
 
     for (size_t i = 0; i < length; i++) {

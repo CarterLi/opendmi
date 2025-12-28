@@ -55,12 +55,11 @@ void *dmi_text_initialize(dmi_context_t *context, FILE *stream)
     return session;
 }
 
-bool dmi_text_entry(void *asession)
+bool dmi_text_entry(dmi_text_session_t *session)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
 
-    dmi_text_session_t *session = dmi_cast(session, asession);
-    dmi_context_t      *context = session->context;
+    dmi_context_t *context = session->context;
 
     char *version = dmi_version_format(context->smbios_version);
     if (version == nullptr) {
@@ -79,12 +78,10 @@ bool dmi_text_entry(void *asession)
     return true;
 }
 
-bool dmi_text_entity_start(void *asession, const dmi_entity_t *entity)
+bool dmi_text_entity_start(dmi_text_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
-
-    dmi_text_session_t *session = dmi_cast(session, asession);
 
 #ifdef ENABLE_CURSES
     if (session->is_tty)
@@ -106,17 +103,15 @@ bool dmi_text_entity_start(void *asession, const dmi_entity_t *entity)
 }
 
 bool dmi_text_entity_attr(
-        void                  *asession,
-        const dmi_entity_t     *entity,
+        dmi_text_session_t    *session,
+        const dmi_entity_t    *entity,
         const dmi_attribute_t *attr,
         const void            *value)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
     assert(attr != nullptr);
     assert(value != nullptr);
-
-    dmi_text_session_t *session = dmi_cast(session, asession);
 
     // Print attribute name
     fprintf(session->stream, "\t%s: ", attr->params.name);
@@ -135,23 +130,20 @@ bool dmi_text_entity_attr(
 }
 
 void dmi_text_entity_attr_array(
-        void                  *asession,
+        dmi_text_session_t    *session,
         const dmi_attribute_t *attr,
         const dmi_data_t      *info,
         const void            *value)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(attr != nullptr);
     assert(info != nullptr);
     assert(value != nullptr);
 
-    dmi_text_session_t *session = dmi_cast(session, asession);
-
     size_t count = *(size_t *)(info + attr->counter);
+    const dmi_data_t *ptr = *(const dmi_data_t **)value;
 
     fprintf(session->stream, "%zu items\n", count);
-
-    const dmi_data_t *ptr = *(const dmi_data_t **)value;
 
     for (size_t i = 0; i < count; i++, ptr += attr->size) {
         fprintf(session->stream, "\t\t%zu: ", i);
@@ -164,15 +156,13 @@ void dmi_text_entity_attr_array(
 }
 
 void dmi_text_entity_attr_struct(
-        void                  *asession,
+        dmi_text_session_t    *session,
         const dmi_attribute_t *attr,
         const void            *value)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(attr != nullptr);
     assert(value != nullptr);
-
-    dmi_text_session_t *session = dmi_cast(session, asession);
 
     const dmi_attribute_t *child_attr = nullptr;
 
@@ -186,16 +176,15 @@ void dmi_text_entity_attr_struct(
 }
 
 void dmi_text_entity_attr_value(
-        void                  *asession,
+        dmi_text_session_t    *session,
         const dmi_attribute_t *attr,
         const void            *value)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(attr != nullptr);
     assert(value != nullptr);
 
     char *text;
-    dmi_text_session_t *session = dmi_cast(session, asession);
 
     if (dmi_attribute_is_unspecified(attr, value)) {
         fprintf(session->stream, "<unspecified>\n");
@@ -224,16 +213,15 @@ void dmi_text_entity_attr_value(
 }
 
 void dmi_text_entity_attr_set(
-        void                  *asession,
+        dmi_text_session_t    *session,
         const dmi_attribute_t *attr,
         const void            *value)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(attr != nullptr);
     assert(value != nullptr);
 
     uint64_t mask;
-    dmi_text_session_t *session = dmi_cast(session, asession);
 
     if (attr->size == sizeof(int8_t))
         mask = *(uint8_t *)value;
@@ -256,12 +244,10 @@ void dmi_text_entity_attr_set(
     }
 }
 
-bool dmi_text_entity_data(void *asession, const dmi_entity_t *entity)
+bool dmi_text_entity_data(dmi_text_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
-
-    dmi_text_session_t *session = dmi_cast(session, asession);
 
     fprintf(session->stream, "\tHeader and data:\n");
     dmi_text_hex_data(session, entity->data, entity->body_length);
@@ -269,12 +255,10 @@ bool dmi_text_entity_data(void *asession, const dmi_entity_t *entity)
     return true;
 }
 
-bool dmi_text_entity_strings(void *asession, const dmi_entity_t *entity)
+bool dmi_text_entity_strings(dmi_text_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
-
-    dmi_text_session_t *session = dmi_cast(session, asession);
 
     if (entity->string_count == 0)
         return true;
@@ -291,25 +275,21 @@ bool dmi_text_entity_strings(void *asession, const dmi_entity_t *entity)
     return true;
 }
 
-bool dmi_text_entity_end(void *asession, const dmi_entity_t *entity)
+bool dmi_text_entity_end(dmi_text_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
 
-    DMI_UNUSED(entity);
-
-    dmi_text_session_t *session = dmi_cast(session, asession);
+    dmi_unused(entity);
 
     fprintf(session->stream, "\n");
 
     return true;
 }
 
-void dmi_text_finalize(void *asession)
+void dmi_text_finalize(dmi_text_session_t *session)
 {
-    assert(asession != nullptr);
-
-    dmi_text_session_t *session = dmi_cast(session, asession);
+    assert(session != nullptr);
 
     dmi_free(session);
 }

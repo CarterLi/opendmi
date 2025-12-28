@@ -13,7 +13,7 @@
 
 __BEGIN_DECLS
 
-void dmi_text_hex_data(void *asession, const void *data, size_t length);
+void dmi_text_hex_data(dmi_text_session_t *session, const void *data, size_t length);
 
 __END_DECLS
 

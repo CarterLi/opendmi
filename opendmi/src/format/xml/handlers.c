@@ -69,12 +69,11 @@ void *dmi_xml_initialize(dmi_context_t *context, FILE *stream)
     return session;
 }
 
-bool dmi_xml_dump_start(void *asession)
+bool dmi_xml_dump_start(dmi_xml_session_t *session)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
 
     bool success = false;
-    dmi_xml_session_t *session = dmi_cast(session, asession);
 
     do {
         time_t t;
@@ -113,12 +112,11 @@ bool dmi_xml_dump_start(void *asession)
     return success;
 }
 
-bool dmi_xml_entry(void *asession)
+bool dmi_xml_entry(dmi_xml_session_t *session)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
 
     bool success = false;
-    dmi_xml_session_t *session = dmi_cast(session, asession);
     dmi_context_t *context = session->context;
     char *smbios_version = nullptr;
 
@@ -163,13 +161,12 @@ bool dmi_xml_entry(void *asession)
     return success;
 }
 
-bool dmi_xml_entity_start(void *asession, const dmi_entity_t *entity)
+bool dmi_xml_entity_start(dmi_xml_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
 
     bool success = false;
-    dmi_xml_session_t *session = dmi_cast(session, asession);
 
     do {
         if (xmlTextWriterStartElementNS(
@@ -201,12 +198,10 @@ bool dmi_xml_entity_start(void *asession, const dmi_entity_t *entity)
     return success;
 }
 
-bool dmi_xml_entity_attrs_start(void *asession, const dmi_entity_t *entity)
+bool dmi_xml_entity_attrs_start(dmi_xml_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
-
-    dmi_xml_session_t *session = dmi_cast(session, asession);
 
     if (xmlTextWriterStartElementNS(
                 session->writer,
@@ -219,18 +214,17 @@ bool dmi_xml_entity_attrs_start(void *asession, const dmi_entity_t *entity)
 }
 
 bool dmi_xml_entity_attr(
-        void                  *asession,
-        const dmi_entity_t     *entity,
+        dmi_xml_session_t     *session,
+        const dmi_entity_t    *entity,
         const dmi_attribute_t *attr,
         const void            *value)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
     assert(attr != nullptr);
     assert(value != nullptr);
 
     bool success = false;
-    dmi_xml_session_t *session = dmi_cast(session, asession);
 
     do {
         bool rv;
@@ -259,17 +253,15 @@ bool dmi_xml_entity_attr(
 }
 
 bool dmi_xml_entity_attr_array(
-        void                  *asession,
+        dmi_xml_session_t     *session,
         const dmi_attribute_t *attr,
         const dmi_data_t      *info,
         const void            *value)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(attr != nullptr);
     assert(info != nullptr);
     assert(value != nullptr);
-
-    dmi_xml_session_t *session = dmi_cast(session, asession);
 
     size_t count = *(size_t *)(info + attr->counter);
     const dmi_data_t *ptr = *(const dmi_data_t **)value;
@@ -294,15 +286,14 @@ bool dmi_xml_entity_attr_array(
 }
 
 bool dmi_xml_entity_attr_struct(
-        void                  *asession,
+        dmi_xml_session_t     *session,
         const dmi_attribute_t *attr,
         const void            *value)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    dmi_xml_session_t *session = dmi_cast(session, asession);
     const dmi_attribute_t *child_attr = nullptr;
 
     for (child_attr = attr->params.attrs; child_attr->params.name; child_attr++) {
@@ -322,16 +313,15 @@ bool dmi_xml_entity_attr_struct(
 }
 
 bool dmi_xml_entity_attr_value(
-        void                  *asession,
+        dmi_xml_session_t     *session,
         const dmi_attribute_t *attr,
         const void            *value)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(attr != nullptr);
     assert(value != nullptr);
 
     bool success = false;
-    dmi_xml_session_t *session = dmi_cast(session, asession);
     char *text = nullptr;
 
     // Write empty tag if the value is unspecified
@@ -374,17 +364,16 @@ bool dmi_xml_entity_attr_value(
 }
 
 bool dmi_xml_entity_attr_set(
-        void                  *asession,
+        dmi_xml_session_t     *session,
         const dmi_attribute_t *attr,
         const void            *value)
 {
 
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(attr != nullptr);
     assert(value != nullptr);
 
     uint64_t mask;
-    dmi_xml_session_t *session = dmi_cast(session, asession);
 
     if (attr->size == sizeof(int8_t))
         mask = *(uint8_t *)value;
@@ -420,14 +409,12 @@ bool dmi_xml_entity_attr_set(
     return true;
 }
 
-bool dmi_xml_entity_attrs_end(void *asession, const dmi_entity_t *entity)
+bool dmi_xml_entity_attrs_end(dmi_xml_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
 
-    DMI_UNUSED(entity);
-
-    dmi_xml_session_t *session = dmi_cast(session, asession);
+    dmi_unused(entity);
 
     if (xmlTextWriterFullEndElement(session->writer) < 0)
         return false;
@@ -435,13 +422,12 @@ bool dmi_xml_entity_attrs_end(void *asession, const dmi_entity_t *entity)
     return true;
 }
 
-bool dmi_xml_entity_data(void *asession, const dmi_entity_t *entity)
+bool dmi_xml_entity_data(dmi_xml_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
 
     bool success = false;
-    dmi_xml_session_t *session = dmi_cast(session, asession);
 
     do {
         if (xmlTextWriterStartElementNS(
@@ -463,13 +449,12 @@ bool dmi_xml_entity_data(void *asession, const dmi_entity_t *entity)
     return success;
 }
 
-bool dmi_xml_entity_strings(void *asession, const dmi_entity_t *entity)
+bool dmi_xml_entity_strings(dmi_xml_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
 
     bool success = false;
-    dmi_xml_session_t *session = dmi_cast(session, asession);
 
     if (entity->string_count == 0)
         return true;
@@ -513,15 +498,14 @@ bool dmi_xml_entity_strings(void *asession, const dmi_entity_t *entity)
     return success;
 }
 
-bool dmi_xml_entity_end(void *asession, const dmi_entity_t *entity)
+bool dmi_xml_entity_end(dmi_xml_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
     assert(entity != nullptr);
 
-    DMI_UNUSED(entity);
+    dmi_unused(entity);
 
     bool success = false;
-    dmi_xml_session_t *session = dmi_cast(session, asession);
 
     do {
         if (xmlTextWriterFullEndElement(session->writer) < 0)
@@ -533,12 +517,11 @@ bool dmi_xml_entity_end(void *asession, const dmi_entity_t *entity)
     return success;
 }
 
-bool dmi_xml_dump_end(void *asession)
+bool dmi_xml_dump_end(dmi_xml_session_t *session)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
 
     bool success = false;
-    dmi_xml_session_t *session = dmi_cast(session, asession);
 
     do {
         if (xmlTextWriterEndDocument(session->writer) < 0)
@@ -552,11 +535,9 @@ bool dmi_xml_dump_end(void *asession)
     return success;
 }
 
-void dmi_xml_finalize(void *asession)
+void dmi_xml_finalize(dmi_xml_session_t *session)
 {
-    assert(asession != nullptr);
-
-    dmi_xml_session_t *session = dmi_cast(session, asession);
+    assert(session != nullptr);
 
     xmlFreeTextWriter(session->writer);
     dmi_free(session);

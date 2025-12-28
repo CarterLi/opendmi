@@ -65,12 +65,11 @@ void *dmi_yaml_initialize(dmi_context_t *context, FILE *stream)
     return session;
 }
 
-bool dmi_yaml_dump_start(void *asession)
+bool dmi_yaml_dump_start(dmi_yaml_session_t *session)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
 
     bool success = false;
-    dmi_yaml_session_t *session = dmi_cast(session, asession);
     yaml_event_t event = { 0 };
 
     do {
@@ -91,12 +90,11 @@ bool dmi_yaml_dump_start(void *asession)
     return success;
 }
 
-bool dmi_yaml_entry(void *asession)
+bool dmi_yaml_entry(dmi_yaml_session_t *session)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
 
     bool success = false;
-    dmi_yaml_session_t *session = dmi_cast(session, asession);
     char *smbios_version = nullptr;
 
     do {
@@ -125,12 +123,11 @@ bool dmi_yaml_entry(void *asession)
     return success;
 }
 
-bool dmi_yaml_table_start(void *asession)
+bool dmi_yaml_table_start(dmi_yaml_session_t *session)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
 
     bool success = false;
-    dmi_yaml_session_t *session = dmi_cast(session, asession);
 
     do {
         if (not dmi_yaml_label(session, "table"))
@@ -144,12 +141,11 @@ bool dmi_yaml_table_start(void *asession)
     return success;
 }
 
-bool dmi_yaml_entity_start(void *asession, const dmi_entity_t *entity)
+bool dmi_yaml_entity_start(dmi_yaml_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
 
     bool success = false;
-    dmi_yaml_session_t *session = dmi_cast(session, asession);
     char buf[32];
 
     do {
@@ -180,62 +176,136 @@ bool dmi_yaml_entity_start(void *asession, const dmi_entity_t *entity)
     return success;
 }
 
+bool dmi_yaml_entity_attrs_start(dmi_yaml_session_t *session, const dmi_entity_t *entity)
+{
+    assert(session != nullptr);
+
+    dmi_unused(entity);
+
+    bool success = false;
+
+    do {
+        if (not dmi_yaml_label(session, "attributes"))
+            break;
+        if (not dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE))
+            break;
+
+        success = true;
+    } while (false);
+
+    return success;
+}
+
 bool dmi_yaml_entity_attr(
-        void                  *asession,
-        const dmi_entity_t     *entity,
+        dmi_yaml_session_t    *session,
+        const dmi_entity_t    *entity,
         const dmi_attribute_t *attr,
         const void            *data)
 {
-    DMI_UNUSED(asession);
-    DMI_UNUSED(entity);
-    DMI_UNUSED(attr);
-    DMI_UNUSED(data);
+    dmi_unused(session);
+    dmi_unused(entity);
+    dmi_unused(attr);
+    dmi_unused(data);
 
     return true;
 }
 
-bool dmi_yaml_entity_data(void *asession, const dmi_entity_t *entity)
+bool dmi_yaml_entity_attr_array(
+        dmi_yaml_session_t    *session,
+        const dmi_attribute_t *attr,
+        const dmi_data_t      *info,
+        const void            *value)
 {
-    DMI_UNUSED(asession);
-    DMI_UNUSED(entity);
+    dmi_unused(session);
+    dmi_unused(attr);
+    dmi_unused(info);
+    dmi_unused(value);
 
     return true;
 }
 
-bool dmi_yaml_entity_strings(void *asession, const dmi_entity_t *entity)
+bool dmi_yaml_entity_attr_struct(
+        dmi_yaml_session_t    *session,
+        const dmi_attribute_t *attr,
+        const void            *value)
 {
-    DMI_UNUSED(asession);
-    DMI_UNUSED(entity);
+    dmi_unused(session);
+    dmi_unused(attr);
+    dmi_unused(value);
 
     return true;
 }
 
-bool dmi_yaml_entity_end(void *asession, const dmi_entity_t *entity)
+bool dmi_yaml_entity_attr_value(
+        dmi_yaml_session_t    *session,
+        const dmi_attribute_t *attr,
+        const void            *value)
 {
-    assert(asession != nullptr);
+    dmi_unused(session);
+    dmi_unused(attr);
+    dmi_unused(value);
 
-    DMI_UNUSED(entity);
+    return true;
+}
 
-    dmi_yaml_session_t *session = dmi_cast(session, asession);
+bool dmi_yaml_entity_attr_set(
+        dmi_yaml_session_t    *session,
+        const dmi_attribute_t *attr,
+        const void            *value)
+{
+    dmi_unused(session);
+    dmi_unused(attr);
+    dmi_unused(value);
+
+    return true;
+}
+
+bool dmi_yaml_entity_attrs_end(dmi_yaml_session_t *session, const dmi_entity_t *entity)
+{
+    assert(session != nullptr);
+
+    dmi_unused(entity);
 
     return dmi_yaml_mapping_end(session);
 }
 
-bool dmi_yaml_table_end(void *asession)
+bool dmi_yaml_entity_data(dmi_yaml_session_t *session, const dmi_entity_t *entity)
 {
-    assert(asession != nullptr);
+    dmi_unused(session);
+    dmi_unused(entity);
 
-    dmi_yaml_session_t *session = dmi_cast(session, asession);
+    return true;
+}
+
+bool dmi_yaml_entity_strings(dmi_yaml_session_t *session, const dmi_entity_t *entity)
+{
+    dmi_unused(session);
+    dmi_unused(entity);
+
+    return true;
+}
+
+bool dmi_yaml_entity_end(dmi_yaml_session_t *session, const dmi_entity_t *entity)
+{
+    assert(session != nullptr);
+
+    dmi_unused(entity);
+
+    return dmi_yaml_mapping_end(session);
+}
+
+bool dmi_yaml_table_end(dmi_yaml_session_t *session)
+{
+    assert(session != nullptr);
 
     return dmi_yaml_sequence_end(session);
 }
 
-bool dmi_yaml_dump_end(void *asession)
+bool dmi_yaml_dump_end(dmi_yaml_session_t *session)
 {
-    assert(asession != nullptr);
+    assert(session != nullptr);
 
     bool success = false;
-    dmi_yaml_session_t *session = dmi_cast(session, asession);
     yaml_event_t event = { 0 };
 
     do {
@@ -258,11 +328,9 @@ bool dmi_yaml_dump_end(void *asession)
     return success;
 }
 
-void dmi_yaml_finalize(void *asession)
+void dmi_yaml_finalize(dmi_yaml_session_t *session)
 {
-    assert(asession != nullptr);
-
-    dmi_yaml_session_t *session = dmi_cast(session, asession);
+    assert(session != nullptr);
 
     yaml_emitter_close(session->emitter);
     yaml_emitter_delete(session->emitter);

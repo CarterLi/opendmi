@@ -15,24 +15,47 @@ __BEGIN_DECLS
 
 void *dmi_yaml_initialize(dmi_context_t *context, FILE *stream);
 
-bool dmi_yaml_dump_start(void *asession);
-bool dmi_yaml_entry(void *asession);
-bool dmi_yaml_table_start(void *asession);
-bool dmi_yaml_entity_start(void *asession, const dmi_entity_t *entity);
+bool dmi_yaml_dump_start(dmi_yaml_session_t *session);
+bool dmi_yaml_entry(dmi_yaml_session_t *session);
+bool dmi_yaml_table_start(dmi_yaml_session_t *session);
+bool dmi_yaml_entity_start(dmi_yaml_session_t *session, const dmi_entity_t *entity);
+bool dmi_yaml_entity_attrs_start(dmi_yaml_session_t *session, const dmi_entity_t *entity);
 
 bool dmi_yaml_entity_attr(
-        void                  *asession,
-        const dmi_entity_t     *entity,
+        dmi_yaml_session_t    *session,
+        const dmi_entity_t    *entity,
         const dmi_attribute_t *attr,
         const void            *data);
 
-bool dmi_yaml_entity_data(void *asession, const dmi_entity_t *entity);
-bool dmi_yaml_entity_strings(void *asession, const dmi_entity_t *entity);
-bool dmi_yaml_entity_end(void *asession, const dmi_entity_t *entity);
-bool dmi_yaml_table_end(void *asession);
-bool dmi_yaml_dump_end(void *asession);
+bool dmi_yaml_entity_attr_array(
+        dmi_yaml_session_t    *session,
+        const dmi_attribute_t *attr,
+        const dmi_data_t      *info,
+        const void            *value);
 
-void dmi_yaml_finalize(void *asession);
+bool dmi_yaml_entity_attr_struct(
+        dmi_yaml_session_t    *session,
+        const dmi_attribute_t *attr,
+        const void            *value);
+
+bool dmi_yaml_entity_attr_value(
+        dmi_yaml_session_t    *session,
+        const dmi_attribute_t *attr,
+        const void            *value);
+
+bool dmi_yaml_entity_attr_set(
+        dmi_yaml_session_t    *session,
+        const dmi_attribute_t *attr,
+        const void            *value);
+
+bool dmi_yaml_entity_attrs_end(dmi_yaml_session_t *session, const dmi_entity_t *entity);
+bool dmi_yaml_entity_data(dmi_yaml_session_t *session, const dmi_entity_t *entity);
+bool dmi_yaml_entity_strings(dmi_yaml_session_t *session, const dmi_entity_t *entity);
+bool dmi_yaml_entity_end(dmi_yaml_session_t *session, const dmi_entity_t *entity);
+bool dmi_yaml_table_end(dmi_yaml_session_t *session);
+bool dmi_yaml_dump_end(dmi_yaml_session_t *session);
+
+void dmi_yaml_finalize(dmi_yaml_session_t *session);
 
 __END_DECLS
 
