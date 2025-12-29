@@ -13,15 +13,8 @@
 
 #include <opendmi/attribute.h>
 
-#ifndef DMI_FORMAT_T
-#define DMI_FORMAT_T
-typedef struct dmi_format dmi_format_t;
-#endif // !DMI_FORMAT_T
-
-#ifndef DMI_FORMAT_OPS_T
-#define DMI_FORMAT_OPS_T
+typedef struct dmi_format     dmi_format_t;
 typedef struct dmi_format_ops dmi_format_ops_t;
-#endif // !DMI_FORMAT_OPS_T
 
 typedef void *(*dmi_format_initialize_fn_t)(dmi_context_t *context, FILE *stream);
 

@@ -11,10 +11,7 @@
 
 #include <opendmi/defs.h>
 
-#ifndef DMI_OPTION_T
-#define DMI_OPTION_T
 typedef struct dmi_option dmi_option_t;
-#endif // !DMI_OPTION_T
 
 struct dmi_option
 {
