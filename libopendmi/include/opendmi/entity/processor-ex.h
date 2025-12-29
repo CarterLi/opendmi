@@ -14,7 +14,8 @@
 typedef struct dmi_processor_ex_data               dmi_processor_ex_data_t;
 typedef struct dmi_processor_specific_block        dmi_processor_specific_block_t;
 typedef struct dmi_processor_aarch64_data          dmi_processor_aarch64_data_t;
-typedef union  dmi_processor_aarch64_data_revision dmi_processor_aarch64_data_revision_t;
+typedef union  dmi_processor_revision              dmi_processor_revision_t;
+typedef struct dmi_processor_amd64_attribute       dmi_processor_amd64_attribute_t;
 
 typedef enum dmi_processor_arch
 {
@@ -86,7 +87,7 @@ typedef enum dmi_processor_aarch64_data_subtype
 /**
  * @brief Revision of the 64-bit Arm (Aarch64) Processor Specific Data.
  */
-dmi_packed_union(dmi_processor_aarch64_data_revision)
+dmi_packed_union(dmi_processor_revision)
 {
     /**
      * @brief Raw value.
@@ -115,7 +116,7 @@ dmi_packed_struct(dmi_processor_aarch64_data)
     /**
      * @brief Revision of the 64-bit Arm (Aarch64) Processor Specific Data.
      */
-    dmi_processor_aarch64_data_revision_t revision;
+    dmi_processor_revision_t revision;
 
     dmi_byte_t length;
 
@@ -141,7 +142,187 @@ dmi_packed_struct(dmi_processor_aarch64_data)
 
 dmi_packed_struct(dmi_processor_aarch64_arch_data)
 {
+    /**
+     * @brief Version of the AArch64 architecture data.
+     */
+    dmi_word_t version;
 
+    /**
+     * @brief Length, in bytes, of the AArch64 architecture data.
+     */
+    dmi_byte_t length;
+
+    /**
+     * @brief Reserved for future use. Must be zero.
+     */
+    dmi_byte_t __reserved;
+
+    /**
+     * @brief Reserved for future use. Must be zero.
+     */
+    dmi_dword_t __reserved2;
+
+    /**
+     * @brief Auxiliary feature register 0.
+     */
+    dmi_qword_t id_aa64afr0_el1;
+
+    /**
+     * @brief Auxiliary feature register 1.
+     */
+    dmi_qword_t id_aa64afr1_el1;
+
+    /**
+     * @brief Debug feature register 0.
+     */
+    dmi_qword_t id_aa64dfr0_el1;
+
+    /**
+     * @brief Debug feature register 1.
+     */
+    dmi_qword_t id_aa64dfr1_el1;
+
+    /**
+     * @brief Debug feature register 2.
+     */
+    dmi_qword_t id_aa64dfr2_el1;
+
+    /**
+     * @brief Floating-point feature register 0.
+     */
+    dmi_qword_t id_aa64fpfr0_el1;
+
+    /**
+     * @brief Instruction set attribute register 0.
+     */
+    dmi_qword_t id_aa64isar0_el1;
+
+    /**
+     * @brief Instruction set attribute register 1.
+     */
+    dmi_qword_t id_aa64isar1_el1;
+
+    /**
+     * @brief Instruction set attribute register 2.
+     */
+    dmi_qword_t id_aa64isar2_el1;
+
+    /**
+     * @brief Instruction set attribute register 3.
+     */
+    dmi_qword_t id_aa64isar3_el1;
+
+    /**
+     * @brief Memory model feature register 0.
+     */
+    dmi_qword_t id_aa64mmfr0_el1;
+
+    /**
+     * @brief Memory model feature register 1.
+     */
+    dmi_qword_t id_aa64mmfr1_el1;
+
+    /**
+     * @brief Memory model feature register 2.
+     */
+    dmi_qword_t id_aa64mmfr2_el1;
+
+    /**
+     * @brief Memory model feature register 3.
+     */
+    dmi_qword_t id_aa64mmfr3_el1;
+
+    /**
+     * @brief Memory model feature register 4.
+     */
+    dmi_qword_t id_aa64mmfr4_el1;
+
+    /**
+     * @brief Processor feature register 0.
+     */
+    dmi_qword_t id_aa64pfr0_el1;
+
+    /**
+     * @brief Processor feature register 1.
+     */
+    dmi_qword_t id_aa64pfr1_el1;
+
+    /**
+     * @brief Processor feature register 2.
+     */
+    dmi_qword_t id_aa64pfr2_el1;
+
+    /**
+     * @brief SME feature ID register 0.
+     */
+    dmi_qword_t id_aa64smfr0_el1;
+
+    /**
+     * @brief SVE feature ID register 0.
+     */
+    dmi_qword_t id_aa64zfr0_el1;
+};
+
+typedef enum dmi_processor_amd64_use_condition {
+    DMI_PROCESSOR_AMD64_USE_CONDITION_CLIENT     = 0x00,
+    DMI_PROCESSOR_AMD64_USE_CONDITION_EMBEDDED   = 0x01,
+    DMI_PROCESSOR_AMD64_USE_CONDITION_INDUSTRIAL = 0x02
+} dmi_processor_amd64_use_condition_t;
+
+typedef enum dmi_processor_amd64_temperature_range {
+    DMI_PROCESSOR_AMD64_TEMPERATURE_RANGE_COMMERCIAL = 0x00,
+    DMI_PROCESSOR_AMD64_TEMPERATURE_RANGE_EXTENDED   = 0x01
+} dmi_processor_amd64_temperature_range_t;
+
+dmi_packed_struct(dmi_processor_amd64_attribute)
+{
+    /**
+     * @brief Bits 7:0 Processor use condition.
+     */
+    dmi_byte_t use_condition;
+
+    /**
+     * @brief Bits 15:0 Temperature range.
+     */
+    dmi_byte_t temperature_range;
+
+    /**
+     * @brief Bits 31:16 Reserved.
+     */
+    dmi_word_t __reserved;
+};
+
+/**
+ * @todo Make sure this structure is correct.
+ */
+dmi_packed_struct(dmi_processor_amd64_data)
+{
+    /**
+     * @brief Processor use condition data (0x01).
+     */
+    dmi_byte_t id;
+
+    /**
+     * @brief Length of processor use condition data structure.
+     */
+    dmi_byte_t length;
+
+    dmi_processor_revision_t revision;
+
+    dmi_processor_amd64_attribute_t attr;
+};
+
+dmi_packed_struct(dmi_processor_rv64_data)
+{
+    dmi_processor_revision_t revision;
+
+    dmi_qword_t hart_id;
+
+    dmi_qword_t vendor_id;
+
+    dmi_qword_t arch_id;
+
+    dmi_qword_t machine_impl_id;
 };
 
 /**
