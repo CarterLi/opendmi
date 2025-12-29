@@ -188,7 +188,7 @@ uint64_t dmi_ipow64(uint64_t value, unsigned int factor)
     return value * result;
 }
 
-uint64_t dmi_decode_bcd(const dmi_byte_t *value, size_t length)
+uint64_t dmi_bcd_decode(const dmi_byte_t *value, size_t length)
 {
     uint64_t result = 0;
     uint64_t factor = 1;

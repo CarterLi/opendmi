@@ -39,7 +39,7 @@ uint64_t dmi_bswap64_compat(uint64_t value);
 uint32_t dmi_ipow32(uint32_t value, unsigned int factor);
 uint64_t dmi_ipow64(uint64_t value, unsigned int factor);
 
-uint64_t dmi_decode_bcd(const dmi_byte_t *value, size_t length);
+uint64_t dmi_bcd_decode(const dmi_byte_t *value, size_t length);
 
 dmi_uuid_t dmi_uuid_decode(const dmi_byte_t value[16]);
 void       dmi_uuid_encode(dmi_uuid_t value, uint8_t out[16]);
