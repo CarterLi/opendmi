@@ -20,8 +20,9 @@ target_include_directories(opendmi-object PUBLIC include)
 target_sources(opendmi-object
     PRIVATE
         src/version.c
-        src/name.c
+        src/endian.c
         src/utils.c
+        src/name.c
         src/error.c
         src/log.c
         src/context.c
@@ -91,6 +92,7 @@ target_sources(opendmi-object
                 include/opendmi/backend.h
                 include/opendmi/context.h
                 include/opendmi/defs.h
+                include/opendmi/endian.h
                 include/opendmi/entry.h
                 include/opendmi/error.h
                 include/opendmi/extension.h
@@ -228,16 +230,26 @@ macro(opendmi_test name sources)
 endmacro()
 
 opendmi_test(bswap16 test/bswap16.c)
-opendmi_test(word-decode test/word-decode.c)
 opendmi_test(bswap32 test/bswap32.c)
-opendmi_test(dword-decode test/dword-decode.c)
 opendmi_test(bswap64 test/bswap64.c)
+
+opendmi_test(hton16 test/hton16.c)
+opendmi_test(hton32 test/hton32.c)
+opendmi_test(hton64 test/hton64.c)
+
+opendmi_test(ntoh16 test/ntoh16.c)
+opendmi_test(ntoh32 test/ntoh32.c)
+opendmi_test(ntoh64 test/ntoh64.c)
+
+opendmi_test(ipow32 test/ipow32.c)
+opendmi_test(ipow64 test/ipow64.c)
+
+opendmi_test(word-decode test/word-decode.c)
+opendmi_test(dword-decode test/dword-decode.c)
 opendmi_test(qword-decode test/qword-decode.c)
 opendmi_test(bcd-decode test/bcd-decode.c)
 opendmi_test(uuid-decode test/uuid-decode.c)
 opendmi_test(uuid-encode test/uuid-encode.c)
-opendmi_test(ipow32 test/ipow32.c)
-opendmi_test(ipow64 test/ipow64.c)
 
 opendmi_test(attribute-format-handle test/attribute-format-handle.c)
 opendmi_test(attribute-format-string test/attribute-format-string.c)

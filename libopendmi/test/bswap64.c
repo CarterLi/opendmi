@@ -7,15 +7,13 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/utils.h>
+#include <opendmi/endian.h>
 
 struct test_vector
 {
     uint64_t value;
     uint64_t result;
 };
-
-static bool test_bswap(uint64_t (*func)(uint64_t));
 
 struct test_vector test_data[] =
 {
@@ -26,20 +24,16 @@ struct test_vector test_data[] =
 
 int main(void)
 {
-    if (!test_bswap(dmi_bswap64_compat))
-        return EXIT_FAILURE;
-    if (!test_bswap(dmi_bswap64))
-        return EXIT_FAILURE;
-
-    return EXIT_SUCCESS;
-}
-
-static bool test_bswap(uint64_t (*func)(uint64_t))
-{
     for (size_t i = 0; i < dmi_array_size(test_data); i++) {
-        if (func(test_data[i].value) != test_data[i].result)
-            return false;
+        if (__dmi_bswap64_compat(test_data[i].value) != test_data[i].result)
+            return EXIT_FAILURE;
+
+        if (dmi_bswap64(test_data[i].value) != test_data[i].result)
+            return EXIT_FAILURE;
+
+        if (dmi_bswap(test_data[i].value) != test_data[i].result)
+            return EXIT_FAILURE;
     }
 
-    return true;
+    return EXIT_SUCCESS;
 }

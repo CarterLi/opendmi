@@ -5,33 +5,34 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <stdlib.h>
-#include <stdbool.h>
+#include <memory.h>
 
 #include <opendmi/endian.h>
 
 struct test_vector
 {
     uint32_t value;
-    uint32_t result;
+    uint8_t  result[4];
 };
 
 struct test_vector test_data[] =
 {
-    { 0x00000000U, 0x00000000U },
-    { 0xFFFFFFFFU, 0xFFFFFFFFU },
-    { 0x01234567U, 0x67452301U }
+    { 0x00000000Lu, { 0x00, 0x00, 0x00, 0x00 } },
+    { 0x01234567Lu, { 0x01, 0x23, 0x45, 0x67 } },
+    { 0xFFFFFFFFLu, { 0xFF, 0xFF, 0xFF, 0xFF } }
 };
 
 int main(void)
 {
     for (size_t i = 0; i < dmi_array_size(test_data); i++) {
-        if (__dmi_bswap32_compat(test_data[i].value) != test_data[i].result)
+        uint32_t result;
+
+        result = dmi_hton32(test_data[i].value);
+        if (memcmp(&result, test_data[i].result, sizeof(result)) != 0)
             return EXIT_FAILURE;
 
-        if (dmi_bswap32(test_data[i].value) != test_data[i].result)
-            return EXIT_FAILURE;
-
-        if (dmi_bswap(test_data[i].value) != test_data[i].result)
+        result = dmi_hton(test_data[i].value);
+        if (memcmp(&result, test_data[i].result, sizeof(result)) != 0)
             return EXIT_FAILURE;
     }
 
