@@ -397,11 +397,11 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
     const dmi_data_t *element_ptr;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_CHASSIS));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     dmi_chassis_type_data_t type = {
@@ -434,7 +434,7 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
         info->element_size       = dmi_value(data->element_size);
 
         info->elements = dmi_alloc_array(entity->context, sizeof(dmi_chassis_element_t), info->element_count);
-        if (!info->elements) {
+        if (info->elements == nullptr) {
             dmi_free(info);
             return nullptr;
         }
@@ -466,7 +466,7 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
             size_t extra_len = entity->body_length - base_len;
             dmi_chassis_extra_t *extra = dmi_cast(extra, element_ptr);
 
-            info->sku_number  = dmi_entity_string(entity, extra->sku_number);
+            info->sku_number = dmi_entity_string(entity, extra->sku_number);
 
             // SMBIOS 3.9 features
             if (extra_len > 0x01) {
@@ -478,7 +478,7 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
         }
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = level;
 
     return info;
