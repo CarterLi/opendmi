@@ -4,12 +4,55 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <sysexits.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include <opendmi/attribute.h>
+#include <opendmi/utils.h>
+
+struct test_vector
+{
+    const void *value;
+    bool pretty;
+    const char *result;
+};
+
+struct test_vector test_data[] =
+{
+    { dmi_value_ptr((dmi_handle_t)0x0000u), false, "0x0000" },
+    { dmi_value_ptr((dmi_handle_t)0x0000u), true,  "0x0000" },
+    { dmi_value_ptr((dmi_handle_t)0x1234u), false, "0x1234" },
+    { dmi_value_ptr((dmi_handle_t)0x1234u), true,  "0x1234" },
+    { dmi_value_ptr((dmi_handle_t)0xABCDu), false, "0xABCD" },
+    { dmi_value_ptr((dmi_handle_t)0xABCDu), true,  "0xABCD" },
+    { dmi_value_ptr((dmi_handle_t)0xFFFFu), false, "0xFFFF" },
+    { dmi_value_ptr((dmi_handle_t)0xFFFFu), true , "0xFFFF" }
+};
 
 int main(void)
 {
-    // TODO: Test dmi_attribute_format_handle()
-    return EX_UNAVAILABLE;
+    const dmi_attribute_t attr = {
+        .type    = DMI_ATTRIBUTE_TYPE_HANDLE,
+        .size    = sizeof(dmi_handle_t),
+        .offset  = 0,
+        .counter = -1,
+        .params  = { 0 }
+    };
+
+    for (size_t i = 0; i < dmi_array_size(test_data); i++) {
+        char *result;
+        
+        result = dmi_attribute_format(&attr, test_data[i].value, test_data[i].pretty);
+        if (result == nullptr)
+            return EXIT_FAILURE;
+
+        if (strcmp(result, test_data[i].result) != 0) {
+            dmi_free(result);
+            return EXIT_FAILURE;
+        }
+
+        dmi_free(result);
+    }
+
+    return EXIT_SUCCESS;
 }
