@@ -11,6 +11,34 @@
 
 #include <opendmi/entity.h>
 
+typedef struct dmi_mgmt_controller           dmi_mgmt_controller_t;
+typedef struct dmi_mgmt_controller_data      dmi_mgmt_controller_data_t;
+typedef struct dmi_mgmt_controller_extra     dmi_mgmt_controller_extra_t;
+typedef struct dmi_mgmt_protocol_record      dmi_mgmt_protocol_record_t;
+typedef struct dmi_mgmt_protocol_record_data dmi_mgmt_protocol_record_data_t;
+
+/**
+ * @brief Management interface types.
+ */
+typedef enum dmi_mgmt_if_type {
+    DMI_MGMT_IF_TYPE_MCTP_KCS        = 0x02, ///< Keyboard Controller Style
+    DMI_MGMT_IF_TYPE_MCTP_8250_UART  = 0x03, ///< 8250 UART Register Compatible
+    DMI_MGMT_IF_TYPE_MCTP_16450_UART = 0x04, ///< 16450 UART Register Compatible
+    DMI_MGMT_IF_TYPE_MCTP_16550_UART = 0x05, ///< 16550/16550A UART Register Compatible
+    DMI_MGMT_IF_TYPE_MCTP_16650_UART = 0x06, ///< 16650/16650A UART Register Compatible
+    DMI_MGMT_IF_TYPE_MCTP_16750_UART = 0x07, ///< 16750/16750A UART Register Compatible
+    DMI_MGMT_IF_TYPE_MCTP_16850_UART = 0x08, ///< 16850/16850A UART Register Compatible
+    DMI_MGMT_IF_TYPE_MCTP_I2C_SMBUS  = 0x09, ///< I2C/SMBUS
+    DMI_MGMT_IF_TYPE_MCTP_I3C        = 0x0A, ///< I3C
+    DMI_MGMT_IF_TYPE_MCTP_PCIE_VDM   = 0x0B, ///< PCIe VDM
+    DMI_MGMT_IF_TYPE_MCTP_MMBI       = 0x0C, ///< MMBI
+    DMI_MGMT_IF_TYPE_MCTP_PCC        = 0x0D, ///< PCC
+    DMI_MGMT_IF_TYPE_MCTP_UCIE       = 0x0E, ///< UCIe
+    DMI_MGMT_IF_TYPE_MCTP_USB        = 0x0F, ///< USB
+    DMI_MGMT_IF_TYPE_NETWORK_HOST_IF = 0x40, ///< Network Host Interface (DSP0270)
+    DMI_MGMT_IF_TYPE_OEM             = 0xF0, ///< OEM-defined
+} dmi_mgmt_if_type_t;
+
 /**
  * @brief Management protocol types.
  */
@@ -22,8 +50,90 @@ typedef enum dmi_mgmt_protocol {
 } dmi_mgmt_protocol_t;
 
 /**
+ * @brief Management Controller Host Interface (Type 42) structure.
+ */
+dmi_packed_struct(dmi_mgmt_controller_data)
+{
+    /**
+     * @brief SMBIOS structure header.
+     */
+    dmi_header_t header;
+
+    dmi_byte_t if_type;
+
+    dmi_byte_t if_data_length;
+
+    dmi_byte_t if_data[];
+};
+
+/**
+ * @brief Management Controller Host Interface (Type 42) structure extra data.
+ */
+dmi_packed_struct(dmi_mgmt_controller_extra)
+{
+    dmi_byte_t protocol_records_count;
+
+    dmi_byte_t protocol_records_data[];
+};
+
+/**
+ * @brief Protocol Record Data Format.
+ */
+dmi_packed_struct(dmi_mgmt_protocol_record_data)
+{
+    dmi_byte_t type;
+
+    dmi_byte_t length;
+
+    dmi_byte_t data[];
+};
+
+/**
+ * @brief Decoded Management Controller Host Interface.
+ */
+struct dmi_mgmt_controller
+{
+    dmi_mgmt_if_type_t if_type;
+
+    size_t if_data_length;
+
+    dmi_byte_t *if_data;
+
+    size_t protocol_records_count;
+
+    dmi_mgmt_protocol_record_t **protocol_records;
+};
+
+/**
+ * @brief Decoded Protocol Record Data.
+ */
+struct dmi_mgmt_protocol_record
+{
+    dmi_mgmt_if_type_t type;
+
+    size_t length;
+
+    dmi_byte_t data[];
+};
+
+/**
  * @brief Management controller host interface entity specification.
  */
 extern const dmi_entity_spec_t dmi_mgmt_controller_host_if_spec;
+
+__BEGIN_DECLS
+
+/**
+ * @internal
+ */
+dmi_mgmt_controller_t *
+dmi_mgmt_controller_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
+
+/**
+ * @internal
+ */
+void dmi_mgmt_controller_free(dmi_mgmt_controller_t *info);
+
+__END_DECLS
 
 #endif // !OPENDMI_ENTITY_MGMT_CONTROLLER_H
