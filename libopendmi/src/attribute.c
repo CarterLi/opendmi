@@ -451,22 +451,14 @@ static char *dmi_attribute_format_version(
     unsigned minor    = dmi_version_minor(version);
     unsigned revision = dmi_version_revision(version);
 
-    switch (attr->params.scale) {
-    case 1:
+    unsigned scale = attr->params.scale;
+
+    if (scale == 1)
         rv = dmi_asprintf(&str, "%u", major);
-        break;
-
-    case 2:
+    else if (scale == 2)
         rv = dmi_asprintf(&str, "%u.%u", major, minor);
-        break;
-
-    case 3:
+    else
         rv = dmi_asprintf(&str, "%u.%u.%u", major, minor, revision);
-        break;
-
-    default:
-        return nullptr;
-    }
 
     if (rv < 0)
         return nullptr;
