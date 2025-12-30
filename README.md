@@ -31,13 +31,14 @@ The project is under active development, see [ROADMAP](ROADMAP.md) and [CHANGELO
 * GCC, CLang or MSVC compiler
 * CMake 3.30 or newer
 * AsciiDoctor (used to generate documentation and man pages)
+* CppCheck (optional)
 
 ### Dependencies
 
 #### opendmi
 
-* `libxml2` (optional, only when XML support is enabled)
-* `libyaml` (optional, only when YAML support is enabled)
+* `libxml2` — optional, only when XML support is enabled
+* `libyaml` — optional, only when YAML support is enabled
 
 #### libopendmi
 

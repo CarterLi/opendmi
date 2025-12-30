@@ -37,6 +37,8 @@ dmi_backend_t dmi_dump_backend =
 
 static bool dmi_dump_open(dmi_context_t *context, const void *arg)
 {
+    bool success = false;
+
     if (context == nullptr)
         return false;
 
@@ -45,17 +47,26 @@ static bool dmi_dump_open(dmi_context_t *context, const void *arg)
         return false;
     }
 
-    dmi_dump_session_t *session = malloc(sizeof(dmi_dump_session_t));
-    if (session == nullptr) {
+    dmi_dump_session_t *session = dmi_alloc(context, sizeof(dmi_dump_session_t));
+    if (session == nullptr)
+        return false;
+
+    do {
+        session->data = dmi_file_read(context, (const char *)arg, &session->data_size);
+        if (session->data == nullptr)
+            break;
+        if (session->data_size < DMI_ENTRY_MAX_SIZE + sizeof(dmi_header_t))
+            break;
+
+        success = true;
+    } while (false);
+
+    if (not success) {
+        dmi_free(session->data);
+        dmi_free(session);
+
         return false;
     }
-    memset(session, 0, sizeof(dmi_dump_session_t));
-
-    session->data = dmi_file_read(context, (const char *)arg, &session->data_size);
-    if (session->data == nullptr)
-        return false;
-    if (session->data_size < DMI_ENTRY_MAX_SIZE + sizeof(dmi_header_t))
-        return false;
 
     context->session = session;
 

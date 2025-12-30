@@ -68,6 +68,8 @@ else()
     add_compile_definitions(NDEBUG)
 endif()
 
+find_program(CPPCHECK_EXECUTABLE NAMES cppcheck)
+
 include(FindPackageEx)
 
 find_package_ex(Curses ENABLE_CURSES)

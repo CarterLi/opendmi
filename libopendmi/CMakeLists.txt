@@ -163,6 +163,7 @@ target_sources(opendmi-object
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    target_compile_definitions(opendmi-object PRIVATE __linux__)
     target_sources(opendmi-object
         PRIVATE
             src/backend/linux.c
@@ -172,6 +173,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
                 FILES include/opendmi/backend/linux.h
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    target_compile_definitions(opendmi-object PRIVATE __APPLE__)
+
     find_library(COREFOUNDATION_LIB CoreFoundation)
     find_library(IOKIT_LIB IOKit)
     list(APPEND LIBOPENDMI_LIBRARIES ${COREFOUNDATION_LIB} ${IOKIT_LIB})
@@ -185,6 +188,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
                 FILES include/opendmi/backend/darwin.h
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+    target_compile_definitions(opendmi-object PRIVATE __FreeBSD__)
+
     target_sources(opendmi-object
         PRIVATE
             src/backend/freebsd.c
@@ -194,6 +199,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
                 FILES include/opendmi/backend/freebsd.h
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    target_compile_definitions(opendmi-object PRIVATE _WIN32)
+
     target_sources(opendmi-object
         PRIVATE
             src/backend/windows.c
@@ -206,6 +213,19 @@ endif()
 
 if(NOT MSVC)
     target_compile_options(opendmi-object PRIVATE -fPIC)
+endif()
+
+if(CPPCHECK_EXECUTABLE)
+    set(CPPCHECK_ARGS
+        --library=posix
+        --check-library
+        --inline-suppr
+        --enable=all
+    )
+
+    set_target_properties(opendmi-object PROPERTIES
+        C_CPPCHECK ${CPPCHECK_EXECUTABLE} ${CPPCHECK_ARGS}
+    )
 endif()
 
 add_library(opendmi-static STATIC $<TARGET_OBJECTS:opendmi-object>)
