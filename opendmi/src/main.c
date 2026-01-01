@@ -1,6 +1,6 @@
 //
 // OpenDMI: Cross-platform DMI/SMBIOS framework
-// Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+// Copyright (c) 2025-2026, The OpenDMI contributors
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
@@ -248,7 +248,7 @@ static bool parse_args(int argc, char *argv[], int *rv)
 static void show_version(void)
 {
     printf("OpenDMI, version %s\n", OPENDMI_VERSION);
-    printf("Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>\n\n");
+    printf("Copyright (c) 2025-2026, The OpenDMI contributors\n\n");
 }
 
 static void show_usage(const char *proc)

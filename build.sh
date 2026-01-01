@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # OpenDMI: Cross-platform DMI/SMBIOS framework
-# Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>
+# Copyright (c) 2025-2026, The OpenDMI contributors
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
@@ -49,7 +49,7 @@ _require_argument() {
 
 _usage() {
     echo "OpenDMI: Cross-platform DMI/SMBIOS framework"
-    echo "Copyright (c) 2025, Dmitry Sednev <dmitry@sednev.ru>"
+    echo "Copyright (c) 2025-2026, The OpenDMI contributors"
     echo
     echo "Usage:"
     echo "    ${SCRIPT} [global options] <command> [command options]"
