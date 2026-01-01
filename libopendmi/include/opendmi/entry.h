@@ -118,6 +118,9 @@ dmi_packed_struct(dmi_entry_legacy)
      *
      * @details
      * Total number of structures present in the SMBIOS structure table.
+     *
+     * @note
+     * Some vendors report zero in this field, e.g. Synology.
      */
     const dmi_word_t entity_count;
 

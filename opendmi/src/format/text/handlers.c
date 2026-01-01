@@ -67,9 +67,13 @@ bool dmi_text_entry(dmi_text_session_t *session)
         return false;
     }
 
+    size_t entity_count = context->entity_count;
+    if (entity_count == 0)
+        entity_count = context->registry->count;
+
     fprintf(session->stream, "SMBIOS %s present.\n", version);
     fprintf(session->stream, "%zu structures occupying %zu bytes.\n",
-            context->entity_count, context->table_area_size);
+            entity_count, context->table_area_size);
     fprintf(session->stream, "Table at 0x%" PRIx64 ".\n", context->table_area_addr);
     fprintf(session->stream, "\n");
 
