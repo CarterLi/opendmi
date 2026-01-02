@@ -11,8 +11,9 @@
 
 #include <opendmi/entity.h>
 
-typedef struct dmi_processor_data dmi_processor_data_t;
-typedef struct dmi_processor      dmi_processor_t;
+typedef struct dmi_processor_data     dmi_processor_data_t;
+typedef struct dmi_processor          dmi_processor_t;
+typedef union  dmi_processor_features dmi_processor_features_t;
 
 typedef enum dmi_processor_type
 {
@@ -530,6 +531,28 @@ dmi_packed_struct(dmi_processor_data)
     dmi_string_t socket_type;
 };
 
+dmi_packed_union(dmi_processor_features)
+{
+    uint16_t __value;
+
+    dmi_packed_struct()
+    {
+        bool __reserved : 1;
+
+        bool is_unknown              : 1;
+        bool capable_64bit           : 1;
+        bool multicore               : 1;
+        bool hardware_thread         : 1;
+        bool execute_protection      : 1;
+        bool enhanced_virtualization : 1;
+        bool power_perf_control      : 1;
+        bool capable_128bit          : 1;
+        bool arm64_soc_id            : 1;
+
+        uint16_t __reserved2 : 6;
+    };
+};
+
 struct dmi_processor
 {
     const char *socket_designation;
@@ -539,6 +562,8 @@ struct dmi_processor
     dmi_processor_family_t family;
 
     const char *vendor;
+
+    uint8_t voltage;
 
     uint16_t external_clock;
 
@@ -558,11 +583,24 @@ struct dmi_processor
         dmi_processor_status_t status;
     } status;
 
+    dmi_processor_upgrade_t upgrade;
+
+    dmi_handle_t l1_cache_handle;
+    dmi_entity_t *l1_cache;
+
+    dmi_handle_t l2_cache_handle;
+    dmi_entity_t *l2_cache;
+
+    dmi_handle_t l3_cache_handle;
+    dmi_entity_t *l3_cache;
+
     const char *serial_number;
 
     const char *asset_tag;
 
     const char *part_number;
+
+    dmi_processor_features_t features;
 
     uint16_t core_count;
 
@@ -591,6 +629,11 @@ const char *dmi_processor_upgrade_name(enum dmi_processor_upgrade value);
  */
 dmi_processor_t *
 dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
+
+/**
+ * @internal
+ */
+bool dmi_processor_link(dmi_entity_t *entity);
 
 /**
  * @internal
