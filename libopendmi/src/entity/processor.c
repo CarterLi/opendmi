@@ -7,6 +7,7 @@
 #include <opendmi/entity/processor.h>
 #include <opendmi/name.h>
 #include <opendmi/utils.h>
+#include <opendmi/value.h>
 
 static const dmi_name_set_t dmi_processor_type_names =
 {
@@ -1703,6 +1704,10 @@ static const dmi_name_set_t dmi_processor_upgrade_names =
 
 const dmi_attribute_t dmi_processor_attrs[] =
 {
+    DMI_ATTRIBUTE(dmi_processor_t, socket_designation, STRING, {
+        .code    = "socket-designation",
+        .name    = "Socket Designation"
+    }),
     DMI_ATTRIBUTE(dmi_processor_t, type, ENUM, {
         .code    = "type",
         .name    = "Type",
@@ -1720,6 +1725,18 @@ const dmi_attribute_t dmi_processor_attrs[] =
     DMI_ATTRIBUTE(dmi_processor_t, vendor, STRING, {
         .code    = "vendor",
         .name    = "Vendor"
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, external_clock, INTEGER, {
+        .code    = "external-clock",
+        .name    = "External Clock",
+        .unit    = DMI_UNIT_MHZ,
+        .unknown = dmi_value_ptr((uint16_t)0)
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, maximum_speed, INTEGER, {
+        .code    = "maximum-speed",
+        .name    = "Maximum Speed",
+        .unit    = DMI_UNIT_MHZ,
+        .unknown = dmi_value_ptr((uint16_t)0)
     }),
     DMI_ATTRIBUTE_NULL
 };
@@ -1783,11 +1800,36 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     if (info == nullptr)
         return nullptr;
 
-    info->type   = dmi_value(data->type);
-    // TODO: family can be stored in dmi_processor_ex_t,
-    // depending on the value.
-    info->family = dmi_value(data->family);
-    info->vendor = dmi_entity_string(entity, data->vendor);
+    info->socket_designation = dmi_entity_string(entity, data->socket_designation);
+    info->type               = dmi_value(data->type);
+    info->family             = dmi_value(data->family);
+    info->vendor             = dmi_entity_string(entity, data->vendor);
+    info->external_clock     = dmi_value(data->external_clock);
+    info->maximum_speed      = dmi_value(data->maximum_speed);
+
+    // SMBIOS 2.1 features
+    if (entity->body_length >= 0x1Au) {}
+
+    // SMBIOS 2.3 features
+    if (entity->body_length >= 0x20u) {}
+
+    // SMBIOS 2.5 features
+    if (entity->body_length >= 0x23u) {}
+
+    // SMBIOS 2.6 features
+    if (entity->body_length >= 0x28u) {
+        if (info->family == DMI_PROCESSOR_FAMILY_EXTENDED)
+            info->family = dmi_value(data->family_ex);
+    }
+
+    // SMBIOS 3.0 features
+    if (entity->body_length >= 0x2Au) {}
+
+    // SMBIOS 3.6 features
+    if (entity->body_length >= 0x30u) {}
+
+    // SMBIOS 3.8 features
+    if (entity->body_length >= 0x32u) {}
 
     return info;
 }

@@ -532,11 +532,17 @@ dmi_packed_struct(dmi_processor_data)
 
 struct dmi_processor
 {
+    const char *socket_designation;
+
     dmi_processor_type_t type;
 
     dmi_processor_family_t family;
 
     const char *vendor;
+
+    uint16_t external_clock;
+
+    uint16_t maximum_speed;
 
     struct {
         /**

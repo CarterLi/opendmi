@@ -32,5 +32,6 @@
 #define DMI_UNIT_PERCENT       "%"
 #define DMI_UNIT_REVOLUTION    "rpm"
 #define DMI_UNIT_RACK          "U"
+#define DMI_UNIT_MHZ           "MHz"
 
 #endif // !OPENDMI_VALUE_H
