@@ -4,13 +4,14 @@
 
 * Basic implementation of `libopendmi`.
 * Basic implementation of `opendmi` command line tool.
-* XML output support.
+* XML and YAML output support.
 
 ## Release 0.2 (2026-02-28)
 
-* JSON and YAML output support.
-* Decoders for OEM-specific structures
-* Autoloading of OEM extensions
+* JSON output support.
+* Decoders for OEM-specific structures.
+* Autoloading of OEM extensions.
+* ICU4C support.
 
 ## Release 0.3 (2026-03-31)
 

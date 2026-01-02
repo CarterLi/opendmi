@@ -1,6 +1,6 @@
 = dmi_close(3)
 Dmitry Sednev
-OpenDMI 0.1.0
+OpenDMI 0.2.0
 
 :doctype: manpage
 :manmanual: DMI_CLOSE
