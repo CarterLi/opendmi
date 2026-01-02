@@ -1703,6 +1703,24 @@ static const dmi_name_set_t dmi_processor_upgrade_names =
 
 const dmi_attribute_t dmi_processor_attrs[] =
 {
+    DMI_ATTRIBUTE(dmi_processor_t, type, ENUM, {
+        .code    = "type",
+        .name    = "Type",
+        .unspec  = dmi_value_ptr(DMI_PROCESSOR_TYPE_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_PROCESSOR_TYPE_UNKNOWN),
+        .values  = &dmi_processor_type_names
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, family, ENUM, {
+        .code    = "family",
+        .name    = "Family",
+        .unspec  = dmi_value_ptr(DMI_PROCESSOR_FAMILY_UNSPEC),
+        .unknown = dmi_value_ptr(DMI_PROCESSOR_FAMILY_UNKNOWN),
+        .values  = &dmi_processor_family_names
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, vendor, STRING, {
+        .code    = "vendor",
+        .name    = "Vendor"
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
@@ -1714,7 +1732,11 @@ const dmi_entity_spec_t dmi_processor_spec =
     .required_from = DMI_VERSION(2, 3, 0),
     .required_till = DMI_VERSION_NONE,
     .min_length    = 0x1A,
-    .attributes    = dmi_processor_attrs
+    .attributes    = dmi_processor_attrs,
+    .handlers      = {
+        .decode = (dmi_entity_decode_fn_t)dmi_processor_decode,
+        .free   = (dmi_entity_free_fn_t)dmi_processor_free
+    }
 };
 
 const dmi_attribute_t dmi_processor_ex_attrs[] =
@@ -1760,6 +1782,12 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     info = dmi_alloc(entity->context, sizeof(*info));
     if (info == nullptr)
         return nullptr;
+
+    info->type   = dmi_value(data->type);
+    // TODO: family can be stored in dmi_processor_ex_t,
+    // depending on the value.
+    info->family = dmi_value(data->family);
+    info->vendor = dmi_entity_string(entity, data->vendor);
 
     return info;
 }
