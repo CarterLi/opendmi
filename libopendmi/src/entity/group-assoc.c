@@ -50,7 +50,7 @@ dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_entity_t *entity, dmi_versio
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->group_name  = dmi_entity_string(entity, data->group_name);

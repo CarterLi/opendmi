@@ -620,7 +620,7 @@ dmi_slot_t *dmi_slot_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->designator = dmi_entity_string(entity, data->designator);

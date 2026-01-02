@@ -90,7 +90,7 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_entity_t *entity
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->start_addr      = dmi_value(data->start_addr) << 10;
@@ -124,7 +124,7 @@ bool dmi_memory_array_addr_link(dmi_entity_t *entity)
     dmi_registry_t *registry;
 
     info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY_ADDR));
-    if (!info)
+    if (info == nullptr)
         return false;
 
     registry = entity->context->registry;

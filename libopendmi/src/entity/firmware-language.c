@@ -53,13 +53,13 @@ dmi_firmware_language_t *dmi_firmware_language_decode(const dmi_entity_t *entity
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->language_count = dmi_value(data->language_count);
 
     info->languages = dmi_alloc_array(entity->context, sizeof(const char *), info->language_count);
-    if (!info->languages) {
+    if (info->languages == nullptr) {
         dmi_free(info);
         return nullptr;
     }

@@ -254,7 +254,7 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_entity_t *entity
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->error_detection  = dmi_value(data->error_detection);
@@ -282,7 +282,7 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_entity_t *entity
 
     info->module_handles = dmi_alloc_array(entity->context, sizeof(dmi_handle_t),
                                            info->slot_count);
-    if (!info->module_handles) {
+    if (info->module_handles == nullptr) {
         dmi_free(info);
         return nullptr;
     }

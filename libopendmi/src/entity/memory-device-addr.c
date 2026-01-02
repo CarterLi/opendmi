@@ -107,7 +107,7 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_entity_t *enti
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     uint32_t start_addr = dmi_value(data->start_addr);
@@ -151,17 +151,17 @@ bool dmi_memory_device_addr_link(dmi_entity_t *entity)
     dmi_registry_t *registry;
 
     info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_MEMORY_DEVICE_ADDR));
-    if (!info)
+    if (info == nullptr)
         return false;
 
     registry = entity->context->registry;
 
     info->device = dmi_registry_get(registry, info->device_handle, DMI_TYPE_MEMORY_DEVICE);
-    if (!info->device)
+    if (info->device == nullptr)
         return false;
 
     info->array_addr = dmi_registry_get(registry, info->array_addr_handle, DMI_TYPE_MEMORY_ARRAY_ADDR);
-    if (!info->array_addr) {
+    if (info->array_addr == nullptr) {
         dmi_log_warning(entity->context, "Memory array address not found: 0x%04x", info->array_addr_handle);
     }
 

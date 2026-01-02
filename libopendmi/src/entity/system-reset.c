@@ -111,7 +111,7 @@ dmi_system_reset_t *dmi_system_reset_decode(const dmi_entity_t *entity, dmi_vers
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     dmi_system_reset_caps_t caps = {

@@ -339,7 +339,7 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_entity_t *entity, dmi_version_t *p
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     dmi_firmware_features_t features = {
@@ -355,7 +355,7 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_entity_t *entity, dmi_version_t *p
 
     // SMBIOS 2.1: Extra feature bits
     size_t extra = entity->body_length - 0x12;
-    if (extra) {
+    if (extra != 0) {
         level = dmi_version(2, 1, 0);
 
         dmi_firmware_features_ex_t features_ex = {

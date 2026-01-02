@@ -90,7 +90,7 @@ static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__
         rv = true;
     } while (false);
 
-    if (!rv)
+    if (not rv)
         dmi_linux_session_free(session);
 
     return rv;

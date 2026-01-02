@@ -33,7 +33,7 @@ dmi_memory_error_t *dmi_memory_error_64_decode(const dmi_entity_t *entity, dmi_v
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->type            = dmi_value(data->type);

@@ -343,7 +343,7 @@ bool dmi_xml_entity_attr_value(
         text = dmi_attribute_format(attr, value, false);
         if (text == nullptr)
             break;
-    
+
         if (attr->params.unit) {
             if (xmlTextWriterWriteAttribute(
                         session->writer,
@@ -394,7 +394,7 @@ bool dmi_xml_entity_attr_set(
 
     for (size_t i = 0; i < attr->size * CHAR_BIT; i++) {
         const char *name = dmi_code_lookup(attr->params.values, i);
-        if (!name)
+        if (name == nullptr)
             continue;
 
         bool flag = mask & (1 << i);

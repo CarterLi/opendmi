@@ -90,7 +90,7 @@ dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_entity_t *entity, dmi_version_
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     // Copy vendor identifier

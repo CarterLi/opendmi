@@ -101,7 +101,7 @@ dmi_probe_t * dmi_probe_decode(dmi_entity_t *entity, dmi_version_t *plevel)
     dmi_probe_data_t *data = dmi_cast(data, entity->data);
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->description = dmi_entity_string(entity, data->description);

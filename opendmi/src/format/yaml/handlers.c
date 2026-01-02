@@ -85,7 +85,7 @@ bool dmi_yaml_dump_start(dmi_yaml_session_t *session)
         success = true;
     } while (false);
 
-    if (!success)
+    if (not success)
         dmi_error_raise_ex(session->context, DMI_ERROR_INTERNAL, "Unable to start YAML document");
 
     return success;
@@ -370,7 +370,7 @@ bool dmi_yaml_entity_attr_set(
 
     for (size_t i = 0; i < attr->size * CHAR_BIT; i++) {
         const char *name = dmi_code_lookup(attr->params.values, i);
-        if (!name)
+        if (name == nullptr)
             continue;
 
         bool flag = mask & (1 << i);
@@ -449,7 +449,7 @@ bool dmi_yaml_dump_end(dmi_yaml_session_t *session)
         success = true;
     } while (false);
 
-    if (!success)
+    if (not success)
         dmi_error_raise_ex(session->context, DMI_ERROR_INTERNAL, "Unable to end YAML document");
 
     return success;

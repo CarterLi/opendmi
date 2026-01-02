@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     bool status;
 
     int rv = EXIT_SUCCESS;
-    if (!parse_args(argc, argv, &rv))
+    if (not parse_args(argc, argv, &rv))
         return rv;
 
     argc -= optind;
@@ -291,7 +291,7 @@ static void print_all(dmi_context_t *context, const dmi_format_t *format)
     dmi_registry_entry_t *entry;
 
     session = format->handlers.initialize(context, stdout);
-    if (!session)
+    if (not session)
         return;
 
     if (format->handlers.dump_start != nullptr)

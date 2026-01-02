@@ -153,14 +153,14 @@ dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_entity_t *entity, dmi_
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->instance_count = (entity->body_length - sizeof(dmi_header_t)) /
                            sizeof(dmi_onboard_device_instance_data_t);
 
     info->instances = dmi_alloc_array(entity->context, sizeof(dmi_onboard_device_instance_t), info->instance_count);
-    if (!info->instances) {
+    if (info->instances == nullptr) {
         dmi_free(info);
         return nullptr;
     }

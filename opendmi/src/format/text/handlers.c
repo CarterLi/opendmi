@@ -240,7 +240,7 @@ void dmi_text_entity_attr_set(
 
     for (size_t i = 0; i < attr->size * CHAR_BIT; i++) {
         const char *name = dmi_name_lookup(attr->params.values, i);
-        if (!name)
+        if (name == nullptr)
             continue;
 
         bool flag = mask & (1 << i);

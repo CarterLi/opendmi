@@ -51,7 +51,7 @@ dmi_string_property_t *dmi_string_property_decode(const dmi_entity_t *entity, dm
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->ident         = dmi_value(data->ident);
@@ -70,7 +70,7 @@ bool dmi_string_property_link(dmi_entity_t *entity)
     dmi_registry_t *registry;
 
     info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_STRING_PROPERTY));
-    if (!info)
+    if (info == nullptr)
         return false;
 
     registry = entity->context->registry;

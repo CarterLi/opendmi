@@ -142,7 +142,7 @@ dmi_cooling_device_t *dmi_cooling_device_decode(dmi_entity_t *entity, dmi_versio
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->probe_handle = dmi_value(data->probe_handle);
@@ -183,7 +183,7 @@ bool dmi_cooling_device_link(dmi_entity_t *entity)
     dmi_registry_t *registry;
 
     info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_COOLING_DEVICE));
-    if (!info)
+    if (info == nullptr)
         return false;
 
     registry = entity->context->registry;

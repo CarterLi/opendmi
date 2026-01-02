@@ -92,7 +92,7 @@ dmi_hardware_security_t *dmi_hardware_security_decode(dmi_entity_t *entity, dmi_
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->front_panel_reset = data->settings.front_panel_reset;

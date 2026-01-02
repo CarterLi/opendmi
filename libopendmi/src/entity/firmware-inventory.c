@@ -218,7 +218,7 @@ dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_entity_t *enti
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->name           = dmi_entity_string(entity, data->name);
@@ -240,7 +240,7 @@ dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_entity_t *enti
     info->component_count = dmi_value(data->component_count);
 
     info->component_handles = dmi_alloc_array(entity->context, sizeof(dmi_handle_t), info->component_count);
-    if (!info->component_handles) {
+    if (info->component_handles == nullptr) {
         dmi_free(info);
         return nullptr;
     }

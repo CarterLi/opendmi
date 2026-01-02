@@ -83,7 +83,7 @@ bool dmi_attribute_is_unspecified(const dmi_attribute_t *attr, const void *value
         if (memcmp(value, attr->params.unspec, attr->size) == 0)
             return true;
     } else if (attr->type == DMI_ATTRIBUTE_TYPE_STRING) {
-        if (!*(const char **)value)
+        if (*(const char **)value == nullptr)
             return true;
     } else if (attr->type == DMI_ATTRIBUTE_TYPE_HANDLE) {
         if (*(dmi_handle_t *)value == DMI_HANDLE_INVALID)
@@ -117,7 +117,7 @@ char *dmi_attribute_format(const dmi_attribute_t *attr, const void *value, bool 
         return nullptr;
 
     ops = &dmi_attribute_type_ops[attr->type];
-    if (!ops->format)
+    if (ops->format == nullptr)
         return nullptr;
 
     return ops->format(attr, value, pretty);
@@ -371,7 +371,7 @@ static char *dmi_attribute_format_enum(
     assert(attr != nullptr);
     assert(value != nullptr);
 
-    if (!attr->params.values)
+    if (attr->params.values == nullptr)
         return nullptr;
 
     if (pretty)
@@ -379,7 +379,7 @@ static char *dmi_attribute_format_enum(
     else
         name = dmi_code_lookup(attr->params.values, *(int *)value);
 
-    if (name)
+    if (name != nullptr)
         str = strdup(name);
     else if (pretty)
         dmi_asprintf(&str, "<invalid> (0x%x)", *(int *)value);

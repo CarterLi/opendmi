@@ -408,12 +408,12 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
         .__value = dmi_value(data->type)
     };
 
-    info->vendor             = dmi_entity_string(entity,  data->vendor);
-    info->type               = type.type;
-    info->is_lock_present    = type.is_lock_present;
-    info->version            = dmi_entity_string(entity, data->version);
-    info->serial_number      = dmi_entity_string(entity, data->serial_number);
-    info->asset_tag          = dmi_entity_string(entity, data->asset_tag);
+    info->vendor          = dmi_entity_string(entity,  data->vendor);
+    info->type            = type.type;
+    info->is_lock_present = type.is_lock_present;
+    info->version         = dmi_entity_string(entity, data->version);
+    info->serial_number   = dmi_entity_string(entity, data->serial_number);
+    info->asset_tag       = dmi_entity_string(entity, data->asset_tag);
 
     if (entity->body_length >= 0x09) {
         level = dmi_version(2, 1, 0);

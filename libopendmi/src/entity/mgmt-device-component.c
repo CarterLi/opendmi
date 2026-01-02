@@ -54,7 +54,7 @@ dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_entity_t
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->description      = dmi_entity_string(entity, data->description);
@@ -82,17 +82,17 @@ bool dmi_mgmt_device_component_link(dmi_entity_t *entity)
     dmi_registry_t *registry;
 
     info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE_COMPONENT));
-    if (!info)
+    if (info == nullptr)
         return false;
 
     registry = entity->context->registry;
 
     info->device = dmi_registry_get(registry, info->device_handle, DMI_TYPE_MGMT_DEVICE);
-    if (!info->device)
+    if (info->device == nullptr)
         return false;
 
     info->component = dmi_registry_get_any(registry, info->component_handle, dmi_component_types);
-    if (!info->component)
+    if (info->component == nullptr)
         return false;
 
     if (info->threshold_handle != DMI_HANDLE_INVALID) {

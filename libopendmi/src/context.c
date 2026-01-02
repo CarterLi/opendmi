@@ -234,7 +234,7 @@ bool dmi_dump_save(dmi_context_t *context, const char *path, bool overwrite)
     }
 
     flags = O_CREAT | O_WRONLY | O_TRUNC;
-    if (!overwrite)
+    if (not overwrite)
         flags |= O_EXCL;
 
     fd = open(path, flags, 0666);
@@ -386,7 +386,7 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
         context->entry_data = context->backend->read_entry(context, &context->entry_size);
         if (context->entry_data == nullptr)
             break;
-        if (!dmi_entry_decode(context, context->entry_data, context->entry_size))
+        if (not dmi_entry_decode(context, context->entry_data, context->entry_size))
             break;
 
         // Fixup SMBIOS version number
@@ -409,9 +409,9 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
             break;
 
         // Build and link registry
-        if (!dmi_registry_build(context->registry))
+        if (not dmi_registry_build(context->registry))
             break;
-        if (!dmi_registry_link(context->registry))
+        if (not dmi_registry_link(context->registry))
             break;
 
         success = true;

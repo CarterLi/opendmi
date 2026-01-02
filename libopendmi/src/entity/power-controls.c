@@ -58,7 +58,7 @@ dmi_power_controls_t *dmi_power_controls_decode(const dmi_entity_t *entity, dmi_
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->poweron_month  = dmi_cast(info->poweron_month,

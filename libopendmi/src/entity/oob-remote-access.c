@@ -68,7 +68,7 @@ dmi_oob_remote_access_t *dmi_oob_remote_access_decode(
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     dmi_oob_connections_t connections = {

@@ -683,7 +683,7 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_entity_t *entity, dmi_version_
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->array_handle      = dmi_value(data->array_handle);
@@ -809,14 +809,14 @@ bool dmi_memory_device_link(dmi_entity_t *entity)
     dmi_registry_t *registry;
 
     info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_MEMORY_DEVICE));
-    if (!info)
+    if (info == nullptr)
         return false;
 
     registry = entity->context->registry;
 
     if (info->array_handle != DMI_HANDLE_INVALID) {
         info->array = dmi_registry_get(registry, info->array_handle, DMI_TYPE_MEMORY_ARRAY);
-        if (!info->array) {
+        if (info->array == nullptr) {
             dmi_error_raise_ex(entity->context, DMI_ERROR_ENTITY_NOT_FOUND,
                                "Memory array: 0x%04x", info->array_handle);
         }

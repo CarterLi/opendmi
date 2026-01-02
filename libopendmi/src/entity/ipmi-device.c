@@ -200,7 +200,7 @@ dmi_ipmi_device_t *dmi_ipmi_device_decode(const dmi_entity_t *entity, dmi_versio
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->interface_type = dmi_value(data->interface_type);

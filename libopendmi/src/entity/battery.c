@@ -151,7 +151,8 @@ const char *dmi_battery_chemistry_name(dmi_battery_chemistry_t value)
     return dmi_name_lookup(&dmi_battery_chemistry_names, value);
 }
 
-dmi_battery_t *dmi_battery_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+dmi_battery_t *
+dmi_battery_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
 {
     dmi_battery_t *info;
     dmi_version_t level = dmi_version(2, 1, 0);

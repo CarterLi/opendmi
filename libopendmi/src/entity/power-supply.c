@@ -202,7 +202,7 @@ dmi_power_supply_t *dmi_power_supply_decode(const dmi_entity_t *entity, dmi_vers
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->group            = data->group;

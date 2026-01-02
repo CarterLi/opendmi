@@ -126,7 +126,7 @@ dmi_system_t *dmi_system_decode(const dmi_entity_t *entity, dmi_version_t *pleve
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->vendor        = dmi_entity_string(entity, data->vendor);

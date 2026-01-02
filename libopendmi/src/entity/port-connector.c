@@ -476,7 +476,7 @@ dmi_port_connector_t *dmi_port_connector_decode(const dmi_entity_t *entity, dmi_
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->internal_designator = dmi_entity_string(entity, data->internal_designator);

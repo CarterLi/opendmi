@@ -45,13 +45,13 @@ dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_entity_t *entity, dmi_versio
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->string_count = dmi_value(data->count);
 
     info->strings = dmi_alloc_array(entity->context, sizeof(const char *), info->string_count);
-    if (!info->strings) {
+    if (info->strings == nullptr) {
         dmi_free(info);
         return nullptr;
     }

@@ -69,15 +69,15 @@ dmi_entity_t *dmi_entity_decode(dmi_context_t *context, const void *data)
     bool success = false;
     do {
         // Decode strings
-        if (!dmi_entity_decode_length(entity))
+        if (not dmi_entity_decode_length(entity))
             break;
-        if (!dmi_entity_decode_strings(entity))
+        if (not dmi_entity_decode_strings(entity))
             break;
 
         // Decode information
         if ((entity->spec != nullptr) and (entity->spec->handlers.decode != nullptr)) {
             entity->info = entity->spec->handlers.decode(entity, &entity->level);
-            if (!entity->info)
+            if (entity->info == nullptr)
                 break;
         }
 

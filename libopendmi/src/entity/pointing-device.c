@@ -179,7 +179,7 @@ dmi_pointing_device_t *dmi_pointing_device_decode(dmi_entity_t *entity, dmi_vers
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->type         = data->type;

@@ -163,7 +163,7 @@ dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_entity_t *entity, dmi_versio
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->description = dmi_entity_string(entity, data->description);

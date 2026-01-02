@@ -115,7 +115,7 @@ static bool dmi_entry_decode_legacy(dmi_context_t *context,
     const dmi_entry_legacy_t *entry = dmi_cast(entry, data);
 
     // Verify EPS checksum value
-    if (!dmi_checksum(data, sizeof(dmi_entry_legacy_t))) {
+    if (not dmi_checksum(data, sizeof(dmi_entry_legacy_t))) {
         dmi_error_raise(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
         return false;
     }
@@ -166,7 +166,7 @@ static bool dmi_entry_decode_v21(dmi_context_t *context,
     }
 
     // Verify EPS checksum value
-    if (!dmi_checksum(data, entry_length)) {
+    if (not dmi_checksum(data, entry_length)) {
         dmi_error_raise(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
         return false;
     }
@@ -208,7 +208,7 @@ static bool dmi_entry_decode_v30(dmi_context_t *context,
     }
 
     // Verify EPS checksum value
-    if (!dmi_checksum(data, entry_length)) {
+    if (not dmi_checksum(data, entry_length)) {
         dmi_error_raise(context, DMI_ERROR_INVALID_EPS_CHECKSUM);
         return false;
     }

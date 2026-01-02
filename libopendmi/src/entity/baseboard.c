@@ -158,7 +158,8 @@ const char *dmi_baseboard_type_name(dmi_baseboard_type_t value)
     return dmi_name_lookup(&dmi_baseboard_type_names, value);
 }
 
-dmi_baseboard_t *dmi_baseboard_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+dmi_baseboard_t *
+dmi_baseboard_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
 {
     dmi_baseboard_t *info;
     const dmi_baseboard_data_t *data;

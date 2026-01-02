@@ -196,7 +196,7 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_entity_t *entity, dmi_vers
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     maximum_capacity = dmi_value(data->maximum_capacity);

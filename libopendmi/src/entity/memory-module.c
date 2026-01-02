@@ -158,7 +158,7 @@ dmi_memory_module_t *dmi_memory_module_decode(const dmi_entity_t *entity, dmi_ve
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->socket = dmi_entity_string(entity, data->socket);

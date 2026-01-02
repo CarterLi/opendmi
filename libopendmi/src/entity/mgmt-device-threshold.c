@@ -70,7 +70,7 @@ dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_entity_t
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->lower_non_critical    = dmi_value(data->lower_non_critical);

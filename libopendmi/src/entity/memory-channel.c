@@ -99,7 +99,7 @@ dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_entity_t *entity, dmi_
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
-    if (!info)
+    if (info == nullptr)
         return nullptr;
 
     info->type         = dmi_value(data->type);
@@ -108,7 +108,7 @@ dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_entity_t *entity, dmi_
 
     info->devices = dmi_alloc_array(entity->context, sizeof(dmi_memory_channel_device_t),
                                     info->device_count);
-    if (!info->devices) {
+    if (info->devices == nullptr) {
         dmi_free(info);
         return nullptr;
     }
@@ -134,7 +134,7 @@ bool dmi_memory_channel_link(dmi_entity_t *entity)
     dmi_entity_t *device;
 
     info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_MEMORY_CHANNEL));
-    if (!info)
+    if (info == nullptr)
         return false;
 
     registry = entity->context->registry;
