@@ -390,6 +390,17 @@ typedef enum dmi_processor_upgrade
     DMI_PROCESSOR_UPGRADE_SOCKET_BGA2833   = 0x57, ///< Socket BGA2833
 } dmi_processor_upgrade_t;
 
+typedef enum dmi_processor_status
+{
+    DMI_PROCESSOR_STATUS_UNKNOWN          = 0x00, ///< Unknown
+    DMI_PROCESSOR_STATUS_ENABLED          = 0x01, ///< CPU enabled
+    DMI_PROCESSOR_STATUS_DISABLED_BY_USER = 0x02, ///< CPU disabled by user through firmware setup
+    DMI_PROCESSOR_STATUS_DISABLED_BY_FW   = 0x03, ///< CPU disabled by firmware (POST error)
+    DMI_PROCESSOR_STATUS_IDLE             = 0x04, ///< CPU is idle, waiting to be enabled
+    // Reserved: 0x05 .. 0x06
+    DMI_PROCESSOR_STATUS_OTHER            = 0x07, ///< Other
+} dmi_processor_status_t;
+
 dmi_packed_struct(dmi_processor_data)
 {
     /**
@@ -524,6 +535,20 @@ struct dmi_processor
     dmi_processor_type_t type;
 
     dmi_processor_family_t family;
+
+    const char *vendor;
+
+    struct {
+        /**
+         * @brief Is CPU Socket populated.
+         */
+        bool populated;
+
+        /**
+         * @brief CPU status.
+         */
+        dmi_processor_status_t status;
+    } status;
 };
 
 /**
