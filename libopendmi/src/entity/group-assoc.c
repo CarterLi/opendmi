@@ -57,7 +57,7 @@ dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_entity_t *entity, dmi_versio
     info->item_type   = dmi_value(data->item_type);
     info->item_handle = dmi_value(data->item_handle);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 0, 0);
 
     return info;

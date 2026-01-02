@@ -377,7 +377,7 @@ dmi_cache_t *dmi_cache_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
             info->installed_size = dmi_cache_size_ex(dmi_value(data->installed_size_ex));
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = level;
 
     return info;

@@ -303,7 +303,7 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_entity_t *entity
         };
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = level;
 
     return info;

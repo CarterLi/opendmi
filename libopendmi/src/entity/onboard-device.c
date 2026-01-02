@@ -178,7 +178,7 @@ dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_entity_t *entity, dmi_
         instance->description = dmi_entity_string(entity, instance_data->description);
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 0, 0);
 
     return info;

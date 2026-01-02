@@ -72,7 +72,7 @@ dmi_power_controls_t *dmi_power_controls_decode(const dmi_entity_t *entity, dmi_
     info->poweron_second = dmi_cast(info->poweron_second,
                                     dmi_bcd_decode(&data->poweron_second, sizeof(data->poweron_second)));
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 2, 0);
 
     return info;

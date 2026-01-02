@@ -230,7 +230,7 @@ dmi_power_supply_t *dmi_power_supply_decode(const dmi_entity_t *entity, dmi_vers
     info->cooling_device_handle = dmi_value(data->cooling_device_handle);
     info->current_probe_handle  = dmi_value(data->current_probe_handle);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 3, 1);
 
     return info;

@@ -44,7 +44,7 @@ dmi_memory_error_t *dmi_memory_error_64_decode(const dmi_entity_t *entity, dmi_v
     info->device_addr     = dmi_value(data->device_addr);
     info->resolution      = dmi_value(data->resolution);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 3, 0);
 
     return info;

@@ -791,7 +791,7 @@ dmi_memory_device_t *dmi_memory_device_decode(dmi_entity_t *entity, dmi_version_
         info->rcd_revision    = dmi_value(data->rcd_revision);
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = level;
 
     return info;

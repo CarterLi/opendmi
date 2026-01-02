@@ -631,7 +631,7 @@ dmi_slot_t *dmi_slot_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
     info->length = dmi_value(data->length);
     info->ident  = dmi_value(data->ident);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = level;
 
     return info;

@@ -100,7 +100,7 @@ dmi_hardware_security_t *dmi_hardware_security_decode(dmi_entity_t *entity, dmi_
     info->keyboard_password = data->settings.keyboard_password;
     info->poweron_password  = data->settings.poweron_password;
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 2, 0);
 
     return info;

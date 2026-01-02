@@ -249,7 +249,7 @@ dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_entity_t *enti
         info->component_handles[i] = dmi_value(data->component_handles[i]);
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(3, 5, 0);
 
     return info;

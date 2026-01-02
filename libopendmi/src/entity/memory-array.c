@@ -215,7 +215,7 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_entity_t *entity, dmi_vers
             info->maximum_capacity = dmi_value(data->maximum_capacity_ex);
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = level;
 
     return info;

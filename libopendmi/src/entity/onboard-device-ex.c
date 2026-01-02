@@ -79,7 +79,7 @@ dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_entity_t *entity
 
     dmi_pci_addr_decode(&info->address, &data->address);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 6, 0);
 
     return info;

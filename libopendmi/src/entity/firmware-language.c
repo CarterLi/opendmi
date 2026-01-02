@@ -75,7 +75,7 @@ dmi_firmware_language_t *dmi_firmware_language_decode(const dmi_entity_t *entity
     info->is_abbreviated   = flags.is_abbreviated;
     info->current_language = dmi_entity_string(entity, data->current_language);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 0, 0);
 
     return info;

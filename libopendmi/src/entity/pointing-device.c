@@ -186,7 +186,7 @@ dmi_pointing_device_t *dmi_pointing_device_decode(dmi_entity_t *entity, dmi_vers
     info->interface    = data->interface;
     info->button_count = data->button_count;
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 1, 0);
 
     return info;

@@ -112,7 +112,7 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_entity_t *entity
     else
         info->range_size = info->start_addr - info->end_addr;
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = level;
 
     return info;

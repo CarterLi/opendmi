@@ -121,7 +121,7 @@ dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_entity_t *entity, dmi_
         device->handle = dmi_value(device_data->handle);
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 3, 0);
 
     return info;

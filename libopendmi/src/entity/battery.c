@@ -193,7 +193,7 @@ dmi_battery_t *dmi_battery_decode(const dmi_entity_t *entity, dmi_version_t *ple
         info->capacity *= dmi_value(data->capacity_factor);
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = level;
 
     return info;

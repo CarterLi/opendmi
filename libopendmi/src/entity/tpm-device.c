@@ -121,7 +121,7 @@ dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_entity_t *entity, dmi_version_
     info->features    = features;
     info->oem_defined = dmi_value(data->oem_defined);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 0, 0);
 
     return info;

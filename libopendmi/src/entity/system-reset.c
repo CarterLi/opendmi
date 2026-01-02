@@ -128,7 +128,7 @@ dmi_system_reset_t *dmi_system_reset_decode(const dmi_entity_t *entity, dmi_vers
     info->timer_interval = dmi_value(data->timer_inverval);
     info->timeout        = dmi_value(data->timeout);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 2, 0);
 
     return info;

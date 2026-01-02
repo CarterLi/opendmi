@@ -485,7 +485,7 @@ dmi_port_connector_t *dmi_port_connector_decode(const dmi_entity_t *entity, dmi_
     info->external_connector  = data->external_connector;
     info->port_type           = data->port_type;
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 0, 0);
 
     return info;

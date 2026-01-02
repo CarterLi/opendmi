@@ -139,7 +139,7 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_entity_t *enti
     else
         info->range_size = info->start_addr - info->end_addr;
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = level;
 
     return info;

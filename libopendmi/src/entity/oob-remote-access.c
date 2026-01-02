@@ -78,7 +78,7 @@ dmi_oob_remote_access_t *dmi_oob_remote_access_decode(
     info->vendor      = dmi_entity_string(entity, data->vendor);
     info->connections = connections;
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 2, 0);
 
     return info;

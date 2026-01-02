@@ -124,7 +124,7 @@ dmi_probe_t * dmi_probe_decode(dmi_entity_t *entity, dmi_version_t *plevel)
     else
         info->nominal_value = SHRT_MIN;
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 2, 0);
 
     return info;

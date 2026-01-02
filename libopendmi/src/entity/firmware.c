@@ -394,7 +394,7 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_entity_t *entity, dmi_version_t *p
             info->rom_size = dmi_firmware_rom_size_ex(dmi_value(data->rom_size_ex));
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = level;
 
     return info;

@@ -60,7 +60,7 @@ dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_entity_t *entity, dmi_versio
         info->strings[i] = dmi_entity_string(entity, (dmi_string_t)(i + 1));
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 0, 0);
 
     return info;

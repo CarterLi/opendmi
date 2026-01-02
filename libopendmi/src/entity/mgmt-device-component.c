@@ -62,7 +62,7 @@ dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_entity_t
     info->component_handle = dmi_value(data->component_handle);
     info->threshold_handle = dmi_value(data->threshold_handle);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 3, 0);
 
     return info;

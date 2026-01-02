@@ -1788,6 +1788,7 @@ const char *dmi_processor_upgrade_name(dmi_processor_upgrade_t value)
 dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
 {
     dmi_processor_t *info;
+    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_processor_data_t *data;
 
     dmi_unused(plevel);
@@ -1808,28 +1809,45 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     info->maximum_speed      = dmi_value(data->maximum_speed);
 
     // SMBIOS 2.1 features
-    if (entity->body_length >= 0x1Au) {}
+    if (entity->body_length >= 0x1Au) {
+        level = dmi_version(2, 1, 0);
+    }
 
     // SMBIOS 2.3 features
-    if (entity->body_length >= 0x20u) {}
+    if (entity->body_length >= 0x20u) {
+        level = dmi_version(2, 3, 0);
+    }
 
     // SMBIOS 2.5 features
-    if (entity->body_length >= 0x23u) {}
+    if (entity->body_length >= 0x23u) {
+        level = dmi_version(2, 5, 0);
+    }
 
     // SMBIOS 2.6 features
     if (entity->body_length >= 0x28u) {
+        level = dmi_version(2, 6, 0);
+
         if (info->family == DMI_PROCESSOR_FAMILY_EXTENDED)
             info->family = dmi_value(data->family_ex);
     }
 
     // SMBIOS 3.0 features
-    if (entity->body_length >= 0x2Au) {}
+    if (entity->body_length >= 0x2Au) {
+        level = dmi_version(3, 0, 0);
+    }
 
     // SMBIOS 3.6 features
-    if (entity->body_length >= 0x30u) {}
+    if (entity->body_length >= 0x30u) {
+        level = dmi_version(3, 6, 0);
+    }
 
     // SMBIOS 3.8 features
-    if (entity->body_length >= 0x32u) {}
+    if (entity->body_length >= 0x32u) {
+        level = dmi_version(3, 8, 0);
+    }
+
+    if (plevel != nullptr)
+        *plevel = level;
 
     return info;
 }

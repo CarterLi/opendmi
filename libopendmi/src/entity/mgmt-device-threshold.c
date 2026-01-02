@@ -80,7 +80,7 @@ dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_entity_t
     info->lower_non_recoverable = dmi_value(data->lower_non_recoverable);
     info->upper_non_recoverable = dmi_value(data->upper_non_recoverable);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 3, 0);
 
     return info;

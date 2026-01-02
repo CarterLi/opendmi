@@ -171,7 +171,7 @@ dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_entity_t *entity, dmi_versio
     info->addr        = dmi_value(data->addr);
     info->addr_type   = dmi_value(data->addr_type);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(2, 3, 0);
 
     return info;

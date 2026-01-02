@@ -58,7 +58,7 @@ dmi_string_property_t *dmi_string_property_decode(const dmi_entity_t *entity, dm
     info->value         = dmi_entity_string(entity, data->value);
     info->parent_handle = dmi_value(data->parent_handle);
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = dmi_version(3, 5, 0);
 
     return info;

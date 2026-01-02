@@ -149,7 +149,7 @@ dmi_system_t *dmi_system_decode(const dmi_entity_t *entity, dmi_version_t *pleve
         info->family     = dmi_entity_string(entity, data->family);
     }
 
-    if (plevel)
+    if (plevel != nullptr)
         *plevel = level;
 
     return info;
