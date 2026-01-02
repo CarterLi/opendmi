@@ -33,8 +33,9 @@
 #endif // ENABLE_CURSES
 
 #include <opendmi/context.h>
-#include <opendmi/format.h>
+#include <opendmi/pager.h>
 #include <opendmi/entity.h>
+#include <opendmi/format.h>
 #include <opendmi/format/text.h>
 
 typedef enum dmi_command
@@ -90,7 +91,7 @@ static bool tty = false;
 int main(int argc, char *argv[])
 {
     dmi_context_t *context;
-    bool status;
+    bool status = false;
 
     int rv = EXIT_SUCCESS;
     if (not parse_args(argc, argv, &rv))
@@ -114,24 +115,29 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
+    // Initialize logging
     dmi_set_logger(context, log_error);
     if (config.quiet)
         dmi_set_log_level(context, DMI_LOG_WARNING);
     else if (config.debug)
         dmi_set_log_level(context, DMI_LOG_DEBUG);
 
-    if (config.command == DMI_COMMAND_LIST_KEYWORDS) {
-        status = list_keywords(context);
-        goto exit;
-    }
-
-    if (config.command == DMI_COMMAND_LIST_TYPES) {
-        status = list_types(context);
-        goto exit;
-    }
-
-    // Open DMI context
     do {
+        if (isatty(STDOUT_FILENO) && (config.output_path == nullptr)) {
+            if (not dmi_pager_start(context))
+                break;
+        }
+
+        if (config.command == DMI_COMMAND_LIST_KEYWORDS) {
+            status = list_keywords(context);
+            break;
+        }
+
+        if (config.command == DMI_COMMAND_LIST_TYPES) {
+            status = list_types(context);
+            break;
+        }
+
         if (config.input_path != nullptr)
             status = dmi_dump_load(context, config.input_path);
         else
@@ -151,7 +157,6 @@ int main(int argc, char *argv[])
         status = true;
     } while (false);
 
-exit:
     // Close DMI context
     dmi_destroy(context);
 

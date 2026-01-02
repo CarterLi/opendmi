@@ -24,6 +24,7 @@ static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
     [DMI_ERROR_FILE_STAT]             = "Unable to stat file",
     [DMI_ERROR_FILE_READ]             = "Unable to read file",
     [DMI_ERROR_FILE_WRITE]            = "Unable to write file",
+    [DMI_ERROR_FILE_DUP]              = "Unable to clone file handle",
     [DMI_ERROR_FILE_MAP]              = "Unable to map file",
     [DMI_ERROR_UNKNOWN_EPS_ANCHOR]    = "Unknown entry point structure anchor",
     [DMI_ERROR_INVALID_EPS_LENGTH]    = "Invalid entry point structure length",
