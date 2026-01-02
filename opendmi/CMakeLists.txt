@@ -25,6 +25,7 @@ configure_file(
 
 add_executable(opendmi
     src/main.c
+    src/pager.c
     src/format.c
     src/format/text.c
     src/format/text/handlers.c
