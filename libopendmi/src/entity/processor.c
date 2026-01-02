@@ -1738,6 +1738,55 @@ const dmi_attribute_t dmi_processor_attrs[] =
         .unit    = DMI_UNIT_MHZ,
         .unknown = dmi_value_ptr((uint16_t)0)
     }),
+    DMI_ATTRIBUTE(dmi_processor_t, current_speed, INTEGER, {
+        .code    = "current-speed",
+        .name    = "Current Speed",
+        .unit    = DMI_UNIT_MHZ,
+        .unknown = dmi_value_ptr((uint16_t)0)
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, serial_number, STRING, {
+        .code    = "serial-number",
+        .name    = "Serial Number",
+        .level   = DMI_VERSION(2, 3, 0)
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, asset_tag, STRING, {
+        .code    = "asset-tag",
+        .name    = "Asset Tag",
+        .level   = DMI_VERSION(2, 3, 0)
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, part_number, STRING, {
+        .code    = "part-number",
+        .name    = "Part Number",
+        .level   = DMI_VERSION(2, 3, 0)
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, core_count, INTEGER, {
+        .code    = "core-count",
+        .name    = "Core Count",
+        .unknown = dmi_value_ptr((uint16_t)0),
+        .level   = DMI_VERSION(2, 5, 0)
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, core_enabled, INTEGER, {
+        .code    = "core-enabled",
+        .name    = "Core Enabled",
+        .unknown = dmi_value_ptr((uint16_t)0),
+        .level   = DMI_VERSION(2, 5, 0)
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, thread_count, INTEGER, {
+        .code    = "thread-count",
+        .name    = "Thread Count",
+        .unknown = dmi_value_ptr((uint16_t)0),
+        .level   = DMI_VERSION(2, 5, 0)
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, thread_count, INTEGER, {
+        .code    = "thread-enabled",
+        .name    = "Thread Enabled",
+        .unknown = dmi_value_ptr((uint16_t)0),
+        .level   = DMI_VERSION(3, 6, 0)
+    }),
+    DMI_ATTRIBUTE(dmi_processor_t, socket_type, STRING, {
+        .code    = "socket-type",
+        .name    = "Socket Type"
+    }),
     DMI_ATTRIBUTE_NULL
 };
 
@@ -1807,6 +1856,7 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     info->vendor             = dmi_entity_string(entity, data->vendor);
     info->external_clock     = dmi_value(data->external_clock);
     info->maximum_speed      = dmi_value(data->maximum_speed);
+    info->current_speed      = dmi_value(data->current_speed);
 
     // SMBIOS 2.1 features
     if (entity->body_length >= 0x1Au) {
@@ -1816,11 +1866,19 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     // SMBIOS 2.3 features
     if (entity->body_length >= 0x20u) {
         level = dmi_version(2, 3, 0);
+
+        info->serial_number = dmi_entity_string(entity, data->serial_number);
+        info->asset_tag     = dmi_entity_string(entity, data->asset_tag);
+        info->part_number   = dmi_entity_string(entity, data->part_number);
     }
 
     // SMBIOS 2.5 features
     if (entity->body_length >= 0x23u) {
         level = dmi_version(2, 5, 0);
+
+        info->core_count   = dmi_value(data->core_count);
+        info->core_enabled = dmi_value(data->core_enabled);
+        info->thread_count = dmi_value(data->thread_count);
     }
 
     // SMBIOS 2.6 features
@@ -1834,16 +1892,29 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     // SMBIOS 3.0 features
     if (entity->body_length >= 0x2Au) {
         level = dmi_version(3, 0, 0);
+
+        if (info->core_count == 0xFFu)
+            info->core_count = dmi_value(data->core_count_ex);
+
+        if (info->core_enabled == 0xFFu)
+            info->core_enabled = dmi_value(data->core_enabled_ex);
+
+        if (info->thread_count == 0xFFu)
+            info->thread_count = dmi_value(data->thread_count_ex);
     }
 
     // SMBIOS 3.6 features
     if (entity->body_length >= 0x30u) {
         level = dmi_version(3, 6, 0);
+
+        info->thread_enabled = dmi_value(data->thread_enabled);
     }
 
     // SMBIOS 3.8 features
     if (entity->body_length >= 0x32u) {
         level = dmi_version(3, 8, 0);
+
+        info->socket_type = dmi_entity_string(entity, data->socket_type);
     }
 
     if (plevel != nullptr)

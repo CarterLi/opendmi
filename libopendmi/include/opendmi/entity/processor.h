@@ -527,7 +527,7 @@ dmi_packed_struct(dmi_processor_data)
 
     dmi_word_t thread_enabled;
 
-    dmi_byte_t socket_type;
+    dmi_string_t socket_type;
 };
 
 struct dmi_processor
@@ -544,6 +544,8 @@ struct dmi_processor
 
     uint16_t maximum_speed;
 
+    uint16_t current_speed;
+
     struct {
         /**
          * @brief Is CPU Socket populated.
@@ -555,6 +557,22 @@ struct dmi_processor
          */
         dmi_processor_status_t status;
     } status;
+
+    const char *serial_number;
+
+    const char *asset_tag;
+
+    const char *part_number;
+
+    uint16_t core_count;
+
+    uint16_t core_enabled;
+
+    uint16_t thread_count;
+
+    uint16_t thread_enabled;
+
+    const char *socket_type;
 };
 
 /**
