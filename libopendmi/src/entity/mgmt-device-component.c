@@ -50,7 +50,7 @@ dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_entity_t
     const dmi_mgmt_device_component_data_t *data;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MGMT_DEVICE_COMPONENT));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

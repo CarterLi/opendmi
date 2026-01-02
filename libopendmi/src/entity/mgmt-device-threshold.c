@@ -66,7 +66,7 @@ dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_entity_t
     dmi_mgmt_device_threshold_data_t *data;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MGMT_DEVICE_THRESHOLD));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

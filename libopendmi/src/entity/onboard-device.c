@@ -149,7 +149,7 @@ dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_entity_t *entity, dmi_
     const dmi_onboard_device_data_t *data;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_ONBOARD_DEVICE));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

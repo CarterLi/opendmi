@@ -66,7 +66,7 @@ bool dmi_memory_array_addr_validate(const dmi_entity_t *entity)
         if (data->end_addr == 0xFFFFFFFFU)
             return false;
         if (data->end_addr <= data->start_addr)
-            return false;            
+            return false;
 
         if (entity->total_length >= 0x1F) {
             if (data->start_addr_ex != 0)
@@ -84,9 +84,9 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_entity_t *entity
     dmi_memory_array_addr_t *info;
     dmi_version_t level = dmi_version(2, 1, 0);
     const dmi_memory_array_addr_data_t *data;
-    
+
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MEMORY_ARRAY_ADDR));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

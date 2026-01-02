@@ -29,7 +29,7 @@ dmi_memory_error_t *dmi_memory_error_32_decode(const dmi_entity_t *entity, dmi_v
     const dmi_memory_error_32_data_t *data;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MEMORY_ERROR_32));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

@@ -122,7 +122,7 @@ dmi_system_t *dmi_system_decode(const dmi_entity_t *entity, dmi_version_t *pleve
     const dmi_system_data_t *data;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_SYSTEM));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

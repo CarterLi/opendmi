@@ -175,7 +175,7 @@ dmi_pointing_device_t *dmi_pointing_device_decode(dmi_entity_t *entity, dmi_vers
     const dmi_pointing_device_data_t *data;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_POINTING_DEVICE));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

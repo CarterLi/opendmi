@@ -616,7 +616,7 @@ dmi_slot_t *dmi_slot_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
     const dmi_slot_data_t *data;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_SYSTEM_SLOTS));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

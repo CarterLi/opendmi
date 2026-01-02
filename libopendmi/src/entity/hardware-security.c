@@ -88,7 +88,7 @@ dmi_hardware_security_t *dmi_hardware_security_decode(dmi_entity_t *entity, dmi_
     const dmi_hardware_security_data_t *data;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_HARDWARE_SECURITY));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

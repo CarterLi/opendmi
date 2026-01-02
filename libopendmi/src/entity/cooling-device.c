@@ -138,7 +138,7 @@ dmi_cooling_device_t *dmi_cooling_device_decode(dmi_entity_t *entity, dmi_versio
     const dmi_cooling_device_data_t *data;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_COOLING_DEVICE));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

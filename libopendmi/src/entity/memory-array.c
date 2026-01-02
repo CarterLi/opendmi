@@ -192,7 +192,7 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_entity_t *entity, dmi_vers
     dmi_dword_t maximum_capacity;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MEMORY_ARRAY));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

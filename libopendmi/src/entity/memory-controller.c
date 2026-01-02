@@ -250,7 +250,7 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_entity_t *entity
     const dmi_memory_controller_extra_t *extra;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MEMORY_CONTROLLER));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));

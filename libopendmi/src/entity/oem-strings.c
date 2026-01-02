@@ -41,7 +41,7 @@ dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_entity_t *entity, dmi_versio
     const dmi_oem_strings_data_t *data;
 
     data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_OEM_STRINGS));
-    if (!data)
+    if (data == nullptr)
         return nullptr;
 
     info = dmi_alloc(entity->context, sizeof(*info));
