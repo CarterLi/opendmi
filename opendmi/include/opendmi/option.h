@@ -9,15 +9,34 @@
 
 #pragma once
 
-#include <opendmi/defs.h>
+#include <opendmi/argument.h>
 
 typedef struct dmi_option dmi_option_t;
+typedef struct dmi_option_group dmi_option_group_t;
 
+typedef enum dmi_option_flag
+{
+    DMI_OPTION_FLAG_HIDDEN       = 0x01,
+    DMI_OPTION_FLAG_REVERSE      = 0x02,
+    DMI_OPTION_FLAG_OPTIONAL_ARG = 0x04
+} dmi_option_flag_t;
+
+/**
+ * @brief Command line option descriptor.
+ */
 struct dmi_option
 {
     char short_name;
-    char *long_name;
-    char *description;
+    const char *long_name;
+    const char *description;
+    dmi_argument_t argument;
+    unsigned flags;
+};
+
+struct dmi_option_group
+{
+    const char *name;
+    const dmi_option_t *options;
 };
 
 __BEGIN_DECLS
