@@ -20,7 +20,7 @@ static bool dmi_cooling_device_link(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_cooling_device_type_names =
 {
     .code  = "cooling-device-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_COOLING_DEVICE_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_COOLING_DEVICE_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_COOLING_DEVICE_TYPE_UNKNOWN),

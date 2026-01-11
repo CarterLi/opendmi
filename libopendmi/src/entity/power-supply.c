@@ -20,7 +20,7 @@ static bool dmi_power_supply_link(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_power_supply_type_names =
 {
     .code  = "power-supply-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_POWER_SUPPLY_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_POWER_SUPPLY_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_POWER_SUPPLY_TYPE_UNKNOWN),
@@ -61,7 +61,7 @@ static const dmi_name_set_t dmi_power_supply_type_names =
 static const dmi_name_set_t dmi_range_switching_type_names =
 {
     .code  = "range-switching-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_RANGE_SWITCHING_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_RANGE_SWITCHING_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_RANGE_SWITCHING_TYPE_UNKNOWN),

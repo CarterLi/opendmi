@@ -16,7 +16,7 @@ static bool dmi_oob_remote_access_decode(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_oob_connection_names =
 {
     .code  = "oob-connections",
-    .names = {
+    .names = (dmi_name_t[]){
         {
             .id   = 0,
             .code = "is-inbound-enabled",

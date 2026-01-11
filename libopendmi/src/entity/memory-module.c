@@ -18,7 +18,7 @@ static bool dmi_memory_module_decode(dmi_entity_t *entity);
 const dmi_name_set_t dmi_memory_module_type_names =
 {
     .code  = "memory-module-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_OTHER(0),
         DMI_NAME_UNKNOWN(1),
         {
@@ -73,7 +73,7 @@ const dmi_name_set_t dmi_memory_module_type_names =
 static const dmi_name_set_t dmi_memory_module_error_names =
 {
     .code  = "memory-module-errors",
-    .names = {
+    .names = (dmi_name_t[]){
         {
             .id   = 0,
             .code = "uncorrectable",

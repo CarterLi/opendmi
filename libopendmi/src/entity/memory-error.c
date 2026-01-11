@@ -11,7 +11,7 @@
 static const dmi_name_set_t dmi_memory_error_type_names =
 {
     .code  = "memory-error-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_MEMORY_ERROR_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_MEMORY_ERROR_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_MEMORY_ERROR_TYPE_UNKNOWN),
@@ -82,7 +82,7 @@ static const dmi_name_set_t dmi_memory_error_type_names =
 static const dmi_name_set_t dmi_memory_error_granularity_names =
 {
     .code  = "memory-error-granularities",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_MEMORY_ERROR_GRANULARITY_UNSPEC),
         DMI_NAME_OTHER(DMI_MEMORY_ERROR_GRANULARITY_OTHER),
         DMI_NAME_UNKNOWN(DMI_MEMORY_ERROR_GRANULARITY_UNKNOWN),
@@ -103,7 +103,7 @@ static const dmi_name_set_t dmi_memory_error_granularity_names =
 static const dmi_name_set_t dmi_memory_error_operation_names =
 {
     .code  = "memory-error-operations",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_MEMORY_ERROR_OPERATION_UNSPEC),
         DMI_NAME_OTHER(DMI_MEMORY_ERROR_OPERATION_OTHER),
         DMI_NAME_UNKNOWN(DMI_MEMORY_ERROR_OPERATION_UNKNOWN),

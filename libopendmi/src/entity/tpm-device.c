@@ -16,7 +16,7 @@ static bool dmi_tpm_device_decode(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_tpm_device_feature_names =
 {
     .code  = "tpm-device-features",
-    .names = {
+    .names = (dmi_name_t[]){
         {
             .id   = 2,
             .code = "is-unsupported",

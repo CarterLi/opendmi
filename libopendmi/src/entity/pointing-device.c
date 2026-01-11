@@ -16,7 +16,7 @@ static bool dmi_pointing_device_decode(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_pointing_device_type_names =
 {
     .code  = "pointing-device-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_POINTING_DEVICE_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_POINTING_DEVICE_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_POINTING_DEVICE_TYPE_UNKNOWN),
@@ -62,7 +62,7 @@ static const dmi_name_set_t dmi_pointing_device_type_names =
 static const dmi_name_set_t dmi_pointing_device_interface_names =
 {
     .code  = "pointing-device-interfaces",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
         DMI_NAME_OTHER(DMI_POINTING_DEVICE_INTERFACE_OTHER),
         DMI_NAME_UNKNOWN(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),

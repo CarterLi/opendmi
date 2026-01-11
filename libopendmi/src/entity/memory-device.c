@@ -20,7 +20,7 @@ static bool dmi_memory_device_link(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_memory_device_type_names =
 {
     .code  = "memory-device-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_MEMORY_DEVICE_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_MEMORY_DEVICE_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_MEMORY_DEVICE_TYPE_UNKNOWN),
@@ -191,7 +191,7 @@ static const dmi_name_set_t dmi_memory_device_type_names =
 static const dmi_name_set_t dmi_memory_device_type_detail_names =
 {
     .code  = "memory-device-type-details",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_RESERVED(0),
         DMI_NAME_OTHER(1),
         DMI_NAME_UNKNOWN(2),
@@ -267,7 +267,7 @@ static const dmi_name_set_t dmi_memory_device_type_detail_names =
 static const dmi_name_set_t dmi_memory_device_form_factor_names =
 {
     .code  = "memory-device-form-factors",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_MEMORY_DEVICE_FORM_FACTOR_UNSPEC),
         DMI_NAME_OTHER(DMI_MEMORY_DEVICE_FORM_FACTOR_OTHER),
         DMI_NAME_UNKNOWN(DMI_MEMORY_DEVICE_FORM_FACTOR_UNKNOWN),
@@ -363,7 +363,7 @@ static const dmi_name_set_t dmi_memory_device_form_factor_names =
 static const dmi_name_set_t dmi_memory_device_tech_names =
 {
     .code  = "memory-device-technologies",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_MEMORY_DEVICE_TECH_UNSPEC),
         DMI_NAME_OTHER(DMI_MEMORY_DEVICE_TECH_OTHER),
         DMI_NAME_UNKNOWN(DMI_MEMORY_DEVICE_TECH_UNKNOWN),

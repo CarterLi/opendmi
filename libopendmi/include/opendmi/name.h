@@ -11,8 +11,9 @@
 
 #include <opendmi/types.h>
 
-typedef struct dmi_name     dmi_name_t;
-typedef struct dmi_name_set dmi_name_set_t;
+typedef struct dmi_name       dmi_name_t;
+typedef struct dmi_name_range dmi_name_range_t;
+typedef struct dmi_name_set   dmi_name_set_t;
 
 struct dmi_name
 {
@@ -21,10 +22,19 @@ struct dmi_name
     const char *name;
 };
 
+struct dmi_name_range
+{
+    int start_id;
+    int end_id;
+    const char *code;
+    const char *name;
+};
+
 struct dmi_name_set
 {
     const char *code;
-    const dmi_name_t names[];
+    const dmi_name_t *names;
+    const dmi_name_range_t *ranges;
 };
 
 #define DMI_NAME_NULL { -1, nullptr, nullptr }

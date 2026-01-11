@@ -19,7 +19,7 @@ static bool dmi_battery_decode(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_battery_chemistry_names =
 {
     .code  = "battery-chemistries",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_BATTERY_CHEMISTRY_UNSPEC),
         DMI_NAME_OTHER(DMI_BATTERY_CHEMISTRY_OTHER),
         DMI_NAME_UNKNOWN(DMI_BATTERY_CHEMISTRY_UNKNOWN),

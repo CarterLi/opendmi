@@ -18,7 +18,7 @@ static bool dmi_ipmi_device_decode(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_ipmi_interface_names =
 {
     .code  = "ipmi-interfaces",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNKNOWN(DMI_IPMI_INTERFACE_UNKNOWN),
         {
             .id   = DMI_IPMI_INTERFACE_KCS,
@@ -46,8 +46,8 @@ static const dmi_name_set_t dmi_ipmi_interface_names =
 
 static const dmi_name_set_t dmi_ipmi_addr_type_names =
 {
-    .code   = "ipmi-addr-types",
-    .names = {
+    .code  = "ipmi-addr-types",
+    .names = (dmi_name_t[]){
         {
             .id   = DMI_IPMI_ADDR_TYPE_MEMORY,
             .code = "memory",
@@ -65,8 +65,8 @@ static const dmi_name_set_t dmi_ipmi_addr_type_names =
 
 static const dmi_name_set_t dmi_ipmi_intr_trigger_names =
 {
-    .code   = "ipmi-intr-triggers",
-    .names = {
+    .code  = "ipmi-intr-triggers",
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_IPMI_INTR_TRIGGER_UNSPEC),
         {
             .id   = DMI_IPMI_INTR_TRIGGER_EDGE,
@@ -84,8 +84,8 @@ static const dmi_name_set_t dmi_ipmi_intr_trigger_names =
 
 static const dmi_name_set_t dmi_ipmi_intr_polarity_names =
 {
-    .code   = "ipmi-intr-polarities",
-    .names = {
+    .code  = "ipmi-intr-polarities",
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_IPMI_INTR_POLARITY_UNSPEC),
         {
             .id   = DMI_IPMI_INTR_POLARITY_LOW,

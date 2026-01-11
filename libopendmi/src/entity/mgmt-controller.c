@@ -16,8 +16,8 @@ static void dmi_mgmt_controller_cleanup(dmi_entity_t *entity);
 
 const dmi_name_set_t dmi_mgmt_if_type_names =
 {
-    .code = "mgmt-if-types",
-    .names = {
+    .code  = "mgmt-if-types",
+    .names = (dmi_name_t[]){
         {
             .id   = DMI_MGMT_IF_TYPE_MCTP_KCS,
             .code = "keyboard-controller-style",
@@ -104,8 +104,8 @@ const dmi_name_set_t dmi_mgmt_if_type_names =
 
 const dmi_name_set_t dmi_mgmt_protocol_names =
 {
-    .code = "mgmt-protocols",
-    .names = {
+    .code  = "mgmt-protocols",
+    .names = (dmi_name_t[]){
         {
             .id   = DMI_MGMT_PROTOCOL_IPMI,
             .code = "ipmi",

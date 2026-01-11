@@ -11,9 +11,18 @@ const char *dmi_code_lookup(const dmi_name_set_t *dict, int id)
     if ((dict == nullptr) or (id < 0))
         return nullptr;
 
-    for (const dmi_name_t *entry = dict->names; entry->id >= 0; entry++) {
-        if (entry->id == id)
-            return entry->code;
+    if (dict->names != nullptr) {
+        for (const dmi_name_t *entry = dict->names; entry->code != nullptr; entry++) {
+            if (id == entry->id)
+                return entry->code;
+        }
+    }
+
+    if (dict->ranges != nullptr) {
+        for (const dmi_name_range_t *entry = dict->ranges; entry->code != nullptr; entry++) {
+            if ((id >= entry->start_id) and (id <= entry->end_id))
+                return entry->code;
+        }
     }
 
     return nullptr;
@@ -24,9 +33,18 @@ const char *dmi_name_lookup(const dmi_name_set_t *dict, int id)
     if ((dict == nullptr) or (id < 0))
         return nullptr;
 
-    for (const dmi_name_t *entry = dict->names; entry->id >= 0; entry++) {
-        if (entry->id == id)
-            return entry->name;
+    if (dict->names != nullptr) {
+        for (const dmi_name_t *entry = dict->names; entry->code != nullptr; entry++) {
+            if (id == entry->id)
+                return entry->name;
+        }
+    }
+
+    if (dict->ranges != nullptr) {
+        for (const dmi_name_range_t *entry = dict->ranges; entry->code != nullptr; entry++) {
+            if ((id >= entry->start_id) and (id <= entry->end_id))
+                return entry->name;
+        }
     }
 
     return nullptr;

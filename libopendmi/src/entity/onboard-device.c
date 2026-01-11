@@ -17,7 +17,7 @@ static void dmi_onboard_device_cleanup(dmi_entity_t *entity);
 const dmi_name_set_t dmi_onboard_device_type_names =
 {
     .code  = "onboard-device-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_ONBOARD_DEVICE_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),

@@ -17,7 +17,7 @@ static bool dmi_cache_decode(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_cache_type_names =
 {
     .code  = "cache-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_CACHE_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_CACHE_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_CACHE_TYPE_UNKNOWN),
@@ -43,7 +43,7 @@ static const dmi_name_set_t dmi_cache_type_names =
 static const dmi_name_set_t dmi_cache_mode_names =
 {
     .code  = "cache-modes",
-    .names = {
+    .names = (dmi_name_t[]){
         {
             .id   = DMI_CACHE_MODE_WRITE_THROUGH,
             .code = "write-through",
@@ -67,7 +67,7 @@ static const dmi_name_set_t dmi_cache_mode_names =
 static const dmi_name_set_t dmi_cache_assoc_names =
 {
     .code  = "cache-assocs",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_CACHE_ASSOC_UNSPEC),
         DMI_NAME_OTHER(DMI_CACHE_ASSOC_OTHER),
         DMI_NAME_UNKNOWN(DMI_CACHE_ASSOC_UNKNOWN),
@@ -138,7 +138,7 @@ static const dmi_name_set_t dmi_cache_assoc_names =
 static const dmi_name_set_t dmi_cache_location_names =
 {
     .code  = "cache-locations",
-    .names = {
+    .names = (dmi_name_t[]){
         {
             .id   = DMI_CACHE_LOCATION_INTERNAL,
             .code = "internal",
@@ -158,7 +158,7 @@ static const dmi_name_set_t dmi_cache_location_names =
 static const dmi_name_set_t dmi_cache_sram_type_names =
 {
     .code  = "cache-sram-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_OTHER(0),
         DMI_NAME_UNKNOWN(1),
         {

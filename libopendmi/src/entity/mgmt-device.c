@@ -15,8 +15,8 @@ static bool dmi_mgmt_device_decode(dmi_entity_t *entity);
 
 static const dmi_name_set_t dmi_mgmt_device_type_names =
 {
-    .code  = "mgnt-device-types",
-    .names = {
+    .code  = "mgmt-device-types",
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_MGMT_DEVICE_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_MGMT_DEVICE_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_MGMT_DEVICE_TYPE_UNKNOWN),
@@ -82,7 +82,7 @@ static const dmi_name_set_t dmi_mgmt_device_type_names =
 static const dmi_name_set_t dmi_mgmt_device_addr_type_names =
 {
     .code  = "mgmt-device-addr-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_MGMT_DEVICE_ADDR_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_MGMT_DEVICE_ADDR_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_MGMT_DEVICE_ADDR_TYPE_UNKNOWN),

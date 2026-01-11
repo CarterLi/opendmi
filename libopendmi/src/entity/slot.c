@@ -16,7 +16,7 @@ static bool dmi_slot_decode(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_slot_type_names =
 {
     .code  = "slot-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_SLOT_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_SLOT_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_SLOT_TYPE_UNKNOWN),
@@ -412,7 +412,7 @@ static const dmi_name_set_t dmi_slot_type_names =
 static const dmi_name_set_t dmi_slot_width_names =
 {
     .code  = "slot-widths",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_SLOT_WIDTH_UNSPEC),
         DMI_NAME_OTHER(DMI_SLOT_WIDTH_OTHER),
         DMI_NAME_UNKNOWN(DMI_SLOT_WIDTH_UNKNOWN),
@@ -483,7 +483,7 @@ static const dmi_name_set_t dmi_slot_width_names =
 static const dmi_name_set_t dmi_slot_length_names =
 {
     .code  = "slot-lengths",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_SLOT_LENGTH_UNSPEC),
         DMI_NAME_OTHER(DMI_SLOT_LENGTH_OTHER),
         DMI_NAME_UNKNOWN(DMI_SLOT_LENGTH_UNKNOWN),
@@ -514,7 +514,7 @@ static const dmi_name_set_t dmi_slot_length_names =
 static const dmi_name_set_t dmi_slot_usage_names =
 {
     .code  = "slot-usages",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_SLOT_USAGE_UNSPEC),
         DMI_NAME_OTHER(DMI_SLOT_USAGE_OTHER),
         DMI_NAME_UNKNOWN(DMI_SLOT_USAGE_UNKNOWN),

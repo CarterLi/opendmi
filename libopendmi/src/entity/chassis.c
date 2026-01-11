@@ -18,7 +18,7 @@ static void dmi_chassis_cleanup(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_chassis_type_names =
 {
     .code  = "chassis-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_CHASSIS_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_CHASSIS_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_CHASSIS_TYPE_UNKNOWN),
@@ -199,7 +199,7 @@ static const dmi_name_set_t dmi_chassis_type_names =
 static const dmi_name_set_t dmi_chassis_security_status_names =
 {
     .code  = "chassis-security-statuses",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_CHASSIS_SECURITY_STATUS_UNSPEC),
         DMI_NAME_OTHER(DMI_CHASSIS_SECURITY_STATUS_OTHER),
         DMI_NAME_UNKNOWN(DMI_CHASSIS_SECURITY_STATUS_UNKNOWN),
@@ -221,7 +221,7 @@ static const dmi_name_set_t dmi_chassis_security_status_names =
 static const dmi_name_set_t dmi_rack_type_names =
 {
     .code  = "rack-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_RACK_TYPE_UNSPEC),
         {
             .id   = DMI_RACK_TYPE_OPEN,

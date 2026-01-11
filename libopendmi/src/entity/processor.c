@@ -18,7 +18,7 @@ static bool dmi_processor_link(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_processor_type_names =
 {
     .code  = "processor-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_PROCESSOR_TYPE_UNSPEC),
         DMI_NAME_OTHER(DMI_PROCESSOR_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_PROCESSOR_TYPE_UNKNOWN),
@@ -49,7 +49,7 @@ static const dmi_name_set_t dmi_processor_type_names =
 static const dmi_name_set_t dmi_processor_family_names =
 {
     .code  = "processor-families",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_PROCESSOR_FAMILY_UNSPEC),
         DMI_NAME_OTHER(DMI_PROCERROR_FAMILY_OTHER),
         DMI_NAME_UNKNOWN(DMI_PROCESSOR_FAMILY_UNKNOWN),
@@ -645,6 +645,7 @@ static const dmi_name_set_t dmi_processor_family_names =
         },
         {
             .id   = DMI_PROCESSOR_FAMILY_PARISC_8000,
+            .code = "parisc-8000",
             .name = "PA-RISC 8000"
         },
         {
@@ -775,7 +776,7 @@ static const dmi_name_set_t dmi_processor_family_names =
         {
             .id   = DMI_PROCESSOR_FAMILY_INTEL_XEON_MP,
             .code = "intel-xeon-mp",
-            .name = "Intel Xeon processor MP"
+            .name = "Intel Xeon MP"
         },
         {
             .id   = DMI_PROCESSOR_FAMILY_AMD_ATHLON_XP,
@@ -1035,12 +1036,12 @@ static const dmi_name_set_t dmi_processor_family_names =
         {
             .id   = DMI_PROCESSOR_FAMILY_AMD_OPTERON_6C,
             .code = "amd-opteron-6c",
-            .name = "Six-Core AMD Opteron Processor Family"
+            .name = "Six-Core AMD Opteron"
         },
         {
             .id   = DMI_PROCESSOR_FAMILY_AMD_SEMPRON_M,
             .code = "amd-sempron-m",
-            .name = "AMD Sempron M Processor Family"
+            .name = "AMD Sempron M"
         },
         {
             .id = DMI_PROCESSOR_FAMILY_INTEL_I860,
@@ -1279,7 +1280,7 @@ static const dmi_name_set_t dmi_processor_family_names =
 static const dmi_name_set_t dmi_processor_upgrade_names =
 {
     .code  = "processor-upgrades",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_PROCESSOR_UPGRADE_UNSPEC),
         DMI_NAME_OTHER(DMI_PROCESSOR_UPGRADE_OTHER),
         DMI_NAME_UNKNOWN(DMI_PROCESSOR_UPGRADE_UNKNOWN),
@@ -1711,7 +1712,7 @@ static const dmi_name_set_t dmi_processor_upgrade_names =
 const dmi_name_set_t dmi_processor_features_names =
 {
     .code  = "features",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNKNOWN(1),
         {
             .id   = 2,

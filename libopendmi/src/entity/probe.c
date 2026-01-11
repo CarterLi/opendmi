@@ -18,7 +18,7 @@ static short dmi_probe_value(dmi_word_t value);
 const dmi_name_set_t dmi_probe_location_names =
 {
     .code  = "probe-locations",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_PROBE_LOCATION_UNSPEC),
         DMI_NAME_OTHER(DMI_PROBE_LOCATION_OTHER),
         DMI_NAME_UNKNOWN(DMI_PROBE_LOCATION_UNKNOWN),

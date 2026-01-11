@@ -14,7 +14,7 @@ static bool dmi_system_event_log_decode(dmi_entity_t *entity);
 static const dmi_name_set_t dmi_system_log_access_method_names =
 {
     .code  = "access-methods",
-    .names = {
+    .names = (dmi_name_t[]){
         {
             .id   = DMI_SYSTEM_LOG_ACCESS_METHOD_INDEXED_IO_8BIT_1_1,
             .code = "indexed-io-8bit-1-1",
@@ -47,7 +47,7 @@ static const dmi_name_set_t dmi_system_log_access_method_names =
 static const dmi_name_set_t dmi_system_log_status_names =
 {
     .code = "status",
-    .names = {
+    .names = (dmi_name_t[]){
         {
             .id   = 0,
             .code = "log-area-valid",

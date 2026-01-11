@@ -15,7 +15,7 @@ static bool dmi_system_decode(dmi_entity_t *entity);
 const dmi_name_set_t dmi_system_wakeup_type_names =
 {
     .code  = "system-wakeup-types",
-    .names = {
+    .names = (dmi_name_t[]){
         DMI_NAME_RESERVED(DMI_SYSTEM_WAKEUP_TYPE_RESERVED),
         DMI_NAME_OTHER(DMI_SYSTEM_WAKEUP_TYPE_OTHER),
         DMI_NAME_UNKNOWN(DMI_SYSTEM_WAKEUP_TYPE_UNKNOWN),
