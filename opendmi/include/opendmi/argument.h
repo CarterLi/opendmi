@@ -13,7 +13,7 @@
 
 typedef struct dmi_argument dmi_argument_t;
 
-typedef bool (*dmi_argument_fn_t)(const char *value);
+typedef bool dmi_argument_fn(const char *value);
 
 typedef enum dmi_argument_type
 {
@@ -28,7 +28,7 @@ typedef struct dmi_argument
     dmi_argument_type_t type;
     bool is_required;
     void *data;
-    dmi_argument_fn_t handler;
+    dmi_argument_fn *handler;
 };
 
 #endif // !OPENDMI_ARGUMENT_H

@@ -199,12 +199,7 @@ const char *dmi_probe_location_name(dmi_probe_location_t value);
 /**
  * @internal
  */
-dmi_probe_t *dmi_probe_decode(dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_probe_free(dmi_probe_t *info);
+bool dmi_probe_decode(dmi_entity_t *entity);
 
 __END_DECLS
 

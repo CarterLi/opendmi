@@ -11,6 +11,9 @@
 
 #include <opendmi/entity/memory-array.h>
 
+static bool dmi_memory_array_decode(dmi_entity_t *entity);
+static bool dmi_memory_array_link(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_memory_array_location_names =
 {
     .code  = "memory-array-locations",
@@ -123,56 +126,53 @@ static const dmi_name_set_t dmi_memory_array_usage_names =
     }
 };
 
-const dmi_attribute_t dmi_memory_array_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_memory_array_t, location, ENUM, {
-        .code    = "location",
-        .name    = "Location",
-        .unspec  = dmi_value_ptr(DMI_MEMORY_ARRAY_LOCATION_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_MEMORY_ARRAY_LOCATION_UNKNOWN),
-        .values  = &dmi_memory_array_location_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_array_t, usage, ENUM, {
-        .code    = "use",
-        .name    = "Use",
-        .unspec  = dmi_value_ptr(DMI_MEMORY_ARRAY_USAGE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_MEMORY_ARRAY_USAGE_UNKNOWN),
-        .values  = &dmi_memory_array_usage_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_array_t, error_correction, ENUM, {
-        .code    = "error-correction",
-        .name    = "Memory error correction",
-        .unspec  = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNSPEC),
-        .values  = &dmi_error_correct_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_array_t, maximum_capacity, SIZE, {
-        .code    = "maximum-capacity",
-        .name    = "Maximum capacity"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_array_t, error_info_handle, HANDLE, {
-        .code    = "error-handle",
-        .name    = "Memory error information handle"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_array_t, device_count, INTEGER, {
-        .code    = "device-count",
-        .name    = "Number of memory devices"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_memory_array_spec =
 {
-    .code        = "memory-array",
-    .name        = "Physical memory array",
-    .type        = DMI_TYPE_MEMORY_ARRAY,
-    .min_version = DMI_VERSION(2, 1, 0),
-    .min_length  = 0x0F,
-    .attributes  = dmi_memory_array_attrs,
-    .handlers    = {
-        .decode = (dmi_entity_decode_fn_t)dmi_memory_array_decode,
-        .link   = (dmi_entity_link_fn_t)dmi_memory_array_link,
-        .free   = (dmi_entity_free_fn_t)dmi_memory_array_free
+    .code            = "memory-array",
+    .name            = "Physical memory array",
+    .type            = DMI_TYPE_MEMORY_ARRAY,
+    .minimum_version = DMI_VERSION(2, 1, 0),
+    .minimum_length  = 0x0F,
+    .decoded_length  = sizeof(dmi_memory_array_t), 
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_memory_array_t, location, ENUM, {
+            .code    = "location",
+            .name    = "Location",
+            .unspec  = dmi_value_ptr(DMI_MEMORY_ARRAY_LOCATION_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_MEMORY_ARRAY_LOCATION_UNKNOWN),
+            .values  = &dmi_memory_array_location_names
+        }),
+        DMI_ATTRIBUTE(dmi_memory_array_t, usage, ENUM, {
+            .code    = "use",
+            .name    = "Use",
+            .unspec  = dmi_value_ptr(DMI_MEMORY_ARRAY_USAGE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_MEMORY_ARRAY_USAGE_UNKNOWN),
+            .values  = &dmi_memory_array_usage_names
+        }),
+        DMI_ATTRIBUTE(dmi_memory_array_t, error_correction, ENUM, {
+            .code    = "error-correction",
+            .name    = "Memory error correction",
+            .unspec  = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNSPEC),
+            .values  = &dmi_error_correct_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_memory_array_t, maximum_capacity, SIZE, {
+            .code    = "maximum-capacity",
+            .name    = "Maximum capacity"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_array_t, error_info_handle, HANDLE, {
+            .code    = "error-handle",
+            .name    = "Memory error information handle"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_array_t, device_count, INTEGER, {
+            .code    = "device-count",
+            .name    = "Number of memory devices"
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_memory_array_decode,
+        .link   = dmi_memory_array_link
     }
 };
 
@@ -186,20 +186,19 @@ const char *dmi_memory_array_usage_name(dmi_memory_array_usage_t value)
     return dmi_name_lookup(&dmi_memory_array_usage_names, value);
 }
 
-dmi_memory_array_t *dmi_memory_array_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_memory_array_decode(dmi_entity_t *entity)
 {
     dmi_memory_array_t *info;
-    dmi_version_t level = dmi_version(2, 1, 0);
     const dmi_memory_array_data_t *data;
     dmi_dword_t maximum_capacity;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MEMORY_ARRAY));
+    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_ARRAY);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     maximum_capacity = dmi_decode(data->maximum_capacity);
 
@@ -211,28 +210,26 @@ dmi_memory_array_t *dmi_memory_array_decode(const dmi_entity_t *entity, dmi_vers
     info->device_count      = dmi_decode(data->device_count);
 
     if (entity->body_length > 0x0Fu) {
-        level = dmi_version(2, 7, 0);
+        entity->level = dmi_version(2, 7, 0);
 
         if (maximum_capacity & 0x80000000)
             info->maximum_capacity = dmi_decode(data->maximum_capacity_ex);
     }
 
-    if (plevel != nullptr)
-        *plevel = level;
-
-    return info;
+    return true;
 }
 
-bool dmi_memory_array_link(dmi_entity_t *entity)
+static bool dmi_memory_array_link(dmi_entity_t *entity)
 {
+    dmi_memory_array_t *info;
+
     static const dmi_type_t error_types[] = {
         DMI_TYPE_MEMORY_ERROR_32,
         DMI_TYPE_MEMORY_ERROR_64,
         DMI_TYPE_INVALID
     };
 
-    dmi_memory_array_t *info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY));
-
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY);
     if (info == nullptr)
         return false;
 
@@ -246,9 +243,4 @@ bool dmi_memory_array_link(dmi_entity_t *entity)
     }
 
     return true;
-}
-
-void dmi_memory_array_free(dmi_memory_array_t *info)
-{
-    dmi_free(info);
 }

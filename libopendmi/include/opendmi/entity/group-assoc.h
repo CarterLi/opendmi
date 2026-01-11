@@ -66,18 +66,4 @@ struct dmi_group_assoc
  */
 extern const dmi_entity_spec_t dmi_group_assoc_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_group_assoc_t *dmi_group_assoc_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_group_assoc_free(dmi_group_assoc_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_GROUP_ASSOC_H

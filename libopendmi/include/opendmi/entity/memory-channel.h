@@ -157,21 +157,6 @@ __BEGIN_DECLS
 
 const char *dmi_memory_channel_type_name(dmi_memory_channel_type_t value);
 
-/**
- * @internal
- */
-dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-bool dmi_memory_channel_link(dmi_entity_t *entity);
-
-/**
- * @internal
- */
-void dmi_memory_channel_free(dmi_memory_channel_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_MEMORY_CHANNEL_H

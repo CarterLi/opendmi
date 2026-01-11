@@ -96,18 +96,4 @@ struct dmi_onboard_device_ex
  */
 extern const dmi_entity_spec_t dmi_onboard_device_ex_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_onboard_device_ex_free(dmi_onboard_device_ex_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_ONBOARD_DEVICE_EX_H

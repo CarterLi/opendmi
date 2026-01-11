@@ -10,57 +10,56 @@
 
 #include <opendmi/entity/power-controls.h>
 
-const dmi_attribute_t dmi_power_controls_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_power_controls_t, poweron_month, INTEGER, {
-        .code = "poweron-month",
-        .name = "Next power-on month"
-    }),
-    DMI_ATTRIBUTE(dmi_power_controls_t, poweron_day, INTEGER, {
-        .code = "poweron-day",
-        .name = "Next power-on day of month"
-    }),
-    DMI_ATTRIBUTE(dmi_power_controls_t, poweron_hour, INTEGER, {
-        .code = "poweron-hour",
-        .name = "Next power-on hour"
-    }),
-    DMI_ATTRIBUTE(dmi_power_controls_t, poweron_minute, INTEGER, {
-        .code = "poweron-minute",
-        .name = "Next power-on minute"
-    }),
-    DMI_ATTRIBUTE(dmi_power_controls_t, poweron_second, INTEGER, {
-        .code = "poweron-second",
-        .name = "Next power-on second"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
+static bool dmi_power_controls_decode(dmi_entity_t *entity);
 
 const dmi_entity_spec_t dmi_power_controls_spec =
 {
-    .code        = "power-controls",
-    .name        = "System power controls",
-    .type        = DMI_TYPE_POWER_CONTROLS,
-    .min_version = DMI_VERSION(2, 2, 0),
-    .min_length  = 0x09,
-    .attributes  = dmi_power_controls_attrs,
-    .handlers    = {
-        .decode = (dmi_entity_decode_fn_t)dmi_power_controls_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_power_controls_free
+    .code            = "power-controls",
+    .name            = "System power controls",
+    .type            = DMI_TYPE_POWER_CONTROLS,
+    .minimum_version = DMI_VERSION(2, 2, 0),
+    .minimum_length  = 0x09,
+    .decoded_length  = sizeof(dmi_power_controls_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_power_controls_t, poweron_month, INTEGER, {
+            .code = "poweron-month",
+            .name = "Next power-on month"
+        }),
+        DMI_ATTRIBUTE(dmi_power_controls_t, poweron_day, INTEGER, {
+            .code = "poweron-day",
+            .name = "Next power-on day of month"
+        }),
+        DMI_ATTRIBUTE(dmi_power_controls_t, poweron_hour, INTEGER, {
+            .code = "poweron-hour",
+            .name = "Next power-on hour"
+        }),
+        DMI_ATTRIBUTE(dmi_power_controls_t, poweron_minute, INTEGER, {
+            .code = "poweron-minute",
+            .name = "Next power-on minute"
+        }),
+        DMI_ATTRIBUTE(dmi_power_controls_t, poweron_second, INTEGER, {
+            .code = "poweron-second",
+            .name = "Next power-on second"
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_power_controls_decode
     }
 };
 
-dmi_power_controls_t *dmi_power_controls_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_power_controls_decode(dmi_entity_t *entity)
 {
     dmi_power_controls_t *info;
     const dmi_power_controls_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_POWER_CONTROLS));
+    data = dmi_entity_data(entity, DMI_TYPE_POWER_CONTROLS);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_POWER_CONTROLS);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->poweron_month  = dmi_cast(info->poweron_month,
                                     dmi_decode_bcd(data->poweron_month));
@@ -73,13 +72,5 @@ dmi_power_controls_t *dmi_power_controls_decode(const dmi_entity_t *entity, dmi_
     info->poweron_second = dmi_cast(info->poweron_second,
                                     dmi_decode_bcd(data->poweron_second));
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 2, 0);
-
-    return info;
-}
-
-void dmi_power_controls_free(dmi_power_controls_t *info)
-{
-    dmi_free(info);
+    return true;
 }

@@ -6,17 +6,14 @@
 //
 #include <opendmi/entity/additional-info.h>
 
-const dmi_attribute_t dmi_additional_info_attrs[] =
-{
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_additional_info_spec =
 {
-    .code        = "additional-info",
-    .name        = "Additional information",
-    .type        = DMI_TYPE_ADDITIONAL_INFO,
-    .min_version = DMI_VERSION(2, 6, 0),
-    .min_length  = 0x05,
-    .attributes  = dmi_additional_info_attrs
+    .code            = "additional-info",
+    .name            = "Additional information",
+    .type            = DMI_TYPE_ADDITIONAL_INFO,
+    .minimum_version = DMI_VERSION(2, 6, 0),
+    .minimum_length  = 0x05,
+    .attributes      = (dmi_attribute_t[]) {
+        DMI_ATTRIBUTE_NULL
+    }
 };

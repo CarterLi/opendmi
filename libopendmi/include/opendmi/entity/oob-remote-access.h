@@ -101,20 +101,4 @@ struct dmi_oob_remote_access
  */
 extern const dmi_entity_spec_t dmi_oob_remote_access_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_oob_remote_access_t *dmi_oob_remote_access_decode(
-        const dmi_entity_t *entity,
-        dmi_version_t     *plevel);
-
-/**
- * @internal
- */
-void dmi_oob_remote_access_free(dmi_oob_remote_access_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_OOB_REMOTE_ACCESS_H

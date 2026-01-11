@@ -11,6 +11,9 @@
 
 #include <opendmi/entity/onboard-device.h>
 
+static bool dmi_onboard_device_decode(dmi_entity_t *entity);
+static void dmi_onboard_device_cleanup(dmi_entity_t *entity);
+
 const dmi_name_set_t dmi_onboard_device_type_names =
 {
     .code  = "onboard-device-types",
@@ -92,50 +95,46 @@ const dmi_name_set_t dmi_onboard_device_type_names =
     }
 };
 
-static const dmi_attribute_t dmi_onboard_device_instance_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_onboard_device_instance_t, type, ENUM, {
-        .code    = "type",
-        .name    = "Type",
-        .unspec  = dmi_value_ptr(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
-        .values  = &dmi_onboard_device_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_onboard_device_instance_t, is_enabled, BOOL, {
-        .code    = "is-enabled",
-        .name    = "Enabled"
-    }),
-    DMI_ATTRIBUTE(dmi_onboard_device_instance_t, description, STRING, {
-        .code    = "description",
-        .name    = "Description"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
-static const dmi_attribute_t dmi_onboard_device_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_onboard_device_t, instance_count, INTEGER, {
-        .code  = "instance-count",
-        .name  = "Instance count"
-    }),
-    DMI_ATTRIBUTE_ARRAY(dmi_onboard_device_t, instances, instance_count, STRUCT, {
-        .code  = "instances",
-        .name  = "Instances",
-        .attrs = dmi_onboard_device_instance_attrs
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_onboard_device_spec =
 {
-    .code       = "onboard-device",
-    .name       = "Onboard devices information",
-    .type       = DMI_TYPE_ONBOARD_DEVICE,
-    .min_length = 0x06,
-    .attributes = dmi_onboard_device_attrs,
-    .handlers    = {
-        .decode = (dmi_entity_decode_fn_t)dmi_onboard_device_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_onboard_device_free
+    .code            = "onboard-device",
+    .name            = "Onboard devices information",
+    .type            = DMI_TYPE_ONBOARD_DEVICE,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .minimum_length  = 0x06,
+    .decoded_length  = sizeof(dmi_onboard_device_t),
+    .attributes      = (dmi_attribute_t[]) {
+        DMI_ATTRIBUTE(dmi_onboard_device_t, instance_count, INTEGER, {
+            .code  = "instance-count",
+            .name  = "Instance count"
+        }),
+        DMI_ATTRIBUTE_ARRAY(dmi_onboard_device_t, instances, instance_count, STRUCT, {
+            .code  = "instances",
+            .name  = "Instances",
+            .attrs = (dmi_attribute_t[]){
+                DMI_ATTRIBUTE(dmi_onboard_device_instance_t, type, ENUM, {
+                    .code    = "type",
+                    .name    = "Type",
+                    .unspec  = dmi_value_ptr(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
+                    .unknown = dmi_value_ptr(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
+                    .values  = &dmi_onboard_device_type_names
+                }),
+                DMI_ATTRIBUTE(dmi_onboard_device_instance_t, is_enabled, BOOL, {
+                    .code    = "is-enabled",
+                    .name    = "Enabled"
+                }),
+                DMI_ATTRIBUTE(dmi_onboard_device_instance_t, description, STRING, {
+                    .code    = "description",
+                    .name    = "Description"
+                }),
+                DMI_ATTRIBUTE_NULL
+            }
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode  = dmi_onboard_device_decode,
+        .cleanup = dmi_onboard_device_cleanup
     }
 };
 
@@ -144,27 +143,25 @@ const char *dmi_onboard_device_type_name(dmi_onboard_device_type_t value)
     return dmi_name_lookup(&dmi_onboard_device_type_names, value);
 }
 
-dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_onboard_device_decode(dmi_entity_t *entity)
 {
     dmi_onboard_device_t *info;
     const dmi_onboard_device_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_ONBOARD_DEVICE));
+    data = dmi_entity_data(entity, DMI_TYPE_ONBOARD_DEVICE);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_ONBOARD_DEVICE);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->instance_count = (entity->body_length - sizeof(dmi_header_t)) /
                            sizeof(dmi_onboard_device_instance_data_t);
 
     info->instances = dmi_alloc_array(entity->context, sizeof(dmi_onboard_device_instance_t), info->instance_count);
-    if (info->instances == nullptr) {
-        dmi_free(info);
-        return nullptr;
-    }
+    if (info->instances == nullptr)
+        return false;
 
     for (size_t i = 0; i < info->instance_count; i++) {
         dmi_onboard_device_instance_t *instance = &info->instances[i];
@@ -179,14 +176,16 @@ dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_entity_t *entity, dmi_
         instance->description = dmi_entity_string(entity, instance_data->description);
     }
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 0, 0);
-
-    return info;
+    return true;
 }
 
-void dmi_onboard_device_free(dmi_onboard_device_t *info)
+static void dmi_onboard_device_cleanup(dmi_entity_t *entity)
 {
+    dmi_onboard_device_t *info;
+
+    info = dmi_entity_info(entity, DMI_TYPE_ONBOARD_DEVICE);
+    if (info == nullptr)
+        return;
+
     dmi_free(info->instances);
-    dmi_free(info);
 }

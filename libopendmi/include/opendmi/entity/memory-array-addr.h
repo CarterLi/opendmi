@@ -143,28 +143,4 @@ struct dmi_memory_array_addr
  */
 extern const dmi_entity_spec_t dmi_memory_array_addr_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-bool dmi_memory_array_addr_validate(const dmi_entity_t *entity);
-
-/**
- * @internal
- */
-dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-bool dmi_memory_array_addr_link(dmi_entity_t *entity);
-
-/**
- * @internal
- */
-void dmi_memory_array_addr_free(dmi_memory_array_addr_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_MEMORY_ARRAY_ADDR_H

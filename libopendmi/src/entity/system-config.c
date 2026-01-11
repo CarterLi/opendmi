@@ -10,65 +10,63 @@
 
 #include <opendmi/entity/system-config.h>
 
-const dmi_attribute_t dmi_system_config_opts_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_system_config_opts_t, option_count, INTEGER, {
-        .code = "option-count",
-        .name = "Option count"
-    }),
-    DMI_ATTRIBUTE_ARRAY(dmi_system_config_opts_t, options, option_count, STRING, {
-        .code    = "options",
-        .name    = "Options"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
+static bool dmi_system_config_opts_decode(dmi_entity_t *entity);
+static void dmi_system_config_opts_cleanup(dmi_entity_t *entity);
 
 const dmi_entity_spec_t dmi_system_config_opts_spec =
 {
-    .code       = "system-config-options",
-    .name       = "System configuration options",
-    .type       = DMI_TYPE_SYSTEM_CONFIG_OPTIONS,
-    .min_length = 0x05,
-    .attributes = dmi_system_config_opts_attrs,
-    .handlers   = {
-        .decode = (dmi_entity_decode_fn_t)dmi_system_config_opts_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_system_config_opts_free
+    .code            = "system-config-options",
+    .name            = "System configuration options",
+    .type            = DMI_TYPE_SYSTEM_CONFIG_OPTIONS,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .minimum_length  = 0x05,
+    .decoded_length  = sizeof(dmi_system_config_opts_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE_ARRAY(dmi_system_config_opts_t, options, option_count, STRING, {
+            .code = "options",
+            .name = "Options"
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode  = dmi_system_config_opts_decode,
+        .cleanup = dmi_system_config_opts_cleanup
     }
 };
 
-dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_system_config_opts_decode(dmi_entity_t *entity)
 {
     dmi_system_config_opts_t *info;
     const dmi_system_config_opts_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_SYSTEM_CONFIG_OPTIONS));
+    data = dmi_entity_data(entity, DMI_TYPE_SYSTEM_CONFIG_OPTIONS);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_CONFIG_OPTIONS);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->option_count = dmi_decode(data->count);
 
     info->options = dmi_alloc_array(entity->context, sizeof(const char *), info->option_count);
-    if (info->options == nullptr) {
-        dmi_free(info);
-        return nullptr;
-    }
+    if (info->options == nullptr)
+        return false;
 
     for (size_t i = 0; i < info->option_count; i++) {
         info->options[i] = dmi_entity_string(entity, (dmi_string_t)(i + 1));
     }
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 0, 0);
-
-    return info;
+    return true;
 }
 
-void dmi_system_config_opts_free(dmi_system_config_opts_t *info)
+static void dmi_system_config_opts_cleanup(dmi_entity_t *entity)
 {
+    dmi_system_config_opts_t *info;
+
+    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_CONFIG_OPTIONS);
+    if (info == nullptr)
+        return;
+
     dmi_free(info->options);
-    dmi_free(info);
 }

@@ -19,10 +19,10 @@ typedef struct dmi_entity_ops   dmi_entity_ops_t;
 typedef struct dmi_header       dmi_header_t;
 typedef struct dmi_string_entry dmi_string_entry_t;
 
-typedef bool (*dmi_entity_validate_fn_t)(dmi_entity_t *entity);
-typedef void *(*dmi_entity_decode_fn_t)(dmi_entity_t *entity, dmi_version_t *plevel);
-typedef bool (*dmi_entity_link_fn_t)(dmi_entity_t *entity);
-typedef void (*dmi_entity_free_fn_t)(void *info);
+typedef bool dmi_entity_validate_fn(const dmi_entity_t *entity);
+typedef bool dmi_entity_decode_fn(dmi_entity_t *entity);
+typedef bool dmi_entity_link_fn(dmi_entity_t *entity);
+typedef void dmi_entity_cleanup_fn(dmi_entity_t *entity);
 
 /**
  * @brief Entity operations.
@@ -32,22 +32,22 @@ struct dmi_entity_ops
     /**
      * @brief Validation handler (optional).
      */
-    dmi_entity_validate_fn_t validate;
+    dmi_entity_validate_fn *validate;
 
     /**
      * @brief Decoding handler.
      */
-    dmi_entity_decode_fn_t decode;
+    dmi_entity_decode_fn *decode;
 
     /**
      * @brief Link handler.
      */
-    dmi_entity_link_fn_t link;
+    dmi_entity_link_fn *link;
 
     /**
-     * @brief Destroy handler.
+     * @brief Cleanup handler.
      */
-    dmi_entity_free_fn_t free;
+    dmi_entity_cleanup_fn *cleanup;
 };
 
 /**
@@ -66,20 +66,32 @@ struct dmi_entity_spec
     const char *name;
 
     /**
-     * @brief DMI type.
+     * @brief SMBIOS type.
      */
     dmi_type_t type;
 
     /**
-     * @brief Minimum SMBIOS version. Zero means that the minimum version is
+     * @brief Minimum SMBIOS version. Should be set to `DMI_VERSION_NONE` when
      * not specified.
      */
-    dmi_version_t min_version;
+    dmi_version_t minimum_version;
 
+    /**
+     * @brief The SMBIOS version starting from which the structure is mandatory.
+     * Should be set to `DMI_VERSION_NONE` for optional structures.
+     */
     dmi_version_t required_from;
 
+    /**
+     * @brief The SMBIOS version up to which the structure is mandatory.
+     * Should be set to `DMI_VERSION_NONE` for optional structures.
+     */
     dmi_version_t required_till;
 
+    /**
+     * @brief Should be set to true if the structure should be the only one
+     * in the table.
+     */
     bool unique;
 
     /**
@@ -95,7 +107,13 @@ struct dmi_entity_spec
      *
      * @since SMBIOS 2.3
      */
-    size_t min_length;
+    size_t minimum_length;
+
+    /**
+     * @brief The size of the structure descriptor. Used for automatic memory
+     * allocation during decoding.
+     */
+    size_t decoded_length;
 
     /**
      * @brief Attribute specifications.
@@ -266,7 +284,7 @@ const void *dmi_entity_data(const dmi_entity_t *entity, dmi_type_t type);
 /**
  * @brief Get pointer to decoded data of entity of the specified type.
  */
-const void *dmi_entity_info(const dmi_entity_t *entity, dmi_type_t type);
+void *dmi_entity_info(const dmi_entity_t *entity, dmi_type_t type);
 
 /**
  * @brief Get entity string.

@@ -11,6 +11,8 @@
 
 #include <opendmi/entity/pointing-device.h>
 
+static bool dmi_pointing_device_decode(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_pointing_device_type_names =
 {
     .code  = "pointing-device-types",
@@ -123,40 +125,37 @@ static const dmi_name_set_t dmi_pointing_device_interface_names =
     }
 };
 
-const dmi_attribute_t dmi_pointing_device_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_pointing_device_t, type, ENUM, {
-        .code    = "type",
-        .name    = "Type",
-        .unspec  = dmi_value_ptr(DMI_POINTING_DEVICE_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_POINTING_DEVICE_TYPE_UNKNOWN),
-        .values  = &dmi_pointing_device_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_pointing_device_t, interface, ENUM, {
-        .code    = "interface",
-        .name    = "Interface type",
-        .unspec  = dmi_value_ptr(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),
-        .values  = &dmi_pointing_device_interface_names
-    }),
-    DMI_ATTRIBUTE(dmi_pointing_device_t, button_count, INTEGER, {
-        .code    = "button-count",
-        .name    = "Button count"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_pointing_device_spec =
 {
-    .code        = "pointing-device",
-    .name        = "Built-in pointing device",
-    .type        = DMI_TYPE_POINTING_DEVICE,
-    .min_version = DMI_VERSION(2, 1, 0),
-    .min_length  = 0x07,
-    .attributes  = dmi_pointing_device_attrs,
+    .code            = "pointing-device",
+    .name            = "Built-in pointing device",
+    .type            = DMI_TYPE_POINTING_DEVICE,
+    .minimum_version = DMI_VERSION(2, 1, 0),
+    .minimum_length  = 0x07,
+    .decoded_length  = sizeof(dmi_pointing_device_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_pointing_device_t, type, ENUM, {
+            .code    = "type",
+            .name    = "Type",
+            .unspec  = dmi_value_ptr(DMI_POINTING_DEVICE_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_POINTING_DEVICE_TYPE_UNKNOWN),
+            .values  = &dmi_pointing_device_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_pointing_device_t, interface, ENUM, {
+            .code    = "interface",
+            .name    = "Interface type",
+            .unspec  = dmi_value_ptr(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),
+            .values  = &dmi_pointing_device_interface_names
+        }),
+        DMI_ATTRIBUTE(dmi_pointing_device_t, button_count, INTEGER, {
+            .code    = "button-count",
+            .name    = "Button count"
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
     .handlers = {
-        .decode = (dmi_entity_decode_fn_t)dmi_pointing_device_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_pointing_device_free
+        .decode = dmi_pointing_device_decode
     }
 };
 
@@ -170,30 +169,22 @@ const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t v
     return dmi_name_lookup(&dmi_pointing_device_interface_names, value);
 }
 
-dmi_pointing_device_t *dmi_pointing_device_decode(dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_pointing_device_decode(dmi_entity_t *entity)
 {
     dmi_pointing_device_t *info;
     const dmi_pointing_device_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_POINTING_DEVICE));
+    data = dmi_entity_data(entity, DMI_TYPE_POINTING_DEVICE);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_POINTING_DEVICE);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->type         = dmi_decode(data->type);
     info->interface    = dmi_decode(data->interface);
     info->button_count = dmi_decode(data->button_count);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 1, 0);
-
-    return info;
-}
-
-void dmi_pointing_device_free(dmi_pointing_device_t *info)
-{
-    dmi_free(info);
+    return true;
 }

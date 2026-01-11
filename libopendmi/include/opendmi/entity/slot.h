@@ -281,16 +281,6 @@ const char *dmi_slot_width_name(dmi_slot_width_t value);
 const char *dmi_slot_usage_name(dmi_slot_usage_t value);
 const char *dmi_slot_length_name(dmi_slot_length_t value);
 
-/**
- * @internal
- */
-dmi_slot_t *dmi_slot_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_slot_free(dmi_slot_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_SLOT_H

@@ -102,18 +102,4 @@ typedef struct dmi_power_controls dmi_power_controls_t;
  */
 extern const dmi_entity_spec_t dmi_power_controls_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_power_controls_t *dmi_power_controls_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_power_controls_free(dmi_power_controls_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_POWER_CONTROLS_H

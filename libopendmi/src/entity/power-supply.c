@@ -14,6 +14,9 @@
 
 #include <opendmi/entity/power-supply.h>
 
+static bool dmi_power_supply_decode(dmi_entity_t *entity);
+static bool dmi_power_supply_link(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_power_supply_type_names =
 {
     .code  = "power-supply-types",
@@ -86,101 +89,98 @@ static const dmi_name_set_t dmi_range_switching_type_names =
     }
 };
 
-static const dmi_attribute_t dmi_power_supply_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_power_supply_t, group, INTEGER, {
-        .code    = "group",
-        .name    = "Power unit group"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, location, STRING, {
-        .code    = "location",
-        .name    = "Location"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, name, STRING, {
-        .code    = "name",
-        .name    = "Name"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, vendor, STRING, {
-        .code    = "vendor",
-        .name    = "Manufacturer"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, serial_number, STRING, {
-        .code    = "serial-number",
-        .name    = "Serial number"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, asset_tag, STRING, {
-        .code    = "asset-tag",
-        .name    = "Asset tag"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, part_number, STRING, {
-        .code    = "part-number",
-        .name    = "Part number"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, revision, STRING, {
-        .code    = "revision",
-        .name    = "Revision"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, maximum_capacity, INTEGER, {
-        .code    = "maximum-capacity",
-        .name    = "Maximum capacity",
-        .unit    = DMI_UNIT_WATT,
-        .unknown = dmi_value_ptr((short)SHRT_MIN),
-        .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, hot_swappable, BOOL, {
-        .code    = "hot-swappable",
-        .name    = "Hot-swappable"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, present, BOOL, {
-        .code    = "present",
-        .name    = "Present"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, unplugged, BOOL, {
-        .code    = "unplugged",
-        .name    = "Unplugged"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, range_switching, ENUM, {
-        .code    = "range-switching",
-        .name    = "Input voltage range switching",
-        .values  = &dmi_range_switching_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, status, ENUM, {
-        .code    = "status",
-        .name    = "Status",
-        .values  = &dmi_status_names
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, type, ENUM, {
-        .code    = "type",
-        .name    = "Type",
-        .values  = &dmi_power_supply_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, voltage_probe_handle, HANDLE, {
-        .code    = "voltage-probe-handle",
-        .name    = "Input voltage probe handle"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, cooling_device_handle, HANDLE, {
-        .code    = "cooling-device-handle",
-        .name    = "Cooling device handle"
-    }),
-    DMI_ATTRIBUTE(dmi_power_supply_t, current_probe_handle, HANDLE, {
-        .code    = "current-probe-handle",
-        .name    = "Input current probe handle"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_power_supply_spec =
 {
-    .code        = "power-supply",
-    .name        = "System power supply",
-    .type        = DMI_TYPE_POWER_SUPPLY,
-    .min_version = DMI_VERSION(2, 3, 1),
-    .min_length  = 0x16,
-    .attributes  = dmi_power_supply_attrs,
-    .handlers    = {
-        .decode = (dmi_entity_decode_fn_t)dmi_power_supply_decode,
-        .link   = (dmi_entity_link_fn_t)dmi_power_supply_link,
-        .free   = (dmi_entity_free_fn_t)dmi_power_supply_free
+    .code            = "power-supply",
+    .name            = "System power supply",
+    .type            = DMI_TYPE_POWER_SUPPLY,
+    .minimum_version = DMI_VERSION(2, 3, 1),
+    .minimum_length  = 0x16,
+    .decoded_length  = sizeof(dmi_power_supply_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_power_supply_t, group, INTEGER, {
+            .code    = "group",
+            .name    = "Power unit group"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, location, STRING, {
+            .code    = "location",
+            .name    = "Location"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, name, STRING, {
+            .code    = "name",
+            .name    = "Name"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, vendor, STRING, {
+            .code    = "vendor",
+            .name    = "Manufacturer"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, serial_number, STRING, {
+            .code    = "serial-number",
+            .name    = "Serial number"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, asset_tag, STRING, {
+            .code    = "asset-tag",
+            .name    = "Asset tag"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, part_number, STRING, {
+            .code    = "part-number",
+            .name    = "Part number"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, revision, STRING, {
+            .code    = "revision",
+            .name    = "Revision"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, maximum_capacity, INTEGER, {
+            .code    = "maximum-capacity",
+            .name    = "Maximum capacity",
+            .unit    = DMI_UNIT_WATT,
+            .unknown = dmi_value_ptr((short)SHRT_MIN),
+            .flags   = DMI_ATTRIBUTE_FLAG_SIGNED
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, hot_swappable, BOOL, {
+            .code    = "hot-swappable",
+            .name    = "Hot-swappable"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, present, BOOL, {
+            .code    = "present",
+            .name    = "Present"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, unplugged, BOOL, {
+            .code    = "unplugged",
+            .name    = "Unplugged"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, range_switching, ENUM, {
+            .code    = "range-switching",
+            .name    = "Input voltage range switching",
+            .values  = &dmi_range_switching_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, status, ENUM, {
+            .code    = "status",
+            .name    = "Status",
+            .values  = &dmi_status_names
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, type, ENUM, {
+            .code    = "type",
+            .name    = "Type",
+            .values  = &dmi_power_supply_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, voltage_probe_handle, HANDLE, {
+            .code    = "voltage-probe-handle",
+            .name    = "Input voltage probe handle"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, cooling_device_handle, HANDLE, {
+            .code    = "cooling-device-handle",
+            .name    = "Cooling device handle"
+        }),
+        DMI_ATTRIBUTE(dmi_power_supply_t, current_probe_handle, HANDLE, {
+            .code    = "current-probe-handle",
+            .name    = "Input current probe handle"
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_power_supply_decode,
+        .link   = dmi_power_supply_link
     }
 };
 
@@ -194,18 +194,18 @@ const char *dmi_range_switching_type_name(dmi_range_switching_type_t value)
     return dmi_name_lookup(&dmi_range_switching_type_names, value);
 }
 
-dmi_power_supply_t *dmi_power_supply_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_power_supply_decode(dmi_entity_t *entity)
 {
     dmi_power_supply_t *info;
     const dmi_power_supply_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_POWER_SUPPLY));
+    data = dmi_entity_data(entity, DMI_TYPE_POWER_SUPPLY);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_POWER_SUPPLY);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->group            = data->group;
     info->location         = dmi_entity_string(entity, data->location);
@@ -232,16 +232,14 @@ dmi_power_supply_t *dmi_power_supply_decode(const dmi_entity_t *entity, dmi_vers
     info->cooling_device_handle = dmi_decode(data->cooling_device_handle);
     info->current_probe_handle  = dmi_decode(data->current_probe_handle);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 3, 1);
-
-    return info;
+    return true;
 }
 
-bool dmi_power_supply_link(dmi_entity_t *entity)
+static bool dmi_power_supply_link(dmi_entity_t *entity)
 {
-    dmi_power_supply_t *info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_POWER_SUPPLY));
-
+    dmi_power_supply_t *info;
+    
+    info = dmi_entity_info(entity, DMI_TYPE_POWER_SUPPLY);
     if (info == nullptr)
         return false;
 
@@ -263,9 +261,4 @@ bool dmi_power_supply_link(dmi_entity_t *entity)
     }
 
     return true;
-}
-
-void dmi_power_supply_free(dmi_power_supply_t *info)
-{
-    dmi_free(info);
 }

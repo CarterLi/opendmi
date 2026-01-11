@@ -12,6 +12,9 @@
 
 #include <opendmi/entity/chassis.h>
 
+static bool dmi_chassis_decode(dmi_entity_t *entity);
+static void dmi_chassis_cleanup(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_chassis_type_names =
 {
     .code  = "chassis-types",
@@ -229,154 +232,150 @@ static const dmi_name_set_t dmi_rack_type_names =
     }
 };
 
-static const dmi_attribute_t dmi_chassis_element_attrs[] =
-{
-    // TODO: Add support for type attribute
-    DMI_ATTRIBUTE(dmi_chassis_element_t, board_type, ENUM, {
-        .code   = "board-type",
-        .name   = "Board type",
-        .values = &dmi_baseboard_type_names,
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_element_t, minimum_count, INTEGER, {
-        .code = "minimum-count",
-        .name = "Minimum count"
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_element_t, maximum_count, INTEGER, {
-        .code = "maximum-count",
-        .name = "Maximum count"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
-static const dmi_attribute_t dmi_chassis_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_chassis_t, vendor, STRING, {
-        .code    = "vendor",
-        .name    = "Vendor"
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, type, ENUM, {
-        .code    = "type",
-        .name    = "Type",
-        .unspec  = dmi_value_ptr(DMI_CHASSIS_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_CHASSIS_TYPE_UNKNOWN),
-        .values  = &dmi_chassis_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, is_lock_present, BOOL, {
-        .code    = "is-lock-present",
-        .name    = "Lock present"
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, version, STRING, {
-        .code    = "version",
-        .name    = "Version"
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, serial_number, STRING, {
-        .code    = "serial-number",
-        .name    = "Serial number"
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, asset_tag, STRING, {
-        .code    = "asset-tag",
-        .name    = "Asset tag"
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, bootup_state, ENUM, {
-        .code    = "bootup-state",
-        .name    = "Boot-up state",
-        .unspec  = dmi_value_ptr(DMI_STATUS_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_STATUS_UNKNOWN),
-        .values  = &dmi_status_names,
-        .level   = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, power_supply_state, ENUM, {
-        .code    = "power-supply-state",
-        .name    = "Power supply state",
-        .unspec  = dmi_value_ptr(DMI_STATUS_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_STATUS_UNKNOWN),
-        .values  = &dmi_status_names,
-        .level   = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, thermal_state, ENUM, {
-        .code    = "thermal-state",
-        .name    = "Thermal state",
-        .unspec  = dmi_value_ptr(DMI_STATUS_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_STATUS_UNKNOWN),
-        .values  = &dmi_status_names,
-        .level   = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, security_status, ENUM, {
-        .code    = "security-status",
-        .name    = "Security status",
-        .unspec  = dmi_value_ptr(DMI_CHASSIS_SECURITY_STATUS_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_CHASSIS_SECURITY_STATUS_UNKNOWN),
-        .values  = &dmi_chassis_security_status_names,
-        .level   = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, oem_defined, INTEGER, {
-        .code    = "oem-defined",
-        .name    = "OEM-defined",
-        .flags   = DMI_ATTRIBUTE_FLAG_HEX,
-        .level   = DMI_VERSION(2, 3, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, height, INTEGER, {
-        .code    = "height",
-        .name    = "Height",
-        .unit    = DMI_UNIT_RACK,
-        .unspec  = dmi_value_ptr((unsigned short)0),
-        .level   = DMI_VERSION(2, 3, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, power_cord_count, INTEGER, {
-        .code    = "power-cord-count",
-        .name    = "Power cord count",
-        .unspec  = dmi_value_ptr((unsigned short)0),
-        .level   = DMI_VERSION(2, 3, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, element_count, INTEGER, {
-        .code    = "element-count",
-        .name    = "Contained element count",
-        .level   = DMI_VERSION(2, 3, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, element_size, SIZE, {
-        .code    = "element-size",
-        .name    = "Contained element size",
-        .level   = DMI_VERSION(2, 3, 0)
-    }),
-    DMI_ATTRIBUTE_ARRAY(dmi_chassis_t, elements, element_count, STRUCT, {
-        .code    = "elements",
-        .name    = "Contained elements",
-        .attrs   = dmi_chassis_element_attrs,
-        .level   = DMI_VERSION(2, 3, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, sku_number, STRING, {
-        .code    = "sku-number",
-        .name    = "SKU number",
-        .level   = DMI_VERSION(2, 7, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, rack_type, ENUM, {
-        .code    = "rack-type",
-        .name    = "Rack type",
-        .unspec  = dmi_value_ptr(DMI_RACK_TYPE_UNSPEC),
-        .values  = &dmi_rack_type_names,
-        .level   = DMI_VERSION(3, 9, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_chassis_t, rack_height, INTEGER, {
-        .code    = "rack-height",
-        .name    = "Rack height",
-        .level   = DMI_VERSION(3, 9, 0)
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_chassis_spec =
 {
-    .code          = "chassis",
-    .name          = "System enclosure or chassis",
-    .type          = DMI_TYPE_CHASSIS,
-    .required_from = DMI_VERSION(2, 3, 0),
-    .required_till = DMI_VERSION_NONE,
-    .unique        = false,
-    .min_length    = 0x09,
-    .attributes    = dmi_chassis_attrs,
-    .handlers      = {
-        .decode = (dmi_entity_decode_fn_t)dmi_chassis_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_chassis_free
+    .code            = "chassis",
+    .name            = "System enclosure or chassis",
+    .type            = DMI_TYPE_CHASSIS,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .required_from   = DMI_VERSION(2, 3, 0),
+    .required_till   = DMI_VERSION_NONE,
+    .unique          = false,
+    .minimum_length  = 0x09,
+    .decoded_length  = sizeof(dmi_chassis_t),
+    .attributes      = (dmi_attribute_t[]) {
+        DMI_ATTRIBUTE(dmi_chassis_t, vendor, STRING, {
+            .code    = "vendor",
+            .name    = "Vendor"
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, type, ENUM, {
+            .code    = "type",
+            .name    = "Type",
+            .unspec  = dmi_value_ptr(DMI_CHASSIS_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_CHASSIS_TYPE_UNKNOWN),
+            .values  = &dmi_chassis_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, is_lock_present, BOOL, {
+            .code    = "is-lock-present",
+            .name    = "Lock present"
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, version, STRING, {
+            .code    = "version",
+            .name    = "Version"
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, serial_number, STRING, {
+            .code    = "serial-number",
+            .name    = "Serial number"
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, asset_tag, STRING, {
+            .code    = "asset-tag",
+            .name    = "Asset tag"
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, bootup_state, ENUM, {
+            .code    = "bootup-state",
+            .name    = "Boot-up state",
+            .unspec  = dmi_value_ptr(DMI_STATUS_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_STATUS_UNKNOWN),
+            .values  = &dmi_status_names,
+            .level   = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, power_supply_state, ENUM, {
+            .code    = "power-supply-state",
+            .name    = "Power supply state",
+            .unspec  = dmi_value_ptr(DMI_STATUS_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_STATUS_UNKNOWN),
+            .values  = &dmi_status_names,
+            .level   = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, thermal_state, ENUM, {
+            .code    = "thermal-state",
+            .name    = "Thermal state",
+            .unspec  = dmi_value_ptr(DMI_STATUS_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_STATUS_UNKNOWN),
+            .values  = &dmi_status_names,
+            .level   = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, security_status, ENUM, {
+            .code    = "security-status",
+            .name    = "Security status",
+            .unspec  = dmi_value_ptr(DMI_CHASSIS_SECURITY_STATUS_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_CHASSIS_SECURITY_STATUS_UNKNOWN),
+            .values  = &dmi_chassis_security_status_names,
+            .level   = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, oem_defined, INTEGER, {
+            .code    = "oem-defined",
+            .name    = "OEM-defined",
+            .flags   = DMI_ATTRIBUTE_FLAG_HEX,
+            .level   = DMI_VERSION(2, 3, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, height, INTEGER, {
+            .code    = "height",
+            .name    = "Height",
+            .unit    = DMI_UNIT_RACK,
+            .unspec  = dmi_value_ptr((unsigned short)0),
+            .level   = DMI_VERSION(2, 3, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, power_cord_count, INTEGER, {
+            .code    = "power-cord-count",
+            .name    = "Power cord count",
+            .unspec  = dmi_value_ptr((unsigned short)0),
+            .level   = DMI_VERSION(2, 3, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, element_count, INTEGER, {
+            .code    = "element-count",
+            .name    = "Contained element count",
+            .level   = DMI_VERSION(2, 3, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, element_size, SIZE, {
+            .code    = "element-size",
+            .name    = "Contained element size",
+            .level   = DMI_VERSION(2, 3, 0)
+        }),
+        DMI_ATTRIBUTE_ARRAY(dmi_chassis_t, elements, element_count, STRUCT, {
+            .code    = "elements",
+            .name    = "Contained elements",
+            .level   = DMI_VERSION(2, 3, 0),
+            .attrs   = (dmi_attribute_t[]){
+                // TODO: Add support for type attribute
+                DMI_ATTRIBUTE(dmi_chassis_element_t, board_type, ENUM, {
+                    .code   = "board-type",
+                    .name   = "Board type",
+                    .values = &dmi_baseboard_type_names,
+                }),
+                DMI_ATTRIBUTE(dmi_chassis_element_t, minimum_count, INTEGER, {
+                    .code = "minimum-count",
+                    .name = "Minimum count"
+                }),
+                DMI_ATTRIBUTE(dmi_chassis_element_t, maximum_count, INTEGER, {
+                    .code = "maximum-count",
+                    .name = "Maximum count"
+                }),
+                DMI_ATTRIBUTE_NULL
+            }
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, sku_number, STRING, {
+            .code    = "sku-number",
+            .name    = "SKU number",
+            .level   = DMI_VERSION(2, 7, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, rack_type, ENUM, {
+            .code    = "rack-type",
+            .name    = "Rack type",
+            .unspec  = dmi_value_ptr(DMI_RACK_TYPE_UNSPEC),
+            .values  = &dmi_rack_type_names,
+            .level   = DMI_VERSION(3, 9, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_chassis_t, rack_height, INTEGER, {
+            .code    = "rack-height",
+            .name    = "Rack height",
+            .level   = DMI_VERSION(3, 9, 0)
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode  = dmi_chassis_decode,
+        .cleanup = dmi_chassis_cleanup
     }
 };
 
@@ -387,23 +386,22 @@ const char *dmi_chassis_type_name(dmi_chassis_type_t value)
 
 const char *dmi_chassis_security_status_name(dmi_chassis_security_status_t value)
 {
-     return dmi_name_lookup(&dmi_chassis_security_status_names, value);
+    return dmi_name_lookup(&dmi_chassis_security_status_names, value);
 }
 
-dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_chassis_decode(dmi_entity_t *entity)
 {
-    dmi_chassis_t *info;
-    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_chassis_data_t *data;
+    dmi_chassis_t *info;
     const dmi_data_t *element_ptr;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_CHASSIS));
+    data = dmi_entity_data(entity, DMI_TYPE_CHASSIS);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_CHASSIS);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     dmi_chassis_type_data_t type = {
         .__value = dmi_decode(data->type)
@@ -421,7 +419,7 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
     //
 
     if (entity->body_length > 0x09) {
-        level = dmi_version(2, 1, 0);
+        entity->level = dmi_version(2, 1, 0);
         info->bootup_state = dmi_decode(data->bootup_state);
     }
     if (entity->body_length > 0x0A)
@@ -436,7 +434,7 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
     //
 
     if (entity->body_length > 0x0D) {
-        level = dmi_version(2, 3, 0);
+        entity->level = dmi_version(2, 3, 0);
         info->oem_defined = dmi_decode(data->oem_defined);
     }
 
@@ -450,10 +448,8 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
         info->element_size  = dmi_decode(data->element_size);
 
         info->elements = dmi_alloc_array(entity->context, sizeof(dmi_chassis_element_t), info->element_count);
-        if (info->elements == nullptr) {
-            dmi_free(info);
-            return nullptr;
-        }
+        if (info->elements == nullptr)
+            return false;
 
         element_ptr = entity->data + sizeof(dmi_chassis_data_t);
         for (size_t i = 0; i < info->element_count; i++) {
@@ -481,7 +477,7 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
         //
     
         if (entity->body_length > base_len) {
-            level = dmi_version(2, 7, 0);
+            entity->level = dmi_version(2, 7, 0);
 
             size_t extra_len = entity->body_length - base_len;
             dmi_chassis_extra_t *extra = dmi_cast(extra, element_ptr);
@@ -493,7 +489,7 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
             //
 
             if (extra_len > 0x01) {
-                level = dmi_version(3, 9, 0);
+                entity->level = dmi_version(3, 9, 0);
                 info->rack_type   = dmi_decode(extra->rack_type);
             }
             if (extra_len > 0x02)
@@ -501,14 +497,16 @@ dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *ple
         }
     }
 
-    if (plevel != nullptr)
-        *plevel = level;
-
-    return info;
+    return true;
 }
 
-void dmi_chassis_free(dmi_chassis_t *info)
+static void dmi_chassis_cleanup(dmi_entity_t *entity)
 {
+    dmi_chassis_t *info;
+
+    info = dmi_entity_info(entity, DMI_TYPE_CHASSIS);
+    if (info == nullptr)
+        return;
+
     dmi_free(info->elements);
-    dmi_free(info);
 }

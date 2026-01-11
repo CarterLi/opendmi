@@ -104,16 +104,6 @@ __BEGIN_DECLS
 
 const char *dmi_hardware_security_status_name(dmi_hardware_security_status_t value);
 
-/**
- * @internal
- */
-dmi_hardware_security_t *dmi_hardware_security_decode(dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_hardware_security_free(dmi_hardware_security_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_HARDWARE_SECURITY_H

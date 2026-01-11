@@ -624,22 +624,6 @@ const char *dmi_processor_type_name(dmi_processor_type_t value);
 const char *dmi_processor_family_name(dmi_processor_family_t value);
 const char *dmi_processor_upgrade_name(dmi_processor_upgrade_t value);
 
-/**
- * @internal
- */
-dmi_processor_t *
-dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-bool dmi_processor_link(dmi_entity_t *entity);
-
-/**
- * @internal
- */
-void dmi_processor_free(dmi_processor_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_PROCESSOR_H

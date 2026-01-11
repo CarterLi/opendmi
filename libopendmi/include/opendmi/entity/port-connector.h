@@ -188,16 +188,6 @@ __BEGIN_DECLS
 const char *dmi_connector_type_name(dmi_connector_type_t value);
 const char *dmi_port_type_name(dmi_port_type_t value);
 
-/**
- * @internal
- */
-dmi_port_connector_t *dmi_port_connector_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_port_connector_free(dmi_port_connector_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_PORT_CONNECTOR_H

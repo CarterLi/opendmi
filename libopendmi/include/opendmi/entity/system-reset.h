@@ -174,16 +174,6 @@ __BEGIN_DECLS
 
 const char *dmi_boot_option_name(dmi_boot_option_t value);
 
-/**
- * @internal
- */
-dmi_system_reset_t *dmi_system_reset_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_system_reset_free(dmi_system_reset_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_SYSTEM_RESET_H

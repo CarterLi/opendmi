@@ -322,21 +322,6 @@ __BEGIN_DECLS
 const char *dmi_power_supply_type_name(dmi_power_supply_type_t value);
 const char *dmi_range_switching_type_name(dmi_range_switching_type_t value);
 
-/**
- * @internal
- */
-dmi_power_supply_t *dmi_power_supply_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-bool dmi_power_supply_link(dmi_entity_t *entity);
-
-/**
- * @internal
- */
-void dmi_power_supply_free(dmi_power_supply_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_POWER_SUPPLY_H

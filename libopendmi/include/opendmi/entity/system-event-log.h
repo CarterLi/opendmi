@@ -140,15 +140,4 @@ struct dmi_system_event_log
  */
 extern const dmi_entity_spec_t dmi_system_event_log_spec;
 
-/**
- * @internal
- */
-dmi_system_event_log_t *
-dmi_system_event_log_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_system_event_log_free(dmi_system_event_log_t *info);
-
 #endif // !OPENDMI_ENTITY_SYSTEM_EVENT_LOG_H

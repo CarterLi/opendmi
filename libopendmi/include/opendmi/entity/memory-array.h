@@ -202,21 +202,6 @@ __BEGIN_DECLS
 const char *dmi_memory_array_location_name(dmi_memory_array_location_t value);
 const char *dmi_memory_array_usage_name(dmi_memory_array_usage_t value);
 
-/**
- * @internal
- */
-dmi_memory_array_t *dmi_memory_array_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-bool dmi_memory_array_link(dmi_entity_t *entity);
-
-/**
- * @internal
- */
-void dmi_memory_array_free(dmi_memory_array_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_MEMORY_ARRAY_H

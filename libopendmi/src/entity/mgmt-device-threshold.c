@@ -12,67 +12,66 @@
 
 #include <opendmi/entity/mgmt-device-threshold.h>
 
-const dmi_attribute_t dmi_mgmt_device_threshold_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, lower_non_critical, INTEGER, {
-        .code    = "lower-non-critical",
-        .name    = "Lower non-critical",
-        .unknown = dmi_value_ptr((short)SHRT_MIN)
-    }),
-    DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, upper_non_critical, INTEGER, {
-        .code    = "upper-non-critical",
-        .name    = "Upper non-critical",
-        .unknown = dmi_value_ptr((short)SHRT_MIN)
-    }),
-    DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, lower_critical, INTEGER, {
-        .code    = "lower-critical",
-        .name    = "Lower critical",
-        .unknown = dmi_value_ptr((short)SHRT_MIN)
-    }),
-    DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, upper_critical, INTEGER, {
-        .code    = "upper-critical",
-        .name    = "Upper critical",
-        .unknown = dmi_value_ptr((short)SHRT_MIN)
-    }),
-    DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, lower_non_recoverable, INTEGER, {
-        .code    = "lower-non-recoverable",
-        .name    = "Lower non-recoverable",
-        .unknown = dmi_value_ptr((short)SHRT_MIN)
-    }),
-    DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, upper_non_recoverable, INTEGER, {
-        .code    = "upper-non-recoverable",
-        .name    = "Upper non-recoverable",
-        .unknown = dmi_value_ptr((short)SHRT_MIN)
-    }),
-    DMI_ATTRIBUTE_NULL
-};
+static bool dmi_mgmt_device_threshold_decode(dmi_entity_t *entity);
 
 const dmi_entity_spec_t dmi_mgmt_device_threshold_spec =
 {
-    .code        = "mgmt-device-threshold",
-    .name        = "Management device threshold data",
-    .type        = DMI_TYPE_MGMT_DEVICE_THRESHOLD,
-    .min_version = DMI_VERSION(2, 3, 0),
-    .min_length  = 0x10,
-    .attributes  = dmi_mgmt_device_threshold_attrs,
-    .handlers    = {
-        .decode = (dmi_entity_decode_fn_t)dmi_mgmt_device_threshold_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_mgmt_device_threshold_free
+    .code            = "mgmt-device-threshold",
+    .name            = "Management device threshold data",
+    .type            = DMI_TYPE_MGMT_DEVICE_THRESHOLD,
+    .minimum_version = DMI_VERSION(2, 3, 0),
+    .minimum_length  = 0x10,
+    .decoded_length  = sizeof(dmi_mgmt_device_threshold_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, lower_non_critical, INTEGER, {
+            .code    = "lower-non-critical",
+            .name    = "Lower non-critical",
+            .unknown = dmi_value_ptr((short)SHRT_MIN)
+        }),
+        DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, upper_non_critical, INTEGER, {
+            .code    = "upper-non-critical",
+            .name    = "Upper non-critical",
+            .unknown = dmi_value_ptr((short)SHRT_MIN)
+        }),
+        DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, lower_critical, INTEGER, {
+            .code    = "lower-critical",
+            .name    = "Lower critical",
+            .unknown = dmi_value_ptr((short)SHRT_MIN)
+        }),
+        DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, upper_critical, INTEGER, {
+            .code    = "upper-critical",
+            .name    = "Upper critical",
+            .unknown = dmi_value_ptr((short)SHRT_MIN)
+        }),
+        DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, lower_non_recoverable, INTEGER, {
+            .code    = "lower-non-recoverable",
+            .name    = "Lower non-recoverable",
+            .unknown = dmi_value_ptr((short)SHRT_MIN)
+        }),
+        DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, upper_non_recoverable, INTEGER, {
+            .code    = "upper-non-recoverable",
+            .name    = "Upper non-recoverable",
+            .unknown = dmi_value_ptr((short)SHRT_MIN)
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_mgmt_device_threshold_decode
     }
 };
 
-dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_mgmt_device_threshold_decode(dmi_entity_t *entity)
 {
     dmi_mgmt_device_threshold_t *info;
-    dmi_mgmt_device_threshold_data_t *data;
+    const dmi_mgmt_device_threshold_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MGMT_DEVICE_THRESHOLD));
+    data = dmi_entity_data(entity, DMI_TYPE_MGMT_DEVICE_THRESHOLD);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE_THRESHOLD);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->lower_non_critical    = dmi_decode(data->lower_non_critical);
     info->upper_non_critical    = dmi_decode(data->upper_non_critical);
@@ -81,13 +80,5 @@ dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_entity_t
     info->lower_non_recoverable = dmi_decode(data->lower_non_recoverable);
     info->upper_non_recoverable = dmi_decode(data->upper_non_recoverable);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 3, 0);
-
-    return info;
-}
-
-void dmi_mgmt_device_threshold_free(dmi_mgmt_device_threshold_t *info)
-{
-    dmi_free(info);
+    return true;
 }

@@ -52,18 +52,4 @@ struct dmi_oem_strings
  */
 extern const dmi_entity_spec_t dmi_oem_strings_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_oem_strings_t *dmi_oem_strings_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_oem_strings_free(dmi_oem_strings_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_OEM_STRINGS_H

@@ -13,6 +13,8 @@
 
 #include <opendmi/entity/memory-module.h>
 
+static bool dmi_memory_module_decode(dmi_entity_t *entity);
+
 const dmi_name_set_t dmi_memory_module_type_names =
 {
     .code  = "memory-module-types",
@@ -91,76 +93,74 @@ static const dmi_name_set_t dmi_memory_module_error_names =
     }
 };
 
-static const dmi_attribute_t dmi_memory_module_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_memory_module_t, socket, STRING, {
-        .code   = "socket",
-        .name   = "Socket designator"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_module_t, bank_connections, INTEGER, {
-        .code   = "bank-connections",
-        .name   = "Bank connections",
-        .flags  = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_memory_module_t, current_speed, INTEGER, {
-        .code   = "current-speed",
-        .name   = "Current speed",
-        .unit   = DMI_UNIT_NANOSECOND
-    }),
-    DMI_ATTRIBUTE(dmi_memory_module_t, current_type, SET, {
-        .code   = "current-type",
-        .name   = "Current type",
-        .values = &dmi_memory_module_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_module_t, installed_size, SIZE, {
-        .code   = "installed-size",
-        .name   = "Installed size"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_module_t, enabled_size, SIZE, {
-        .code   = "enabled-size",
-        .name   = "Enabled size"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_module_t, is_disabled, BOOL, {
-        .code   = "disabled",
-        .name   = "Disabled"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_module_t, bank_count, INTEGER, {
-        .code   = "bank-count",
-        .name   = "Bank count"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_module_t, error_status, SET, {
-        .code   = "error-status",
-        .name   = "Error status",
-        .values = &dmi_memory_module_error_names
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_memory_module_spec =
 {
-    .code       = "memory-module",
-    .name       = "Memory module information",
-    .type       = DMI_TYPE_MEMORY_MODULE,
-    .min_length = 0x08,
-    .attributes = dmi_memory_module_attrs,
+    .code            = "memory-module",
+    .name            = "Memory module information",
+    .type            = DMI_TYPE_MEMORY_MODULE,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .minimum_length  = 0x08,
+    .decoded_length  = sizeof(dmi_memory_module_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_memory_module_t, socket, STRING, {
+            .code   = "socket",
+            .name   = "Socket designator"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_module_t, bank_connections, INTEGER, {
+            .code   = "bank-connections",
+            .name   = "Bank connections",
+            .flags  = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE(dmi_memory_module_t, current_speed, INTEGER, {
+            .code   = "current-speed",
+            .name   = "Current speed",
+            .unit   = DMI_UNIT_NANOSECOND
+        }),
+        DMI_ATTRIBUTE(dmi_memory_module_t, current_type, SET, {
+            .code   = "current-type",
+            .name   = "Current type",
+            .values = &dmi_memory_module_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_memory_module_t, installed_size, SIZE, {
+            .code   = "installed-size",
+            .name   = "Installed size"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_module_t, enabled_size, SIZE, {
+            .code   = "enabled-size",
+            .name   = "Enabled size"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_module_t, is_disabled, BOOL, {
+            .code   = "disabled",
+            .name   = "Disabled"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_module_t, bank_count, INTEGER, {
+            .code   = "bank-count",
+            .name   = "Bank count"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_module_t, error_status, SET, {
+            .code   = "error-status",
+            .name   = "Error status",
+            .values = &dmi_memory_module_error_names
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
     .handlers = {
-        .decode = (dmi_entity_decode_fn_t)dmi_memory_module_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_memory_module_free
+        .decode = dmi_memory_module_decode
     }
 };
 
-dmi_memory_module_t *dmi_memory_module_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_memory_module_decode(dmi_entity_t *entity)
 {
     dmi_memory_module_t *info;
     const dmi_memory_module_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MEMORY_MODULE));
+    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_MODULE);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_MODULE);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->socket = dmi_entity_string(entity, data->socket);
 
@@ -170,10 +170,8 @@ dmi_memory_module_t *dmi_memory_module_decode(const dmi_entity_t *entity, dmi_ve
     info->bank_connections[1] = (bank_connections & 0xF0u) >> 4;
 
     // Decode speed and type
-    info->current_speed = dmi_decode(data->current_speed);
-    info->current_type  = (dmi_memory_module_type_t){
-        .__value = dmi_decode(data->current_type)
-    };
+    info->current_speed        = dmi_decode(data->current_speed);
+    info->current_type.__value = dmi_decode(data->current_type);
 
     // Decode installed size
     dmi_byte_t installed_size = dmi_decode(data->installed_size) & 0x7Fu;
@@ -197,17 +195,7 @@ dmi_memory_module_t *dmi_memory_module_decode(const dmi_entity_t *entity, dmi_ve
     info->bank_count = dmi_decode(data->enabled_size) & 0x80u ? 2 : 1;
 
     // Decode error status
-    info->error_status = (dmi_memory_module_error_t){
-        .__value = dmi_decode(data->error_status)
-    };
+    info->error_status.__value = dmi_decode(data->error_status);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 0, 0);
-
-    return info;
-}
-
-void dmi_memory_module_free(dmi_memory_module_t *info)
-{
-    dmi_free(info);
+    return true;
 }

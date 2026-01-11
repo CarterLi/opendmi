@@ -77,23 +77,4 @@ struct dmi_string_property
  */
 extern const dmi_entity_spec_t dmi_string_property_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_string_property_t *dmi_string_property_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-bool dmi_string_property_link(dmi_entity_t *entity);
-
-/**
- * @internal
- */
-void dmi_string_property_free(dmi_string_property_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_STRING_PROPERTY_H

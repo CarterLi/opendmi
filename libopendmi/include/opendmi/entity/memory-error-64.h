@@ -74,13 +74,4 @@ typedef struct dmi_memory_error_64_data dmi_memory_error_64_data_t;
  */
 extern const dmi_entity_spec_t dmi_memory_error_64_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_memory_error_t *dmi_memory_error_64_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_MEMORY_ERROR_64_H

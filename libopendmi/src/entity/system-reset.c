@@ -14,6 +14,8 @@
 
 #include <opendmi/entity/system-reset.h>
 
+static bool dmi_system_reset_decode(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_boot_option_names =
 {
     .code  = "boot-options",
@@ -38,62 +40,59 @@ static const dmi_name_set_t dmi_boot_option_names =
     }
 };
 
-static const dmi_attribute_t dmi_system_reset_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_system_reset_t, status, BOOL, {
-        .code    = "status",
-        .name    = "Reset enabled"
-    }),
-    DMI_ATTRIBUTE(dmi_system_reset_t, boot_on_watchdog, ENUM, {
-        .code    = "boot-on-watchdog",
-        .name    = "Boot option on watchdog",
-        .values  = &dmi_boot_option_names
-    }),
-    DMI_ATTRIBUTE(dmi_system_reset_t, boot_on_limit, ENUM, {
-        .code    = "boot-on-limit",
-        .name    = "Boot option on reset limit",
-        .values  = &dmi_boot_option_names
-    }),
-    DMI_ATTRIBUTE(dmi_system_reset_t, watchdog_present, BOOL, {
-        .code    = "watchdog-present",
-        .name    = "Watchdog present"
-    }),
-    DMI_ATTRIBUTE(dmi_system_reset_t, reset_count, INTEGER, {
-        .code    = "reset-count",
-        .name    = "Reset count",
-        .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
-    }),
-    DMI_ATTRIBUTE(dmi_system_reset_t, reset_limit, INTEGER, {
-        .code    = "reset-limit",
-        .name    = "Reset limit",
-        .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
-    }),
-    DMI_ATTRIBUTE(dmi_system_reset_t, timer_interval, INTEGER, {
-        .code    = "timer-interval",
-        .name    = "Timer interval",
-        .unit    = DMI_UNIT_MINUTE,
-        .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
-    }),
-    DMI_ATTRIBUTE(dmi_system_reset_t, timeout, INTEGER, {
-        .code    = "timeout",
-        .name    = "Timeout",
-        .unit    = DMI_UNIT_MINUTE,
-        .unknown = dmi_value_ptr((unsigned short)USHRT_MAX),
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_system_reset_spec =
 {
-    .code        = "system-reset",
-    .name        = "System reset",
-    .type        = DMI_TYPE_SYSTEM_RESET,
-    .min_version = DMI_VERSION(2, 2, 0),
-    .min_length  = 0x0D,
-    .attributes  = dmi_system_reset_attrs,
-    .handlers   = {
-        .decode = (dmi_entity_decode_fn_t)dmi_system_reset_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_system_reset_free
+    .code            = "system-reset",
+    .name            = "System reset",
+    .type            = DMI_TYPE_SYSTEM_RESET,
+    .minimum_version = DMI_VERSION(2, 2, 0),
+    .minimum_length  = 0x0D,
+    .decoded_length  = sizeof(dmi_system_reset_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_system_reset_t, status, BOOL, {
+            .code    = "status",
+            .name    = "Reset enabled"
+        }),
+        DMI_ATTRIBUTE(dmi_system_reset_t, boot_on_watchdog, ENUM, {
+            .code    = "boot-on-watchdog",
+            .name    = "Boot option on watchdog",
+            .values  = &dmi_boot_option_names
+        }),
+        DMI_ATTRIBUTE(dmi_system_reset_t, boot_on_limit, ENUM, {
+            .code    = "boot-on-limit",
+            .name    = "Boot option on reset limit",
+            .values  = &dmi_boot_option_names
+        }),
+        DMI_ATTRIBUTE(dmi_system_reset_t, watchdog_present, BOOL, {
+            .code    = "watchdog-present",
+            .name    = "Watchdog present"
+        }),
+        DMI_ATTRIBUTE(dmi_system_reset_t, reset_count, INTEGER, {
+            .code    = "reset-count",
+            .name    = "Reset count",
+            .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
+        }),
+        DMI_ATTRIBUTE(dmi_system_reset_t, reset_limit, INTEGER, {
+            .code    = "reset-limit",
+            .name    = "Reset limit",
+            .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
+        }),
+        DMI_ATTRIBUTE(dmi_system_reset_t, timer_interval, INTEGER, {
+            .code    = "timer-interval",
+            .name    = "Timer interval",
+            .unit    = DMI_UNIT_MINUTE,
+            .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
+        }),
+        DMI_ATTRIBUTE(dmi_system_reset_t, timeout, INTEGER, {
+            .code    = "timeout",
+            .name    = "Timeout",
+            .unit    = DMI_UNIT_MINUTE,
+            .unknown = dmi_value_ptr((unsigned short)USHRT_MAX),
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_system_reset_decode
     }
 };
 
@@ -102,18 +101,18 @@ const char *dmi_boot_option_name(dmi_boot_option_t value)
     return dmi_name_lookup(&dmi_boot_option_names, value);
 }
 
-dmi_system_reset_t *dmi_system_reset_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_system_reset_decode(dmi_entity_t *entity)
 {
     dmi_system_reset_t *info;
     const dmi_system_reset_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_SYSTEM_RESET));
+    data = dmi_entity_data(entity, DMI_TYPE_SYSTEM_RESET);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_RESET);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     dmi_system_reset_caps_t caps = {
         .__value = dmi_decode(data->capabilities)
@@ -129,13 +128,5 @@ dmi_system_reset_t *dmi_system_reset_decode(const dmi_entity_t *entity, dmi_vers
     info->timer_interval = dmi_decode(data->timer_inverval);
     info->timeout        = dmi_decode(data->timeout);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 2, 0);
-
-    return info;
-}
-
-void dmi_system_reset_free(dmi_system_reset_t *info)
-{
-    dmi_free(info);
+    return true;
 }

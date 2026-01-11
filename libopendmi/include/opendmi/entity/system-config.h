@@ -51,18 +51,4 @@ struct dmi_system_config_opts
  */
 extern const dmi_entity_spec_t dmi_system_config_opts_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_system_config_opts_t *dmi_system_config_opts_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_system_config_opts_free(dmi_system_config_opts_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_SYSTEM_CONFIG_H

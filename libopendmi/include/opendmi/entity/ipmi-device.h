@@ -212,13 +212,6 @@ const char *dmi_ipmi_addr_type_name(dmi_ipmi_addr_type_t value);
 const char *dmi_ipmi_intr_trigger_name(dmi_ipmi_intr_trigger_t value);
 const char *dmi_ipmi_intr_polarity_name(dmi_ipmi_intr_polarity_t value);
 
-dmi_ipmi_device_t *dmi_ipmi_device_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_ipmi_device_free(dmi_ipmi_device_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_IPMI_DEVICE_H

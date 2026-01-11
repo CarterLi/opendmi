@@ -117,16 +117,6 @@ __BEGIN_DECLS
 const char *dmi_mgmt_device_type_name(dmi_mgmt_device_type_t value);
 const char *dmi_mgmt_device_addr_type_name(dmi_mgmt_device_addr_type_t value);
 
-/**
- * @internal
- */
-dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_mgmt_device_free(dmi_mgmt_device_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_MGMT_DEVICE_H

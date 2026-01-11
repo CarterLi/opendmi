@@ -98,23 +98,4 @@ struct dmi_mgmt_device_component
  */
 extern const dmi_entity_spec_t dmi_mgmt_device_component_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-bool dmi_mgmt_device_component_link(dmi_entity_t *entity);
-
-/**
- * @internal
- */
-void dmi_mgmt_device_component_free(dmi_mgmt_device_component_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_MGMT_DEVICE_COMPONENT_H

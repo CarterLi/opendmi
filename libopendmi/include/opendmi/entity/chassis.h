@@ -358,16 +358,6 @@ __BEGIN_DECLS
 const char *dmi_chassis_type_name(dmi_chassis_type_t value);
 const char *dmi_chassis_security_status_name(dmi_chassis_security_status_t value);
 
-/**
- * @internal
- */
-dmi_chassis_t *dmi_chassis_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_chassis_free(dmi_chassis_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_CHASSIS_H

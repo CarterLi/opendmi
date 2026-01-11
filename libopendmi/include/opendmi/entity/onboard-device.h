@@ -150,16 +150,6 @@ __BEGIN_DECLS
 
 const char *dmi_onboard_device_type_name(dmi_onboard_device_type_t value);
 
-/**
- * @internal
- */
-dmi_onboard_device_t *dmi_onboard_device_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_onboard_device_free(dmi_onboard_device_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_ONBOARD_DEVICE_H

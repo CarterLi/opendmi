@@ -11,6 +11,8 @@
 
 #include <opendmi/entity/mgmt-device.h>
 
+static bool dmi_mgmt_device_decode(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_mgmt_device_type_names =
 {
     .code  = "mgnt-device-types",
@@ -103,45 +105,42 @@ static const dmi_name_set_t dmi_mgmt_device_addr_type_names =
     }
 };
 
-const dmi_attribute_t dmi_mgmt_device_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_mgmt_device_t, description, STRING, {
-        .code    = "description",
-        .name    = "Description"
-    }),
-    DMI_ATTRIBUTE(dmi_mgmt_device_t, type, ENUM, {
-        .code    = "type",
-        .name    = "Type",
-        .unspec  = dmi_value_ptr(DMI_MGMT_DEVICE_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_MGMT_DEVICE_TYPE_UNKNOWN),
-        .values  = &dmi_mgmt_device_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_mgmt_device_t, addr, ADDRESS, {
-        .code    = "address",
-        .name    = "Address",
-        .flags   = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_mgmt_device_t, addr_type, ENUM, {
-        .code    = "address-type",
-        .name    = "Address type",
-        .unspec  = dmi_value_ptr(DMI_MGMT_DEVICE_ADDR_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_MGMT_DEVICE_ADDR_TYPE_UNKNOWN),
-        .values  = &dmi_mgmt_device_addr_type_names
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_mgmt_device_spec =
 {
-    .code        = "mgmt-device",
-    .name        = "Management device",
-    .type        = DMI_TYPE_MGMT_DEVICE,
-    .min_version = DMI_VERSION(2, 3, 0),
-    .min_length  = 0x0B,
-    .attributes  = dmi_mgmt_device_attrs,
-    .handlers    = {
-        .decode = (dmi_entity_decode_fn_t)dmi_mgmt_device_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_mgmt_device_free
+    .code            = "mgmt-device",
+    .name            = "Management device",
+    .type            = DMI_TYPE_MGMT_DEVICE,
+    .minimum_version = DMI_VERSION(2, 3, 0),
+    .minimum_length  = 0x0B,
+    .decoded_length  = sizeof(dmi_mgmt_device_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_mgmt_device_t, description, STRING, {
+            .code    = "description",
+            .name    = "Description"
+        }),
+        DMI_ATTRIBUTE(dmi_mgmt_device_t, type, ENUM, {
+            .code    = "type",
+            .name    = "Type",
+            .unspec  = dmi_value_ptr(DMI_MGMT_DEVICE_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_MGMT_DEVICE_TYPE_UNKNOWN),
+            .values  = &dmi_mgmt_device_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_mgmt_device_t, addr, ADDRESS, {
+            .code    = "address",
+            .name    = "Address",
+            .flags   = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE(dmi_mgmt_device_t, addr_type, ENUM, {
+            .code    = "address-type",
+            .name    = "Address type",
+            .unspec  = dmi_value_ptr(DMI_MGMT_DEVICE_ADDR_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_MGMT_DEVICE_ADDR_TYPE_UNKNOWN),
+            .values  = &dmi_mgmt_device_addr_type_names
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_mgmt_device_decode
     }
 };
 
@@ -155,31 +154,23 @@ const char *dmi_mgmt_device_addr_type_name(dmi_mgmt_device_addr_type_t value)
     return dmi_name_lookup(&dmi_mgmt_device_addr_type_names, value);
 }
 
-dmi_mgmt_device_t *dmi_mgmt_device_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_mgmt_device_decode(dmi_entity_t *entity)
 {
     dmi_mgmt_device_t *info;
     const dmi_mgmt_device_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MGMT_DEVICE));
+    data = dmi_entity_data(entity, DMI_TYPE_MGMT_DEVICE);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->description = dmi_entity_string(entity, data->description);
     info->type        = dmi_decode(data->type);
     info->addr        = dmi_decode(data->addr);
     info->addr_type   = dmi_decode(data->addr_type);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 3, 0);
-
-    return info;
-}
-
-void dmi_mgmt_device_free(dmi_mgmt_device_t *info)
-{
-    dmi_free(info);
+    return true;
 }

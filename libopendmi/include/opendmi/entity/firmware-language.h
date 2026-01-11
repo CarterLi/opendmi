@@ -106,18 +106,4 @@ struct dmi_firmware_language
  */
 extern const dmi_entity_spec_t dmi_firmware_language_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_firmware_language_t *dmi_firmware_language_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_firmware_language_free(dmi_firmware_language_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_FIRMWARE_LANGUAGE_H

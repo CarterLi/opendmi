@@ -11,6 +11,10 @@
 
 #include <opendmi/entity/memory-channel.h>
 
+static bool dmi_memory_channel_decode(dmi_entity_t *entity);
+static bool dmi_memory_channel_link(dmi_entity_t *entity);
+static void dmi_memory_channel_cleanup(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_memory_channel_type_names =
 {
     .code  = "memory-channel-types",
@@ -32,56 +36,51 @@ static const dmi_name_set_t dmi_memory_channel_type_names =
     }
 };
 
-static const dmi_attribute_t dmi_memory_device_channel_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_memory_channel_device_t, load, INTEGER, {
-        .code = "load",
-        .name = "Load"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_channel_device_t, handle, HANDLE, {
-        .code = "handle",
-        .name = "Handle"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
-static const dmi_attribute_t dmi_memory_channel_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_memory_channel_t, type, ENUM, {
-        .code    = "type",
-        .name    = "Type",
-        .unspec  = dmi_value_ptr(DMI_MEMORY_CHANNEL_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_MEMORY_CHANNEL_TYPE_UNKNOWN),
-        .values  = &dmi_memory_channel_type_names,
-    }),
-    DMI_ATTRIBUTE(dmi_memory_channel_t, maximum_load, INTEGER, {
-        .code    = "maximum-load",
-        .name    = "Maximum load"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_channel_t, device_count, INTEGER, {
-        .code    = "device-count",
-        .name    = "Device count"
-    }),
-    DMI_ATTRIBUTE_ARRAY(dmi_memory_channel_t, devices, device_count, STRUCT, {
-        .code    = "devices",
-        .name    = "Devices",
-        .attrs   = dmi_memory_device_channel_attrs
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_memory_channel_spec =
 {
-    .code        = "memory-channel",
-    .name        = "Memory channel",
-    .type        = DMI_TYPE_MEMORY_CHANNEL,
-    .min_version = DMI_VERSION(2, 3, 0),
-    .min_length  = 0x0A,
-    .attributes  = dmi_memory_channel_attrs,
+    .code            = "memory-channel",
+    .name            = "Memory channel",
+    .type            = DMI_TYPE_MEMORY_CHANNEL,
+    .minimum_version = DMI_VERSION(2, 3, 0),
+    .minimum_length  = 0x0A,
+    .decoded_length  = sizeof(dmi_memory_channel_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_memory_channel_t, type, ENUM, {
+            .code    = "type",
+            .name    = "Type",
+            .unspec  = dmi_value_ptr(DMI_MEMORY_CHANNEL_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_MEMORY_CHANNEL_TYPE_UNKNOWN),
+            .values  = &dmi_memory_channel_type_names,
+        }),
+        DMI_ATTRIBUTE(dmi_memory_channel_t, maximum_load, INTEGER, {
+            .code    = "maximum-load",
+            .name    = "Maximum load"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_channel_t, device_count, INTEGER, {
+            .code    = "device-count",
+            .name    = "Device count"
+        }),
+        DMI_ATTRIBUTE_ARRAY(dmi_memory_channel_t, devices, device_count, STRUCT, {
+            .code    = "devices",
+            .name    = "Devices",
+            .attrs   = (dmi_attribute_t[]){
+                DMI_ATTRIBUTE(dmi_memory_channel_device_t, load, INTEGER, {
+                    .code = "load",
+                    .name = "Load"
+                }),
+                DMI_ATTRIBUTE(dmi_memory_channel_device_t, handle, HANDLE, {
+                    .code = "handle",
+                    .name = "Handle"
+                }),
+                DMI_ATTRIBUTE_NULL
+            }
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
     .handlers = {
-        .decode = (dmi_entity_decode_fn_t)dmi_memory_channel_decode,
-        .link   = (dmi_entity_link_fn_t)dmi_memory_channel_link,
-        .free   = (dmi_entity_free_fn_t)dmi_memory_channel_free
+        .decode  = dmi_memory_channel_decode,
+        .link    = dmi_memory_channel_link,
+        .cleanup = dmi_memory_channel_cleanup
     }
 };
 
@@ -90,18 +89,18 @@ const char *dmi_memory_channel_type_name(dmi_memory_channel_type_t value)
     return dmi_name_lookup(&dmi_memory_channel_type_names, value);
 }
 
-dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_memory_channel_decode(dmi_entity_t *entity)
 {
     dmi_memory_channel_t *info;
     const dmi_memory_channel_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MEMORY_CHANNEL));
+    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_CHANNEL);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CHANNEL);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->type         = dmi_decode(data->type);
     info->maximum_load = dmi_decode(data->maximum_load);
@@ -109,10 +108,8 @@ dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_entity_t *entity, dmi_
 
     info->devices = dmi_alloc_array(entity->context, sizeof(dmi_memory_channel_device_t),
                                     info->device_count);
-    if (info->devices == nullptr) {
-        dmi_free(info);
-        return nullptr;
-    }
+    if (info->devices == nullptr)
+        return false;
 
     for (size_t i = 0; i < info->device_count; i++) {
         dmi_memory_channel_device_t *device = &info->devices[i];
@@ -122,19 +119,16 @@ dmi_memory_channel_t *dmi_memory_channel_decode(const dmi_entity_t *entity, dmi_
         device->handle = dmi_decode(device_data->handle);
     }
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 3, 0);
-
-    return info;
+    return true;
 }
 
-bool dmi_memory_channel_link(dmi_entity_t *entity)
+static bool dmi_memory_channel_link(dmi_entity_t *entity)
 {
     dmi_memory_channel_t *info;
     dmi_registry_t *registry;
     dmi_entity_t *device;
 
-    info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_MEMORY_CHANNEL));
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CHANNEL);
     if (info == nullptr)
         return false;
 
@@ -151,8 +145,13 @@ bool dmi_memory_channel_link(dmi_entity_t *entity)
     return true;
 }
 
-void dmi_memory_channel_free(dmi_memory_channel_t *info)
+static void dmi_memory_channel_cleanup(dmi_entity_t *entity)
 {
+    dmi_memory_channel_t *info;
+
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CHANNEL);
+    if (info == nullptr)
+        return;
+
     dmi_free(info->devices);
-    dmi_free(info);
 }

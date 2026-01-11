@@ -185,8 +185,3 @@ const char *dmi_memory_error_operation_name(dmi_memory_error_operation_t value)
 {
     return dmi_name_lookup(&dmi_memory_error_operation_names, value);
 }
-
-void dmi_memory_error_free(dmi_memory_error_t *info)
-{
-    dmi_free(info);
-}

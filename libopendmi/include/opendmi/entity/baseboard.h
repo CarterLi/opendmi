@@ -256,21 +256,6 @@ __BEGIN_DECLS
 
 const char *dmi_baseboard_type_name(dmi_baseboard_type_t value);
 
-/**
- * @internal
- */
-dmi_baseboard_t *dmi_baseboard_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-bool dmi_baseboard_link(dmi_entity_t *entity);
-
-/**
- * @internal
- */
-void dmi_baseboard_free(dmi_baseboard_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_BASEBOARD_H

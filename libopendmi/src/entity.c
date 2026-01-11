@@ -47,7 +47,7 @@ dmi_entity_t *dmi_entity_decode(dmi_context_t *context, const void *data)
     dmi_handle_t  handle = dmi_decode(header->handle);
 
     dmi_log_debug(context, "%p: Handle 0x%04x, length %zu, type %d (%s)",
-                  data, (unsigned)handle, length, (int)header->type,
+                  data, handle, length, (int)header->type,
                   dmi_type_name(context, type));
 
     // Check structure length
@@ -55,7 +55,9 @@ dmi_entity_t *dmi_entity_decode(dmi_context_t *context, const void *data)
         type   = DMI_TYPE_END_OF_TABLE;
         length = sizeof(dmi_header_t);
     } else if (length < sizeof(dmi_header_t)) {
-        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ENTITY_LENGTH, "%zu", length);
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ENTITY_LENGTH,
+                           "0x%04hx (%s): %zu bytes",
+                           handle, dmi_type_name(context, type), length);
         return nullptr;
     }
 
@@ -82,10 +84,28 @@ dmi_entity_t *dmi_entity_decode(dmi_context_t *context, const void *data)
             break;
 
         // Decode information
-        if ((entity->spec != nullptr) and (entity->spec->handlers.decode != nullptr)) {
-            entity->info = entity->spec->handlers.decode(entity, &entity->level);
-            if (entity->info == nullptr)
+        if (entity->spec != nullptr) {
+            const dmi_entity_spec_t *spec = entity->spec;
+
+            // Check minimum length constraint
+            if ((spec->minimum_length != 0) and (length < spec->minimum_length)) {
+                dmi_error_raise_ex(context, DMI_ERROR_INVALID_ENTITY_LENGTH, "%zu", length);
                 break;
+            }
+
+            // Set level baseline
+            entity->level = spec->minimum_version;
+
+            if (spec->handlers.decode != nullptr) {
+                // Allocate structure descriptor
+                entity->info = dmi_alloc(context, spec->decoded_length);
+                if (entity->info == nullptr)
+                    break;
+
+                // Execute decoder
+                if (not spec->handlers.decode(entity))
+                    break;
+            }
         }
 
         success = true;
@@ -136,7 +156,7 @@ const void *dmi_entity_data(const dmi_entity_t *entity, dmi_type_t type)
     return entity->data;
 }
 
-const void *dmi_entity_info(const dmi_entity_t *entity, dmi_type_t type)
+void *dmi_entity_info(const dmi_entity_t *entity, dmi_type_t type)
 {
     if (entity == nullptr)
         return nullptr;
@@ -176,15 +196,16 @@ void dmi_entity_destroy(dmi_entity_t *entity)
         return;
 
     if ((entity->spec != nullptr) and (entity->info != nullptr)) {
-        if (entity->spec->handlers.free)
-            entity->spec->handlers.free(entity->info);
-        else
-            dmi_free(entity->info);
+        if (entity->spec->handlers.cleanup != nullptr)
+            entity->spec->handlers.cleanup(entity);
+
+        dmi_free(entity->info);
     }
 
     if (entity->strings) {
         for (size_t i = 0; i < entity->string_count; i++)
             dmi_free(entity->strings[i].pretty);
+
         dmi_free(entity->strings);
     }
 

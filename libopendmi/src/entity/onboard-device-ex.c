@@ -12,61 +12,60 @@
 
 #include <opendmi/entity/onboard-device-ex.h>
 
-const dmi_attribute_t dmi_onboard_device_ex_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_onboard_device_ex_t, designator, STRING, {
-        .code    = "designator",
-        .name    = "Designator"
-    }),
-    DMI_ATTRIBUTE(dmi_onboard_device_ex_t, type, ENUM, {
-        .code    = "type",
-        .name    = "Type",
-        .unspec  = dmi_value_ptr(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
-        .values  = &dmi_onboard_device_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_onboard_device_ex_t, is_enabled, BOOL, {
-        .code    = "is-enabled",
-        .name    = "Enabled"
-    }),
-    DMI_ATTRIBUTE(dmi_onboard_device_ex_t, instance, INTEGER, {
-        .code    = "instance",
-        .name    = "Instance"
-    }),
-    DMI_ATTRIBUTE(dmi_onboard_device_ex_t, address, STRUCT, {
-        .code    = "address",
-        .name    = "Address",
-        .attrs   = dmi_pci_addr_attrs
-    }),
-    DMI_ATTRIBUTE_NULL
-};
+static bool dmi_onboard_device_ex_decode(dmi_entity_t *entity);
 
 const dmi_entity_spec_t dmi_onboard_device_ex_spec =
 {
-    .code        = "onboard-device-ex",
-    .name        = "Onboard devices extended information",
-    .type        = DMI_TYPE_ONBOARD_DEVICE_EX,
-    .min_version = DMI_VERSION(2, 6, 0),
-    .min_length  = 0x0B,
-    .attributes  = dmi_onboard_device_ex_attrs,
-    .handlers    = {
-        .decode = (dmi_entity_decode_fn_t)dmi_onboard_device_ex_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_onboard_device_ex_free
+    .code            = "onboard-device-ex",
+    .name            = "Onboard devices extended information",
+    .type            = DMI_TYPE_ONBOARD_DEVICE_EX,
+    .minimum_version = DMI_VERSION(2, 6, 0),
+    .minimum_length  = 0x0B,
+    .decoded_length  = sizeof(dmi_onboard_device_ex_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_onboard_device_ex_t, designator, STRING, {
+            .code    = "designator",
+            .name    = "Designator"
+        }),
+        DMI_ATTRIBUTE(dmi_onboard_device_ex_t, type, ENUM, {
+            .code    = "type",
+            .name    = "Type",
+            .unspec  = dmi_value_ptr(DMI_ONBOARD_DEVICE_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_ONBOARD_DEVICE_TYPE_UNKNOWN),
+            .values  = &dmi_onboard_device_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_onboard_device_ex_t, is_enabled, BOOL, {
+            .code    = "is-enabled",
+            .name    = "Enabled"
+        }),
+        DMI_ATTRIBUTE(dmi_onboard_device_ex_t, instance, INTEGER, {
+            .code    = "instance",
+            .name    = "Instance"
+        }),
+        DMI_ATTRIBUTE(dmi_onboard_device_ex_t, address, STRUCT, {
+            .code    = "address",
+            .name    = "Address",
+            .attrs   = dmi_pci_addr_attrs
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_onboard_device_ex_decode
     }
 };
 
-dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_onboard_device_ex_decode(dmi_entity_t *entity)
 {
     dmi_onboard_device_ex_t *info;
     const dmi_onboard_device_ex_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_ONBOARD_DEVICE_EX));
+    data = dmi_entity_data(entity, DMI_TYPE_ONBOARD_DEVICE_EX);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_ONBOARD_DEVICE_EX);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->designator = dmi_entity_string(entity, data->designator);
 
@@ -80,13 +79,5 @@ dmi_onboard_device_ex_t *dmi_onboard_device_ex_decode(const dmi_entity_t *entity
 
     dmi_pci_addr_decode(&info->address, &data->address);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 6, 0);
-
-    return info;
-}
-
-void dmi_onboard_device_ex_free(dmi_onboard_device_ex_t *info)
-{
-    dmi_free(info);
+    return true;
 }

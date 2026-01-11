@@ -32,7 +32,7 @@ int atoi(const char *nptr)
 
 * The names of type aliases should always end in `_t`.
 
-* Function pointer type aliases should always end in `_fn_t`.
+* Function pointer type aliases should always end in `_fn`.
 
 * Do not alias pointer types with `typedef`; we keep them explicit.
 

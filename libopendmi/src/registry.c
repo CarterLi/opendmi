@@ -171,8 +171,7 @@ bool dmi_registry_build(dmi_registry_t *registry)
         // Decode structure into entity
         entity = dmi_entity_decode(context, ptr);
         if (entity == nullptr) {
-            dmi_error_raise_ex(context, DMI_ERROR_ENTITY_DECODE,
-                               "0x%04x (%s)", entity->handle, entity->spec->name);
+            dmi_error_raise(context, DMI_ERROR_ENTITY_DECODE);
             goto exit;
         }
 

@@ -16,12 +16,12 @@ typedef struct dmi_attribute        dmi_attribute_t;
 typedef struct dmi_attribute_params dmi_attribute_params_t;
 typedef struct dmi_attribute_ops    dmi_attribute_ops_t;
 
-typedef char *(*dmi_attribute_format_fn_t)(
+typedef char *dmi_attribute_format_fn(
         const dmi_attribute_t *attr,
         const void            *value,
         bool                   pretty);
 
-typedef void (*dmi_attribute_parse_fn_t)(const dmi_attribute_t *attr);
+typedef void dmi_attribute_parse_fn(const dmi_attribute_t *attr);
 
 typedef enum dmi_attribute_type
 {
@@ -51,8 +51,8 @@ typedef enum dmi_attribute_flag
 
 struct dmi_attribute_ops
 {
-    dmi_attribute_format_fn_t format;
-    dmi_attribute_parse_fn_t parse;
+    dmi_attribute_format_fn *format;
+    dmi_attribute_parse_fn  *parse;
 };
 
 /**

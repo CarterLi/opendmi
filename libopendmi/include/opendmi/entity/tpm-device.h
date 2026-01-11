@@ -165,18 +165,4 @@ struct dmi_tpm_device
  */
 extern const dmi_entity_spec_t dmi_tpm_device_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_tpm_device_free(dmi_tpm_device_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_TPM_DEVICE_H

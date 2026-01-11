@@ -208,18 +208,4 @@ extern const dmi_name_set_t dmi_memory_module_type_names;
  */
 extern const dmi_entity_spec_t dmi_memory_module_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_memory_module_t *dmi_memory_module_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_memory_module_free(dmi_memory_module_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_MEMORY_MODULE_H

@@ -11,6 +11,8 @@
 
 #include <opendmi/entity/slot.h>
 
+static bool dmi_slot_decode(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_slot_type_names =
 {
     .code  = "slot-types",
@@ -535,58 +537,56 @@ static const dmi_name_set_t dmi_slot_usage_names =
     }
 };
 
-const dmi_attribute_t dmi_slot_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_slot_t, designator, STRING, {
-        .code = "designator",
-        .name = "Designator"
-    }),
-    DMI_ATTRIBUTE(dmi_slot_t, type, ENUM, {
-        .code    = "type",
-        .name    = "Type",
-        .unspec  = dmi_value_ptr(DMI_SLOT_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_SLOT_TYPE_UNKNOWN),
-        .values  = &dmi_slot_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_slot_t, width, ENUM, {
-        .code    = "width",
-        .name    = "Data bus width",
-        .unspec  = dmi_value_ptr(DMI_SLOT_WIDTH_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_SLOT_WIDTH_UNKNOWN),
-        .values  = &dmi_slot_width_names
-    }),
-    DMI_ATTRIBUTE(dmi_slot_t, usage, ENUM, {
-        .code    = "usage",
-        .name    = "Current usage",
-        .unspec  = dmi_value_ptr(DMI_SLOT_USAGE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_SLOT_USAGE_UNKNOWN),
-        .values  = &dmi_slot_usage_names
-    }),
-    DMI_ATTRIBUTE(dmi_slot_t, length, ENUM, {
-        .code    = "length",
-        .name    = "Slot length",
-        .unspec  = dmi_value_ptr(DMI_SLOT_LENGTH_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_SLOT_LENGTH_UNKNOWN),
-        .values  = &dmi_slot_length_names
-    }),
-    DMI_ATTRIBUTE(dmi_slot_t, ident, INTEGER, {
-        .code    = "ident",
-        .name    = "Identifier",
-        .flags   = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_slot_spec =
 {
-    .code       = "slot",
-    .name       = "System slots",
-    .type       = DMI_TYPE_SYSTEM_SLOTS,
-    .min_length = 0x0C,
-    .attributes = dmi_slot_attrs,
-    .handlers   = {
-        .decode = (dmi_entity_decode_fn_t)dmi_slot_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_slot_free
+    .code            = "slot",
+    .name            = "System slots",
+    .type            = DMI_TYPE_SYSTEM_SLOTS,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .minimum_length  = 0x0C,
+    .decoded_length  = sizeof(dmi_slot_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_slot_t, designator, STRING, {
+            .code = "designator",
+            .name = "Designator"
+        }),
+        DMI_ATTRIBUTE(dmi_slot_t, type, ENUM, {
+            .code    = "type",
+            .name    = "Type",
+            .unspec  = dmi_value_ptr(DMI_SLOT_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_SLOT_TYPE_UNKNOWN),
+            .values  = &dmi_slot_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_slot_t, width, ENUM, {
+            .code    = "width",
+            .name    = "Data bus width",
+            .unspec  = dmi_value_ptr(DMI_SLOT_WIDTH_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_SLOT_WIDTH_UNKNOWN),
+            .values  = &dmi_slot_width_names
+        }),
+        DMI_ATTRIBUTE(dmi_slot_t, usage, ENUM, {
+            .code    = "usage",
+            .name    = "Current usage",
+            .unspec  = dmi_value_ptr(DMI_SLOT_USAGE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_SLOT_USAGE_UNKNOWN),
+            .values  = &dmi_slot_usage_names
+        }),
+        DMI_ATTRIBUTE(dmi_slot_t, length, ENUM, {
+            .code    = "length",
+            .name    = "Slot length",
+            .unspec  = dmi_value_ptr(DMI_SLOT_LENGTH_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_SLOT_LENGTH_UNKNOWN),
+            .values  = &dmi_slot_length_names
+        }),
+        DMI_ATTRIBUTE(dmi_slot_t, ident, INTEGER, {
+            .code    = "ident",
+            .name    = "Identifier",
+            .flags   = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_slot_decode
     }
 };
 
@@ -610,19 +610,18 @@ const char *dmi_slot_length_name(dmi_slot_length_t value)
     return dmi_name_lookup(&dmi_slot_length_names, value);
 }
 
-dmi_slot_t *dmi_slot_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_slot_decode(dmi_entity_t *entity)
 {
     dmi_slot_t *info;
-    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_slot_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_SYSTEM_SLOTS));
+    data = dmi_entity_data(entity, DMI_TYPE_SYSTEM_SLOTS);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_SLOTS);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->designator = dmi_entity_string(entity, data->designator);
 
@@ -632,13 +631,5 @@ dmi_slot_t *dmi_slot_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
     info->length = dmi_decode(data->length);
     info->ident  = dmi_decode(data->ident);
 
-    if (plevel != nullptr)
-        *plevel = level;
-
-    return info;
-}
-
-void dmi_slot_free(dmi_slot_t *info)
-{
-    dmi_free(info);
+    return true;
 }

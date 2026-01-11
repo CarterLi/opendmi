@@ -121,19 +121,4 @@ struct dmi_mgmt_protocol_record
  */
 extern const dmi_entity_spec_t dmi_mgmt_controller_host_if_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_mgmt_controller_t *
-dmi_mgmt_controller_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_mgmt_controller_free(dmi_mgmt_controller_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_MGMT_CONTROLLER_H

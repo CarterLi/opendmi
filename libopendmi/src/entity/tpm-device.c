@@ -11,6 +11,8 @@
 
 #include <opendmi/entity/tpm-device.h>
 
+static bool dmi_tpm_device_decode(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_tpm_device_feature_names =
 {
     .code  = "tpm-device-features",
@@ -39,60 +41,58 @@ static const dmi_name_set_t dmi_tpm_device_feature_names =
     }
 };
 
-static const dmi_attribute_t dmi_tpm_device_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_tpm_device_t, spec_version, VERSION, {
-        .code   = "specification-version",
-        .name   = "Specification version",
-        .scale  = 2
-    }),
-    DMI_ATTRIBUTE(dmi_tpm_device_t, firmware_version, INTEGER, {
-        .code   = "firmware-version",
-        .name   = "Firmware version",
-        .flags  = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_tpm_device_t, description, STRING, {
-        .code   = "description",
-        .name   = "Description"
-    }),
-    DMI_ATTRIBUTE(dmi_tpm_device_t, features, SET, {
-        .code   = "characteristics",
-        .name   = "Characteristics",
-        .values = &dmi_tpm_device_feature_names
-    }),
-    DMI_ATTRIBUTE(dmi_tpm_device_t, oem_defined, INTEGER, {
-        .code   = "oem-defined",
-        .name   = "OEM-defined",
-        .flags  = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_tpm_device_spec =
 {
-    .code       = "tpm-device",
-    .name       = "TPM device",
-    .type       = DMI_TYPE_TPM_DEVICE,
-    .min_length = 0x1F,
-    .attributes = dmi_tpm_device_attrs,
-    .handlers   = {
-        .decode = (dmi_entity_decode_fn_t)dmi_tpm_device_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_tpm_device_free
+    .code            = "tpm-device",
+    .name            = "TPM device",
+    .type            = DMI_TYPE_TPM_DEVICE,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .minimum_length  = 0x1F,
+    .decoded_length  = sizeof(dmi_tpm_device_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_tpm_device_t, spec_version, VERSION, {
+            .code   = "specification-version",
+            .name   = "Specification version",
+            .scale  = 2
+        }),
+        DMI_ATTRIBUTE(dmi_tpm_device_t, firmware_version, INTEGER, {
+            .code   = "firmware-version",
+            .name   = "Firmware version",
+            .flags  = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE(dmi_tpm_device_t, description, STRING, {
+            .code   = "description",
+            .name   = "Description"
+        }),
+        DMI_ATTRIBUTE(dmi_tpm_device_t, features, SET, {
+            .code   = "characteristics",
+            .name   = "Characteristics",
+            .values = &dmi_tpm_device_feature_names
+        }),
+        DMI_ATTRIBUTE(dmi_tpm_device_t, oem_defined, INTEGER, {
+            .code   = "oem-defined",
+            .name   = "OEM-defined",
+            .flags  = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_tpm_device_decode
     }
 };
 
-dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_tpm_device_decode(dmi_entity_t *entity)
 {
     dmi_tpm_device_t *info;
     const dmi_tpm_device_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_TPM_DEVICE));
+    data = dmi_entity_data(entity, DMI_TYPE_TPM_DEVICE);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_TPM_DEVICE);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     // Copy vendor identifier
     for (size_t i = 0; i < sizeof(data->vendor_id); i++)
@@ -122,13 +122,5 @@ dmi_tpm_device_t *dmi_tpm_device_decode(const dmi_entity_t *entity, dmi_version_
     info->features    = features;
     info->oem_defined = dmi_decode(data->oem_defined);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 0, 0);
-
-    return info;
-}
-
-void dmi_tpm_device_free(dmi_tpm_device_t *info)
-{
-    dmi_free(info);
+    return true;
 }

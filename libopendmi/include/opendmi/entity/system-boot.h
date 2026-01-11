@@ -77,18 +77,4 @@ struct dmi_system_boot
  */
 extern const dmi_entity_spec_t dmi_system_boot_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_system_boot_t *dmi_system_boot_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_system_boot_free(dmi_system_boot_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_SYSTEM_BOOT_H

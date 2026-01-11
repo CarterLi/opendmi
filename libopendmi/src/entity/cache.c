@@ -12,6 +12,8 @@
 
 #include <opendmi/entity/cache.h>
 
+static bool dmi_cache_decode(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_cache_type_names =
 {
     .code  = "cache-types",
@@ -188,97 +190,95 @@ static const dmi_name_set_t dmi_cache_sram_type_names =
     }
 };
 
-const dmi_attribute_t dmi_cache_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_cache_t, socket_designator, STRING, {
-        .code    = "socket-designator",
-        .name    = "Socket designator"
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, level, INTEGER, {
-        .code    = "level",
-        .name    = "Cache level"
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, socketed, BOOL, {
-        .code    = "socketed",
-        .name    = "Socketed",
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, location, ENUM, {
-        .code    = "location",
-        .name    = "Location",
-        .unknown = dmi_value_ptr(DMI_CACHE_LOCATION_UNKNOWN),
-        .values  = &dmi_cache_location_names
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, enabled, BOOL, {
-        .code    = "enabled",
-        .name    = "Enabled"
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, mode, ENUM, {
-        .code    = "mode",
-        .name    = "Operational mode",
-        .unknown = dmi_value_ptr(DMI_CACHE_MODE_UNKNOWN),
-        .values  = &dmi_cache_mode_names
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, maximum_size, SIZE, {
-        .code    = "maximum-size",
-        .name    = "Maximum cache size"
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, installed_size, SIZE, {
-        .code    = "installed-size",
-        .name    = "Installed cache size"
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, supported_sram, SET, {
-        .code    = "supported-sram",
-        .name    = "Supported SRAM type",
-        .values  = &dmi_cache_sram_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, current_sram, SET, {
-        .code    = "current-sram",
-        .name    = "Current SRAM type",
-        .values  = &dmi_cache_sram_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, speed, INTEGER, {
-        .code    = "speed",
-        .name    = "Cache speed",
-        .unit    = DMI_UNIT_NANOSECOND,
-        .level   = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, error_correction, ENUM, {
-        .code    = "error-correction",
-        .name    = "Error correction type",
-        .unspec  = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNKNOWN),
-        .values  = &dmi_error_correct_type_names,
-        .level   = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, type, ENUM, {
-        .code    = "type",
-        .name    = "System cache type",
-        .unspec  = dmi_value_ptr(DMI_CACHE_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_CACHE_TYPE_UNKNOWN),
-        .values  = &dmi_cache_type_names,
-        .level   = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_cache_t, associativity, ENUM, {
-        .code    = "associativity",
-        .name    = "Associativity",
-        .unspec  = dmi_value_ptr(DMI_CACHE_ASSOC_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_CACHE_ASSOC_UNKNOWN),
-        .values  = &dmi_cache_assoc_names,
-        .level   = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_cache_spec =
 {
-    .code       = "cache",
-    .name       = "Cache information",
-    .type       = DMI_TYPE_CACHE,
-    .min_length = 0x0F,
-    .attributes = dmi_cache_attrs,
-    .handlers   = {
-        .decode = (dmi_entity_decode_fn_t)dmi_cache_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_cache_free
+    .code            = "cache",
+    .name            = "Cache information",
+    .type            = DMI_TYPE_CACHE,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .minimum_length  = 0x0F,
+    .decoded_length  = sizeof(dmi_cache_t),
+    .attributes      = (dmi_attribute_t[]) {
+        DMI_ATTRIBUTE(dmi_cache_t, socket_designator, STRING, {
+            .code    = "socket-designator",
+            .name    = "Socket designator"
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, level, INTEGER, {
+            .code    = "level",
+            .name    = "Cache level"
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, socketed, BOOL, {
+            .code    = "socketed",
+            .name    = "Socketed",
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, location, ENUM, {
+            .code    = "location",
+            .name    = "Location",
+            .unknown = dmi_value_ptr(DMI_CACHE_LOCATION_UNKNOWN),
+            .values  = &dmi_cache_location_names
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, enabled, BOOL, {
+            .code    = "enabled",
+            .name    = "Enabled"
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, mode, ENUM, {
+            .code    = "mode",
+            .name    = "Operational mode",
+            .unknown = dmi_value_ptr(DMI_CACHE_MODE_UNKNOWN),
+            .values  = &dmi_cache_mode_names
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, maximum_size, SIZE, {
+            .code    = "maximum-size",
+            .name    = "Maximum cache size"
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, installed_size, SIZE, {
+            .code    = "installed-size",
+            .name    = "Installed cache size"
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, supported_sram, SET, {
+            .code    = "supported-sram",
+            .name    = "Supported SRAM type",
+            .values  = &dmi_cache_sram_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, current_sram, SET, {
+            .code    = "current-sram",
+            .name    = "Current SRAM type",
+            .values  = &dmi_cache_sram_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, speed, INTEGER, {
+            .code    = "speed",
+            .name    = "Cache speed",
+            .unit    = DMI_UNIT_NANOSECOND,
+            .level   = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, error_correction, ENUM, {
+            .code    = "error-correction",
+            .name    = "Error correction type",
+            .unspec  = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_ERROR_CORRECT_TYPE_UNKNOWN),
+            .values  = &dmi_error_correct_type_names,
+            .level   = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, type, ENUM, {
+            .code    = "type",
+            .name    = "System cache type",
+            .unspec  = dmi_value_ptr(DMI_CACHE_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_CACHE_TYPE_UNKNOWN),
+            .values  = &dmi_cache_type_names,
+            .level   = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_cache_t, associativity, ENUM, {
+            .code    = "associativity",
+            .name    = "Associativity",
+            .unspec  = dmi_value_ptr(DMI_CACHE_ASSOC_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_CACHE_ASSOC_UNKNOWN),
+            .values  = &dmi_cache_assoc_names,
+            .level   = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_cache_decode
     }
 };
 
@@ -326,19 +326,18 @@ dmi_size_t dmi_cache_size_ex(uint32_t value)
     return size;
 }
 
-dmi_cache_t *dmi_cache_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_cache_decode(dmi_entity_t *entity)
 {
     dmi_cache_t *info;
-    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_cache_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_CACHE));
+    data = dmi_entity_data(entity, DMI_TYPE_CACHE);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_CACHE);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     // SMBIOS 2.0 features
     info->socket_designator = dmi_entity_string(entity, data->socket_designator);
@@ -360,7 +359,7 @@ dmi_cache_t *dmi_cache_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
 
     // SMBIOS 2.1 features
     if (entity->body_length > 0x0F) {
-        level = dmi_version(2, 1, 0);
+        entity->level = dmi_version(2, 1, 0);
 
         info->type             = dmi_decode(data->type);
         info->associativity    = dmi_decode(data->associativity);
@@ -370,7 +369,7 @@ dmi_cache_t *dmi_cache_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
 
     // SMBIOS 3.1 features
     if (entity->body_length > 0x13) {
-        level = dmi_version(3, 1, 0);
+        entity->level = dmi_version(3, 1, 0);
 
         if (data->maximum_size == 0xFFFFU)
             info->maximum_size = dmi_cache_size_ex(dmi_decode(data->maximum_size_ex));
@@ -378,13 +377,5 @@ dmi_cache_t *dmi_cache_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
             info->installed_size = dmi_cache_size_ex(dmi_decode(data->installed_size_ex));
     }
 
-    if (plevel != nullptr)
-        *plevel = level;
-
-    return info;
-}
-
-void dmi_cache_free(dmi_cache_t *info)
-{
-    dmi_free(info);
+    return true;
 }

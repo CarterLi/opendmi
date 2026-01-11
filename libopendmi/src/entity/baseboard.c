@@ -11,6 +11,10 @@
 
 #include <opendmi/entity/baseboard.h>
 
+static bool dmi_baseboard_decode(dmi_entity_t *entity);
+static bool dmi_baseboard_link(dmi_entity_t *entity);
+static void dmi_baseboard_cleanup(dmi_entity_t *entity);
+
 const dmi_name_set_t dmi_baseboard_type_names =
 {
     .code  = "baseboard-types",
@@ -110,67 +114,66 @@ const dmi_name_set_t dmi_baseboard_feature_names =
     }
 };
 
-const dmi_attribute_t dmi_baseboard_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_baseboard_t, vendor, STRING, {
-        .code    = "vendor",
-        .name    = "Vendor"
-    }),
-    DMI_ATTRIBUTE(dmi_baseboard_t, product, STRING, {
-        .code    = "product",
-        .name    = "Product"
-    }),
-    DMI_ATTRIBUTE(dmi_baseboard_t, version, STRING, {
-        .code    = "version",
-        .name    = "Version"
-    }),
-    DMI_ATTRIBUTE(dmi_baseboard_t, serial_number, STRING, {
-        .code    = "serial-number",
-        .name    = "Serial number"
-    }),
-    DMI_ATTRIBUTE(dmi_baseboard_t, asset_tag, STRING, {
-        .code    = "asset-tag",
-        .name    = "Asset tag"
-    }),
-    DMI_ATTRIBUTE(dmi_baseboard_t, features, SET, {
-        .code    = "features",
-        .name    = "Features",
-        .values  = &dmi_baseboard_feature_names
-    }),
-    DMI_ATTRIBUTE(dmi_baseboard_t, location, STRING, {
-        .code    = "location",
-        .name    = "Location"
-    }),
-    DMI_ATTRIBUTE(dmi_baseboard_t, chassis_handle, HANDLE, {
-        .code    = "chassis-handle",
-        .name    = "Chassis handle",
-        .unspec  = dmi_value_ptr(DMI_HANDLE_INVALID)
-    }),
-    DMI_ATTRIBUTE(dmi_baseboard_t, type, ENUM, {
-        .code    = "type",
-        .name    = "Type",
-        .unspec  = dmi_value_ptr(DMI_BASEBOARD_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_BASEBOARD_TYPE_UNKNOWN),
-        .values  = &dmi_baseboard_type_names
-    }),
-    DMI_ATTRIBUTE_ARRAY(dmi_baseboard_t, object_handles, object_count, HANDLE, {
-        .code    = "contained-objects",
-        .name    = "Contained objects"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_baseboard_spec =
 {
-    .code       = "baseboard",
-    .name       = "Baseboard or module information",
-    .type       = DMI_TYPE_BASEBOARD,
-    .min_length = 0x0F,
-    .attributes = dmi_baseboard_attrs,
-    .handlers   = {
-        .decode = (dmi_entity_decode_fn_t)dmi_baseboard_decode,
-        .link   = (dmi_entity_link_fn_t)dmi_baseboard_link,
-        .free   = (dmi_entity_free_fn_t)dmi_baseboard_free
+    .code            = "baseboard",
+    .name            = "Baseboard or module information",
+    .type            = DMI_TYPE_BASEBOARD,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .minimum_length  = 0x0F,
+    .decoded_length  = sizeof(dmi_baseboard_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_baseboard_t, vendor, STRING, {
+            .code    = "vendor",
+            .name    = "Vendor"
+        }),
+        DMI_ATTRIBUTE(dmi_baseboard_t, product, STRING, {
+            .code    = "product",
+            .name    = "Product"
+        }),
+        DMI_ATTRIBUTE(dmi_baseboard_t, version, STRING, {
+            .code    = "version",
+            .name    = "Version"
+        }),
+        DMI_ATTRIBUTE(dmi_baseboard_t, serial_number, STRING, {
+            .code    = "serial-number",
+            .name    = "Serial number"
+        }),
+        DMI_ATTRIBUTE(dmi_baseboard_t, asset_tag, STRING, {
+            .code    = "asset-tag",
+            .name    = "Asset tag"
+        }),
+        DMI_ATTRIBUTE(dmi_baseboard_t, features, SET, {
+            .code    = "features",
+            .name    = "Features",
+            .values  = &dmi_baseboard_feature_names
+        }),
+        DMI_ATTRIBUTE(dmi_baseboard_t, location, STRING, {
+            .code    = "location",
+            .name    = "Location"
+        }),
+        DMI_ATTRIBUTE(dmi_baseboard_t, chassis_handle, HANDLE, {
+            .code    = "chassis-handle",
+            .name    = "Chassis handle",
+            .unspec  = dmi_value_ptr(DMI_HANDLE_INVALID)
+        }),
+        DMI_ATTRIBUTE(dmi_baseboard_t, type, ENUM, {
+            .code    = "type",
+            .name    = "Type",
+            .unspec  = dmi_value_ptr(DMI_BASEBOARD_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_BASEBOARD_TYPE_UNKNOWN),
+            .values  = &dmi_baseboard_type_names
+        }),
+        DMI_ATTRIBUTE_ARRAY(dmi_baseboard_t, object_handles, object_count, HANDLE, {
+            .code    = "contained-objects",
+            .name    = "Contained objects"
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode  = dmi_baseboard_decode,
+        .link    = dmi_baseboard_link,
+        .cleanup = dmi_baseboard_cleanup
     }
 };
 
@@ -179,18 +182,18 @@ const char *dmi_baseboard_type_name(dmi_baseboard_type_t value)
     return dmi_name_lookup(&dmi_baseboard_type_names, value);
 }
 
-dmi_baseboard_t *dmi_baseboard_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_baseboard_decode(dmi_entity_t *entity)
 {
-    dmi_baseboard_t *info;
     const dmi_baseboard_data_t *data;
+    dmi_baseboard_t *info;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_BASEBOARD));
+    data = dmi_entity_data(entity, DMI_TYPE_BASEBOARD);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_BASEBOARD);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     if (entity->body_length > 0x04u)
         info->vendor = dmi_entity_string(entity, data->vendor);
@@ -221,25 +224,21 @@ dmi_baseboard_t *dmi_baseboard_decode(const dmi_entity_t *entity, dmi_version_t 
         info->object_count  = dmi_decode(data->object_count);
 
         info->object_handles = dmi_alloc_array(entity->context, sizeof(dmi_handle_t), info->object_count);
-        if (info->object_handles == nullptr) {
-            dmi_free(info);
-            return nullptr;
-        }
+        if (info->object_handles == nullptr)
+            return false;
 
         for (size_t i = 0; i < info->object_count; i++)
             info->object_handles[i] = dmi_decode(data->object_handles[i]);
     }
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 0, 0);
-
-    return info;
+    return true;
 }
 
-bool dmi_baseboard_link(dmi_entity_t *entity)
+static bool dmi_baseboard_link(dmi_entity_t *entity)
 {
-    dmi_baseboard_t *info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_BASEBOARD));
+    dmi_baseboard_t *info;
 
+    info = dmi_entity_info(entity, DMI_TYPE_BASEBOARD);
     if (info == nullptr)
         return false;
 
@@ -272,10 +271,14 @@ bool dmi_baseboard_link(dmi_entity_t *entity)
     return true;
 }
 
-void dmi_baseboard_free(dmi_baseboard_t *info)
+static void dmi_baseboard_cleanup(dmi_entity_t *entity)
 {
+    dmi_baseboard_t *info;
+
+    info = dmi_entity_info(entity, DMI_TYPE_BASEBOARD);
+    if (info == nullptr)
+        return;
+
     dmi_free(info->object_handles);
     dmi_free(info->objects);
-
-    dmi_free(info);
 }

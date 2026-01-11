@@ -293,18 +293,15 @@ extern const dmi_entity_spec_t dmi_firmware_spec;
 
 __BEGIN_DECLS
 
+/**
+ * @internal
+ */
 dmi_size_t dmi_firmware_rom_size(dmi_byte_t value);
+
+/**
+ * @internal
+ */
 dmi_size_t dmi_firmware_rom_size_ex(dmi_word_t value);
-
-/**
- * @internal
- */
-dmi_firmware_t *dmi_firmware_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_firmware_free(dmi_firmware_t *info);
 
 __END_DECLS
 

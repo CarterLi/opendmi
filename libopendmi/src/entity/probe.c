@@ -96,14 +96,14 @@ const char *dmi_probe_location_name(dmi_probe_location_t value)
     return dmi_name_lookup(&dmi_probe_location_names, value);
 }
 
-dmi_probe_t * dmi_probe_decode(dmi_entity_t *entity, dmi_version_t *plevel)
+bool dmi_probe_decode(dmi_entity_t *entity)
 {
     dmi_probe_t *info = nullptr;
     dmi_probe_data_t *data = dmi_cast(data, entity->data);
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_cast(info, entity->info);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->description = dmi_entity_string(entity, data->description);
 
@@ -125,10 +125,7 @@ dmi_probe_t * dmi_probe_decode(dmi_entity_t *entity, dmi_version_t *plevel)
     else
         info->nominal_value = SHRT_MIN;
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 2, 0);
-
-    return info;
+    return true;
 }
 
 static short dmi_probe_value(dmi_word_t value)
@@ -139,9 +136,4 @@ static short dmi_probe_value(dmi_word_t value)
         return SHRT_MIN;
 
     return (int16_t)value;
-}
-
-void dmi_probe_free(dmi_probe_t *info)
-{
-    dmi_free(info);
 }

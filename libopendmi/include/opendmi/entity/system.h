@@ -172,16 +172,6 @@ __BEGIN_DECLS
 
 const char *dmi_system_wakeup_type_name(dmi_system_wakeup_type_t value);
 
-/**
- * @internal
- */
-dmi_system_t *dmi_system_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_system_free(dmi_system_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_SYSTEM_H

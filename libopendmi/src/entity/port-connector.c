@@ -11,6 +11,8 @@
 
 #include <opendmi/entity/port-connector.h>
 
+static bool dmi_port_connector_decode(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_connector_type_names =
 {
     .code  = "port-connector-types",
@@ -416,44 +418,42 @@ static const dmi_name_set_t dmi_port_type_names =
     }
 };
 
-const dmi_attribute_t dmi_port_connector_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_port_connector_t, internal_designator, STRING, {
-        .code   = "internal-designator",
-        .name   = "Internal reference designator"
-    }),
-    DMI_ATTRIBUTE(dmi_port_connector_t, internal_connector, ENUM, {
-        .code   = "internal-connector",
-        .name   = "Internal connector type",
-        .values = &dmi_connector_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_port_connector_t, external_designator, STRING, {
-        .code   = "external-designator",
-        .name   = "External reference designator"
-    }),
-    DMI_ATTRIBUTE(dmi_port_connector_t, external_connector, ENUM, {
-        .code   = "external-connector",
-        .name   = "External connector type",
-        .values = &dmi_connector_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_port_connector_t, port_type, ENUM, {
-        .code   = "port-type",
-        .name   = "Port type",
-        .values = &dmi_port_type_names
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_port_connector_spec =
 {
-    .code       = "port",
-    .name       = "Port connector information",
-    .type       = DMI_TYPE_PORT_CONNECTOR,
-    .min_length = 0x09,
-    .attributes = dmi_port_connector_attrs,
+    .code            = "port",
+    .name            = "Port connector information",
+    .type            = DMI_TYPE_PORT_CONNECTOR,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .minimum_length  = 0x09,
+    .decoded_length  = sizeof(dmi_port_connector_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_port_connector_t, internal_designator, STRING, {
+            .code   = "internal-designator",
+            .name   = "Internal reference designator"
+        }),
+        DMI_ATTRIBUTE(dmi_port_connector_t, internal_connector, ENUM, {
+            .code   = "internal-connector",
+            .name   = "Internal connector type",
+            .values = &dmi_connector_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_port_connector_t, external_designator, STRING, {
+            .code   = "external-designator",
+            .name   = "External reference designator"
+        }),
+        DMI_ATTRIBUTE(dmi_port_connector_t, external_connector, ENUM, {
+            .code   = "external-connector",
+            .name   = "External connector type",
+            .values = &dmi_connector_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_port_connector_t, port_type, ENUM, {
+            .code   = "port-type",
+            .name   = "Port type",
+            .values = &dmi_port_type_names
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
     .handlers   = {
-        .decode = (dmi_entity_decode_fn_t)dmi_port_connector_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_port_connector_free
+        .decode = dmi_port_connector_decode
     }
 };
 
@@ -467,18 +467,18 @@ const char *dmi_port_type_name(dmi_port_type_t value)
     return dmi_name_lookup(&dmi_port_type_names, value);
 }
 
-dmi_port_connector_t *dmi_port_connector_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_port_connector_decode(dmi_entity_t *entity)
 {
     dmi_port_connector_t *info;
     const dmi_port_connector_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_PORT_CONNECTOR));
+    data = dmi_entity_data(entity, DMI_TYPE_PORT_CONNECTOR);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_PORT_CONNECTOR);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->internal_designator = dmi_entity_string(entity, data->internal_designator);
     info->internal_connector  = dmi_decode(data->internal_connector);
@@ -486,13 +486,5 @@ dmi_port_connector_t *dmi_port_connector_decode(const dmi_entity_t *entity, dmi_
     info->external_connector  = dmi_decode(data->external_connector);
     info->port_type           = dmi_decode(data->port_type);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 0, 0);
-
-    return info;
-}
-
-void dmi_port_connector_free(dmi_port_connector_t *info)
-{
-    dmi_free(info);
+    return true;
 }

@@ -610,23 +610,15 @@ const char *dmi_memory_device_type_name(dmi_memory_device_type_t value);
 const char *dmi_memory_device_form_factor_name(dmi_memory_device_form_factor_t value);
 const char *dmi_memory_device_tech_name(dmi_memory_device_tech_t value);
 
+/**
+ * @internal
+ */
 dmi_size_t dmi_memory_device_size(uint16_t value);
+
+/**
+ * @internal
+ */
 dmi_size_t dmi_memory_device_size_ex(uint32_t value);
-
-/**
- * @internal
- */
-dmi_memory_device_t *dmi_memory_device_decode(dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-bool dmi_memory_device_link(dmi_entity_t *entity);
-
-/**
- * @internal
- */
-void dmi_memory_device_free(dmi_memory_device_t *info);
 
 __END_DECLS
 

@@ -104,18 +104,4 @@ struct dmi_mgmt_device_threshold
  */
 extern const dmi_entity_spec_t dmi_mgmt_device_threshold_spec;
 
-__BEGIN_DECLS
-
-/**
- * @internal
- */
-dmi_mgmt_device_threshold_t *dmi_mgmt_device_threshold_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_mgmt_device_threshold_free(dmi_mgmt_device_threshold_t *info);
-
-__END_DECLS
-
 #endif // !OPENDMI_ENTITY_MGMT_DEVICE_THRESHOLD_H

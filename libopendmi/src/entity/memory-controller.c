@@ -11,6 +11,8 @@
 
 #include <opendmi/entity/memory-controller.h>
 
+static bool dmi_memory_controller_decode(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_error_detect_method_names =
 {
     .code  = "error-detect-methods",
@@ -158,78 +160,76 @@ static const dmi_name_set_t dmi_memory_module_voltage_names =
     }
 };
 
-const dmi_attribute_t dmi_memory_controller_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_memory_controller_t, error_detection, ENUM, {
-        .code   = "error-detection",
-        .name   = "Error detecting method",
-        .values = &dmi_error_detect_method_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_controller_t, error_correction, SET, {
-        .code   = "error-correction",
-        .name   = "Error correcting capabilities",
-        .values = &dmi_error_correct_caps_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_controller_t, supported_interleave, ENUM, {
-        .code   = "supported-interleave",
-        .name   = "Supported interleave",
-        .values = &dmi_memory_interleave_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_controller_t, current_interleave, ENUM, {
-        .code   = "current-interleave",
-        .name   = "Current interleave",
-        .values = &dmi_memory_interleave_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_controller_t, maximum_module_size, SIZE, {
-        .code   = "maximum-module-size",
-        .name   = "Maximum module size"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_controller_t, maximum_memory_size, SIZE, {
-        .code   = "maximum-memory-size",
-        .name   = "Maximum memory size"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_controller_t, supported_speeds, SET, {
-        .code   = "supported-speeds",
-        .name   = "Supported speeds",
-        .values = &dmi_memory_module_speed_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_controller_t, supported_types, SET, {
-        .code   = "supported-types",
-        .name   = "Supported types",
-        .values = &dmi_memory_module_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_controller_t, required_voltages, SET, {
-        .code   = "required-voltages",
-        .name   = "Required voltages",
-        .values = &dmi_memory_module_voltage_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_controller_t, slot_count, INTEGER, {
-        .code   = "slot-count",
-        .name   = "Slot count"
-    }),
-    DMI_ATTRIBUTE_ARRAY(dmi_memory_controller_t, module_handles, slot_count, HANDLE, {
-        .code   = "module-handles",
-        .name   = "Module handles"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_controller_t, enabled_error_correction, SET, {
-        .code   = "error-correction",
-        .name   = "Error correcting capabilities",
-        .values = &dmi_error_correct_caps_names,
-        .level  = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_memory_controller_spec =
 {
-    .code       = "memory-controller",
-    .name       = "Memory controller information",
-    .type       = DMI_TYPE_MEMORY_CONTROLLER,
-    .min_length = 0x08,
-    .attributes = dmi_memory_controller_attrs,
-    .handlers   = {
-        .decode = (dmi_entity_decode_fn_t)dmi_memory_controller_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_memory_controller_free
+    .code            = "memory-controller",
+    .name            = "Memory controller information",
+    .type            = DMI_TYPE_MEMORY_CONTROLLER,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .minimum_length  = 0x08,
+    .decoded_length  = sizeof(dmi_memory_controller_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_memory_controller_t, error_detection, ENUM, {
+            .code   = "error-detection",
+            .name   = "Error detecting method",
+            .values = &dmi_error_detect_method_names
+        }),
+        DMI_ATTRIBUTE(dmi_memory_controller_t, error_correction, SET, {
+            .code   = "error-correction",
+            .name   = "Error correcting capabilities",
+            .values = &dmi_error_correct_caps_names
+        }),
+        DMI_ATTRIBUTE(dmi_memory_controller_t, supported_interleave, ENUM, {
+            .code   = "supported-interleave",
+            .name   = "Supported interleave",
+            .values = &dmi_memory_interleave_names
+        }),
+        DMI_ATTRIBUTE(dmi_memory_controller_t, current_interleave, ENUM, {
+            .code   = "current-interleave",
+            .name   = "Current interleave",
+            .values = &dmi_memory_interleave_names
+        }),
+        DMI_ATTRIBUTE(dmi_memory_controller_t, maximum_module_size, SIZE, {
+            .code   = "maximum-module-size",
+            .name   = "Maximum module size"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_controller_t, maximum_memory_size, SIZE, {
+            .code   = "maximum-memory-size",
+            .name   = "Maximum memory size"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_controller_t, supported_speeds, SET, {
+            .code   = "supported-speeds",
+            .name   = "Supported speeds",
+            .values = &dmi_memory_module_speed_names
+        }),
+        DMI_ATTRIBUTE(dmi_memory_controller_t, supported_types, SET, {
+            .code   = "supported-types",
+            .name   = "Supported types",
+            .values = &dmi_memory_module_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_memory_controller_t, required_voltages, SET, {
+            .code   = "required-voltages",
+            .name   = "Required voltages",
+            .values = &dmi_memory_module_voltage_names
+        }),
+        DMI_ATTRIBUTE(dmi_memory_controller_t, slot_count, INTEGER, {
+            .code   = "slot-count",
+            .name   = "Slot count"
+        }),
+        DMI_ATTRIBUTE_ARRAY(dmi_memory_controller_t, module_handles, slot_count, HANDLE, {
+            .code   = "module-handles",
+            .name   = "Module handles"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_controller_t, enabled_error_correction, SET, {
+            .code   = "error-correction",
+            .name   = "Error correcting capabilities",
+            .values = &dmi_error_correct_caps_names,
+            .level  = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_memory_controller_decode
     }
 };
 
@@ -243,20 +243,19 @@ const char *dmi_memory_interleave_name(dmi_memory_interleave_t value)
     return dmi_name_lookup(&dmi_memory_interleave_names, value);
 }
 
-dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_memory_controller_decode(dmi_entity_t *entity)
 {
     dmi_memory_controller_t *info;
-    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_memory_controller_data_t *data;
     const dmi_memory_controller_extra_t *extra;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MEMORY_CONTROLLER));
+    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_CONTROLLER);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CONTROLLER);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->error_detection  = dmi_decode(data->error_detection);
     info->error_correction = (dmi_error_correct_caps_t) {
@@ -269,23 +268,14 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_entity_t *entity
     info->maximum_module_size  = 1 << dmi_decode(data->maximum_module_size);
     info->maximum_memory_size  = info->maximum_module_size * info->slot_count;
 
-    info->supported_speeds = (dmi_memory_module_speed_t) {
-        .__value = dmi_decode(data->supported_speeds)
-    };
-
-    info->supported_types = (dmi_memory_module_type_t) {
-        .__value = dmi_decode(data->supported_types)
-    };
-
-    info->required_voltages = (dmi_memory_module_voltage_t) {
-        .__value = dmi_decode(data->required_voltages)
-    };
+    info->supported_speeds.__value  = dmi_decode(data->supported_speeds);
+    info->supported_types.__value   = dmi_decode(data->supported_types);
+    info->required_voltages.__value = dmi_decode(data->required_voltages);
 
     info->module_handles = dmi_alloc_array(entity->context, sizeof(dmi_handle_t),
                                            info->slot_count);
     if (info->module_handles == nullptr) {
-        dmi_free(info);
-        return nullptr;
+        return false;
     }
 
     for (size_t i = 0; i < info->slot_count; i++) {
@@ -296,7 +286,7 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_entity_t *entity
                                     sizeof(dmi_handle_t) * info->slot_count;
 
     if (entity->body_length > (size_t)(extra_start - entity->data)) {
-        level = dmi_version(2, 1, 0);
+        entity->level = dmi_version(2, 1, 0);
         extra = dmi_cast(extra, extra_start);
 
         info->enabled_error_correction = (dmi_error_correct_caps_t) {
@@ -304,13 +294,5 @@ dmi_memory_controller_t *dmi_memory_controller_decode(const dmi_entity_t *entity
         };
     }
 
-    if (plevel != nullptr)
-        *plevel = level;
-
-    return info;
-}
-
-void dmi_memory_controller_free(dmi_memory_controller_t *info)
-{
-    dmi_free(info);
+    return true;
 }

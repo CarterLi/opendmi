@@ -11,6 +11,8 @@
 
 #include <opendmi/entity/firmware.h>
 
+static bool dmi_firmware_decode(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_firmware_feature_names =
 {
     .code  = "firmware-features",
@@ -244,72 +246,70 @@ static const dmi_name_set_t dmi_firmware_feature_ex_names =
     }
 };
 
-static const dmi_attribute_t dmi_firmware_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_firmware_t, vendor, STRING, {
-        .code   = "vendor",
-        .name   = "Vendor"
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_t, version, STRING, {
-        .code   = "version",
-        .name   = "Version"
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_t, bios_segment, ADDRESS, {
-        .code   = "bios-segment",
-        .name   = "BIOS segment",
-        .flags  = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_t, release_date, DATE, {
-        .code   = "release-date",
-        .name   = "Release date",
-        .unspec = dmi_value_ptr(DMI_DATE_NONE)
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_t, rom_size, SIZE, {
-        .code   = "rom-size",
-        .name   = "ROM size"
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_t, features, SET, {
-        .code   = "features",
-        .name   = "Features",
-        .values = &dmi_firmware_feature_names,
-        .level  = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_t, features_ex, SET, {
-        .code   = "features-ex",
-        .name   = "Extra features",
-        .values = &dmi_firmware_feature_ex_names,
-        .level  = DMI_VERSION(2, 4, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_t, platform_version, VERSION, {
-        .code   = "platform-version",
-        .name   = "Platform firmware version",
-        .scale  = 2,
-        .unspec = dmi_value_ptr(DMI_VERSION_NONE),
-        .level  = DMI_VERSION(2, 4, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_t, controller_version, VERSION, {
-        .code   = "controller-version",
-        .name   = "Embedded controller firmware version",
-        .scale  = 2,
-        .unspec = dmi_value_ptr(DMI_VERSION_NONE),
-        .level  = DMI_VERSION(2, 4, 0)
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_firmware_spec =
 {
-    .code          = "firmware",
-    .name          = "Platform firmware information",
-    .type          = DMI_TYPE_FIRMWARE,
-    .required_from = DMI_VERSION(2, 3, 0),
-    .required_till = DMI_VERSION_NONE,
-    .unique        = true,
-    .min_length    = 0x12,
-    .attributes    = dmi_firmware_attrs,
-    .handlers      = {
-        .decode = (dmi_entity_decode_fn_t)dmi_firmware_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_firmware_free
+    .code            = "firmware",
+    .name            = "Platform firmware information",
+    .type            = DMI_TYPE_FIRMWARE,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .required_from   = DMI_VERSION(2, 3, 0),
+    .required_till   = DMI_VERSION_NONE,
+    .unique          = true,
+    .minimum_length  = 0x12,
+    .decoded_length  = sizeof(dmi_firmware_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_firmware_t, vendor, STRING, {
+            .code   = "vendor",
+            .name   = "Vendor"
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_t, version, STRING, {
+            .code   = "version",
+            .name   = "Version"
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_t, bios_segment, ADDRESS, {
+            .code   = "bios-segment",
+            .name   = "BIOS segment",
+            .flags  = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_t, release_date, DATE, {
+            .code   = "release-date",
+            .name   = "Release date",
+            .unspec = dmi_value_ptr(DMI_DATE_NONE)
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_t, rom_size, SIZE, {
+            .code   = "rom-size",
+            .name   = "ROM size"
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_t, features, SET, {
+            .code   = "features",
+            .name   = "Features",
+            .values = &dmi_firmware_feature_names,
+            .level  = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_t, features_ex, SET, {
+            .code   = "features-ex",
+            .name   = "Extra features",
+            .values = &dmi_firmware_feature_ex_names,
+            .level  = DMI_VERSION(2, 4, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_t, platform_version, VERSION, {
+            .code   = "platform-version",
+            .name   = "Platform firmware version",
+            .scale  = 2,
+            .unspec = dmi_value_ptr(DMI_VERSION_NONE),
+            .level  = DMI_VERSION(2, 4, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_t, controller_version, VERSION, {
+            .code   = "controller-version",
+            .name   = "Embedded controller firmware version",
+            .scale  = 2,
+            .unspec = dmi_value_ptr(DMI_VERSION_NONE),
+            .level  = DMI_VERSION(2, 4, 0)
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_firmware_decode
     }
 };
 
@@ -333,23 +333,18 @@ dmi_size_t dmi_firmware_rom_size_ex(dmi_word_t value)
     return size;
 }
 
-dmi_firmware_t *dmi_firmware_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_firmware_decode(dmi_entity_t *entity)
 {
-    dmi_firmware_t *info;
-    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_firmware_data_t *data;
+    dmi_firmware_t *info;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_FIRMWARE));
+    data = dmi_entity_data(entity, DMI_TYPE_FIRMWARE);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_FIRMWARE);
     if (info == nullptr)
-        return nullptr;
-
-    dmi_firmware_features_t features = {
-        .__value = dmi_decode(data->features)
-    };
+        return false;
 
     info->vendor       = dmi_entity_string(entity, data->vendor);
     info->version      = dmi_entity_string(entity, data->version);
@@ -364,15 +359,15 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_entity_t *entity, dmi_version_t *p
         info->release_date = DMI_DATE_NONE;
     }
 
-    info->rom_size     = dmi_firmware_rom_size(dmi_decode(data->rom_size));
-    info->features     = features;
+    info->rom_size         = dmi_firmware_rom_size(dmi_decode(data->rom_size));
+    info->features.__value = dmi_decode(data->features);
 
     // SMBIOS 2.1: Extra feature bits
     if (entity->body_length > 0x12) {
         size_t extra = entity->body_length - 0x12;
 
         if (extra != 0) {
-            level = dmi_version(2, 1, 0);
+            entity->level = dmi_version(2, 1, 0);
 
             dmi_firmware_features_ex_t features_ex = {
                 .__value = {
@@ -386,7 +381,7 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_entity_t *entity, dmi_version_t *p
 
     // SMBIOS 2.4 features
     if (entity->body_length > 0x14) {
-        level = dmi_version(2, 4, 0);
+        entity->level = dmi_version(2, 4, 0);
 
         if (data->platform_release_major != 0xFFU) {
             info->platform_version = dmi_version(data->platform_release_major,
@@ -405,19 +400,11 @@ dmi_firmware_t *dmi_firmware_decode(const dmi_entity_t *entity, dmi_version_t *p
 
     // SMBIOS 3.1 features
     if (entity->body_length > 0x18) {
-        level = dmi_version(3, 1, 0);
+        entity->level = dmi_version(3, 1, 0);
 
         if (data->rom_size == 0xFFU)
             info->rom_size = dmi_firmware_rom_size_ex(dmi_decode(data->rom_size_ex));
     }
 
-    if (plevel != nullptr)
-        *plevel = level;
-
-    return info;
-}
-
-void dmi_firmware_free(dmi_firmware_t *info)
-{
-    dmi_free(info);
+    return true;
 }

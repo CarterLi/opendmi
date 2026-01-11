@@ -10,6 +10,8 @@
 
 #include <opendmi/entity/hardware-security.h>
 
+static bool dmi_hardware_security_decode(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_hardware_security_status_names =
 {
     .code  = "hardware-security-statuses",
@@ -34,46 +36,43 @@ static const dmi_name_set_t dmi_hardware_security_status_names =
     }
 };
 
-const dmi_attribute_t dmi_hardware_security_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_hardware_security_t, front_panel_reset, ENUM, {
-        .code    = "front-panel-reset",
-        .name    = "Front panel reset status",
-        .values  = &dmi_hardware_security_status_names,
-        .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
-    }),
-    DMI_ATTRIBUTE(dmi_hardware_security_t, admin_password, ENUM, {
-        .code    = "admin-password",
-        .name    = "Administrator password status",
-        .values  = &dmi_hardware_security_status_names,
-        .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
-    }),
-    DMI_ATTRIBUTE(dmi_hardware_security_t, keyboard_password, ENUM, {
-        .code    = "keyboard-password",
-        .name    = "Keyboard password status",
-        .values  = &dmi_hardware_security_status_names,
-        .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
-    }),
-    DMI_ATTRIBUTE(dmi_hardware_security_t, poweron_password, ENUM, {
-        .code    = "poweron-password",
-        .name    = "Power-on password status",
-        .values  = &dmi_hardware_security_status_names,
-        .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_hardware_security_spec =
 {
-    .code        = "hardware-security",
-    .name        = "Hardware security",
-    .type        = DMI_TYPE_HARDWARE_SECURITY,
-    .min_version = DMI_VERSION(2, 2, 0),
-    .min_length  = 0x05,
-    .attributes  = dmi_hardware_security_attrs,
-    .handlers    = {
-        .decode = (dmi_entity_decode_fn_t)dmi_hardware_security_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_hardware_security_free
+    .code            = "hardware-security",
+    .name            = "Hardware security",
+    .type            = DMI_TYPE_HARDWARE_SECURITY,
+    .minimum_version = DMI_VERSION(2, 2, 0),
+    .minimum_length  = 0x05,
+    .decoded_length  = sizeof(dmi_hardware_security_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_hardware_security_t, front_panel_reset, ENUM, {
+            .code    = "front-panel-reset",
+            .name    = "Front panel reset status",
+            .values  = &dmi_hardware_security_status_names,
+            .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
+        }),
+        DMI_ATTRIBUTE(dmi_hardware_security_t, admin_password, ENUM, {
+            .code    = "admin-password",
+            .name    = "Administrator password status",
+            .values  = &dmi_hardware_security_status_names,
+            .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
+        }),
+        DMI_ATTRIBUTE(dmi_hardware_security_t, keyboard_password, ENUM, {
+            .code    = "keyboard-password",
+            .name    = "Keyboard password status",
+            .values  = &dmi_hardware_security_status_names,
+            .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
+        }),
+        DMI_ATTRIBUTE(dmi_hardware_security_t, poweron_password, ENUM, {
+            .code    = "poweron-password",
+            .name    = "Power-on password status",
+            .values  = &dmi_hardware_security_status_names,
+            .unknown = dmi_value_ptr(DMI_HARDWARE_SECURITY_STATUS_UNKNOWN)
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_hardware_security_decode
     }
 };
 
@@ -82,31 +81,23 @@ const char *dmi_hardware_security_status_name(dmi_hardware_security_status_t val
     return dmi_name_lookup(&dmi_hardware_security_status_names, value);
 }
 
-dmi_hardware_security_t *dmi_hardware_security_decode(dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_hardware_security_decode(dmi_entity_t *entity)
 {
     dmi_hardware_security_t *info;
     const dmi_hardware_security_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_HARDWARE_SECURITY));
+    data = dmi_entity_data(entity, DMI_TYPE_HARDWARE_SECURITY);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_HARDWARE_SECURITY);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->front_panel_reset = data->settings.front_panel_reset;
     info->admin_password    = data->settings.admin_password;
     info->keyboard_password = data->settings.keyboard_password;
     info->poweron_password  = data->settings.poweron_password;
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 2, 0);
-
-    return info;
-}
-
-void dmi_hardware_security_free(dmi_hardware_security_t *info)
-{
-    dmi_free(info);
+    return true;
 }

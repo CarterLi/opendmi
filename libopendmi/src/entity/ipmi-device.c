@@ -13,6 +13,8 @@
 
 #include <opendmi/entity/ipmi-device.h>
 
+static bool dmi_ipmi_device_decode(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_ipmi_interface_names =
 {
     .code  = "ipmi-interfaces",
@@ -99,78 +101,76 @@ static const dmi_name_set_t dmi_ipmi_intr_polarity_names =
     }
 };
 
-const dmi_attribute_t dmi_ipmi_device_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_ipmi_device_t, interface_type, ENUM, {
-        .code   = "interface-type",
-        .name   = "Interface type",
-        .values = &dmi_ipmi_interface_names
-    }),
-    DMI_ATTRIBUTE(dmi_ipmi_device_t, spec_version, VERSION, {
-        .code   = "specification-version",
-        .name   = "Specification version",
-        .scale  = 2
-    }),
-    DMI_ATTRIBUTE(dmi_ipmi_device_t, i2c_target_addr, INTEGER, {
-        .code   = "i2c-target-address",
-        .name   = "I2C target address",
-        .flags  = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_ipmi_device_t, nv_storage_addr, INTEGER, {
-        .code   = "nv-storage-address",
-        .name   = "NV storage address",
-        .unspec = dmi_value_ptr((uint8_t)UINT8_MAX),
-        .flags  = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_ipmi_device_t, base_addr, ADDRESS, {
-        .code   = "base-address",
-        .name   = "Base address"
-    }),
-    DMI_ATTRIBUTE(dmi_ipmi_device_t, base_addr_lsb, INTEGER, {
-        .code   = "base-address-lsb",
-        .name   = "Base address LSB"
-    }),
-    DMI_ATTRIBUTE(dmi_ipmi_device_t, base_addr_type, ENUM, {
-        .code   = "base-address-type",
-        .name   = "Base address type",
-        .values = &dmi_ipmi_addr_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_ipmi_device_t, intr_trigger, ENUM, {
-        .code   = "interrupt-trigger-mode",
-        .name   = "Interrupt trigger mode",
-        .unspec = dmi_value_ptr(DMI_IPMI_INTR_TRIGGER_UNSPEC),
-        .values = &dmi_ipmi_intr_trigger_names
-    }),
-    DMI_ATTRIBUTE(dmi_ipmi_device_t, intr_polarity, ENUM, {
-        .code   = "interrupt-polarity",
-        .name   = "Interrupt polarity",
-        .unspec = dmi_value_ptr(DMI_IPMI_INTR_POLARITY_UNSPEC),
-        .values = &dmi_ipmi_intr_polarity_names
-    }),
-    DMI_ATTRIBUTE(dmi_ipmi_device_t, intr_number, INTEGER, {
-        .code   = "interrupt-number",
-        .name   = "Interrupt number",
-        .unspec = dmi_value_ptr((unsigned short)0)
-    }),
-    DMI_ATTRIBUTE(dmi_ipmi_device_t, register_spacing, INTEGER, {
-        .code   = "register-spacing",
-        .name   = "Register spacing",
-        .unit   = "bytes",
-        .unspec = dmi_value_ptr((unsigned short)0)
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_ipmi_device_spec =
 {
-    .code        = "ipmi-device",
-    .name        = "IPMI device information",
-    .type        = DMI_TYPE_IPMI_DEVICE,
-    .min_length  = 0x12,
-    .attributes  = dmi_ipmi_device_attrs,
-    .handlers    = {
-        .decode = (dmi_entity_decode_fn_t)dmi_ipmi_device_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_ipmi_device_free
+    .code            = "ipmi-device",
+    .name            = "IPMI device information",
+    .type            = DMI_TYPE_IPMI_DEVICE,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .minimum_length  = 0x12,
+    .decoded_length  = sizeof(dmi_ipmi_device_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_ipmi_device_t, interface_type, ENUM, {
+            .code   = "interface-type",
+            .name   = "Interface type",
+            .values = &dmi_ipmi_interface_names
+        }),
+        DMI_ATTRIBUTE(dmi_ipmi_device_t, spec_version, VERSION, {
+            .code   = "specification-version",
+            .name   = "Specification version",
+            .scale  = 2
+        }),
+        DMI_ATTRIBUTE(dmi_ipmi_device_t, i2c_target_addr, INTEGER, {
+            .code   = "i2c-target-address",
+            .name   = "I2C target address",
+            .flags  = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE(dmi_ipmi_device_t, nv_storage_addr, INTEGER, {
+            .code   = "nv-storage-address",
+            .name   = "NV storage address",
+            .unspec = dmi_value_ptr((uint8_t)UINT8_MAX),
+            .flags  = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE(dmi_ipmi_device_t, base_addr, ADDRESS, {
+            .code   = "base-address",
+            .name   = "Base address"
+        }),
+        DMI_ATTRIBUTE(dmi_ipmi_device_t, base_addr_lsb, INTEGER, {
+            .code   = "base-address-lsb",
+            .name   = "Base address LSB"
+        }),
+        DMI_ATTRIBUTE(dmi_ipmi_device_t, base_addr_type, ENUM, {
+            .code   = "base-address-type",
+            .name   = "Base address type",
+            .values = &dmi_ipmi_addr_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_ipmi_device_t, intr_trigger, ENUM, {
+            .code   = "interrupt-trigger-mode",
+            .name   = "Interrupt trigger mode",
+            .unspec = dmi_value_ptr(DMI_IPMI_INTR_TRIGGER_UNSPEC),
+            .values = &dmi_ipmi_intr_trigger_names
+        }),
+        DMI_ATTRIBUTE(dmi_ipmi_device_t, intr_polarity, ENUM, {
+            .code   = "interrupt-polarity",
+            .name   = "Interrupt polarity",
+            .unspec = dmi_value_ptr(DMI_IPMI_INTR_POLARITY_UNSPEC),
+            .values = &dmi_ipmi_intr_polarity_names
+        }),
+        DMI_ATTRIBUTE(dmi_ipmi_device_t, intr_number, INTEGER, {
+            .code   = "interrupt-number",
+            .name   = "Interrupt number",
+            .unspec = dmi_value_ptr((unsigned short)0)
+        }),
+        DMI_ATTRIBUTE(dmi_ipmi_device_t, register_spacing, INTEGER, {
+            .code   = "register-spacing",
+            .name   = "Register spacing",
+            .unit   = "bytes",
+            .unspec = dmi_value_ptr((unsigned short)0)
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_ipmi_device_decode,
     }
 };
 
@@ -194,18 +194,18 @@ const char *dmi_ipmi_intr_polarity_name(dmi_ipmi_intr_polarity_t value)
     return dmi_name_lookup(&dmi_ipmi_intr_polarity_names, value);
 }
 
-dmi_ipmi_device_t *dmi_ipmi_device_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_ipmi_device_decode(dmi_entity_t *entity)
 {
     dmi_ipmi_device_t *info;
     const dmi_ipmi_device_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_IPMI_DEVICE));
+    data = dmi_entity_data(entity, DMI_TYPE_IPMI_DEVICE);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_IPMI_DEVICE);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->interface_type = dmi_decode(data->interface_type);
     info->spec_version   = dmi_version((data->spec_version & 0xF0) >> 4, data->spec_version & 0x0F, 0);
@@ -262,13 +262,5 @@ dmi_ipmi_device_t *dmi_ipmi_device_decode(const dmi_entity_t *entity, dmi_versio
     info->base_addr_lsb = details.base_addr_lsb;
     info->intr_number   = dmi_decode(data->intr_number);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 0, 0);
-
-    return info;
-}
-
-void dmi_ipmi_device_free(dmi_ipmi_device_t *info)
-{
-    dmi_free(info);
+    return true;
 }

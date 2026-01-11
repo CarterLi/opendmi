@@ -12,6 +12,9 @@
 
 #include <opendmi/entity/processor.h>
 
+static bool dmi_processor_decode(dmi_entity_t *entity);
+static bool dmi_processor_link(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_processor_type_names =
 {
     .code  = "processor-types",
@@ -1754,155 +1757,139 @@ const dmi_name_set_t dmi_processor_features_names =
     }
 };
 
-const dmi_attribute_t dmi_processor_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_processor_t, socket_designation, STRING, {
-        .code    = "socket-designation",
-        .name    = "Socket Designation"
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, type, ENUM, {
-        .code    = "type",
-        .name    = "Type",
-        .unspec  = dmi_value_ptr(DMI_PROCESSOR_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_PROCESSOR_TYPE_UNKNOWN),
-        .values  = &dmi_processor_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, family, ENUM, {
-        .code    = "family",
-        .name    = "Family",
-        .unspec  = dmi_value_ptr(DMI_PROCESSOR_FAMILY_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_PROCESSOR_FAMILY_UNKNOWN),
-        .values  = &dmi_processor_family_names
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, vendor, STRING, {
-        .code    = "vendor",
-        .name    = "Vendor"
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, voltage, INTEGER, {
-        .code    = "voltage",
-        .name    = "Voltage",
-        .flags   = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, external_clock, INTEGER, {
-        .code    = "external-clock",
-        .name    = "External Clock",
-        .unit    = DMI_UNIT_MHZ,
-        .unknown = dmi_value_ptr((uint16_t)0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, maximum_speed, INTEGER, {
-        .code    = "maximum-speed",
-        .name    = "Maximum Speed",
-        .unit    = DMI_UNIT_MHZ,
-        .unknown = dmi_value_ptr((uint16_t)0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, current_speed, INTEGER, {
-        .code    = "current-speed",
-        .name    = "Current Speed",
-        .unit    = DMI_UNIT_MHZ,
-        .unknown = dmi_value_ptr((uint16_t)0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, upgrade, ENUM, {
-        .code    = "upgrade",
-        .name    = "Upgrade",
-        .unspec  = dmi_value_ptr(DMI_PROCESSOR_UPGRADE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_PROCESSOR_UPGRADE_UNKNOWN),
-        .values  = &dmi_processor_upgrade_names
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, l1_cache_handle, HANDLE, {
-        .code    = "l1-cache-handle",
-        .name    = "L1 Cache handle",
-        .level   = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, l2_cache_handle, HANDLE, {
-        .code    = "l2-cache-handle",
-        .name    = "L2 Cache handle",
-        .level   = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, l3_cache_handle, HANDLE, {
-        .code    = "l3-cache-handle",
-        .name    = "L3 Cache handle",
-        .level   = DMI_VERSION(2, 1, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, serial_number, STRING, {
-        .code    = "serial-number",
-        .name    = "Serial Number",
-        .level   = DMI_VERSION(2, 3, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, asset_tag, STRING, {
-        .code    = "asset-tag",
-        .name    = "Asset Tag",
-        .level   = DMI_VERSION(2, 3, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, part_number, STRING, {
-        .code    = "part-number",
-        .name    = "Part Number",
-        .level   = DMI_VERSION(2, 3, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, features, SET, {
-        .code    = "features",
-        .name    = "Features",
-        .values  = &dmi_processor_features_names,
-        .level   = DMI_VERSION(2, 5, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, core_count, INTEGER, {
-        .code    = "core-count",
-        .name    = "Core Count",
-        .unknown = dmi_value_ptr((uint16_t)0),
-        .level   = DMI_VERSION(2, 5, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, core_enabled, INTEGER, {
-        .code    = "core-enabled",
-        .name    = "Core Enabled",
-        .unknown = dmi_value_ptr((uint16_t)0),
-        .level   = DMI_VERSION(2, 5, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, thread_count, INTEGER, {
-        .code    = "thread-count",
-        .name    = "Thread Count",
-        .unknown = dmi_value_ptr((uint16_t)0),
-        .level   = DMI_VERSION(2, 5, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, thread_enabled, INTEGER, {
-        .code    = "thread-enabled",
-        .name    = "Thread Enabled",
-        .unknown = dmi_value_ptr((uint16_t)0),
-        .level   = DMI_VERSION(3, 6, 0)
-    }),
-    DMI_ATTRIBUTE(dmi_processor_t, socket_type, STRING, {
-        .code    = "socket-type",
-        .name    = "Socket Type"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_processor_spec =
 {
-    .code          = "processor",
-    .name          = "Processor information",
-    .type          = DMI_TYPE_PROCESSOR,
-    .required_from = DMI_VERSION(2, 3, 0),
-    .required_till = DMI_VERSION_NONE,
-    .min_length    = 0x1A,
-    .attributes    = dmi_processor_attrs,
+    .code            = "processor",
+    .name            = "Processor information",
+    .type            = DMI_TYPE_PROCESSOR,
+    .minimum_version = DMI_VERSION(2, 0, 0),
+    .required_from   = DMI_VERSION(2, 3, 0),
+    .required_till   = DMI_VERSION_NONE,
+    .minimum_length  = 0x1A,
+    .decoded_length  = sizeof(dmi_processor_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_processor_t, socket_designation, STRING, {
+            .code    = "socket-designation",
+            .name    = "Socket Designation"
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, type, ENUM, {
+            .code    = "type",
+            .name    = "Type",
+            .unspec  = dmi_value_ptr(DMI_PROCESSOR_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_PROCESSOR_TYPE_UNKNOWN),
+            .values  = &dmi_processor_type_names
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, family, ENUM, {
+            .code    = "family",
+            .name    = "Family",
+            .unspec  = dmi_value_ptr(DMI_PROCESSOR_FAMILY_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_PROCESSOR_FAMILY_UNKNOWN),
+            .values  = &dmi_processor_family_names
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, vendor, STRING, {
+            .code    = "vendor",
+            .name    = "Vendor"
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, voltage, INTEGER, {
+            .code    = "voltage",
+            .name    = "Voltage",
+            .flags   = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, external_clock, INTEGER, {
+            .code    = "external-clock",
+            .name    = "External Clock",
+            .unit    = DMI_UNIT_MHZ,
+            .unknown = dmi_value_ptr((uint16_t)0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, maximum_speed, INTEGER, {
+            .code    = "maximum-speed",
+            .name    = "Maximum Speed",
+            .unit    = DMI_UNIT_MHZ,
+            .unknown = dmi_value_ptr((uint16_t)0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, current_speed, INTEGER, {
+            .code    = "current-speed",
+            .name    = "Current Speed",
+            .unit    = DMI_UNIT_MHZ,
+            .unknown = dmi_value_ptr((uint16_t)0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, upgrade, ENUM, {
+            .code    = "upgrade",
+            .name    = "Upgrade",
+            .unspec  = dmi_value_ptr(DMI_PROCESSOR_UPGRADE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_PROCESSOR_UPGRADE_UNKNOWN),
+            .values  = &dmi_processor_upgrade_names
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, l1_cache_handle, HANDLE, {
+            .code    = "l1-cache-handle",
+            .name    = "L1 Cache handle",
+            .level   = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, l2_cache_handle, HANDLE, {
+            .code    = "l2-cache-handle",
+            .name    = "L2 Cache handle",
+            .level   = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, l3_cache_handle, HANDLE, {
+            .code    = "l3-cache-handle",
+            .name    = "L3 Cache handle",
+            .level   = DMI_VERSION(2, 1, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, serial_number, STRING, {
+            .code    = "serial-number",
+            .name    = "Serial Number",
+            .level   = DMI_VERSION(2, 3, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, asset_tag, STRING, {
+            .code    = "asset-tag",
+            .name    = "Asset Tag",
+            .level   = DMI_VERSION(2, 3, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, part_number, STRING, {
+            .code    = "part-number",
+            .name    = "Part Number",
+            .level   = DMI_VERSION(2, 3, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, features, SET, {
+            .code    = "features",
+            .name    = "Features",
+            .values  = &dmi_processor_features_names,
+            .level   = DMI_VERSION(2, 5, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, core_count, INTEGER, {
+            .code    = "core-count",
+            .name    = "Core Count",
+            .unknown = dmi_value_ptr((uint16_t)0),
+            .level   = DMI_VERSION(2, 5, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, core_enabled, INTEGER, {
+            .code    = "core-enabled",
+            .name    = "Core Enabled",
+            .unknown = dmi_value_ptr((uint16_t)0),
+            .level   = DMI_VERSION(2, 5, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, thread_count, INTEGER, {
+            .code    = "thread-count",
+            .name    = "Thread Count",
+            .unknown = dmi_value_ptr((uint16_t)0),
+            .level   = DMI_VERSION(2, 5, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, thread_enabled, INTEGER, {
+            .code    = "thread-enabled",
+            .name    = "Thread Enabled",
+            .unknown = dmi_value_ptr((uint16_t)0),
+            .level   = DMI_VERSION(3, 6, 0)
+        }),
+        DMI_ATTRIBUTE(dmi_processor_t, socket_type, STRING, {
+            .code    = "socket-type",
+            .name    = "Socket Type"
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
     .handlers      = {
-        .decode = (dmi_entity_decode_fn_t)dmi_processor_decode,
-        .link   = (dmi_entity_link_fn_t)dmi_processor_link,
-        .free   = (dmi_entity_free_fn_t)dmi_processor_free
+        .decode = dmi_processor_decode,
+        .link   = dmi_processor_link
     }
-};
-
-const dmi_attribute_t dmi_processor_ex_attrs[] =
-{
-    DMI_ATTRIBUTE_NULL
-};
-
-const dmi_entity_spec_t dmi_processor_ex_spec =
-{
-    .code       = "processor-ex",
-    .name       = "Processor additional information",
-    .type       = DMI_TYPE_PROCESSOR_EX,
-    .min_length = 0x06,
-    .attributes = dmi_processor_ex_attrs
 };
 
 const char *dmi_processor_type_name(dmi_processor_type_t value)
@@ -1920,19 +1907,18 @@ const char *dmi_processor_upgrade_name(dmi_processor_upgrade_t value)
     return dmi_name_lookup(&dmi_processor_upgrade_names, value);
 }
 
-dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_processor_decode(dmi_entity_t *entity)
 {
     dmi_processor_t *info;
-    dmi_version_t level = dmi_version(2, 0, 0);
     const dmi_processor_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_PROCESSOR));
+    data = dmi_entity_data(entity, DMI_TYPE_PROCESSOR);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_PROCESSOR);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->socket_designation = dmi_entity_string(entity, data->socket_designation);
     info->type               = dmi_decode(data->type);
@@ -1961,7 +1947,7 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     //
 
     if (entity->body_length > 0x1Au) {
-        level = dmi_version(2, 1, 0);
+        entity->level = dmi_version(2, 1, 0);
         info->l1_cache_handle = dmi_decode(data->l1_cache_handle);
     }
     if (entity->body_length > 0x1Cu)
@@ -1974,7 +1960,7 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     //
 
     if (entity->body_length > 0x20u) {
-        level = dmi_version(2, 3, 0);
+        entity->level = dmi_version(2, 3, 0);
         info->serial_number = dmi_entity_string(entity, data->serial_number);
     }
     if (entity->body_length > 0x21u)
@@ -1987,7 +1973,7 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     //
 
     if (entity->body_length > 0x23u) {
-        level = dmi_version(2, 5, 0);
+        entity->level = dmi_version(2, 5, 0);
         info->core_count = dmi_decode(data->core_count);
     }
     if (entity->body_length > 0x24u)
@@ -2002,7 +1988,7 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     //
 
     if (entity->body_length > 0x28u) {
-        level = dmi_version(2, 6, 0);
+        entity->level = dmi_version(2, 6, 0);
 
         if (info->family == DMI_PROCESSOR_FAMILY_EXTENDED)
             info->family = dmi_decode(data->family_ex);
@@ -2013,7 +1999,7 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     //
 
     if (entity->body_length > 0x2Au) {
-        level = dmi_version(3, 0, 0);
+        entity->level = dmi_version(3, 0, 0);
 
         if (info->core_count == 0xFFu)
             info->core_count = dmi_decode(data->core_count_ex);
@@ -2032,7 +2018,7 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     //
 
     if (entity->body_length > 0x30u) {
-        level = dmi_version(3, 6, 0);
+        entity->level = dmi_version(3, 6, 0);
         info->thread_enabled = dmi_decode(data->thread_enabled);
     }
 
@@ -2041,26 +2027,22 @@ dmi_processor_t *dmi_processor_decode(const dmi_entity_t *entity, dmi_version_t 
     //
 
     if (entity->body_length > 0x32u) {
-        level = dmi_version(3, 8, 0);
+        entity->level = dmi_version(3, 8, 0);
         info->socket_type = dmi_entity_string(entity, data->socket_type);
     }
 
-    if (plevel != nullptr)
-        *plevel = level;
-
-    return info;
+    return true;
 }
 
-bool dmi_processor_link(dmi_entity_t *entity)
+static bool dmi_processor_link(dmi_entity_t *entity)
 {
     dmi_processor_t *info;
-    dmi_registry_t *registry;
 
-    info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_PROCESSOR));
+    info = dmi_entity_info(entity, DMI_TYPE_PROCESSOR);
     if (info == nullptr)
         return false;
 
-    registry = entity->context->registry;
+    dmi_registry_t *registry = entity->context->registry;
 
     if (info->l1_cache_handle != DMI_HANDLE_INVALID)
         info->l1_cache = dmi_registry_get(registry, info->l1_cache_handle, DMI_TYPE_CACHE, false);
@@ -2072,9 +2054,4 @@ bool dmi_processor_link(dmi_entity_t *entity)
         info->l3_cache = dmi_registry_get(registry, info->l3_cache_handle, DMI_TYPE_CACHE, false);
 
     return true;
-}
-
-void dmi_processor_free(dmi_processor_t *info)
-{
-    dmi_free(info);
 }

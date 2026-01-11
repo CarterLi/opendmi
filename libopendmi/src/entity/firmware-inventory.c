@@ -11,6 +11,9 @@
 
 #include <opendmi/entity/firmware-inventory.h>
 
+static bool dmi_firmware_inventory_decode(dmi_entity_t *entity);
+static void dmi_firmware_inventory_cleanup(dmi_entity_t *entity);
+
 static const dmi_name_set_t dmi_version_format_names =
 {
     .code  = "version-formats",
@@ -117,80 +120,79 @@ static const dmi_name_set_t dmi_firmware_inventory_state_names =
     }
 };
 
-const dmi_attribute_t dmi_firmware_inventory_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, name, STRING, {
-        .code    = "name",
-        .name    = "Name"
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, version, VERSION, {
-        .code    = "version",
-        .name    = "Version"
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, version_format, ENUM, {
-        .code    = "version-format",
-        .name    = "Version format",
-        .values  = &dmi_version_format_names
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, ident, STRING, {
-        .code    = "ident",
-        .name    = "Identifier"
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, ident_format, ENUM, {
-        .code    = "ident-format",
-        .name    = "identifier format",
-        .unspec  = dmi_value_ptr(DMI_FIRMWARE_IDENT_FORMAT_UNSPEC),
-        .values  = &dmi_firmware_ident_format_names
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, release_date, STRING, {
-        .code    = "release-date",
-        .name    = "Release date"
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, vendor, STRING, {
-        .code    = "vendor",
-        .name    = "Vendor"
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, lowest_version, STRING, {
-        .code    = "lowest-version",
-        .name    = "Lowest version"
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, image_size, SIZE, {
-        .code    = "image-size",
-        .name    = "Image size"
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, features, SET, {
-        .code    = "characteristics",
-        .name    = "Characteristics",
-        .values  = &dmi_firmware_inventory_feature_names
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, state, ENUM, {
-        .code    = "state",
-        .name    = "State",
-        .unspec  = dmi_value_ptr(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
-        .values  = &dmi_firmware_inventory_state_names
-    }),
-    DMI_ATTRIBUTE(dmi_firmware_inventory_t, component_count, INTEGER, {
-        .code    = "component-count",
-        .name    = "Associated components count"
-    }),
-    DMI_ATTRIBUTE_ARRAY(dmi_firmware_inventory_t, component_handles, component_count, HANDLE, {
-        .code    = "component-handles",
-        .name    = "Associated component handles"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
-
 const dmi_entity_spec_t dmi_firmware_inventory_spec =
 {
-    .code       = "firmware-inventory",
-    .name       = "Firmware inventory information",
-    .type       = DMI_TYPE_FIRMWARE_INVENTORY,
-    .min_length = 0x18,
-    .attributes = dmi_firmware_inventory_attrs,
-    .handlers   = {
-        .decode = (dmi_entity_decode_fn_t)dmi_firmware_inventory_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_firmware_inventory_free
+    .code            = "firmware-inventory",
+    .name            = "Firmware inventory information",
+    .type            = DMI_TYPE_FIRMWARE_INVENTORY,
+    .minimum_version = DMI_VERSION(3, 5, 0),
+    .minimum_length  = 0x18,
+    .decoded_length  = sizeof(dmi_firmware_inventory_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, name, STRING, {
+            .code    = "name",
+            .name    = "Name"
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, version, VERSION, {
+            .code    = "version",
+            .name    = "Version"
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, version_format, ENUM, {
+            .code    = "version-format",
+            .name    = "Version format",
+            .values  = &dmi_version_format_names
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, ident, STRING, {
+            .code    = "ident",
+            .name    = "Identifier"
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, ident_format, ENUM, {
+            .code    = "ident-format",
+            .name    = "identifier format",
+            .unspec  = dmi_value_ptr(DMI_FIRMWARE_IDENT_FORMAT_UNSPEC),
+            .values  = &dmi_firmware_ident_format_names
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, release_date, STRING, {
+            .code    = "release-date",
+            .name    = "Release date"
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, vendor, STRING, {
+            .code    = "vendor",
+            .name    = "Vendor"
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, lowest_version, STRING, {
+            .code    = "lowest-version",
+            .name    = "Lowest version"
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, image_size, SIZE, {
+            .code    = "image-size",
+            .name    = "Image size"
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, features, SET, {
+            .code    = "characteristics",
+            .name    = "Characteristics",
+            .values  = &dmi_firmware_inventory_feature_names
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, state, ENUM, {
+            .code    = "state",
+            .name    = "State",
+            .unspec  = dmi_value_ptr(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_FIRMWARE_INVENTORY_STATE_UNSPEC),
+            .values  = &dmi_firmware_inventory_state_names
+        }),
+        DMI_ATTRIBUTE(dmi_firmware_inventory_t, component_count, INTEGER, {
+            .code    = "component-count",
+            .name    = "Associated components count"
+        }),
+        DMI_ATTRIBUTE_ARRAY(dmi_firmware_inventory_t, component_handles, component_count, HANDLE, {
+            .code    = "component-handles",
+            .name    = "Associated component handles"
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode  = dmi_firmware_inventory_decode,
+        .cleanup = dmi_firmware_inventory_cleanup
     }
 };
 
@@ -209,56 +211,51 @@ const char *dmi_firmware_inventory_state_name(dmi_firmware_inventory_state_t val
     return dmi_name_lookup(&dmi_firmware_inventory_state_names, value);
 }
 
-dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_firmware_inventory_decode(dmi_entity_t *entity)
 {
     dmi_firmware_inventory_t *info;
     const dmi_firmware_inventory_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_FIRMWARE_INVENTORY));
+    data = dmi_entity_data(entity, DMI_TYPE_FIRMWARE_INVENTORY);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_FIRMWARE_INVENTORY);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
-    info->name           = dmi_entity_string(entity, data->name);
-    info->version        = dmi_entity_string(entity, data->version);
-    info->version_format = dmi_decode(data->version_format);
-    info->ident          = dmi_entity_string(entity, data->ident);
-    info->ident_format   = dmi_decode(data->ident_format);
-    info->release_date   = dmi_entity_string(entity, data->release_date);
-    info->vendor         = dmi_entity_string(entity, data->vendor);
-    info->lowest_version = dmi_entity_string(entity, data->lowest_version);
-    info->image_size     = dmi_decode(data->image_size);
-
-    dmi_firmware_inventory_features_t features = {
-        .__value = dmi_decode(data->features)
-    };
-    info->features = features;
-
-    info->state           = dmi_decode(data->state);
-    info->component_count = dmi_decode(data->component_count);
+    info->name             = dmi_entity_string(entity, data->name);
+    info->version          = dmi_entity_string(entity, data->version);
+    info->version_format   = dmi_decode(data->version_format);
+    info->ident            = dmi_entity_string(entity, data->ident);
+    info->ident_format     = dmi_decode(data->ident_format);
+    info->release_date     = dmi_entity_string(entity, data->release_date);
+    info->vendor           = dmi_entity_string(entity, data->vendor);
+    info->lowest_version   = dmi_entity_string(entity, data->lowest_version);
+    info->image_size       = dmi_decode(data->image_size);
+    info->features.__value = dmi_decode(data->features);
+    info->state            = dmi_decode(data->state);
+    info->component_count  = dmi_decode(data->component_count);
 
     info->component_handles = dmi_alloc_array(entity->context, sizeof(dmi_handle_t), info->component_count);
-    if (info->component_handles == nullptr) {
-        dmi_free(info);
-        return nullptr;
-    }
+    if (info->component_handles == nullptr)
+        return false;
 
     for (size_t i = 0; i < info->component_count; i++) {
         info->component_handles[i] = dmi_decode(data->component_handles[i]);
     }
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(3, 5, 0);
-
-    return info;
+    return true;
 }
 
-void dmi_firmware_inventory_free(dmi_firmware_inventory_t *info)
+static void dmi_firmware_inventory_cleanup(dmi_entity_t *entity)
 {
+    dmi_firmware_inventory_t *info;
+
+    info = dmi_entity_info(entity, DMI_TYPE_FIRMWARE_INVENTORY);
+    if (info == nullptr)
+        return;
+
     dmi_free(info->component_handles);
     dmi_free(info->components);
-    dmi_free(info);
 }

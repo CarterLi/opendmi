@@ -10,52 +10,57 @@
 
 #include <opendmi/entity/memory-array-addr.h>
 
-const dmi_attribute_t dmi_memory_array_addr_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_memory_array_addr_t, start_addr, ADDRESS, {
-        .code   = "start-addr",
-        .name   = "Starting address",
-        .flags  = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_memory_array_addr_t, end_addr, ADDRESS, {
-        .code  = "end-addr",
-        .name  = "Ending address",
-        .flags = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_memory_array_addr_t, range_size, SIZE, {
-        .code   = "range-size",
-        .name   = "Range size"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_array_addr_t, array_handle, HANDLE, {
-        .code   = "array-handle",
-        .name   = "Memory array handle"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_array_addr_t, partition_width, INTEGER, {
-        .code   = "partition-width",
-        .name   = "Partition width"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
+static bool dmi_memory_array_addr_validate(const dmi_entity_t *entity);
+static bool dmi_memory_array_addr_decode(dmi_entity_t *entity);
+static bool dmi_memory_array_addr_link(dmi_entity_t *entity);
 
 const dmi_entity_spec_t dmi_memory_array_addr_spec =
 {
-    .code        = "memory-array-address",
-    .name        = "Memory array mapped address",
-    .type        = DMI_TYPE_MEMORY_ARRAY_ADDR,
-    .min_version = DMI_VERSION(2, 1, 0),
-    .min_length  = 0x0F,
-    .attributes  = dmi_memory_array_addr_attrs,
-    .handlers    = {
-        .validate = (dmi_entity_validate_fn_t)dmi_memory_array_addr_validate,
-        .decode   = (dmi_entity_decode_fn_t)dmi_memory_array_addr_decode,
-        .link     = (dmi_entity_link_fn_t)dmi_memory_array_addr_link,
-        .free     = (dmi_entity_free_fn_t)dmi_memory_array_addr_free
+    .code            = "memory-array-address",
+    .name            = "Memory array mapped address",
+    .type            = DMI_TYPE_MEMORY_ARRAY_ADDR,
+    .minimum_version = DMI_VERSION(2, 1, 0),
+    .minimum_length  = 0x0F,
+    .decoded_length  = sizeof(dmi_memory_array_addr_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_memory_array_addr_t, start_addr, ADDRESS, {
+            .code   = "start-addr",
+            .name   = "Starting address",
+            .flags  = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE(dmi_memory_array_addr_t, end_addr, ADDRESS, {
+            .code  = "end-addr",
+            .name  = "Ending address",
+            .flags = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE(dmi_memory_array_addr_t, range_size, SIZE, {
+            .code   = "range-size",
+            .name   = "Range size"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_array_addr_t, array_handle, HANDLE, {
+            .code   = "array-handle",
+            .name   = "Memory array handle"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_array_addr_t, partition_width, INTEGER, {
+            .code   = "partition-width",
+            .name   = "Partition width"
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .validate = dmi_memory_array_addr_validate,
+        .decode   = dmi_memory_array_addr_decode,
+        .link     = dmi_memory_array_addr_link
     }
 };
 
-bool dmi_memory_array_addr_validate(const dmi_entity_t *entity)
+static bool dmi_memory_array_addr_validate(const dmi_entity_t *entity)
 {
-    dmi_memory_array_addr_data_t *data = dmi_cast(data, entity->data);
+    const dmi_memory_array_addr_data_t *data;
+    
+    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_ARRAY_ADDR);
+    if (data == nullptr)
+        return false;
 
     if (data->start_addr == 0xFFFFFFFFU) {
         if (data->end_addr != 0xFFFFFFFFU)
@@ -82,19 +87,20 @@ bool dmi_memory_array_addr_validate(const dmi_entity_t *entity)
     return true;
 }
 
-dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_memory_array_addr_decode(dmi_entity_t *entity)
 {
     dmi_memory_array_addr_t *info;
-    dmi_version_t level = dmi_version(2, 1, 0);
     const dmi_memory_array_addr_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MEMORY_ARRAY_ADDR));
+    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_ARRAY_ADDR);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY_ADDR);
     if (info == nullptr)
-        return nullptr;
+        return false;
+
+    entity->level = dmi_version(2, 1, 0);
 
     info->start_addr      = dmi_decode(data->start_addr) << 10;
     info->end_addr        = dmi_decode(data->end_addr) << 10;
@@ -102,7 +108,7 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_entity_t *entity
     info->partition_width = dmi_decode(data->partition_width);
 
     if (entity->body_length > 0x0Fu) {
-        level = dmi_version(2, 7, 0);
+        entity->level = dmi_version(2, 7, 0);
 
         if (data->start_addr == 0xFFFFFFFFu) {
             info->start_addr = dmi_decode(data->start_addr_ex);
@@ -115,18 +121,15 @@ dmi_memory_array_addr_t *dmi_memory_array_addr_decode(const dmi_entity_t *entity
     else
         info->range_size = info->start_addr - info->end_addr;
 
-    if (plevel != nullptr)
-        *plevel = level;
-
-    return info;
+    return true;
 }
 
-bool dmi_memory_array_addr_link(dmi_entity_t *entity)
+static bool dmi_memory_array_addr_link(dmi_entity_t *entity)
 {
     dmi_memory_array_addr_t *info;
     dmi_registry_t *registry;
 
-    info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY_ADDR));
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY_ADDR);
     if (info == nullptr)
         return false;
 
@@ -135,9 +138,4 @@ bool dmi_memory_array_addr_link(dmi_entity_t *entity)
     info->array = dmi_registry_get(registry, info->array_handle, DMI_TYPE_MEMORY_ARRAY, false);
 
     return true;
-}
-
-void dmi_memory_array_addr_free(dmi_memory_array_addr_t *info)
-{
-    dmi_free(info);
 }

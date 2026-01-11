@@ -365,16 +365,6 @@ const char *dmi_version_format_name(dmi_version_format_t value);
 const char *dmi_firmware_ident_format_name(dmi_firmware_ident_format_t value);
 const char *dmi_firmware_inventory_state_name(dmi_firmware_inventory_state_t value);
 
-/**
- * @internal
- */
-dmi_firmware_inventory_t *dmi_firmware_inventory_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_firmware_inventory_free(dmi_firmware_inventory_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_FIRMWARE_INVENTORY_H

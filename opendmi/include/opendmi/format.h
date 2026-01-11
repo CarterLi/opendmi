@@ -16,54 +16,54 @@
 typedef struct dmi_format     dmi_format_t;
 typedef struct dmi_format_ops dmi_format_ops_t;
 
-typedef void *(*dmi_format_initialize_fn_t)(dmi_context_t *context, FILE *stream);
+typedef void *dmi_format_initialize_fn(dmi_context_t *context, FILE *stream);
 
-typedef bool (*dmi_format_dump_start_fn_t)(void *session);
-typedef bool (*dmi_format_entry_fn_t)(void *session);
-typedef bool (*dmi_format_table_start_fn_t)(void *session);
+typedef bool dmi_format_dump_start_fn(void *session);
+typedef bool dmi_format_entry_fn(void *session);
+typedef bool dmi_format_table_start_fn(void *session);
 
-typedef bool (*dmi_format_entity_start_fn_t)(void *session, const dmi_entity_t *entity);
-typedef bool (*dmi_format_entity_attrs_start_fn_t)(void *session, const dmi_entity_t *entity);
+typedef bool dmi_format_entity_start_fn(void *session, const dmi_entity_t *entity);
+typedef bool dmi_format_entity_attrs_start_fn(void *session, const dmi_entity_t *entity);
 
-typedef bool (*dmi_format_entity_attr_fn_t)(
+typedef bool dmi_format_entity_attr_fn(
             void                  *session,
             const dmi_entity_t    *entity,
             const dmi_attribute_t *attr,
             const void            *value);
 
-typedef bool (*dmi_format_entity_attrs_end_fn_t)(void *session, const dmi_entity_t *entity);
-typedef bool (*dmi_format_entity_data_fn_t)(void *session, const dmi_entity_t *entity);
-typedef bool (*dmi_format_entity_strings_fn_t)(void *session, const dmi_entity_t *entity);
-typedef bool (*dmi_format_entity_end_fn_t)(void *session, const dmi_entity_t *entity);
+typedef bool dmi_format_entity_attrs_end_fn(void *session, const dmi_entity_t *entity);
+typedef bool dmi_format_entity_data_fn(void *session, const dmi_entity_t *entity);
+typedef bool dmi_format_entity_strings_fn(void *session, const dmi_entity_t *entity);
+typedef bool dmi_format_entity_end_fn(void *session, const dmi_entity_t *entity);
 
-typedef bool (*dmi_format_table_end_fn_t)(void *session);
-typedef bool (*dmi_format_dump_end_fn_t)(void *session);
+typedef bool dmi_format_table_end_fn(void *session);
+typedef bool dmi_format_dump_end_fn(void *session);
 
-typedef void (*dmi_format_finalize_fn_t)(void *session);
+typedef void dmi_format_finalize_fn(void *session);
 
 struct dmi_format_ops
 {
-    dmi_format_initialize_fn_t initialize;
+    dmi_format_initialize_fn *initialize;
 
-    dmi_format_dump_start_fn_t  dump_start;
-    dmi_format_entry_fn_t       entry;
-    dmi_format_table_start_fn_t table_start;
+    dmi_format_dump_start_fn  *dump_start;
+    dmi_format_entry_fn       *entry;
+    dmi_format_table_start_fn *table_start;
 
-    dmi_format_entity_start_fn_t entity_start;
+    dmi_format_entity_start_fn *entity_start;
 
-    dmi_format_entity_attrs_start_fn_t entity_attrs_start;
-    dmi_format_entity_attr_fn_t        entity_attr;
-    dmi_format_entity_attrs_end_fn_t   entity_attrs_end;
+    dmi_format_entity_attrs_start_fn *entity_attrs_start;
+    dmi_format_entity_attr_fn        *entity_attr;
+    dmi_format_entity_attrs_end_fn   *entity_attrs_end;
 
-    dmi_format_entity_data_fn_t    entity_data;
-    dmi_format_entity_strings_fn_t entity_strings;
+    dmi_format_entity_data_fn    *entity_data;
+    dmi_format_entity_strings_fn *entity_strings;
 
-    dmi_format_entity_end_fn_t entity_end;
+    dmi_format_entity_end_fn *entity_end;
 
-    dmi_format_table_end_fn_t table_end;
-    dmi_format_dump_end_fn_t  dump_end;
+    dmi_format_table_end_fn *table_end;
+    dmi_format_dump_end_fn  *dump_end;
 
-    dmi_format_finalize_fn_t finalize;
+    dmi_format_finalize_fn *finalize;
 };
 
 struct dmi_format

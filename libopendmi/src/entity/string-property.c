@@ -10,80 +10,71 @@
 
 #include <opendmi/entity/string-property.h>
 
-static const dmi_attribute_t dmi_string_property_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_string_property_t, ident, INTEGER, {
-        .code = "ident",
-        .name = "Identifier"
-    }),
-    DMI_ATTRIBUTE(dmi_string_property_t, value, STRING, {
-        .code = "value",
-        .name = "Identifier"
-    }),
-    DMI_ATTRIBUTE(dmi_string_property_t, parent_handle, HANDLE, {
-        .code = "parent-handle",
-        .name = "Parent handle"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
+static bool dmi_string_property_decode(dmi_entity_t *entity);
+static bool dmi_string_property_link(dmi_entity_t *entity);
 
 const dmi_entity_spec_t dmi_string_property_spec =
 {
-    .code        = "string-property",
-    .name        = "String property",
-    .type        = DMI_TYPE_STRING_PROPERTY,
-    .min_version = DMI_VERSION(3, 5, 0),
-    .min_length  = 0x09,
-    .attributes  = dmi_string_property_attrs,
+    .code            = "string-property",
+    .name            = "String property",
+    .type            = DMI_TYPE_STRING_PROPERTY,
+    .minimum_version = DMI_VERSION(3, 5, 0),
+    .minimum_length  = 0x09,
+    .decoded_length  = sizeof(dmi_string_property_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_string_property_t, ident, INTEGER, {
+            .code = "ident",
+            .name = "Identifier"
+        }),
+        DMI_ATTRIBUTE(dmi_string_property_t, value, STRING, {
+            .code = "value",
+            .name = "Identifier"
+        }),
+        DMI_ATTRIBUTE(dmi_string_property_t, parent_handle, HANDLE, {
+            .code = "parent-handle",
+            .name = "Parent handle"
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
     .handlers    = {
-        .decode = (dmi_entity_decode_fn_t)dmi_string_property_decode,
-        .link   = (dmi_entity_link_fn_t)dmi_string_property_link,
-        .free   = (dmi_entity_free_fn_t)dmi_string_property_free,
+        .decode = dmi_string_property_decode,
+        .link   = dmi_string_property_link
     }
 };
 
-dmi_string_property_t *dmi_string_property_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_string_property_decode(dmi_entity_t *entity)
 {
     dmi_string_property_t *info;
     const dmi_string_property_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_STRING_PROPERTY));
+    data = dmi_entity_data(entity, DMI_TYPE_STRING_PROPERTY);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_STRING_PROPERTY);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->ident         = dmi_decode(data->ident);
     info->value         = dmi_entity_string(entity, data->value);
     info->parent_handle = dmi_decode(data->parent_handle);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(3, 5, 0);
-
-    return info;
+    return true;
 }
 
-bool dmi_string_property_link(dmi_entity_t *entity)
+static bool dmi_string_property_link(dmi_entity_t *entity)
 {
     dmi_string_property_t *info;
-    dmi_registry_t *registry;
 
-    info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_STRING_PROPERTY));
+    info = dmi_entity_info(entity, DMI_TYPE_STRING_PROPERTY);
     if (info == nullptr)
         return false;
 
-    registry = entity->context->registry;
+    dmi_registry_t *registry = entity->context->registry;
 
     if (info->parent_handle != DMI_HANDLE_INVALID) {
         info->parent = dmi_registry_get(registry, info->parent_handle, DMI_TYPE_INVALID, false);
     }
 
     return true;
-}
-
-void dmi_string_property_free(dmi_string_property_t *info)
-{
-    dmi_free(info);
 }

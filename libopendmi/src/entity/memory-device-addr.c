@@ -12,67 +12,72 @@
 
 #include <opendmi/entity/memory-device-addr.h>
 
-const dmi_attribute_t dmi_memory_device_addr_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_memory_device_addr_t, start_addr, ADDRESS, {
-        .code    = "start-addr",
-        .name    = "Starting address",
-        .flags   = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_memory_device_addr_t, end_addr, ADDRESS, {
-        .code    = "end-addr",
-        .name    = "Ending address",
-        .flags   = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_memory_device_addr_t, range_size, SIZE, {
-        .code    = "range-size",
-        .name    = "Range size"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_device_addr_t, device_handle, HANDLE, {
-        .code    = "device-handle",
-        .name    = "Device handle"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_device_addr_t, array_addr_handle, HANDLE, {
-        .code    = "array-addr-handle",
-        .name    = "Array mapped address handle"
-    }),
-    DMI_ATTRIBUTE(dmi_memory_device_addr_t, partition_pos, INTEGER, {
-        .code    = "partition-pos",
-        .name    = "Partition row position",
-        .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
-    }),
-    DMI_ATTRIBUTE(dmi_memory_device_addr_t, interleave_pos, INTEGER, {
-        .code    = "interleave-pos",
-        .name    = "Interleave position",
-        .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
-    }),
-    DMI_ATTRIBUTE(dmi_memory_device_addr_t, interleave_depth, INTEGER, {
-        .code    = "interleave-depth",
-        .name    = "Interleave data depth",
-        .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
-    }),
-    DMI_ATTRIBUTE_NULL
-};
+static bool dmi_memory_device_addr_validate(const dmi_entity_t *entity);
+static bool dmi_memory_device_addr_decode(dmi_entity_t *entity);
+static bool dmi_memory_device_addr_link(dmi_entity_t *entity);
 
 const dmi_entity_spec_t dmi_memory_device_addr_spec =
 {
-    .code        = "memory-device-address",
-    .name        = "Memory device mapped address",
-    .type        = DMI_TYPE_MEMORY_DEVICE_ADDR,
-    .min_version = DMI_VERSION(2, 1, 0),
-    .min_length  = 0x13,
-    .attributes  = dmi_memory_device_addr_attrs,
-    .handlers    = {
-        .validate = (dmi_entity_validate_fn_t)dmi_memory_device_addr_validate,
-        .decode   = (dmi_entity_decode_fn_t)dmi_memory_device_addr_decode,
-        .link     = (dmi_entity_link_fn_t)dmi_memory_device_addr_link,
-        .free     = (dmi_entity_free_fn_t)dmi_memory_device_addr_free
+    .code            = "memory-device-address",
+    .name            = "Memory device mapped address",
+    .type            = DMI_TYPE_MEMORY_DEVICE_ADDR,
+    .minimum_version = DMI_VERSION(2, 1, 0),
+    .minimum_length  = 0x13,
+    .decoded_length  = sizeof(dmi_memory_device_addr_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_memory_device_addr_t, start_addr, ADDRESS, {
+            .code    = "start-addr",
+            .name    = "Starting address",
+            .flags   = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE(dmi_memory_device_addr_t, end_addr, ADDRESS, {
+            .code    = "end-addr",
+            .name    = "Ending address",
+            .flags   = DMI_ATTRIBUTE_FLAG_HEX
+        }),
+        DMI_ATTRIBUTE(dmi_memory_device_addr_t, range_size, SIZE, {
+            .code    = "range-size",
+            .name    = "Range size"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_device_addr_t, device_handle, HANDLE, {
+            .code    = "device-handle",
+            .name    = "Device handle"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_device_addr_t, array_addr_handle, HANDLE, {
+            .code    = "array-addr-handle",
+            .name    = "Array mapped address handle"
+        }),
+        DMI_ATTRIBUTE(dmi_memory_device_addr_t, partition_pos, INTEGER, {
+            .code    = "partition-pos",
+            .name    = "Partition row position",
+            .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
+        }),
+        DMI_ATTRIBUTE(dmi_memory_device_addr_t, interleave_pos, INTEGER, {
+            .code    = "interleave-pos",
+            .name    = "Interleave position",
+            .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
+        }),
+        DMI_ATTRIBUTE(dmi_memory_device_addr_t, interleave_depth, INTEGER, {
+            .code    = "interleave-depth",
+            .name    = "Interleave data depth",
+            .unknown = dmi_value_ptr((unsigned short)USHRT_MAX)
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .validate = dmi_memory_device_addr_validate,
+        .decode   = dmi_memory_device_addr_decode,
+        .link     = dmi_memory_device_addr_link,
     }
 };
 
-bool dmi_memory_device_addr_validate(const dmi_entity_t *entity)
+static bool dmi_memory_device_addr_validate(const dmi_entity_t *entity)
 {
-    dmi_memory_device_addr_data_t *data = dmi_cast(data, entity->data);
+    const dmi_memory_device_addr_data_t *data;
+
+    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_DEVICE_ADDR);
+    if (data == nullptr)
+        return false;
 
     if (data->start_addr == 0xFFFFFFFFu) {
         if (data->end_addr != 0xFFFFFFFFu)
@@ -99,19 +104,18 @@ bool dmi_memory_device_addr_validate(const dmi_entity_t *entity)
     return true;
 }
 
-dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_memory_device_addr_decode(dmi_entity_t *entity)
 {
     dmi_memory_device_addr_t *info;
-    dmi_version_t level = dmi_version(2, 1, 0);
     const dmi_memory_device_addr_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MEMORY_DEVICE_ADDR));
+    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_DEVICE_ADDR);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_DEVICE_ADDR);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     uint32_t start_addr = dmi_decode(data->start_addr);
     uint32_t end_addr   = dmi_decode(data->end_addr);
@@ -129,7 +133,7 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_entity_t *enti
                              data->interleave_depth : USHRT_MAX;
 
     if (entity->body_length > 0x13u) {
-        level = dmi_version(2, 7, 0);
+        entity->level = dmi_version(2, 7, 0);
 
         if (start_addr == 0xFFFFFFFFu)
             info->start_addr = dmi_decode(data->start_addr_ex);
@@ -142,18 +146,15 @@ dmi_memory_device_addr_t *dmi_memory_device_addr_decode(const dmi_entity_t *enti
     else
         info->range_size = info->start_addr - info->end_addr;
 
-    if (plevel != nullptr)
-        *plevel = level;
-
-    return info;
+    return true;
 }
 
-bool dmi_memory_device_addr_link(dmi_entity_t *entity)
+static bool dmi_memory_device_addr_link(dmi_entity_t *entity)
 {
     dmi_memory_device_addr_t *info;
     dmi_registry_t *registry;
 
-    info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_MEMORY_DEVICE_ADDR));
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_DEVICE_ADDR);
     if (info == nullptr)
         return false;
 
@@ -169,9 +170,4 @@ bool dmi_memory_device_addr_link(dmi_entity_t *entity)
     }
 
     return true;
-}
-
-void dmi_memory_device_addr_free(dmi_memory_device_addr_t *info)
-{
-    dmi_free(info);
 }

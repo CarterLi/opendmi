@@ -10,66 +10,64 @@
 
 #include <opendmi/entity/mgmt-device-component.h>
 
-const dmi_attribute_t dmi_mgmt_device_component_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_mgmt_device_component_t, description, STRING, {
-        .code = "description",
-        .name = "Description"
-    }),
-    DMI_ATTRIBUTE(dmi_mgmt_device_component_t, device_handle, HANDLE, {
-        .code = "device-handle",
-        .name = "Device handle"
-    }),
-    DMI_ATTRIBUTE(dmi_mgmt_device_component_t, component_handle, HANDLE, {
-        .code = "component-handle",
-        .name = "Component handle"
-    }),
-    DMI_ATTRIBUTE(dmi_mgmt_device_component_t, threshold_handle, HANDLE, {
-        .code = "threshold-handle",
-        .name = "Threshold handle"
-    }),
-    DMI_ATTRIBUTE_NULL
-};
+static bool dmi_mgmt_device_component_decode(dmi_entity_t *entity);
+static bool dmi_mgmt_device_component_link(dmi_entity_t *entity);
 
 const dmi_entity_spec_t dmi_mgmt_device_component_spec =
 {
-    .code        = "mgmt-device-component",
-    .name        = "Management device component",
-    .type        = DMI_TYPE_MGMT_DEVICE_COMPONENT,
-    .min_version = DMI_VERSION(2, 3, 0),
-    .min_length  = 0x0B,
-    .attributes  = dmi_mgmt_device_component_attrs,
-    .handlers    = {
-        .decode = (dmi_entity_decode_fn_t)dmi_mgmt_device_component_decode,
-        .free   = (dmi_entity_free_fn_t)dmi_mgmt_device_component_free
+    .code            = "mgmt-device-component",
+    .name            = "Management device component",
+    .type            = DMI_TYPE_MGMT_DEVICE_COMPONENT,
+    .minimum_version = DMI_VERSION(2, 3, 0),
+    .minimum_length  = 0x0B,
+    .decoded_length  = sizeof(dmi_mgmt_device_component_t),
+    .attributes      = (dmi_attribute_t[]){
+        DMI_ATTRIBUTE(dmi_mgmt_device_component_t, description, STRING, {
+            .code = "description",
+            .name = "Description"
+        }),
+        DMI_ATTRIBUTE(dmi_mgmt_device_component_t, device_handle, HANDLE, {
+            .code = "device-handle",
+            .name = "Device handle"
+        }),
+        DMI_ATTRIBUTE(dmi_mgmt_device_component_t, component_handle, HANDLE, {
+            .code = "component-handle",
+            .name = "Component handle"
+        }),
+        DMI_ATTRIBUTE(dmi_mgmt_device_component_t, threshold_handle, HANDLE, {
+            .code = "threshold-handle",
+            .name = "Threshold handle"
+        }),
+        DMI_ATTRIBUTE_NULL
+    },
+    .handlers = {
+        .decode = dmi_mgmt_device_component_decode,
+        .link   = dmi_mgmt_device_component_link
     }
 };
 
-dmi_mgmt_device_component_t *dmi_mgmt_device_component_decode(const dmi_entity_t *entity, dmi_version_t *plevel)
+static bool dmi_mgmt_device_component_decode(dmi_entity_t *entity)
 {
     dmi_mgmt_device_component_t *info;
     const dmi_mgmt_device_component_data_t *data;
 
-    data = dmi_cast(data, dmi_entity_data(entity, DMI_TYPE_MGMT_DEVICE_COMPONENT));
+    data = dmi_entity_data(entity, DMI_TYPE_MGMT_DEVICE_COMPONENT);
     if (data == nullptr)
-        return nullptr;
+        return false;
 
-    info = dmi_alloc(entity->context, sizeof(*info));
+    info = dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE_COMPONENT);
     if (info == nullptr)
-        return nullptr;
+        return false;
 
     info->description      = dmi_entity_string(entity, data->description);
     info->device_handle    = dmi_decode(data->device_handle);
     info->component_handle = dmi_decode(data->component_handle);
     info->threshold_handle = dmi_decode(data->threshold_handle);
 
-    if (plevel != nullptr)
-        *plevel = dmi_version(2, 3, 0);
-
-    return info;
+    return true;
 }
 
-bool dmi_mgmt_device_component_link(dmi_entity_t *entity)
+static bool dmi_mgmt_device_component_link(dmi_entity_t *entity)
 {
     static const dmi_type_t dmi_component_types[] = {
         DMI_TYPE_COOLING_DEVICE,
@@ -82,7 +80,7 @@ bool dmi_mgmt_device_component_link(dmi_entity_t *entity)
     dmi_mgmt_device_component_t *info;
     dmi_registry_t *registry;
 
-    info = dmi_cast(info, dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE_COMPONENT));
+    info = dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE_COMPONENT);
     if (info == nullptr)
         return false;
 
@@ -101,9 +99,4 @@ bool dmi_mgmt_device_component_link(dmi_entity_t *entity)
     }
 
     return true;
-}
-
-void dmi_mgmt_device_component_free(dmi_mgmt_device_component_t *info)
-{
-    dmi_free(info);
 }

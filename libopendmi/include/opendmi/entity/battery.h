@@ -289,16 +289,6 @@ __BEGIN_DECLS
 
 const char *dmi_battery_chemistry_name(dmi_battery_chemistry_t value);
 
-/**
- * @internal
- */
-dmi_battery_t *dmi_battery_decode(const dmi_entity_t *entity, dmi_version_t *plevel);
-
-/**
- * @internal
- */
-void dmi_battery_free(dmi_battery_t *info);
-
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_BATTERY_H
