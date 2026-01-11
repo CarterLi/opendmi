@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <opendmi/types.h>
+#include <opendmi/stream.h>
 #include <opendmi/attribute.h>
 #include <opendmi/utils/version.h>
 
@@ -223,6 +223,11 @@ struct dmi_entity
      * structure is used for passing variable data such as text strings.
      */
     size_t extra_length;
+
+    /**
+     * @brief Data stream.
+     */
+    dmi_stream_t stream;
 
     /**
      * @brief String data.

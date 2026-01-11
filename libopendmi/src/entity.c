@@ -83,6 +83,10 @@ dmi_entity_t *dmi_entity_decode(dmi_context_t *context, const void *data)
         if (not dmi_entity_decode_strings(entity))
             break;
 
+        // Initialize stream
+        dmi_stream_initialize(&entity->stream, entity->data, entity->body_length);
+        dmi_stream_seek(&entity->stream, sizeof(dmi_header_t));
+
         // Decode information
         if (entity->spec != nullptr) {
             const dmi_entity_spec_t *spec = entity->spec;

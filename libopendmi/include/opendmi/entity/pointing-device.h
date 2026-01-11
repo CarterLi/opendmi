@@ -11,8 +11,7 @@
 
 #include <opendmi/entity.h>
 
-typedef struct dmi_pointing_device_data dmi_pointing_device_data_t;
-typedef struct dmi_pointing_device      dmi_pointing_device_t;
+typedef struct dmi_pointing_device dmi_pointing_device_t;
 
 /**
  * @brief Pointing device types.
@@ -57,30 +56,6 @@ typedef enum dmi_pointing_device_interface
 /**
  * @brief Built-in pointing device structure (type 21).
  */
-dmi_packed_struct(dmi_pointing_device_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief Type of pointing device.
-     */
-    dmi_byte_t type;
-
-    /**
-     * @brief Interface type for the pointing device.
-     */
-    dmi_byte_t interface;
-
-    /**
-     * @brief Number of buttons on the pointing device. If the device has
-     * three buttons, the field value is 0x03.
-     */
-    dmi_byte_t button_count;
-};
-
 struct dmi_pointing_device
 {
     /**

@@ -172,19 +172,15 @@ const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t v
 static bool dmi_pointing_device_decode(dmi_entity_t *entity)
 {
     dmi_pointing_device_t *info;
-    const dmi_pointing_device_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_POINTING_DEVICE);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_POINTING_DEVICE);
     if (info == nullptr)
         return false;
 
-    info->type         = dmi_decode(data->type);
-    info->interface    = dmi_decode(data->interface);
-    info->button_count = dmi_decode(data->button_count);
+    dmi_stream_t *stream = &entity->stream;
 
-    return true;
+    return
+        dmi_stream_decode(stream, dmi_byte_t, &info->type) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->interface) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->button_count);
 }
