@@ -11,8 +11,8 @@
 
 #include <opendmi/entity.h>
 
-typedef struct dmi_hardware_security_data dmi_hardware_security_data_t;
-typedef struct dmi_hardware_security      dmi_hardware_security_t;
+typedef struct dmi_hardware_security          dmi_hardware_security_t;
+typedef union  dmi_hardware_security_settings dmi_hardware_security_settings_t;
 
 /**
  * @brief Hardware security status values.
@@ -28,9 +28,9 @@ typedef enum dmi_hardware_security_status
 /**
  * @brief Hardware security settings.
  */
-dmi_packed_struct(dmi_hardware_security_settings)
+dmi_packed_union(dmi_hardware_security_settings)
 {
-    dmi_byte_t raw_value;
+    dmi_byte_t __value;
 
     dmi_packed_struct()
     {
@@ -54,22 +54,6 @@ dmi_packed_struct(dmi_hardware_security_settings)
          */
         dmi_hardware_security_status_t poweron_password : 2;
     };
-};
-
-/**
- * @brief Hardware security structure (type 24).
- */
-dmi_packed_struct(dmi_hardware_security_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief Hardware security settings.
-     */
-    struct dmi_hardware_security_settings settings;
 };
 
 struct dmi_hardware_security

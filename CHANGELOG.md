@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved `<opendmi/name.h>` to `<opendmi/utils/name.h>`
 - Refactored entity decoders API
 
+## [0.1.4] - Unreleased
+
+- Fixed hardware security settings decoding
+- Fixed baseboard structure minumum length
+
 ## [0.1.3] - January 11, 2026
 
 - Added automatic string trimming

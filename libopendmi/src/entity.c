@@ -84,7 +84,7 @@ dmi_entity_t *dmi_entity_decode(dmi_context_t *context, const void *data)
             break;
 
         // Initialize stream
-        dmi_stream_initialize(&entity->stream, entity->data, entity->body_length);
+        dmi_stream_initialize(&entity->stream, entity);
         dmi_stream_seek(&entity->stream, sizeof(dmi_header_t));
 
         // Decode information

@@ -84,20 +84,21 @@ const char *dmi_hardware_security_status_name(dmi_hardware_security_status_t val
 static bool dmi_hardware_security_decode(dmi_entity_t *entity)
 {
     dmi_hardware_security_t *info;
-    const dmi_hardware_security_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_HARDWARE_SECURITY);
-    if (data == nullptr)
-        return false;
+    dmi_hardware_security_settings_t settings;
 
     info = dmi_entity_info(entity, DMI_TYPE_HARDWARE_SECURITY);
     if (info == nullptr)
         return false;
 
-    info->front_panel_reset = data->settings.front_panel_reset;
-    info->admin_password    = data->settings.admin_password;
-    info->keyboard_password = data->settings.keyboard_password;
-    info->poweron_password  = data->settings.poweron_password;
+    dmi_stream_t *stream = &entity->stream;
+
+    if (not dmi_stream_decode(stream, dmi_byte_t, &settings.__value))
+        return false;
+
+    info->front_panel_reset = settings.front_panel_reset;
+    info->admin_password    = settings.admin_password;
+    info->keyboard_password = settings.keyboard_password;
+    info->poweron_password  = settings.poweron_password;
 
     return true;
 }

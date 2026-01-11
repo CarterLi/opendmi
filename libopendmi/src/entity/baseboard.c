@@ -120,7 +120,7 @@ const dmi_entity_spec_t dmi_baseboard_spec =
     .name            = "Baseboard or module information",
     .type            = DMI_TYPE_BASEBOARD,
     .minimum_version = DMI_VERSION(2, 0, 0),
-    .minimum_length  = 0x0F,
+    .minimum_length  = 0x08,
     .decoded_length  = sizeof(dmi_baseboard_t),
     .attributes      = (dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_baseboard_t, vendor, STRING, {
