@@ -7,8 +7,8 @@
 #include <limits.h>
 
 #include <opendmi/context.h>
-#include <opendmi/utils/name.h>
 #include <opendmi/utils.h>
+#include <opendmi/utils/name.h>
 #include <opendmi/utils/decode.h>
 
 #include <opendmi/entity/ipmi-device.h>

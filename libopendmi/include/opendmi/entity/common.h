@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <opendmi/utils/name.h>
 #include <opendmi/attribute.h>
+#include <opendmi/utils/name.h>
 
 typedef struct dmi_pci_addr      dmi_pci_addr_t;
 typedef struct dmi_pci_addr_data dmi_pci_addr_data_t;

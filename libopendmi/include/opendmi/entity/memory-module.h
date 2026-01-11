@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <opendmi/utils/name.h>
 #include <opendmi/entity.h>
+#include <opendmi/utils/name.h>
 
 typedef struct dmi_memory_module       dmi_memory_module_t;
 typedef struct dmi_memory_module_data  dmi_memory_module_data_t;

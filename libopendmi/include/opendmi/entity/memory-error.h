@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <opendmi/utils/name.h>
 #include <opendmi/entity.h>
+#include <opendmi/utils/name.h>
 
 /**
  * @brief Memory error types.
