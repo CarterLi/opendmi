@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <opendmi/entity.h>
 #include <opendmi/utils/name.h>
 
 /**
@@ -62,59 +61,9 @@ typedef enum dmi_memory_error_operation
     __DMI_MEMORY_ERROR_OPERATION_COUNT
 } dmi_memory_error_operation_t;
 
-struct dmi_memory_error
-{
-    /**
-     * @brief Type of error that is associated with the current status reported
-     * for the memory array or device.
-     */
-    dmi_memory_error_type_t type;
-
-    /**
-     * @brief Granularity (for example, device versus partition) to which the
-     * error can be resolved.
-     */
-    dmi_memory_error_granularity_t granularity;
-
-    /**
-     * @brief Memory access operation that caused the error.
-     */
-    dmi_memory_error_operation_t operation;
-
-    /**
-     * @brief Vendor-specific ECC syndrome or CRC data associated with the
-     * erroneous access. If the value is unknown, this field contains 0.
-     */
-    uint32_t vendor_syndrome;
-
-    /**
-     * @brief Physical address of the error based on the addressing of
-     * the bus to which the memory array is connected. If the address is
-     * unknown, this field contains `0x8000000000000000`.
-     */
-    dmi_size_t array_addr;
-
-    /**
-     * @brief Physical address of the error relative to the start of
-     * the failing memory device, in bytes. If the address is unknown, this
-     * field contains `0x8000000000000000`.
-     */
-    dmi_size_t device_addr;
-
-    /**
-     * @brief Range, in bytes, within which the error can be determined, when
-     * an error address is given. If the range is unknown, this field contains
-     * `0`
-     */
-    dmi_size_t resolution;
-};
-
-typedef struct dmi_memory_error dmi_memory_error_t;
-
-/**
- * @brief Memory error attributes.
- */
-extern const dmi_attribute_t dmi_memory_error_attrs[];
+extern const dmi_name_set_t dmi_memory_error_type_names;
+extern const dmi_name_set_t dmi_memory_error_granularity_names;
+extern const dmi_name_set_t dmi_memory_error_operation_names;
 
 __BEGIN_DECLS
 

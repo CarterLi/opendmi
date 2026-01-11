@@ -11,60 +11,57 @@
 
 #include <opendmi/entity/memory-error.h>
 
+typedef struct dmi_memory_error_64 dmi_memory_error_64_t;
+
 /**
  * @brief 64-Bit memory error information structure (type 33).
  * @since SMBIOS 2.3
  */
-dmi_packed_struct(dmi_memory_error_64_data)
+struct dmi_memory_error_64
 {
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
     /**
      * @brief Type of error that is associated with the current status reported
      * for the memory array or device.
      */
-    dmi_byte_t type;
+    dmi_memory_error_type_t type;
 
     /**
      * @brief Granularity (for example, device versus partition) to which the
      * error can be resolved.
      */
-    dmi_byte_t granularity;
+    dmi_memory_error_granularity_t granularity;
 
     /**
      * @brief Memory access operation that caused the error.
      */
-    dmi_byte_t operation;
+    dmi_memory_error_operation_t operation;
 
     /**
      * @brief Vendor-specific ECC syndrome or CRC data associated with the
      * erroneous access. If the value is unknown, this field contains 0.
      */
-    dmi_dword_t vendor_syndrome;
+    uint32_t vendor_syndrome;
 
     /**
-     * @brief 64-bit physical address of the error based on the addressing of
+     * @brief Physical address of the error based on the addressing of
      * the bus to which the memory array is connected. If the address is
-     * unknown, this field contains 0x8000000000000000.
+     * unknown, this field contains `0x8000000000000000`.
      */
-    dmi_qword_t array_addr;
+    uint64_t array_addr;
 
     /**
-     * @brief 64-bit physical address of the error relative to the start of
+     * @brief Physical address of the error relative to the start of
      * the failing memory device, in bytes. If the address is unknown, this
-     * field contains 0x8000000000000000.
+     * field contains `0x8000000000000000`.
      */
-    dmi_qword_t device_addr;
+    uint64_t device_addr;
 
     /**
      * @brief Range, in bytes, within which the error can be determined, when
      * an error address is given. If the range is unknown, this field contains
-     * 0x80000000.
+     * `0`
      */
-    dmi_dword_t resolution;
+    uint32_t resolution;
 };
 
 typedef struct dmi_memory_error_64_data dmi_memory_error_64_data_t;

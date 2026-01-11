@@ -8,7 +8,7 @@
 
 #include <opendmi/entity/memory-error.h>
 
-static const dmi_name_set_t dmi_memory_error_type_names =
+const dmi_name_set_t dmi_memory_error_type_names =
 {
     .code  = "memory-error-types",
     .names = (dmi_name_t[]){
@@ -79,7 +79,7 @@ static const dmi_name_set_t dmi_memory_error_type_names =
     }
 };
 
-static const dmi_name_set_t dmi_memory_error_granularity_names =
+const dmi_name_set_t dmi_memory_error_granularity_names =
 {
     .code  = "memory-error-granularities",
     .names = (dmi_name_t[]){
@@ -100,7 +100,7 @@ static const dmi_name_set_t dmi_memory_error_granularity_names =
     }
 };
 
-static const dmi_name_set_t dmi_memory_error_operation_names =
+const dmi_name_set_t dmi_memory_error_operation_names =
 {
     .code  = "memory-error-operations",
     .names = (dmi_name_t[]){
@@ -124,51 +124,6 @@ static const dmi_name_set_t dmi_memory_error_operation_names =
         },
         DMI_NAME_NULL
     }
-};
-
-const dmi_attribute_t dmi_memory_error_attrs[] =
-{
-    DMI_ATTRIBUTE(dmi_memory_error_t, type, ENUM, {
-        .code    = "type",
-        .name    = "Type",
-        .unspec  = dmi_value_ptr(DMI_MEMORY_ERROR_TYPE_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_MEMORY_ERROR_TYPE_UNKNOWN),
-        .values  = &dmi_memory_error_type_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_error_t, granularity, ENUM, {
-        .code    = "granularity",
-        .name    = "Granularity",
-        .unspec  = dmi_value_ptr(DMI_MEMORY_ERROR_GRANULARITY_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_MEMORY_ERROR_GRANULARITY_UNKNOWN),
-        .values  = &dmi_memory_error_granularity_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_error_t, operation, ENUM, {
-        .code    = "operation",
-        .name    = "operation",
-        .unspec  = dmi_value_ptr(DMI_MEMORY_ERROR_OPERATION_UNSPEC),
-        .unknown = dmi_value_ptr(DMI_MEMORY_ERROR_OPERATION_UNKNOWN),
-        .values  = &dmi_memory_error_operation_names
-    }),
-    DMI_ATTRIBUTE(dmi_memory_error_t, vendor_syndrome, INTEGER, {
-        .code    = "vendor-syndrome",
-        .name    = "vendor-syndrome",
-        .flags   = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_memory_error_t, array_addr, ADDRESS, {
-        .code    = "array-addr",
-        .name    = "Array-relative address",
-        .flags   = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_memory_error_t, device_addr, ADDRESS, {
-        .code    = "device-addr",
-        .name    = "Device-relative address",
-        .flags   = DMI_ATTRIBUTE_FLAG_HEX
-    }),
-    DMI_ATTRIBUTE(dmi_memory_error_t, resolution, SIZE, {
-        .code    = "resolution",
-        .name    = "Resolution"
-    }),
-    DMI_ATTRIBUTE_NULL
 };
 
 const char *dmi_memory_error_type_name(dmi_memory_error_type_t value)
