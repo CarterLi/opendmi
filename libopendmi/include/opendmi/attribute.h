@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <opendmi/name.h>
+#include <opendmi/utils/name.h>
 #include <opendmi/utils/version.h>
 
 typedef struct dmi_attribute        dmi_attribute_t;

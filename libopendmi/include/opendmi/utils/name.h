@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_NAME_H
-#define OPENDMI_NAME_H
+#ifndef OPENDMI_UTILS_NAME_H
+#define OPENDMI_UTILS_NAME_H
 
 #pragma once
 
@@ -55,4 +55,4 @@ const char *dmi_name_lookup(const dmi_name_set_t *dict, int id);
 
 __END_DECLS
 
-#endif // !OPENDMI_NAME_H
+#endif // !OPENDMI_UTILS_NAME_H

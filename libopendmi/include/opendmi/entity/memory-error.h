@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <opendmi/name.h>
+#include <opendmi/utils/name.h>
 #include <opendmi/entity.h>
 
 /**

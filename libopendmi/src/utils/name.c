@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/name.h>
+#include <opendmi/utils/name.h>
 
 const char *dmi_code_lookup(const dmi_name_set_t *dict, int id)
 {

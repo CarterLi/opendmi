@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <opendmi/name.h>
+#include <opendmi/utils/name.h>
 #include <opendmi/entity.h>
 
 typedef struct dmi_memory_module       dmi_memory_module_t;
