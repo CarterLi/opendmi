@@ -27,6 +27,7 @@ target_sources(opendmi-object
         src/filter.c
         src/attribute.c
         src/registry.c
+        src/stream.c
         src/utils.c
         src/utils/datetime.c
         src/utils/decode.c
@@ -105,6 +106,7 @@ target_sources(opendmi-object
             include/opendmi/registry.h
             include/opendmi/entity.h
             include/opendmi/types.h
+            include/opendmi/stream.h
             include/opendmi/utils.h
             include/opendmi/value.h
             include/opendmi/utils/datetime.h
