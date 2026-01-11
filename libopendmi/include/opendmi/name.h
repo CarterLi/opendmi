@@ -46,6 +46,8 @@ struct dmi_name_set
 #define DMI_NAME_UNSUPPORTED(id) { (id), "unsupported", "Unsupported" }
 #define DMI_NAME_RESERVED(id)    { (id), "reserved",    "Reserved"    }
 
+#define DMI_NAME_RANGE_NULL { -1, -1, nullptr, nullptr }
+
 __BEGIN_DECLS
 
 const char *dmi_code_lookup(const dmi_name_set_t *dict, int id);
