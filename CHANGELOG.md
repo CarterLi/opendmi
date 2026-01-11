@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Refactored entity decoders API
+
+## [0.1.3] - January 11, 2026
+
 - Added automatic string trimming
 - Added baseboard structure linking
 - Added physical memory array structure linking
