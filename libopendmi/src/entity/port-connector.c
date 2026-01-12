@@ -420,7 +420,7 @@ static const dmi_name_set_t dmi_port_type_names =
 
 const dmi_entity_spec_t dmi_port_connector_spec =
 {
-    .code            = "port",
+    .code            = "port-connector",
     .name            = "Port connector information",
     .type            = DMI_TYPE_PORT_CONNECTOR,
     .minimum_version = DMI_VERSION(2, 0, 0),
@@ -470,21 +470,17 @@ const char *dmi_port_type_name(dmi_port_type_t value)
 static bool dmi_port_connector_decode(dmi_entity_t *entity)
 {
     dmi_port_connector_t *info;
-    const dmi_port_connector_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_PORT_CONNECTOR);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_PORT_CONNECTOR);
     if (info == nullptr)
         return false;
 
-    info->internal_designator = dmi_entity_string(entity, data->internal_designator);
-    info->internal_connector  = dmi_decode(data->internal_connector);
-    info->external_designator = dmi_entity_string(entity, data->external_designator);
-    info->external_connector  = dmi_decode(data->external_connector);
-    info->port_type           = dmi_decode(data->port_type);
+    dmi_stream_t *stream = &entity->stream;
 
-    return true;
+    return
+        dmi_stream_decode_str(stream, &info->internal_designator) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->internal_connector) &&
+        dmi_stream_decode_str(stream, &info->external_designator) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->external_connector) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->port_type);
 }

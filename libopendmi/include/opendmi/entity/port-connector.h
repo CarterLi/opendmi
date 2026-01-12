@@ -11,6 +11,8 @@
 
 #include <opendmi/entity.h>
 
+typedef struct dmi_port_connector dmi_port_connector_t;
+
 typedef enum dmi_connector_type
 {
     DMI_CONNECTOR_TYPE_NONE             = 0x00, ///< None
@@ -106,46 +108,6 @@ typedef enum dmi_port_type
 /**
  * @brief Port connector information structure (type 8).
  */
-dmi_packed_struct(dmi_port_connector_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief String number for internal reference designator, that is,
-     * internal to the system enclosure. Example: "J101".
-     */
-    dmi_string_t internal_designator;
-
-    /**
-     * @brief Internal connector type.
-     */
-    dmi_byte_t internal_connector;
-
-    /**
-     * @brief String number for the external reference designation, that is,
-     * external to the system enclosure. Example: "COM A".
-     */
-    dmi_string_t external_designator;
-
-    /**
-     * @brief External connector type.
-     */
-    dmi_byte_t external_connector;
-
-    /**
-     * @brief Port type.
-     */
-    dmi_byte_t port_type;
-};
-
-typedef struct dmi_port_connector_data dmi_port_connector_data_t;
-
-/**
- * @brief Port connector information.
- */
 struct dmi_port_connector
 {
     /**
@@ -175,8 +137,6 @@ struct dmi_port_connector
      */
     dmi_port_type_t port_type;
 };
-
-typedef struct dmi_port_connector dmi_port_connector_t;
 
 /**
  * @brief Port connector information entity specification.
