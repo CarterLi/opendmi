@@ -23,18 +23,18 @@ struct dmi_memory_array_addr
      * @brief Physical address, in bytes, of a range of memory mapped to the
      * specified physical memory array.
      */
-    dmi_size_t start_addr;
+    uint64_t start_addr;
 
     /**
      * @brief Physical ending address, in bytes, of the last of a range of
      * addresses mapped to the specified physical memory array.
      */
-    dmi_size_t end_addr;
+    uint64_t end_addr;
 
     /**
-     * @brief Address range size in bytes.
+     * @brief Mapped address range size in bytes.
      */
-    dmi_size_t range_size;
+    uint64_t range_size;
 
     /**
      * @brief Handle, or instance number, associated with the physical memory
@@ -54,7 +54,7 @@ struct dmi_memory_array_addr
      * @brief Number of memory devices that form a single row of memory for the
      * address partition defined by this structure.
      */
-    int partition_width;
+    unsigned short partition_width;
 };
 
 /**

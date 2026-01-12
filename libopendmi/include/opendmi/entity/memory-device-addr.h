@@ -23,18 +23,18 @@ struct dmi_memory_device_addr
      * @brief Physical address, in bytes, of a range of memory mapped to the
      * referenced memory device.
      */
-    dmi_size_t start_addr;
+    uint64_t start_addr;
 
     /**
      * @brief Physical ending address, in bytes, of the last of a range of
      * addresses mapped to the referenced memory device.
      */
-    dmi_size_t end_addr;
+    uint64_t end_addr;
 
     /**
      * @brief Address range size in bytes.
      */
-    dmi_size_t range_size;
+    uint64_t range_size;
 
     /**
      * @brief Handle, or instance number, associated with the memory device

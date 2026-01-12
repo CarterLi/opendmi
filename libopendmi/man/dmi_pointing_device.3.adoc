@@ -76,9 +76,9 @@ Number of buttons on the pointing device.
 [source, c]
 ```
 dmi_entity_t *entity;
-dmi_pointing_device_t *device;
+dmi_pointing_device_t *info;
 
-device = dmi_entity_info(entity, DMI_TYPE_POINTING_DEVICE);
+info = dmi_entity_info(entity, DMI_TYPE_POINTING_DEVICE);
 
 printf("type: %s\n", dmi_pointing_device_type_name(info->type));
 printf("interface: %s\n", dmi_pointing_device_interface_name(info->interface));
@@ -107,7 +107,7 @@ printf("buttons: %u\n", info->button_count);
 | 2.1+
 | Handle
 | `WORD`
-| Handle, or instance number, associated with the structure.
+| Handle associated with the structure.
 
 | `0x04`
 | 2.1+

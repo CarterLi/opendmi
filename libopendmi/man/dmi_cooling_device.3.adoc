@@ -98,9 +98,9 @@ be `NULL`.
 [source, c]
 ```
 dmi_entity_t *entity;
-dmi_cooling_device_t *device;
+dmi_cooling_device_t *info;
 
-device = dmi_entity_info(entity, DMI_TYPE_COOLING_DEVICE);
+info = dmi_entity_info(entity, DMI_TYPE_COOLING_DEVICE);
 
 printf("type: %s\n", dmi_cooling_device_type_name(info->type));
 printf("status: %s\n", dmi_status_name(info->status));
@@ -123,7 +123,7 @@ printf("location: %s\n", info->location ? info->location : "unspecified");
 | 2.2+
 | Length
 | `BYTE`
-| Length of the structure, at least 0x0C.
+| Length of the structure, at least `0x0C`.
 
 | `0x02`
 | 2.2+
@@ -135,7 +135,7 @@ printf("location: %s\n", info->location ? info->location : "unspecified");
 | 2.2+
 | Temperature Probe Handle
 | `WORD`
-| Handle of the temperature probe  monitoring this cooling device.
+| Handle of the temperature probe monitoring this cooling device.
 
 | `0x06`
 | 2.2+
