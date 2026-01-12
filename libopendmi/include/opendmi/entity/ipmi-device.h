@@ -12,7 +12,6 @@
 #include <opendmi/entity.h>
 
 typedef struct dmi_ipmi_device         dmi_ipmi_device_t;
-typedef struct dmi_ipmi_device_data    dmi_ipmi_device_data_t;
 typedef union  dmi_ipmi_device_details dmi_ipmi_device_details_t;
 
 typedef enum dmi_ipmi_interface
@@ -69,72 +68,6 @@ dmi_packed_union(dmi_ipmi_device_details)
         dmi_byte_t __reserved_2            : 1; ///< Reserved for future use, set to 0.
         dmi_byte_t register_spacing        : 2;
     };
-};
-
-/**
- * @brief IPMI device information structure (type 38).
- *
- * The information in this structure defines the attributes of an Intelligent
- * Platform Management Interface (IPMI) Baseboard Management Controller (BMC).
- * See the Intelligent Platform Management Interface (IPMI) Interface
- * Specification for full documentation of IPMI and additional information on
- * the use of this structure.
- *
- * The type 42 structure can also be used to describe a physical management
- * controller host interface and one or more protocols that share that
- * interface. If IPMI is not shared with other protocols, either the type 38
- * or the type 42 structures can be used. Providing Type 38 is recommended for
- * backward compatibility.
- */
-dmi_packed_struct(dmi_ipmi_device_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief Baseboard Management Controller (BMC) interface type.
-     */
-    dmi_byte_t interface_type;
-
-    /**
-     * @brief IPMI specification revision, in BCD format, to which the BMC was
-     * designed. Bits 7:4 hold the most significant digit of the revision,
-     * while bits 3:0 hold the least significant bits. Example: A value of 0x10
-     * indicates revision 1.0.
-     */
-    dmi_byte_t spec_version;
-
-    /**
-     * @brief Target address on the I2C bus of this BMC.
-     */
-    dmi_byte_t i2c_target_addr;
-
-    /**
-     * @brief Bus ID of the NV storage device If no storage device exists for
-     * this BMC, the field is set to 0xFF.
-     */
-    dmi_byte_t nv_storage_addr;
-
-    /**
-     * @brief Base address (either memory-mapped or I/O) of the BMC. If the
-     * least-significant bit of the field is a 1, the address is in I/O space.
-     * Otherwise, the address is memory-mapped. See the IPMI Interface
-     * Specification for usage details.
-     */
-    dmi_qword_t base_addr;
-
-    /**
-     * @brief Base address modifier and interrupt info.
-     */
-    dmi_byte_t details;
-
-    /**
-     * @brief Interrupt number for IPMI System Interface. Zero means that IPMI
-     * interrupt is unspecified or unsupported.
-     */
-    dmi_byte_t intr_number;
 };
 
 struct dmi_ipmi_device

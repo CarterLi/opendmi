@@ -197,70 +197,61 @@ const char *dmi_ipmi_intr_polarity_name(dmi_ipmi_intr_polarity_t value)
 static bool dmi_ipmi_device_decode(dmi_entity_t *entity)
 {
     dmi_ipmi_device_t *info;
-    const dmi_ipmi_device_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_IPMI_DEVICE);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_IPMI_DEVICE);
     if (info == nullptr)
         return false;
 
-    info->interface_type = dmi_decode(data->interface_type);
-    info->spec_version   = dmi_version((data->spec_version & 0xF0) >> 4, data->spec_version & 0x0F, 0);
+    dmi_stream_t *stream = &entity->stream;
 
-    info->i2c_target_addr = dmi_decode(data->i2c_target_addr);
-    if (data->nv_storage_addr != 0xFFu)
-        info->nv_storage_addr = dmi_decode(data->nv_storage_addr);
-    else
-        info->nv_storage_addr = UINT8_MAX;
+    if (not dmi_stream_decode(stream, dmi_byte_t, &info->interface_type))
+        return false;
+    
+    dmi_byte_t spec_version;
+    if (not dmi_stream_decode(stream, dmi_byte_t, &spec_version))
+        return false;
+    
+    info->spec_version = dmi_version((spec_version & 0xF0) >> 4, spec_version & 0x0F, 0);
 
-    uint64_t base_addr = dmi_decode(data->base_addr);
-    info->base_addr = base_addr & 0x7FFFFFFFFFFFFFFFu;
-    if (info->base_addr & 0x8000000000000000u)
-        info->base_addr_type = DMI_IPMI_ADDR_TYPE_IO;
-    else
-        info->base_addr_type = DMI_IPMI_ADDR_TYPE_MEMORY;
+    bool status =
+        dmi_stream_decode(stream, dmi_byte_t, &info->i2c_target_addr) and
+        dmi_stream_decode(stream, dmi_byte_t, &info->nv_storage_addr);
+    if (not status)
+        return false;
 
-    dmi_ipmi_device_details_t details = {
-        .__value = dmi_decode(data->details)
-    };
+    dmi_qword_t base_addr;
+    if (not dmi_stream_decode(stream, dmi_qword_t, &base_addr))
+        return false;
+    
+    info->base_addr      = base_addr & 0x7FFFFFFFFFFFFFFFu;
+    info->base_addr_type = info->base_addr & 0x8000000000000000u
+                         ? DMI_IPMI_ADDR_TYPE_IO
+                         : DMI_IPMI_ADDR_TYPE_MEMORY;
+
+    dmi_ipmi_device_details_t details;
+    if (not dmi_stream_decode(stream, dmi_byte_t, &details.__value))
+        return false;
 
     if (details.is_intr_info_specified) {
-        if (details.is_intr_level_triggered)
-            info->intr_trigger = DMI_IPMI_INTR_TRIGGER_LEVEL;
-        else
-            info->intr_trigger = DMI_IPMI_INTR_TRIGGER_EDGE;
-
-        if (details.is_intr_active_high)
-            info->intr_polarity = DMI_IPMI_INTR_POLARITY_HIGH;
-        else
-            info->intr_polarity = DMI_IPMI_INTR_POLARITY_LOW;
+        info->intr_trigger  = details.is_intr_level_triggered
+                            ? DMI_IPMI_INTR_TRIGGER_LEVEL
+                            : DMI_IPMI_INTR_TRIGGER_EDGE;
+        info->intr_polarity = details.is_intr_active_high
+                            ? DMI_IPMI_INTR_POLARITY_HIGH
+                            : DMI_IPMI_INTR_POLARITY_LOW;
     } else {
         info->intr_trigger  = DMI_IPMI_INTR_TRIGGER_UNSPEC;
         info->intr_polarity = DMI_IPMI_INTR_POLARITY_UNSPEC;
     }
 
     switch (details.register_spacing) {
-    case DMI_IPMI_REGISTER_SPACING_1:
-        info->register_spacing = 1;
-        break;
-
-    case DMI_IPMI_REGISTER_SPACING_4:
-        info->register_spacing = 4;
-        break;
-
-    case DMI_IPMI_REGISTER_SPACING_16:
-        info->register_spacing = 16;
-        break;
-
-    default:
-        // fallthrough
+    case DMI_IPMI_REGISTER_SPACING_1:  info->register_spacing = 1;  break;
+    case DMI_IPMI_REGISTER_SPACING_4:  info->register_spacing = 4;  break;
+    case DMI_IPMI_REGISTER_SPACING_16: info->register_spacing = 16; break;
+    default: // fallthrough
     }
 
     info->base_addr_lsb = details.base_addr_lsb;
-    info->intr_number   = dmi_decode(data->intr_number);
 
-    return true;
+    return dmi_stream_decode(stream, dmi_byte_t, &info->intr_number);
 }
