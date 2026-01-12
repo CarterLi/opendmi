@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Added memory controller structure linking
 - Added system boot status decoding
 - Added support for enumeration range names
 - Added manual page for `dmi_memory_array_addr`
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.4] - Unreleased
 
+- Fixed memory controller module size decoding
 - Fixed hardware security settings decoding
 - Fixed power supply structure minimum length
 - Fixed cooling device structure minimum length

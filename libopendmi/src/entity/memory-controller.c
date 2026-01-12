@@ -12,6 +12,8 @@
 #include <opendmi/entity/memory-controller.h>
 
 static bool dmi_memory_controller_decode(dmi_entity_t *entity);
+static bool dmi_memory_controller_link(dmi_entity_t *entity);
+static void dmi_memory_controller_cleanup(dmi_entity_t *entity);
 
 static const dmi_name_set_t dmi_error_detect_method_names =
 {
@@ -229,7 +231,9 @@ const dmi_entity_spec_t dmi_memory_controller_spec =
         DMI_ATTRIBUTE_NULL
     },
     .handlers = {
-        .decode = dmi_memory_controller_decode
+        .decode  = dmi_memory_controller_decode,
+        .link    = dmi_memory_controller_link,
+        .cleanup = dmi_memory_controller_cleanup
     }
 };
 
@@ -265,7 +269,7 @@ static bool dmi_memory_controller_decode(dmi_entity_t *entity)
     info->supported_interleave = dmi_decode(data->supported_interleave);
     info->current_interleave   = dmi_decode(data->current_interleave);
     info->slot_count           = dmi_decode(data->slot_count);
-    info->maximum_module_size  = 1 << dmi_decode(data->maximum_module_size);
+    info->maximum_module_size  = 1ULL << (dmi_decode(data->maximum_module_size) + 20);
     info->maximum_memory_size  = info->maximum_module_size * info->slot_count;
 
     info->supported_speeds.__value  = dmi_decode(data->supported_speeds);
@@ -295,4 +299,38 @@ static bool dmi_memory_controller_decode(dmi_entity_t *entity)
     }
 
     return true;
+}
+
+static bool dmi_memory_controller_link(dmi_entity_t *entity)
+{
+    dmi_registry_t *registry;
+    dmi_memory_controller_t *info;
+
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CONTROLLER);
+    if (info == nullptr)
+        return false;
+
+    info->modules = dmi_alloc_array(entity->context, sizeof(dmi_entity_t *), info->slot_count);
+    if (info->modules == nullptr)
+        return false;
+
+    registry = entity->context->registry;
+
+    for (size_t i = 0; i < info->slot_count; i++) {
+        info->modules[i] = dmi_registry_get(registry, info->module_handles[i], DMI_TYPE_MEMORY_MODULE, false);
+    }
+
+    return true;
+}
+
+static void dmi_memory_controller_cleanup(dmi_entity_t *entity)
+{
+    dmi_memory_controller_t *info;
+
+    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CONTROLLER);
+    if (info == nullptr)
+        return;
+
+    dmi_free(info->module_handles);
+    dmi_free(info->modules);
 }

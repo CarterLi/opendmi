@@ -228,12 +228,12 @@ struct dmi_memory_controller
     /**
      * @brief Size of the largest memory module supported (per slot).
      */
-    dmi_size_t maximum_module_size;
+    uint64_t maximum_module_size;
 
     /**
      * @brief Maximum memory size.
      */
-    dmi_size_t maximum_memory_size;
+    uint64_t maximum_memory_size;
 
     /**
      * @brief Supported memory module speeds.
@@ -258,7 +258,7 @@ struct dmi_memory_controller
 
     dmi_handle_t *module_handles;
 
-    dmi_entity_t *modules;
+    dmi_entity_t **modules;
 
     dmi_error_correct_caps_t enabled_error_correction;
 };
