@@ -197,29 +197,29 @@ const char *dmi_range_switching_type_name(dmi_range_switching_type_t value)
 static bool dmi_power_supply_decode(dmi_entity_t *entity)
 {
     dmi_power_supply_t *info;
-    const dmi_power_supply_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_POWER_SUPPLY);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_POWER_SUPPLY);
     if (info == nullptr)
         return false;
 
-    info->group            = data->group;
-    info->location         = dmi_entity_string(entity, data->location);
-    info->name             = dmi_entity_string(entity, data->name);
-    info->vendor           = dmi_entity_string(entity, data->vendor);
-    info->serial_number    = dmi_entity_string(entity, data->serial_number);
-    info->asset_tag        = dmi_entity_string(entity, data->asset_tag);
-    info->part_number      = dmi_entity_string(entity, data->part_number);
-    info->revision         = dmi_entity_string(entity, data->revision);
-    info->maximum_capacity = dmi_decode(data->maximum_capacity);
+    dmi_stream_t *stream = &entity->stream;
 
-    dmi_power_supply_details_t details = {
-        .__value = dmi_decode(data->characteristics)
-    };
+    bool rv = 
+        dmi_stream_decode(stream, dmi_byte_t, &info->group) and
+        dmi_stream_decode_str(stream, &info->location) and
+        dmi_stream_decode_str(stream, &info->name) and
+        dmi_stream_decode_str(stream, &info->vendor) and
+        dmi_stream_decode_str(stream, &info->serial_number) and
+        dmi_stream_decode_str(stream, &info->asset_tag) and
+        dmi_stream_decode_str(stream, &info->part_number) and
+        dmi_stream_decode_str(stream, &info->revision) and
+        dmi_stream_decode(stream, dmi_word_t, &info->maximum_capacity);
+    if (not rv)
+        return false;
+
+    dmi_power_supply_details_t details;
+    if (not dmi_stream_decode(stream, dmi_word_t, &details))
+        return false;
 
     info->hot_swappable   = details.hot_swappable;
     info->present         = details.present;
@@ -228,11 +228,10 @@ static bool dmi_power_supply_decode(dmi_entity_t *entity)
     info->status          = details.status;
     info->type            = details.type;
 
-    info->voltage_probe_handle  = dmi_decode(data->voltage_probe_handle);
-    info->cooling_device_handle = dmi_decode(data->cooling_device_handle);
-    info->current_probe_handle  = dmi_decode(data->current_probe_handle);
-
-    return true;
+    return 
+        dmi_stream_decode(stream, dmi_handle_t, &info->voltage_probe_handle) and
+        dmi_stream_decode(stream, dmi_handle_t, &info->cooling_device_handle) and
+        dmi_stream_decode(stream, dmi_handle_t, &info->current_probe_handle);
 }
 
 static bool dmi_power_supply_link(dmi_entity_t *entity)
