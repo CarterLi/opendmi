@@ -29,6 +29,6 @@ typedef struct dmi_argument
     bool is_required;
     void *data;
     dmi_argument_fn *handler;
-};
+} dmi_argument_t;
 
 #endif // !OPENDMI_ARGUMENT_H
