@@ -72,6 +72,7 @@ find_program(CPPCHECK_EXECUTABLE NAMES cppcheck)
 
 include(FindPackageEx)
 
+find_package(AsciiDoctor)
 find_package_ex(Curses ENABLE_CURSES)
 find_package_ex(LibXml2 ENABLE_XML)
 find_package_ex(LibYaml ENABLE_YAML)
