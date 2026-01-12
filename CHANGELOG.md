@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored entity decoders API
 - Fixed group associations items list decoding
 
-## [0.1.4] - Unreleased
+## [0.1.4] - January 13, 2026
 
 - Fixed memory controller module size decoding
 - Fixed hardware security settings decoding
