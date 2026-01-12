@@ -136,43 +136,48 @@ const char *dmi_cooling_device_type_name(dmi_cooling_device_type_t value)
 static bool dmi_cooling_device_decode(dmi_entity_t *entity)
 {
     dmi_cooling_device_t *info;
-    const dmi_cooling_device_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_COOLING_DEVICE);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_COOLING_DEVICE);
     if (info == nullptr)
         return false;
 
-    info->probe_handle = dmi_decode(data->probe_handle);
+    dmi_stream_t *stream = &entity->stream;
 
-    dmi_cooling_device_details_t details = {
-        .__value = dmi_decode(data->details)
-    };
+    if (not dmi_stream_decode(stream, dmi_handle_t, &info->probe_handle))
+        return false;
 
-    info->type        = details.type;
-    info->status      = details.status;
-    info->group       = dmi_decode(data->group);
-    info->oem_defined = dmi_decode(data->oem_defined);
+    dmi_cooling_device_details_t details;
+    if (not dmi_stream_decode(stream, dmi_byte_t, &details))
+        return false;
 
-    if (entity->body_length > 0x0Cu) {
-        uint16_t nominal_speed = dmi_decode(data->nominal_speed);
-        if (nominal_speed != 0x8000u)
-            info->nominal_speed = (short)(nominal_speed & 0x7FFFu);
-        else
-            info->nominal_speed = SHRT_MIN;
-    } else {
-        info->nominal_speed = SHRT_MIN;
-    }
+    info->type   = details.type;
+    info->status = details.status;
 
-    if (entity->body_length > 0x0Eu) {
-        entity->level = dmi_version(2, 7, 0);
-        info->description = dmi_entity_string(entity, data->description);
-    }
+    bool status =
+        dmi_stream_decode(stream, dmi_byte_t, &info->group) and
+        dmi_stream_decode(stream, dmi_dword_t, &info->oem_defined);
+    if (not status)
+        return false;
 
-    return true;
+    info->nominal_speed = SHRT_MIN;
+
+    if (dmi_stream_is_done(stream))
+        return true;
+
+    dmi_word_t nominal_speed;
+    if (not dmi_stream_decode(stream, dmi_word_t, &nominal_speed))
+        return false;
+
+    info->nominal_speed = nominal_speed != 0x8000u
+                        ? (short)(nominal_speed & 0x7FFFu)
+                        : SHRT_MIN;
+
+    if (dmi_stream_is_done(stream))
+        return true;
+
+    entity->level = dmi_version(2, 7, 0);
+
+    return dmi_stream_decode_str(stream, &info->description);
 }
 
 static bool dmi_cooling_device_link(dmi_entity_t *entity)
