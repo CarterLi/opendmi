@@ -204,7 +204,7 @@ static bool dmi_power_supply_decode(dmi_entity_t *entity)
 
     dmi_stream_t *stream = &entity->stream;
 
-    bool rv = 
+    bool status =
         dmi_stream_decode(stream, dmi_byte_t, &info->group) and
         dmi_stream_decode_str(stream, &info->location) and
         dmi_stream_decode_str(stream, &info->name) and
@@ -214,7 +214,7 @@ static bool dmi_power_supply_decode(dmi_entity_t *entity)
         dmi_stream_decode_str(stream, &info->part_number) and
         dmi_stream_decode_str(stream, &info->revision) and
         dmi_stream_decode(stream, dmi_word_t, &info->maximum_capacity);
-    if (not rv)
+    if (not status)
         return false;
 
     dmi_power_supply_details_t details;
@@ -228,16 +228,18 @@ static bool dmi_power_supply_decode(dmi_entity_t *entity)
     info->status          = details.status;
     info->type            = details.type;
 
-    return 
-        dmi_stream_decode(stream, dmi_handle_t, &info->voltage_probe_handle) and
-        dmi_stream_decode(stream, dmi_handle_t, &info->cooling_device_handle) and
-        dmi_stream_decode(stream, dmi_handle_t, &info->current_probe_handle);
+    // Optional fields, status is ignored.
+    dmi_stream_decode(stream, dmi_handle_t, &info->voltage_probe_handle) and
+    dmi_stream_decode(stream, dmi_handle_t, &info->cooling_device_handle) and
+    dmi_stream_decode(stream, dmi_handle_t, &info->current_probe_handle);
+
+    return true;
 }
 
 static bool dmi_power_supply_link(dmi_entity_t *entity)
 {
     dmi_power_supply_t *info;
-    
+
     info = dmi_entity_info(entity, DMI_TYPE_POWER_SUPPLY);
     if (info == nullptr)
         return false;
