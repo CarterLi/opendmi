@@ -11,6 +11,8 @@
 
 #include <opendmi/entity.h>
 
+typedef struct dmi_power_controls dmi_power_controls_t;
+
 /**
  * @brief System power controls structure (type 25).
  *
@@ -22,46 +24,6 @@
  * of the system. The presence of this structure implies that a timed power-on
  * facility is available for the system.
  */
-dmi_packed_struct(dmi_power_controls_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief BCD value of the month on which the next scheduled power-on is to
-     * occur, in the range `0x01` to `0x12`.
-     */
-    dmi_byte_t poweron_month;
-
-    /**
-     * @brief BCD value of the day-of-month on which the next scheduled
-     * power-on is to occur, in the range `0x01` to `0x31`.
-     */
-    dmi_byte_t poweron_day;
-
-    /**
-     * @brief BCD value of the hour on which the next scheduled power-on is to
-     * occur, in the range `0x00` to `0x23`.
-     */
-    dmi_byte_t poweron_hour;
-
-    /**
-     * @brief BCD value of the minute on which the next scheduled power-on is
-     * to occur, in the range `0x00` to `0x59`.
-     */
-    dmi_byte_t poweron_minute;
-
-    /**
-     * @brief BCD value of the second on which the next scheduled power-on is
-     * to occur, in the range `0x00` to `0x59`.
-     */
-    dmi_byte_t poweron_second;
-};
-
-typedef struct dmi_power_controls_data dmi_power_controls_data_t;
-
 struct dmi_power_controls
 {
     /**
@@ -94,8 +56,6 @@ struct dmi_power_controls
      */
     unsigned short poweron_second;
 };
-
-typedef struct dmi_power_controls dmi_power_controls_t;
 
 /**
  * @brief System power controls entity specification.

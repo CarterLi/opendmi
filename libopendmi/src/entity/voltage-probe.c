@@ -13,8 +13,8 @@ const dmi_entity_spec_t dmi_voltage_probe_spec =
     .name            = "Voltage probe",
     .type            = DMI_TYPE_VOLTAGE_PROBE,
     .minimum_version = DMI_VERSION(2, 2, 0),
-    .minimum_length  = 0x16,
-    .decoded_length  = sizeof(dmi_probe_t),
+    .minimum_length  = 0x14,
+    .decoded_length  = sizeof(dmi_voltage_probe_t),
     .attributes      = (dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_voltage_probe_t, description, STRING, {
             .code    = "description",

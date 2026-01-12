@@ -51,26 +51,17 @@ const dmi_entity_spec_t dmi_power_controls_spec =
 static bool dmi_power_controls_decode(dmi_entity_t *entity)
 {
     dmi_power_controls_t *info;
-    const dmi_power_controls_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_POWER_CONTROLS);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_POWER_CONTROLS);
     if (info == nullptr)
         return false;
 
-    info->poweron_month  = dmi_cast(info->poweron_month,
-                                    dmi_decode_bcd(data->poweron_month));
-    info->poweron_day    = dmi_cast(info->poweron_day,
-                                    dmi_decode_bcd(data->poweron_day));
-    info->poweron_hour   = dmi_cast(info->poweron_hour,
-                                    dmi_decode_bcd(data->poweron_hour));
-    info->poweron_minute = dmi_cast(info->poweron_minute,
-                                    dmi_decode_bcd(data->poweron_minute));
-    info->poweron_second = dmi_cast(info->poweron_second,
-                                    dmi_decode_bcd(data->poweron_second));
+    dmi_stream_t *stream = &entity->stream;
 
-    return true;
+    return
+        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_month) &&
+        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_day) &&
+        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_hour) &&
+        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_minute) &&
+        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_second);
 }

@@ -13,7 +13,7 @@ const dmi_entity_spec_t dmi_current_probe_spec =
     .name            = "Electrical current probe",
     .type            = DMI_TYPE_CURRENT_PROBE,
     .minimum_version = DMI_VERSION(2, 2, 0),
-    .minimum_length  = 0x16,
+    .minimum_length  = 0x14,
     .decoded_length  = sizeof(dmi_current_probe_t),
     .attributes      = (dmi_attribute_t[]) {
         DMI_ATTRIBUTE(dmi_current_probe_t, description, STRING, {

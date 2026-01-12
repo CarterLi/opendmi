@@ -35,14 +35,20 @@ __END_DECLS
 #define dmi_stream_peek(__stream, __pvalue) \
         dmi_stream_read_data((__stream), (__pvalue), sizeof(*(__pvalue)))
 
-#define dmi_stream_decode(__stream, __type, __pvalue)                         \
+#define __dmi_stream_decode(__stream, __type, __pvalue, __decoder)            \
         ({                                                                    \
             __type __value;                                                   \
             bool rv = dmi_stream_read(__stream, &__value);                    \
             if (rv)                                                           \
-                *(__pvalue) = (typeof(*(__pvalue)))dmi_decode(__value);       \
+                *(__pvalue) = (typeof(*(__pvalue)))__decoder(__value);        \
             rv;                                                               \
         })
+
+#define dmi_stream_decode(__stream, __type, __pvalue) \
+        __dmi_stream_decode(__stream, __type, __pvalue, dmi_decode)
+
+#define dmi_stream_decode_bcd(__stream, __type, __pvalue) \
+        __dmi_stream_decode(__stream, __type, __pvalue, dmi_decode_bcd)
 
 #define dmi_stream_decode_str(__stream, __pvalue)                             \
         ({                                                                    \

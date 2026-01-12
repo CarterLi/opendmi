@@ -15,7 +15,7 @@ const dmi_entity_spec_t dmi_temperature_probe_spec =
     .name            = "Temperature probe",
     .type            = DMI_TYPE_TEMPERATURE_PROBE,
     .minimum_version = DMI_VERSION(2, 2, 0),
-    .minimum_length  = 0x16,
+    .minimum_length  = 0x14,
     .decoded_length  = sizeof(dmi_probe_t),
     .attributes      = (dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_temperature_probe_t, description, STRING, {
