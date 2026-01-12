@@ -11,6 +11,6 @@
 
 #include <opendmi/command.h>
 
-extern const dmi_command_t dmi_command_check;
+extern const dmi_command_t dmi_check_command;
 
 #endif // !OPENDMI_COMMAND_CHECK_H

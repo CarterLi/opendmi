@@ -4,9 +4,20 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <stdlib.h>
+
 #include <opendmi/command/show.h>
 
-const dmi_command_t dmi_command_show =
+static int dmi_show_main(void);
+
+const dmi_command_t dmi_show_command =
 {
-    .name = "show"
+    .name        = "show",
+    .description = "Show SMBIOS structures data",
+    .handler     = dmi_show_main
 };
+
+static int dmi_show_main(void)
+{
+    return EXIT_SUCCESS;
+}

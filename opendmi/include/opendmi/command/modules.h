@@ -4,13 +4,13 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_COMMAND_ENTRY_H
-#define OPENDMI_COMMAND_ENTRY_H
+#ifndef OPENDMI_COMMAND_MODULES_H
+#define OPENDMI_COMMAND_MODULES_H
 
 #pragma once
 
 #include <opendmi/command.h>
 
-extern const dmi_command_t dmi_entry_command;
+extern const dmi_command_t dmi_modules_command;
 
-#endif // !OPENDMI_COMMAND_ENTRY_H
+#endif // !OPENDMI_COMMAND_MODULES_H

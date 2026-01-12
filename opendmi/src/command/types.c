@@ -4,9 +4,20 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <stdlib.h>
+
 #include <opendmi/command/types.h>
 
-const dmi_command_t dmi_command_type =
+static int dmi_types_main(void);
+
+const dmi_command_t dmi_types_command =
 {
-    .name = "types"
+    .name        = "types",
+    .description = "List SMBIOS structure types",
+    .handler     = dmi_types_main
 };
+
+static int dmi_types_main(void)
+{
+    return EXIT_SUCCESS;
+}

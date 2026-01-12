@@ -11,6 +11,6 @@
 
 #include <opendmi/command.h>
 
-extern const dmi_command_t dmi_command_list;
+extern const dmi_command_t dmi_list_command;
 
 #endif // !OPENDMI_COMMAND_LIST_H

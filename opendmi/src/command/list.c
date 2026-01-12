@@ -4,9 +4,20 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <stdlib.h>
+
 #include <opendmi/command/list.h>
 
-const dmi_command_t dmi_command_list =
+static int dmi_list_main(void);
+
+const dmi_command_t dmi_list_command =
 {
-    .name = "list"
+    .name        = "list",
+    .description = "List available SMBIOS structures",
+    .handler     = dmi_list_main
 };
+
+static int dmi_list_main(void)
+{
+    return EXIT_SUCCESS;
+}

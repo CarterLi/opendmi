@@ -4,9 +4,20 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <stdlib.h>
+
 #include <opendmi/command/check.h>
 
-const dmi_command_t dmi_command_check =
+static int dmi_check_main(void);
+
+const dmi_command_t dmi_check_command =
 {
-    .name = "check"
+    .name        = "check",
+    .description = "Check SMBIOS table for errors",
+    .handler     = dmi_check_main
 };
+
+static int dmi_check_main(void)
+{
+    return EXIT_SUCCESS;
+}

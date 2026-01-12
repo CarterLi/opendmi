@@ -4,9 +4,20 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <stdlib.h>
+
 #include <opendmi/command/dump.h>
 
-const dmi_command_t dmi_command_dump =
+static int dmi_dump_main(void);
+
+const dmi_command_t dmi_dump_command =
 {
-    .name = "dump"
+    .name        = "dump",
+    .description = "Dump entire SMBIOS table to file",
+    .handler     = dmi_dump_main
 };
+
+static int dmi_dump_main(void)
+{
+    return EXIT_SUCCESS;
+}
