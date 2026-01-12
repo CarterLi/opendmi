@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added system boot status decoding
 - Added support for enumeration range names
 - Added manual page for `dmi_pointing_device`
+- Added manual page for `dmi_cooling_device`
 - Renamed `dmi_pointing_device_interface_t` to `dmi_pointing_device_iface_t`
 - Moved `<opendmi/name.h>` to `<opendmi/utils/name.h>`
 - Refactored entity decoders API

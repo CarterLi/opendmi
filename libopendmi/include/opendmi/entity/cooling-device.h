@@ -172,7 +172,7 @@ struct dmi_cooling_device
      * redundancy and that at least one other cooling device will be enumerated
      * with the same value.
      */
-    short group;
+    unsigned short group;
 
     /**
      * @brief OEM- or firmware vendor-specific information.
