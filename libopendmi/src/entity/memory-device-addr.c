@@ -73,30 +73,41 @@ const dmi_entity_spec_t dmi_memory_device_addr_spec =
 
 static bool dmi_memory_device_addr_validate(dmi_entity_t *entity)
 {
-    const dmi_memory_device_addr_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_DEVICE_ADDR);
-    if (data == nullptr)
+    if ((entity == nullptr) or (entity->type != DMI_TYPE_MEMORY_DEVICE_ADDR))
         return false;
 
-    if (data->start_addr == 0xFFFFFFFFu) {
-        if (data->end_addr != 0xFFFFFFFFu)
+    dmi_stream_t *stream = &entity->stream;
+
+    uint32_t start_addr = 0, end_addr = 0;
+    uint64_t start_addr_ex = 0, end_addr_ex = 0;
+
+    bool has_addr =
+        dmi_stream_decode_at(stream, 0x04u, dmi_dword_t, &start_addr) &&
+        dmi_stream_decode_at(stream, 0x08u, dmi_dword_t, &end_addr);
+
+    if (!has_addr)
+        return false;
+
+    bool has_addr_ex =
+        dmi_stream_decode_at(stream, 0x13u, dmi_qword_t, &start_addr_ex) &&
+        dmi_stream_decode_at(stream, 0x1Bu, dmi_qword_t, &end_addr_ex);
+
+    if ((start_addr == 0xFFFFFFFFu) or (end_addr == 0xFFFFFFFFu)) {
+        if (start_addr != end_addr)
             return false;
 
-        if (entity->body_length <= 0x13u)
-            return false;
-        if (data->end_addr_ex <= data->start_addr_ex)
-            return false;
-    } else {
-        if (data->end_addr == 0xFFFFFFFFu)
-            return false;
-        if (data->end_addr <= data->start_addr)
-            return false;
-
-        if (entity->body_length > 0x13u) {
-            if (data->start_addr_ex != 0)
+        if (has_addr_ex) {
+            if (end_addr_ex <= start_addr_ex)
                 return false;
-            if (data->end_addr_ex != 0)
+        } else {
+            return false;
+        }
+    } else {
+        if (end_addr <= start_addr)
+            return false;
+
+        if (has_addr_ex) {
+            if ((start_addr_ex != 0) or (end_addr_ex != 0))
                 return false;
         }
     }
@@ -107,39 +118,54 @@ static bool dmi_memory_device_addr_validate(dmi_entity_t *entity)
 static bool dmi_memory_device_addr_decode(dmi_entity_t *entity)
 {
     dmi_memory_device_addr_t *info;
-    const dmi_memory_device_addr_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_DEVICE_ADDR);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_MEMORY_DEVICE_ADDR);
     if (info == nullptr)
         return false;
 
-    uint32_t start_addr = dmi_decode(data->start_addr);
-    uint32_t end_addr   = dmi_decode(data->end_addr);
+    dmi_stream_t *stream = &entity->stream;
 
-    info->start_addr        = start_addr << 10;
-    info->end_addr          = end_addr << 10;
-    info->device_handle     = dmi_decode(data->device_handle);
-    info->array_addr_handle = dmi_decode(data->array_addr_handle);
+    do {
+        bool status;
 
-    info->partition_pos    = data->partition_pos != 0xFFu ?
-                             data->partition_pos : USHRT_MAX;
-    info->interleave_pos   = data->interleave_pos != 0xFFu ?
-                             data->interleave_pos : USHRT_MAX;
-    info->interleave_depth = data->interleave_depth != 0xFFu ?
-                             data->interleave_depth : USHRT_MAX;
+        uint32_t start_addr = 0;
+        uint32_t end_addr   = 0;
 
-    if (entity->body_length > 0x13u) {
+        uint8_t partition_pos;
+        uint8_t interleave_pos;
+        uint8_t interleave_depth;
+
+        status =
+            dmi_stream_decode(stream, dmi_dword_t, &start_addr) and
+            dmi_stream_decode(stream, dmi_dword_t, &end_addr) and
+            dmi_stream_decode(stream, dmi_handle_t, &info->device_handle) and
+            dmi_stream_decode(stream, dmi_handle_t, &info->array_addr_handle) and
+            dmi_stream_decode(stream, dmi_byte_t, &partition_pos) and
+            dmi_stream_decode(stream, dmi_byte_t, &interleave_pos) and
+            dmi_stream_decode(stream, dmi_byte_t, &interleave_depth);
+        if (not status)
+            return false;
+
+        info->start_addr       = start_addr << 10;
+        info->end_addr         = end_addr << 10;
+        info->partition_pos    = partition_pos != 0xFFu ? partition_pos : USHRT_MAX;
+        info->interleave_pos   = interleave_pos != 0xFFu ? interleave_pos : USHRT_MAX;
+        info->interleave_depth = interleave_depth != 0xFFu ? interleave_depth : USHRT_MAX;
+
+        if (dmi_stream_is_done(stream))
+            break;
+
         entity->level = dmi_version(2, 7, 0);
 
-        if (start_addr == 0xFFFFFFFFu)
-            info->start_addr = dmi_decode(data->start_addr_ex);
-        if (end_addr == 0xFFFFFFFFu)
-            info->end_addr   = dmi_decode(data->end_addr_ex);
-    }
+        if (start_addr == 0xFFFFFFFFu) {
+            status =
+                dmi_stream_decode(stream, dmi_qword_t, &info->start_addr) &&
+                dmi_stream_decode(stream, dmi_qword_t, &info->end_addr);
+
+            if (!status)
+                return false;
+        }
+    } while (false);
 
     if (info->end_addr > info->start_addr)
         info->range_size = info->end_addr - info->start_addr;
@@ -151,8 +177,8 @@ static bool dmi_memory_device_addr_decode(dmi_entity_t *entity)
 
 static bool dmi_memory_device_addr_link(dmi_entity_t *entity)
 {
-    dmi_memory_device_addr_t *info;
     dmi_registry_t *registry;
+    dmi_memory_device_addr_t *info;
 
     info = dmi_entity_info(entity, DMI_TYPE_MEMORY_DEVICE_ADDR);
     if (info == nullptr)
@@ -161,13 +187,7 @@ static bool dmi_memory_device_addr_link(dmi_entity_t *entity)
     registry = entity->context->registry;
 
     info->device = dmi_registry_get(registry, info->device_handle, DMI_TYPE_MEMORY_DEVICE, false);
-    if (info->device == nullptr)
-        return false;
-
     info->array_addr = dmi_registry_get(registry, info->array_addr_handle, DMI_TYPE_MEMORY_ARRAY_ADDR, false);
-    if (info->array_addr == nullptr) {
-        dmi_log_warning(entity->context, "Memory array address not found: 0x%04x", info->array_addr_handle);
-    }
 
     return true;
 }
