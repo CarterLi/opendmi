@@ -95,7 +95,7 @@ const dmi_entity_spec_t dmi_power_supply_spec =
     .name            = "System power supply",
     .type            = DMI_TYPE_POWER_SUPPLY,
     .minimum_version = DMI_VERSION(2, 3, 1),
-    .minimum_length  = 0x16,
+    .minimum_length  = 0x10,
     .decoded_length  = sizeof(dmi_power_supply_t),
     .attributes      = (dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_power_supply_t, group, INTEGER, {
