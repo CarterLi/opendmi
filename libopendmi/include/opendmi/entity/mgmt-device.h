@@ -47,40 +47,6 @@ typedef enum dmi_mgmt_device_addr_type
     __DMI_MGMT_DEVICE_ADDR_TYPE_COUNT
 } dmi_mgmt_device_addr_type_t;
 
-/**
- * @brief Management device structure (type 34).
- */
-dmi_packed_struct(dmi_mgmt_device_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief Number of the string that contains additional descriptive
-     * information about the device or its location.
-     */
-    dmi_string_t description;
-
-    /**
-     * @brief Type of the device.
-     */
-    dmi_byte_t type;
-
-    /**
-     * @brief Address of the device.
-     */
-    dmi_dword_t addr;
-
-    /**
-     * @brief Type of addressing used to access the device.
-     */
-    dmi_byte_t addr_type;
-};
-
-typedef struct dmi_mgmt_device_data dmi_mgmt_device_data_t;
-
 struct dmi_mgmt_device
 {
     /**

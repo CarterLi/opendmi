@@ -157,20 +157,16 @@ const char *dmi_mgmt_device_addr_type_name(dmi_mgmt_device_addr_type_t value)
 static bool dmi_mgmt_device_decode(dmi_entity_t *entity)
 {
     dmi_mgmt_device_t *info;
-    const dmi_mgmt_device_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_MGMT_DEVICE);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE);
     if (info == nullptr)
         return false;
 
-    info->description = dmi_entity_string(entity, data->description);
-    info->type        = dmi_decode(data->type);
-    info->addr        = dmi_decode(data->addr);
-    info->addr_type   = dmi_decode(data->addr_type);
+    dmi_stream_t *stream = &entity->stream;
 
-    return true;
+    return
+        dmi_stream_decode_str(stream, &info->description) and
+        dmi_stream_decode(stream, dmi_byte_t, &info->type) and
+        dmi_stream_decode(stream, dmi_dword_t, &info->addr) and
+        dmi_stream_decode(stream, dmi_byte_t, &info->addr_type);
 }
