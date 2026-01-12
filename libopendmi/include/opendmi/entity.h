@@ -19,7 +19,7 @@ typedef struct dmi_entity_ops   dmi_entity_ops_t;
 typedef struct dmi_header       dmi_header_t;
 typedef struct dmi_string_entry dmi_string_entry_t;
 
-typedef bool dmi_entity_validate_fn(const dmi_entity_t *entity);
+typedef bool dmi_entity_validate_fn(dmi_entity_t *entity);
 typedef bool dmi_entity_decode_fn(dmi_entity_t *entity);
 typedef bool dmi_entity_link_fn(dmi_entity_t *entity);
 typedef void dmi_entity_cleanup_fn(dmi_entity_t *entity);

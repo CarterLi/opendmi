@@ -96,7 +96,7 @@ bool dmi_text_entity_start(dmi_text_session_t *session, const dmi_entity_t *enti
     assert(session != nullptr);
     assert(entity != nullptr);
 
-    dmi_tprintf(session, COLOR_YELLOW, "Handle 0x%04hx, DMI type %d, %zu bytes\n",
+    dmi_tprintf(session, COLOR_YELLOW, "Handle 0x%04hX, DMI type %d, %zu bytes\n",
                 dmi_entity_handle(entity),
                 dmi_entity_type(entity),
                 entity->total_length);

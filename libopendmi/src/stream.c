@@ -36,7 +36,7 @@ bool dmi_stream_seek(dmi_stream_t *stream, size_t position)
 
 bool dmi_stream_read_data(dmi_stream_t *stream, void *ptr, size_t length)
 {
-    if (!dmi_stream_peek_data(stream, ptr, length))
+    if (!dmi_stream_read_data_at(stream, ptr, stream->position, length))
         return false;
 
     stream->position  += length;
@@ -45,16 +45,21 @@ bool dmi_stream_read_data(dmi_stream_t *stream, void *ptr, size_t length)
     return true;
 }
 
-bool dmi_stream_peek_data(dmi_stream_t *stream, void *ptr, size_t length)
+bool dmi_stream_read_data_at(dmi_stream_t *stream, void *ptr, size_t offset, size_t length)
 {
     if ((stream == nullptr) or (ptr == nullptr))
         return false;
-    if (stream->remaining < length)
+    if (offset + length > stream->entity->body_length)
         return false;
 
-    memcpy(ptr, stream->entity->data + stream->position, length);
+    memcpy(ptr, stream->entity->data + offset, length);
 
     return true;
+}
+
+bool dmi_stream_is_done(dmi_stream_t *stream)
+{
+    return stream->position >= stream->entity->body_length;
 }
 
 void dmi_stream_reset(dmi_stream_t *stream)

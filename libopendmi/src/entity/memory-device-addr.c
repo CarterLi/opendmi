@@ -12,7 +12,7 @@
 
 #include <opendmi/entity/memory-device-addr.h>
 
-static bool dmi_memory_device_addr_validate(const dmi_entity_t *entity);
+static bool dmi_memory_device_addr_validate(dmi_entity_t *entity);
 static bool dmi_memory_device_addr_decode(dmi_entity_t *entity);
 static bool dmi_memory_device_addr_link(dmi_entity_t *entity);
 
@@ -71,7 +71,7 @@ const dmi_entity_spec_t dmi_memory_device_addr_spec =
     }
 };
 
-static bool dmi_memory_device_addr_validate(const dmi_entity_t *entity)
+static bool dmi_memory_device_addr_validate(dmi_entity_t *entity)
 {
     const dmi_memory_device_addr_data_t *data;
 

@@ -10,7 +10,7 @@
 
 #include <opendmi/entity/memory-array-addr.h>
 
-static bool dmi_memory_array_addr_validate(const dmi_entity_t *entity);
+static bool dmi_memory_array_addr_validate(dmi_entity_t *entity);
 static bool dmi_memory_array_addr_decode(dmi_entity_t *entity);
 static bool dmi_memory_array_addr_link(dmi_entity_t *entity);
 
@@ -54,32 +54,46 @@ const dmi_entity_spec_t dmi_memory_array_addr_spec =
     }
 };
 
-static bool dmi_memory_array_addr_validate(const dmi_entity_t *entity)
+static bool dmi_memory_array_addr_validate(dmi_entity_t *entity)
 {
-    const dmi_memory_array_addr_data_t *data;
+    if (entity == nullptr)
+        return false;
     
-    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_ARRAY_ADDR);
-    if (data == nullptr)
+    bool status;
+    dmi_stream_t *stream = &entity->stream;
+
+    uint32_t start_addr = 0;
+    uint32_t end_addr = 0;
+    uint64_t start_addr_ex = 0;
+    uint64_t end_addr_ex = 0;
+
+    status =
+        dmi_stream_decode_at(stream, 0x04u, dmi_dword_t, &start_addr) &&
+        dmi_stream_decode_at(stream, 0x08u, dmi_dword_t, &end_addr);
+
+    if (!status)
         return false;
 
-    if (data->start_addr == 0xFFFFFFFFU) {
-        if (data->end_addr != 0xFFFFFFFFU)
+    status =
+        dmi_stream_decode_at(stream, 0x0Fu, dmi_qword_t, &start_addr_ex) &&
+        dmi_stream_decode_at(stream, 0x17u, dmi_qword_t, &end_addr_ex);
+
+    if ((start_addr == 0xFFFFFFFFu) or (end_addr == 0xFFFFFFFFu)) {
+        if (start_addr != end_addr)
             return false;
 
-        if (entity->body_length <= 0x0Fu)
-            return false;
-        if (data->end_addr_ex <= data->start_addr_ex)
-            return false;
-    } else {
-        if (data->end_addr == 0xFFFFFFFFU)
-            return false;
-        if (data->end_addr <= data->start_addr)
-            return false;
-
-        if (entity->body_length > 0x0Fu) {
-            if (data->start_addr_ex != 0)
+        if (status) {
+            if (end_addr_ex <= start_addr_ex)
                 return false;
-            if (data->end_addr_ex != 0)
+        } else {
+            return false;
+        }
+    } else {
+        if (end_addr <= start_addr)
+            return false;
+
+        if (status) {
+            if ((start_addr_ex != 0) or (end_addr_ex != 0))
                 return false;
         }
     }
@@ -90,31 +104,44 @@ static bool dmi_memory_array_addr_validate(const dmi_entity_t *entity)
 static bool dmi_memory_array_addr_decode(dmi_entity_t *entity)
 {
     dmi_memory_array_addr_t *info;
-    const dmi_memory_array_addr_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_ARRAY_ADDR);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY_ADDR);
     if (info == nullptr)
         return false;
 
-    entity->level = dmi_version(2, 1, 0);
+    bool status;
+    dmi_stream_t *stream = &entity->stream;
 
-    info->start_addr      = dmi_decode(data->start_addr) << 10;
-    info->end_addr        = dmi_decode(data->end_addr) << 10;
-    info->array_handle    = dmi_decode(data->array_handle);
-    info->partition_width = dmi_decode(data->partition_width);
+    do {
+        uint32_t start_addr = 0;
+        uint32_t end_addr   = 0;
 
-    if (entity->body_length > 0x0Fu) {
+        status =
+            dmi_stream_decode(stream, dmi_dword_t, &start_addr) &&
+            dmi_stream_decode(stream, dmi_dword_t, &end_addr) &&
+            dmi_stream_decode(stream, dmi_handle_t, &info->array_handle) &&
+            dmi_stream_decode(stream, dmi_byte_t, &info->partition_width);
+
+        if (!status)
+            return false;
+
+        info->start_addr = start_addr << 10;
+        info->end_addr   = end_addr << 10;
+
+        if (dmi_stream_is_done(stream))
+            break;
+
         entity->level = dmi_version(2, 7, 0);
 
-        if (data->start_addr == 0xFFFFFFFFu) {
-            info->start_addr = dmi_decode(data->start_addr_ex);
-            info->end_addr   = dmi_decode(data->end_addr_ex);
+        if (start_addr == 0xFFFFFFFFu) {
+            status =
+                dmi_stream_decode(stream, dmi_qword_t, &info->start_addr) &&
+                dmi_stream_decode(stream, dmi_qword_t, &info->end_addr);
+
+            if (!status)
+                return false;
         }
-    }
+    } while (false);
 
     if (info->end_addr > info->start_addr)
         info->range_size = info->end_addr - info->start_addr;
