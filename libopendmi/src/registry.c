@@ -82,7 +82,9 @@ dmi_entity_t *dmi_registry_get(
     }
 
     if ((type != DMI_TYPE_INVALID) and (entry->entity->type != type)) {
-        dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_ENTITY_TYPE, "0x%04x", handle);
+        dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_ENTITY_TYPE,
+                           "0x%04x: %d (expected %d)", handle,
+                           entry->entity->type, type);
         return nullptr;
     }
 
@@ -112,7 +114,8 @@ dmi_entity_t *dmi_registry_get_any(
         }
 
         if (*type == DMI_TYPE_INVALID) {
-            dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_ENTITY_TYPE, "0x%04x", handle);
+            dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_ENTITY_TYPE,
+                               "0x%04x: %d", handle, entity->type);
             return nullptr;
         }
     }

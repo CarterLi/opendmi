@@ -12,36 +12,10 @@
 #include <opendmi/entity.h>
 
 typedef struct dmi_group_assoc      dmi_group_assoc_t;
-typedef struct dmi_group_assoc_data dmi_group_assoc_data_t;
+typedef struct dmi_group_assoc_item dmi_group_assoc_item_t;
 
 /**
  * @brief Group associations structure (type 14).
- */
-dmi_packed_struct(dmi_group_assoc_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief String number of string describing the group.
-     */
-    dmi_string_t group_name;
-
-    /**
-     * @brief Item (structure) type of this member.
-     */
-    dmi_byte_t item_type;
-
-    /**
-     * @brief Handle corresponding to this structure.
-     */
-    dmi_handle_t item_handle;
-};
-
-/**
- * @brief Group associations.
  */
 struct dmi_group_assoc
 {
@@ -51,14 +25,32 @@ struct dmi_group_assoc
     const char *group_name;
 
     /**
-     * @brief @brief Item (structure) type of this member.
+     * @brief Number of associated items (structures).
      */
-    dmi_type_t item_type;
+    size_t item_count;
+
+    /**
+     * @brief Item (structure) type of this member.
+     */
+    dmi_group_assoc_item_t *items;
+};
+
+struct dmi_group_assoc_item
+{
+    /**
+     * @brief Item (structure) type of this member.
+     */
+    dmi_type_t type;
 
     /**
      * @brief Handle corresponding to this structure.
      */
-    dmi_handle_t item_handle;
+    dmi_handle_t handle;
+
+    /**
+     * @brief Entity corresponding to this structure.
+     */
+    dmi_entity_t *entity;
 };
 
 /**
