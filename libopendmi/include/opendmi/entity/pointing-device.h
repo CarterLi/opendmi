@@ -34,24 +34,24 @@ typedef enum dmi_pointing_device_type
 /**
  * @brief Pointing device interfaces.
  */
-typedef enum dmi_pointing_device_interface
+typedef enum dmi_pointing_device_iface
 {
-    DMI_POINTING_DEVICE_INTERFACE_UNSPEC        = 0x00, ///< Unspecified
-    DMI_POINTING_DEVICE_INTERFACE_OTHER         = 0x01, ///< Other
-    DMI_POINTING_DEVICE_INTERFACE_UNKNOWN       = 0x02, ///< Unknown
-    DMI_POINTING_DEVICE_INTERFACE_SERIAL        = 0x03, ///< Serial
-    DMI_POINTING_DEVICE_INTERFACE_PS2           = 0x04, ///< PS/2
-    DMI_POINTING_DEVICE_INTERFACE_INFRARED      = 0x05, ///< Infrared
-    DMI_POINTING_DEVICE_INTERFACE_HP_HIL        = 0x06, ///< HP-HIL
-    DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE     = 0x07, ///< Bus mouse
-    DMI_POINTING_DEVICE_INTERFACE_ADB           = 0x08, ///< ADB (Apple Desktop Bus)
-    DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE_DB9 = 0xA0, ///< Bus mouse DB-9
-    DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE_DIN = 0xA1, ///< Bus mouse micro-DIN
-    DMI_POINTING_DEVICE_INTERFACE_USB           = 0xA2, ///< USB
-    DMI_POINTING_DEVICE_INTERFACE_I2C           = 0xA3, ///< I2C
-    DMI_POINTING_DEVICE_INTERFACE_SPI           = 0xA4, ///< SPI
-    __DMI_POINTING_DEVICE_INTERFACE_COUNT
-} dmi_pointing_device_interface_t;
+    DMI_POINTING_DEVICE_IFACE_UNSPEC        = 0x00, ///< Unspecified
+    DMI_POINTING_DEVICE_IFACE_OTHER         = 0x01, ///< Other
+    DMI_POINTING_DEVICE_IFACE_UNKNOWN       = 0x02, ///< Unknown
+    DMI_POINTING_DEVICE_IFACE_SERIAL        = 0x03, ///< Serial
+    DMI_POINTING_DEVICE_IFACE_PS2           = 0x04, ///< PS/2
+    DMI_POINTING_DEVICE_IFACE_INFRARED      = 0x05, ///< Infrared
+    DMI_POINTING_DEVICE_IFACE_HP_HIL        = 0x06, ///< HP-HIL
+    DMI_POINTING_DEVICE_IFACE_BUS_MOUSE     = 0x07, ///< Bus mouse
+    DMI_POINTING_DEVICE_IFACE_ADB           = 0x08, ///< ADB (Apple Desktop Bus)
+    DMI_POINTING_DEVICE_IFACE_BUS_MOUSE_DB9 = 0xA0, ///< Bus mouse DB-9
+    DMI_POINTING_DEVICE_IFACE_BUS_MOUSE_DIN = 0xA1, ///< Bus mouse micro-DIN
+    DMI_POINTING_DEVICE_IFACE_USB           = 0xA2, ///< USB
+    DMI_POINTING_DEVICE_IFACE_I2C           = 0xA3, ///< I2C
+    DMI_POINTING_DEVICE_IFACE_SPI           = 0xA4, ///< SPI
+    __DMI_POINTING_DEVICE_IFACE_COUNT
+} dmi_pointing_device_iface_t;
 
 /**
  * @brief Built-in pointing device structure (type 21).
@@ -66,7 +66,7 @@ struct dmi_pointing_device
     /**
      * @brief Interface type for the pointing device.
      */
-    dmi_pointing_device_interface_t interface;
+    dmi_pointing_device_iface_t interface;
 
     /**
      * @brief Number of buttons on the pointing device. If the device has
@@ -84,7 +84,7 @@ extern const dmi_entity_spec_t dmi_pointing_device_spec;
 __BEGIN_DECLS
 
 const char *dmi_pointing_device_type_name(dmi_pointing_device_type_t value);
-const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t value);
+const char *dmi_pointing_device_iface_name(dmi_pointing_device_iface_t value);
 
 __END_DECLS
 

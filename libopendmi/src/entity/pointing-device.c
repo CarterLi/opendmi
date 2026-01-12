@@ -59,65 +59,65 @@ static const dmi_name_set_t dmi_pointing_device_type_names =
     }
 };
 
-static const dmi_name_set_t dmi_pointing_device_interface_names =
+static const dmi_name_set_t dmi_pointing_device_iface_names =
 {
     .code  = "pointing-device-interfaces",
     .names = (dmi_name_t[]){
-        DMI_NAME_UNSPEC(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
-        DMI_NAME_OTHER(DMI_POINTING_DEVICE_INTERFACE_OTHER),
-        DMI_NAME_UNKNOWN(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),
+        DMI_NAME_UNSPEC(DMI_POINTING_DEVICE_IFACE_UNSPEC),
+        DMI_NAME_OTHER(DMI_POINTING_DEVICE_IFACE_OTHER),
+        DMI_NAME_UNKNOWN(DMI_POINTING_DEVICE_IFACE_UNKNOWN),
         {
-            .id   = DMI_POINTING_DEVICE_INTERFACE_SERIAL,
+            .id   = DMI_POINTING_DEVICE_IFACE_SERIAL,
             .code = "serial",
             .name = "Serial"
         },
         {
-            .id   = DMI_POINTING_DEVICE_INTERFACE_PS2,
+            .id   = DMI_POINTING_DEVICE_IFACE_PS2,
             .code = "ps2",
             .name = "PS/2"
         },
         {
-            .id   = DMI_POINTING_DEVICE_INTERFACE_INFRARED,
+            .id   = DMI_POINTING_DEVICE_IFACE_INFRARED,
             .code = "infrared",
             .name = "Infrared"
         },
         {
-            .id   = DMI_POINTING_DEVICE_INTERFACE_HP_HIL,
+            .id   = DMI_POINTING_DEVICE_IFACE_HP_HIL,
             .code = "hp-hil",
             .name = "HP-HIL"
         },
         {
-            .id   = DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE,
+            .id   = DMI_POINTING_DEVICE_IFACE_BUS_MOUSE,
             .code = "bus-mouse",
             .name = "Bus mouse"
         },
         {
-            .id   = DMI_POINTING_DEVICE_INTERFACE_ADB,
+            .id   = DMI_POINTING_DEVICE_IFACE_ADB,
             .code = "adb",
             .name = "ADB (Apple Desktop Bus)"
         },
         {
-            .id   = DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE_DB9,
+            .id   = DMI_POINTING_DEVICE_IFACE_BUS_MOUSE_DB9,
             .code = "bus-mouse-db9",
             .name = "Bus mouse DB-9"
         },
         {
-            .id   = DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE_DIN,
+            .id   = DMI_POINTING_DEVICE_IFACE_BUS_MOUSE_DIN,
             .code = "bus-mouse-din",
             .name = "Bus mouse micro-DIN"
         },
         {
-            .id   = DMI_POINTING_DEVICE_INTERFACE_USB,
+            .id   = DMI_POINTING_DEVICE_IFACE_USB,
             .code = "usb",
             .name = "USB"
         },
         {
-            .id   = DMI_POINTING_DEVICE_INTERFACE_I2C,
+            .id   = DMI_POINTING_DEVICE_IFACE_I2C,
             .code = "i2c",
             .name = "I2C"
         },
         {
-            .id   = DMI_POINTING_DEVICE_INTERFACE_SPI,
+            .id   = DMI_POINTING_DEVICE_IFACE_SPI,
             .code = "spi",
             .name = "SPI"
         },
@@ -144,9 +144,9 @@ const dmi_entity_spec_t dmi_pointing_device_spec =
         DMI_ATTRIBUTE(dmi_pointing_device_t, interface, ENUM, {
             .code    = "interface",
             .name    = "Interface type",
-            .unspec  = dmi_value_ptr(DMI_POINTING_DEVICE_INTERFACE_UNSPEC),
-            .unknown = dmi_value_ptr(DMI_POINTING_DEVICE_INTERFACE_UNKNOWN),
-            .values  = &dmi_pointing_device_interface_names
+            .unspec  = dmi_value_ptr(DMI_POINTING_DEVICE_IFACE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_POINTING_DEVICE_IFACE_UNKNOWN),
+            .values  = &dmi_pointing_device_iface_names
         }),
         DMI_ATTRIBUTE(dmi_pointing_device_t, button_count, INTEGER, {
             .code    = "button-count",
@@ -164,9 +164,9 @@ const char *dmi_pointing_device_type_name(dmi_pointing_device_type_t value)
     return dmi_name_lookup(&dmi_pointing_device_type_names, value);
 }
 
-const char *dmi_pointing_device_interface_name(dmi_pointing_device_interface_t value)
+const char *dmi_pointing_device_iface_name(dmi_pointing_device_iface_t value)
 {
-    return dmi_name_lookup(&dmi_pointing_device_interface_names, value);
+    return dmi_name_lookup(&dmi_pointing_device_iface_names, value);
 }
 
 static bool dmi_pointing_device_decode(dmi_entity_t *entity)
