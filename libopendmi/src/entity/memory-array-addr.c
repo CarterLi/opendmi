@@ -56,25 +56,22 @@ const dmi_entity_spec_t dmi_memory_array_addr_spec =
 
 static bool dmi_memory_array_addr_validate(dmi_entity_t *entity)
 {
-    if (entity == nullptr)
+    if ((entity == nullptr) or (entity->type != DMI_TYPE_MEMORY_ARRAY_ADDR))
         return false;
     
-    bool status;
     dmi_stream_t *stream = &entity->stream;
 
-    uint32_t start_addr = 0;
-    uint32_t end_addr = 0;
-    uint64_t start_addr_ex = 0;
-    uint64_t end_addr_ex = 0;
+    uint32_t start_addr = 0, end_addr = 0;
+    uint64_t start_addr_ex = 0, end_addr_ex = 0;
 
-    status =
+    bool has_addr =
         dmi_stream_decode_at(stream, 0x04u, dmi_dword_t, &start_addr) &&
         dmi_stream_decode_at(stream, 0x08u, dmi_dword_t, &end_addr);
 
-    if (!status)
+    if (!has_addr)
         return false;
 
-    status =
+    bool has_addr_ex =
         dmi_stream_decode_at(stream, 0x0Fu, dmi_qword_t, &start_addr_ex) &&
         dmi_stream_decode_at(stream, 0x17u, dmi_qword_t, &end_addr_ex);
 
@@ -82,7 +79,7 @@ static bool dmi_memory_array_addr_validate(dmi_entity_t *entity)
         if (start_addr != end_addr)
             return false;
 
-        if (status) {
+        if (has_addr_ex) {
             if (end_addr_ex <= start_addr_ex)
                 return false;
         } else {
@@ -92,7 +89,7 @@ static bool dmi_memory_array_addr_validate(dmi_entity_t *entity)
         if (end_addr <= start_addr)
             return false;
 
-        if (status) {
+        if (has_addr_ex) {
             if ((start_addr_ex != 0) or (end_addr_ex != 0))
                 return false;
         }
@@ -103,16 +100,14 @@ static bool dmi_memory_array_addr_validate(dmi_entity_t *entity)
 
 static bool dmi_memory_array_addr_decode(dmi_entity_t *entity)
 {
-    dmi_memory_array_addr_t *info;
-
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY_ADDR);
-    if (info == nullptr)
+    if ((entity == nullptr) or (entity->type != DMI_TYPE_MEMORY_ARRAY_ADDR))
         return false;
 
-    bool status;
     dmi_stream_t *stream = &entity->stream;
+    dmi_memory_array_addr_t *info = dmi_cast(info, entity->info);
 
     do {
+        bool status;
         uint32_t start_addr = 0;
         uint32_t end_addr   = 0;
 
@@ -153,14 +148,11 @@ static bool dmi_memory_array_addr_decode(dmi_entity_t *entity)
 
 static bool dmi_memory_array_addr_link(dmi_entity_t *entity)
 {
-    dmi_memory_array_addr_t *info;
-    dmi_registry_t *registry;
-
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY_ADDR);
-    if (info == nullptr)
+    if ((entity == nullptr) or (entity->type != DMI_TYPE_MEMORY_ARRAY_ADDR))
         return false;
 
-    registry = entity->context->registry;
+    dmi_registry_t *registry = entity->context->registry;
+    dmi_memory_array_addr_t *info = dmi_cast(info, entity->info);
 
     info->array = dmi_registry_get(registry, info->array_handle, DMI_TYPE_MEMORY_ARRAY, false);
 
