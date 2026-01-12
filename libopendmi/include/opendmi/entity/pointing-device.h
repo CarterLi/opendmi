@@ -72,7 +72,7 @@ struct dmi_pointing_device
      * @brief Number of buttons on the pointing device. If the device has
      * three buttons, the field value is 0x03.
      */
-    int button_count;
+    unsigned short button_count;
 };
 
 /**

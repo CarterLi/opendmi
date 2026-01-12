@@ -1,0 +1,136 @@
+= dmi_pointing_device(3)
+The OpenDMI contributors
+OpenDMI 0.2.0
+
+:doctype: manpage
+:manmanual: DMI_POINTING_DEVICE
+:mansource: DMI_POINTING_DEVICE
+
+== NAME
+
+`dmi_pointing_device` -- describes the attributes of the built-in pointing
+device for the system.
+
+== SYNOPSIS
+
+[source, c]
+----
+#include <opendmi/entity/pointing-device.h>
+
+typedef struct dmi_pointing_device {
+    dmi_pointing_device_type_t type;
+    dmi_pointing_device_interface_t interface;
+    unsigned short button_count;
+} dmi_pointing_device_t;
+----
+
+== DESCRIPTION
+
+This structure describes the attributes of the built-in pointing device for the
+system.  The presence of this structure does not imply that the built-in
+pointing device is active for the system's use.
+
+=== Fields
+
+`type`::
+Type of pointing device.
+
+`interface`::
+Interface type for the pointing device.
+
+`button_count`::
+Number of buttons on the pointing device.
+
+=== Device types
+
+`DMI_POINTING_DEVICE_TYPE_UNSPEC`:: Unspecified
+`DMI_POINTING_DEVICE_TYPE_OTHER`:: Other
+`DMI_POINTING_DEVICE_TYPE_UNKNOWN`:: Unknown
+`DMI_POINTING_DEVICE_TYPE_MOUSE`:: Mouse
+`DMI_POINTING_DEVICE_TYPE_TRACK_BALL`:: Track ball
+`DMI_POINTING_DEVICE_TYPE_TRACK_POINT`:: Track point
+`DMI_POINTING_DEVICE_TYPE_GLIDE_POINT`:: Glide point
+`DMI_POINTING_DEVICE_TYPE_TOUCH_PAD`:: Touch pad
+`DMI_POINTING_DEVICE_TYPE_TOUCH_SCREEN`:: Touch screen
+`DMI_POINTING_DEVICE_TYPE_OPTICAL_SENSOR`:: Optical sensor
+
+=== Interface types
+
+`DMI_POINTING_DEVICE_INTERFACE_UNSPEC`:: Unspecified
+`DMI_POINTING_DEVICE_INTERFACE_OTHER`:: Other
+`DMI_POINTING_DEVICE_INTERFACE_UNKNOWN`:: Unknown
+`DMI_POINTING_DEVICE_INTERFACE_SERIAL`:: Serial
+`DMI_POINTING_DEVICE_INTERFACE_PS2`:: PS/2
+`DMI_POINTING_DEVICE_INTERFACE_INFRARED`:: Infrared
+`DMI_POINTING_DEVICE_INTERFACE_HP_HIL`:: HP-HIL
+`DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE`:: Bus mouse
+`DMI_POINTING_DEVICE_INTERFACE_ADB`:: ADB (Apple Desktop Bus)
+`DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE_DB9`:: Bus mouse DB-9
+`DMI_POINTING_DEVICE_INTERFACE_BUS_MOUSE_DIN`:: Bus mouse micro-DIN
+`DMI_POINTING_DEVICE_INTERFACE_USB`:: USB
+`DMI_POINTING_DEVICE_INTERFACE_I2C`:: I2C
+`DMI_POINTING_DEVICE_INTERFACE_SPI`:: SPI
+
+== EXAMPLES
+
+```
+dmi_entity_t *entity;
+dmi_pointing_device_t *device;
+
+device = dmi_entity_info(entity, DMI_TYPE_POINTING_DEVICE);
+
+printf("type: %s\n", dmi_pointing_device_type_name(info->type));
+printf("interface: %s\n", dmi_pointing_device_interface_name(info->interface));
+printf("buttons: %u\n", info->button_count);
+```
+
+== SPECIFICATION
+
+[cols="1,1,1,3"]
+|===
+| Offset | Name | Length | Description
+
+| `0x00`
+| Type
+| `BYTE`
+| Built-in Pointing Device indicator.
+
+| `0x01`
+| Length
+| `BYTE`
+| Length of the structure.
+
+| `0x02`
+| Handle
+| `WORD`
+| Handle, or instance number, associated with the structure.
+
+| `0x04`
+| Device Type
+| `BYTE`
+| Type of pointing device.
+
+| `0x05`
+| Interface type
+| `BYTE`
+| Interface type for the pointing device.
+
+| `0x06`
+| Button count
+| `BYTE`
+| Number of buttons on the pointing device.
+|===
+
+== SEE ALSO
+
+`dmi_entity_info`(3),
+`dmi_pointing_device_type_name`(3),
+`dmi_pointing_device_interface_name`(3)
+
+== STANDARDS
+
+DMTF SMBIOS Specification, version 2.1 or newer.
+
+== COPYING
+
+Copyright (c) 2025-2026, The OpenDMI contributors. Free use of this software is granted under the terms of the BSD 3-Clause License.
