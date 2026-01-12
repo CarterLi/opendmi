@@ -30,7 +30,9 @@ add_executable(opendmi
     src/format/text.c
     src/format/text/handlers.c
     src/format/text/helpers.c
+    src/command/check.c
     src/command/dump.c
+    src/command/entry.c
     src/command/list.c
     src/command/show.c
     src/command/types.c
