@@ -197,13 +197,20 @@ const char *dmi_range_switching_type_name(dmi_range_switching_type_t value)
 static bool dmi_power_supply_decode(dmi_entity_t *entity)
 {
     dmi_power_supply_t *info;
+    dmi_power_supply_details_t details;
 
     info = dmi_entity_info(entity, DMI_TYPE_POWER_SUPPLY);
     if (info == nullptr)
         return false;
 
+    // Pre-initialize optional fields
+    info->voltage_probe_handle  = DMI_HANDLE_INVALID;
+    info->cooling_device_handle = DMI_HANDLE_INVALID;
+    info->current_probe_handle  = DMI_HANDLE_INVALID;
+
     dmi_stream_t *stream = &entity->stream;
 
+    // Decode mandatory fields
     bool status =
         dmi_stream_decode(stream, dmi_byte_t, &info->group) and
         dmi_stream_decode_str(stream, &info->location) and
@@ -213,14 +220,12 @@ static bool dmi_power_supply_decode(dmi_entity_t *entity)
         dmi_stream_decode_str(stream, &info->asset_tag) and
         dmi_stream_decode_str(stream, &info->part_number) and
         dmi_stream_decode_str(stream, &info->revision) and
-        dmi_stream_decode(stream, dmi_word_t, &info->maximum_capacity);
+        dmi_stream_decode(stream, dmi_word_t, &info->maximum_capacity) and
+        dmi_stream_decode(stream, dmi_word_t, &details);
     if (not status)
         return false;
 
-    dmi_power_supply_details_t details;
-    if (not dmi_stream_decode(stream, dmi_word_t, &details))
-        return false;
-
+    // Decode details
     info->hot_swappable   = details.hot_swappable;
     info->present         = details.present;
     info->unplugged       = details.unplugged;
@@ -228,7 +233,7 @@ static bool dmi_power_supply_decode(dmi_entity_t *entity)
     info->status          = details.status;
     info->type            = details.type;
 
-    // Optional fields, status is ignored.
+    // Decode optional fields, status is ignored.
     dmi_stream_decode(stream, dmi_handle_t, &info->voltage_probe_handle) and
     dmi_stream_decode(stream, dmi_handle_t, &info->cooling_device_handle) and
     dmi_stream_decode(stream, dmi_handle_t, &info->current_probe_handle);
