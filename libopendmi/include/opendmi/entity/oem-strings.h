@@ -11,24 +11,6 @@
 
 #include <opendmi/entity.h>
 
-typedef struct dmi_oem_strings_data dmi_oem_strings_data_t;
-
-/**
- * @brief OEM strings structure (type 11).
- */
-dmi_packed_struct(dmi_oem_strings_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief Number of strings.
-     */
-    dmi_byte_t count;
-};
-
 typedef struct dmi_oem_strings dmi_oem_strings_t;
 
 /**

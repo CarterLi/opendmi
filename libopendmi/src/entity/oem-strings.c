@@ -41,17 +41,15 @@ const dmi_entity_spec_t dmi_oem_strings_spec =
 static bool dmi_oem_strings_decode(dmi_entity_t *entity)
 {
     dmi_oem_strings_t *info;
-    const dmi_oem_strings_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_OEM_STRINGS);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_OEM_STRINGS);
     if (info == nullptr)
         return false;
 
-    info->string_count = dmi_decode(data->count);
+    dmi_stream_t *stream = &entity->stream;
+
+    if (not dmi_stream_decode(stream, dmi_byte_t, &info->string_count))
+        return false;
 
     info->strings = dmi_alloc_array(entity->context, sizeof(const char *), info->string_count);
     if (info->strings == nullptr)
