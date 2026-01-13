@@ -180,7 +180,7 @@ static bool dmi_pointing_device_decode(dmi_entity_t *entity)
     dmi_stream_t *stream = &entity->stream;
 
     return
-        dmi_stream_decode(stream, dmi_byte_t, &info->type) &&
-        dmi_stream_decode(stream, dmi_byte_t, &info->interface) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->type) and
+        dmi_stream_decode(stream, dmi_byte_t, &info->interface) and
         dmi_stream_decode(stream, dmi_byte_t, &info->button_count);
 }

@@ -79,11 +79,11 @@ static bool dmi_memory_error_64_decode(dmi_entity_t *entity)
     dmi_stream_t *stream = &entity->stream;
 
     return
-        dmi_stream_decode(stream, dmi_byte_t, &info->type) &&
-        dmi_stream_decode(stream, dmi_byte_t, &info->granularity) &&
-        dmi_stream_decode(stream, dmi_byte_t, &info->operation) &&
-        dmi_stream_decode(stream, dmi_dword_t, &info->vendor_syndrome) &&
-        dmi_stream_decode(stream, dmi_qword_t, &info->array_addr) &&
-        dmi_stream_decode(stream, dmi_qword_t, &info->device_addr) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->type) and
+        dmi_stream_decode(stream, dmi_byte_t, &info->granularity) and
+        dmi_stream_decode(stream, dmi_byte_t, &info->operation) and
+        dmi_stream_decode(stream, dmi_dword_t, &info->vendor_syndrome) and
+        dmi_stream_decode(stream, dmi_qword_t, &info->array_addr) and
+        dmi_stream_decode(stream, dmi_qword_t, &info->device_addr) and
         dmi_stream_decode(stream, dmi_dword_t, &info->resolution);
 }

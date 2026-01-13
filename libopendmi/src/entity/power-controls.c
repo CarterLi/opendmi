@@ -59,9 +59,9 @@ static bool dmi_power_controls_decode(dmi_entity_t *entity)
     dmi_stream_t *stream = &entity->stream;
 
     return
-        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_month) &&
-        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_day) &&
-        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_hour) &&
-        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_minute) &&
+        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_month) and
+        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_day) and
+        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_hour) and
+        dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_minute) and
         dmi_stream_decode_bcd(stream, dmi_byte_t, &info->poweron_second);
 }

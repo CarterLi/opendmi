@@ -478,9 +478,9 @@ static bool dmi_port_connector_decode(dmi_entity_t *entity)
     dmi_stream_t *stream = &entity->stream;
 
     return
-        dmi_stream_decode_str(stream, &info->internal_designator) &&
-        dmi_stream_decode(stream, dmi_byte_t, &info->internal_connector) &&
-        dmi_stream_decode_str(stream, &info->external_designator) &&
-        dmi_stream_decode(stream, dmi_byte_t, &info->external_connector) &&
+        dmi_stream_decode_str(stream, &info->internal_designator) and
+        dmi_stream_decode(stream, dmi_byte_t, &info->internal_connector) and
+        dmi_stream_decode_str(stream, &info->external_designator) and
+        dmi_stream_decode(stream, dmi_byte_t, &info->external_connector) and
         dmi_stream_decode(stream, dmi_byte_t, &info->port_type);
 }

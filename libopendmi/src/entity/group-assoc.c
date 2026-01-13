@@ -76,7 +76,7 @@ static bool dmi_group_assoc_decode(dmi_entity_t *entity)
         dmi_group_assoc_item_t *item = &info->items[i];
 
         status =
-            dmi_stream_decode(stream, dmi_byte_t, &item->type) &&
+            dmi_stream_decode(stream, dmi_byte_t, &item->type) and
             dmi_stream_decode(stream, dmi_handle_t, &item->handle);
 
         if (not status)

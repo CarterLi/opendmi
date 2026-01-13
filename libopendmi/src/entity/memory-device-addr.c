@@ -82,14 +82,14 @@ static bool dmi_memory_device_addr_validate(dmi_entity_t *entity)
     uint64_t start_addr_ex = 0, end_addr_ex = 0;
 
     bool has_addr =
-        dmi_stream_decode_at(stream, 0x04u, dmi_dword_t, &start_addr) &&
+        dmi_stream_decode_at(stream, 0x04u, dmi_dword_t, &start_addr) and
         dmi_stream_decode_at(stream, 0x08u, dmi_dword_t, &end_addr);
 
     if (!has_addr)
         return false;
 
     bool has_addr_ex =
-        dmi_stream_decode_at(stream, 0x13u, dmi_qword_t, &start_addr_ex) &&
+        dmi_stream_decode_at(stream, 0x13u, dmi_qword_t, &start_addr_ex) and
         dmi_stream_decode_at(stream, 0x1Bu, dmi_qword_t, &end_addr_ex);
 
     if ((start_addr == 0xFFFFFFFFu) or (end_addr == 0xFFFFFFFFu)) {
@@ -159,7 +159,7 @@ static bool dmi_memory_device_addr_decode(dmi_entity_t *entity)
 
         if (start_addr == 0xFFFFFFFFu) {
             status =
-                dmi_stream_decode(stream, dmi_qword_t, &info->start_addr) &&
+                dmi_stream_decode(stream, dmi_qword_t, &info->start_addr) and
                 dmi_stream_decode(stream, dmi_qword_t, &info->end_addr);
 
             if (!status)

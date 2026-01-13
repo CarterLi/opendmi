@@ -58,21 +58,21 @@ static bool dmi_memory_array_addr_validate(dmi_entity_t *entity)
 {
     if ((entity == nullptr) or (entity->type != DMI_TYPE_MEMORY_ARRAY_ADDR))
         return false;
-    
+
     dmi_stream_t *stream = &entity->stream;
 
     uint32_t start_addr = 0, end_addr = 0;
     uint64_t start_addr_ex = 0, end_addr_ex = 0;
 
     bool has_addr =
-        dmi_stream_decode_at(stream, 0x04u, dmi_dword_t, &start_addr) &&
+        dmi_stream_decode_at(stream, 0x04u, dmi_dword_t, &start_addr) and
         dmi_stream_decode_at(stream, 0x08u, dmi_dword_t, &end_addr);
 
     if (!has_addr)
         return false;
 
     bool has_addr_ex =
-        dmi_stream_decode_at(stream, 0x0Fu, dmi_qword_t, &start_addr_ex) &&
+        dmi_stream_decode_at(stream, 0x0Fu, dmi_qword_t, &start_addr_ex) and
         dmi_stream_decode_at(stream, 0x17u, dmi_qword_t, &end_addr_ex);
 
     if ((start_addr == 0xFFFFFFFFu) or (end_addr == 0xFFFFFFFFu)) {
@@ -115,9 +115,9 @@ static bool dmi_memory_array_addr_decode(dmi_entity_t *entity)
         uint32_t end_addr   = 0;
 
         status =
-            dmi_stream_decode(stream, dmi_dword_t, &start_addr) &&
-            dmi_stream_decode(stream, dmi_dword_t, &end_addr) &&
-            dmi_stream_decode(stream, dmi_handle_t, &info->array_handle) &&
+            dmi_stream_decode(stream, dmi_dword_t, &start_addr) and
+            dmi_stream_decode(stream, dmi_dword_t, &end_addr) and
+            dmi_stream_decode(stream, dmi_handle_t, &info->array_handle) and
             dmi_stream_decode(stream, dmi_byte_t, &info->partition_width);
 
         if (!status)
@@ -133,7 +133,7 @@ static bool dmi_memory_array_addr_decode(dmi_entity_t *entity)
 
         if (start_addr == 0xFFFFFFFFu) {
             status =
-                dmi_stream_decode(stream, dmi_qword_t, &info->start_addr) &&
+                dmi_stream_decode(stream, dmi_qword_t, &info->start_addr) and
                 dmi_stream_decode(stream, dmi_qword_t, &info->end_addr);
 
             if (!status)

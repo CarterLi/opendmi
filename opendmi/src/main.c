@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
         dmi_set_log_level(context, DMI_LOG_DEBUG);
 
     do {
-        if (isatty(STDOUT_FILENO) && (config.output_path == nullptr)) {
+        if (isatty(STDOUT_FILENO) and (config.output_path == nullptr)) {
             if (not dmi_pager_start(context))
                 break;
         }
@@ -311,7 +311,7 @@ static dmi_type_t parse_type(dmi_context_t *context, const char *str)
         fprintf(stderr, "Empty type value: %s\n", str);
         return DMI_TYPE_INVALID;
     }
-    if ((*str == '+') || (*str == '-')) {
+    if ((*str == '+') or (*str == '-')) {
         fprintf(stderr, "Invalid type value: %s\n", str);
         return DMI_TYPE_INVALID;
     }
