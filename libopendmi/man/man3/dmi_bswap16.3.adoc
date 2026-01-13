@@ -1,1 +1,1 @@
-dmi_bswap.adoc
+dmi_bswap.3.adoc

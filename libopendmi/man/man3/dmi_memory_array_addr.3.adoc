@@ -11,6 +11,10 @@ OpenDMI 0.2.0
 `dmi_memory_array_addr` -- provides the address mapping for a physical
 memory array.
 
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
 == Synopsis
 
 [source, c]

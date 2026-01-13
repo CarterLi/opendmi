@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added memory controller structure linking
 - Added system boot status decoding
 - Added support for enumeration range names
+- Added automated manual pages generation via AsciiDoctor #7
 - Added manual page for `dmi_memory_array_addr`
 - Added manual page for `dmi_pointing_device`
 - Added manual page for `dmi_cooling_device`

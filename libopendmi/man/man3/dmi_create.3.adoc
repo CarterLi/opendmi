@@ -6,6 +6,10 @@ OpenDMI 0.2.0
 :manmanual: DMI_CREATE
 :mansource: DMI_CREATE
 
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
 == Synopsis
 
 [source, c]

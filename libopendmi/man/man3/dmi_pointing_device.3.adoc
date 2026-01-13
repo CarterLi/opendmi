@@ -11,6 +11,10 @@ OpenDMI 0.2.0
 `dmi_pointing_device` -- describes the attributes of the built-in pointing
 device for the system.
 
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
 == Synopsis
 
 [source, c]

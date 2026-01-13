@@ -6,6 +6,14 @@ OpenDMI 0.2.0
 :manmanual: DMI_CLOSE
 :mansource: DMI_CLOSE
 
+== Name
+
+dmi_close - close OpenDMI context.
+
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
 == Synopsis
 
 [source, c]

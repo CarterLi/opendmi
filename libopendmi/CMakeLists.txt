@@ -315,3 +315,34 @@ opendmi_test(probe-location-name test/probe-location-name.c)
 opendmi_test(battery-chemistry-name test/battery-chemistry-name.c)
 opendmi_test(slot-usage-name test/slot-usage-name.c)
 opendmi_test(slot-width-name test/slot-width-name.c)
+
+if(ASCIIDOCTOR_FOUND)
+    file(GLOB_RECURSE LIBOPENDMI_MANPAGE_SOURCES
+        RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/man
+        *.adoc)
+
+    foreach(src ${LIBOPENDMI_MANPAGE_SOURCES})
+        cmake_path(REMOVE_EXTENSION src LAST_ONLY OUTPUT_VARIABLE dst)
+
+        set(src_path "${CMAKE_CURRENT_SOURCE_DIR}/man/${src}")
+        set(dst_path "${CMAKE_CURRENT_BINARY_DIR}/man/${dst}")
+
+        message(STATUS "Man: ${src_path} -> ${dst_path}")
+
+        cmake_path(REMOVE_FILENAME dst_path OUTPUT_VARIABLE dst_dir)
+        make_directory(${dst_dir})
+
+        add_custom_command(
+            OUTPUT ${dst_path}
+            COMMAND ${ASCIIDOCTOR_EXECUTABLE} --backend manpage --out-file ${dst_path} ${src_path}
+            DEPENDS ${src_path}
+        )
+
+        list(APPEND LIBOPENDMI_MANPAGES ${dst_path})
+    endforeach()
+
+    add_custom_target(opendmi-manuals DEPENDS ${LIBOPENDMI_MANPAGES})
+    add_dependencies(opendmi-object opendmi-manuals)
+
+    install(FILES ${LIBOPENDMI_MANPAGES} TYPE MAN)
+endif()
