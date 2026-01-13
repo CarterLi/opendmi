@@ -34,22 +34,23 @@
 #endif // ENABLE_CURSES
 
 #include <opendmi/context.h>
+#include <opendmi/command.h>
 #include <opendmi/pager.h>
 #include <opendmi/entity.h>
 #include <opendmi/filter.h>
 #include <opendmi/format.h>
 #include <opendmi/format/text.h>
 
-typedef enum dmi_command
+typedef enum dmi_command_type
 {
     DMI_COMMAND_DUMP_TABLE,
     DMI_COMMAND_LIST_KEYWORDS,
     DMI_COMMAND_LIST_TYPES
-} dmi_command_t;
+} dmi_command_type_t;
 
 typedef struct dmi_config
 {
-    dmi_command_t command;
+    dmi_command_type_t command;
     char *memory_device;
     bool quiet;
     bool debug;
@@ -347,7 +348,9 @@ static void show_usage(const char *proc)
     show_version();
 
     printf("Usage:\n");
-    printf("    %s [options]\n", proc);
+    printf("    %s <command> [options]\n\n", proc);
+
+    dmi_command_list();
 }
 
 static bool list_keywords(dmi_context_t *context __attribute__((unused)))

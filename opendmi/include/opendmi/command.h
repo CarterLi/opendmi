@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <opendmi/types.h>
 #include <opendmi/option.h>
 
 typedef struct dmi_command dmi_command_t;
@@ -16,7 +17,7 @@ typedef struct dmi_command dmi_command_t;
 /**
  * @brief Command handler function.
  */
-typedef int dmi_command_handler_fn(void);
+typedef int dmi_command_handler_fn(dmi_context_t *context);
 
 /**
  * @brief Command specification.
@@ -50,6 +51,10 @@ struct dmi_command
 };
 
 __BEGIN_DECLS
+
+void dmi_command_list(void);
+
+int dmi_command_run(const char *name, dmi_context_t *context);
 
 __END_DECLS
 

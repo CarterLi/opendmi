@@ -6,9 +6,10 @@
 //
 #include <stdlib.h>
 
+#include <opendmi/context.h>
 #include <opendmi/command/show.h>
 
-static int dmi_show_main(void);
+static int dmi_show_main(dmi_context_t *context);
 
 const dmi_command_t dmi_show_command =
 {
@@ -17,7 +18,9 @@ const dmi_command_t dmi_show_command =
     .handler     = dmi_show_main
 };
 
-static int dmi_show_main(void)
+static int dmi_show_main(dmi_context_t *context)
 {
+    dmi_unused(context);
+
     return EXIT_SUCCESS;
 }
