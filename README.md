@@ -92,6 +92,8 @@ authors. To get the dump you can use the following command:
 $ dmidecode --dump-bin <filename>
 ```
 
+See [CONTRIBUTING](CONTRIBUTING.md) for more details.
+
 ## Authors
 
 * [Dmitry Sednev](https://github.com/sdnvx)

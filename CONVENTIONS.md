@@ -1,5 +1,4 @@
-# Coding conventions
-:toc:
+# OpenDMI: Coding conventions
 
 ## Formatting
 
@@ -9,14 +8,6 @@
 * Use no space between `*` and the variable name in pointer expressions (`int *foo`).
 * Use space between keywords and parentheses; e.g., `if (condition)`.
 * Put the opening brace of a function implementation on the line after the function’s return type, name, and argument list.
-
-[source, c]
-----
-int atoi(const char *nptr)
-{
-    // ...
-}
-----
 
 ## Header guards
 
@@ -41,30 +32,3 @@ int atoi(const char *nptr)
 expressions and conditionals.
 
 * Avoid magic numbers; define meaningful constants. Prefer C language symbols over preprocessor symbols, because the former are visible in a symbolic debugger like gdb.
-
-## Abbreviations
-
-### Terms
-
-* `addr` — Address
-* `attr` — Attribute
-* `info` — Information
-* `mem` — Memory
-* `op` — Operation
-* `ops` — Operations
-* `pos` — Position
-* `pwr` — Power
-* `sys` — System
-
-### Prefixes
-
-* `conf` — Configured
-* `cur` — Current
-* `inst` — Installed
-* `min` — Minimum
-* `max` — Maximum
-* `nom` — Nominal
-
-### Suffixes
-
-* `ex` — Extended
