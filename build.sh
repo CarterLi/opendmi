@@ -70,7 +70,7 @@ _usage() {
     echo
     echo "Configure options:"
     echo "    General:"
-    echo "        --prefix=<PATH>  Set installation prefix (default=${PREFIX})"
+    echo "        --prefix <PATH>  Set installation prefix (default=${PREFIX})"
     echo "        --release        Release build"
     echo "        --debug          Debug build"
     echo "    Components:"
@@ -100,8 +100,10 @@ _configure() {
         shift
 
         case "$OPTION" in
-            --prefix=*)
-                PREFIX="${arg#--prefix=}"
+            --prefix)
+                _require_argument $OPTION $#
+                PREFIX="$1"
+                shift
                 ;;
             --debug)
                 BUILD_TYPE=Debug
@@ -201,6 +203,10 @@ _test() {
     ${CTEST} --test-dir ${BUILD_DIR} --parallel ${NPROC} ${CTEST_ARGS}
 }
 
+_install() {
+    ${CMAKE} --build ${BUILD_DIR} --target install
+}
+
 _clean() {
     ${CMAKE} --build ${BUILD_DIR} --target clean
 }
@@ -256,6 +262,9 @@ case "${COMMAND}" in
         ;;
     test)
         _test "$@"
+        ;;
+    install)
+        _install "$@"
         ;;
     clean)
         _clean "$@"

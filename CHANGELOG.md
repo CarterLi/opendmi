@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added manual page for `dmi_memory_array_addr`
 - Added manual page for `dmi_pointing_device`
 - Added manual page for `dmi_cooling_device`
+- Added `--prefix` option to `build.sh` #77
+- Added `install` command to `build.sh` #78
 - Renamed `dmi_pointing_device_interface_t` to `dmi_pointing_device_iface_t`
 - Moved `<opendmi/name.h>` to `<opendmi/utils/name.h>`
 - Refactored entity decoders API

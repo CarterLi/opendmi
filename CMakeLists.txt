@@ -125,3 +125,4 @@ else()
 endif()
 
 include(CPack)
+include(GNUInstallDirs)
