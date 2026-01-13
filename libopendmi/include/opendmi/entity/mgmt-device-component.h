@@ -11,43 +11,6 @@
 
 #include <opendmi/entity.h>
 
-typedef struct dmi_mgmt_device_component_data dmi_mgmt_device_component_data_t;
-
-/**
- * @brief Management device component structure (type 35).
- */
-dmi_packed_struct(dmi_mgmt_device_component_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief Number of the string that contains additional descriptive
-     * information about the component.
-     */
-    dmi_string_t description;
-
-    /**
-     * @brief Handle, or instance number, of the management device that
-     * contains this component.
-     */
-    dmi_handle_t device_handle;
-
-    /**
-     * @brief Handle, or instance number, of the probe or cooling device that
-     * defines this component.
-     */
-    dmi_handle_t component_handle;
-
-    /**
-     * @brief Handle, or instance number, associated with the device
-     * thresholds.
-     */
-    dmi_handle_t threshold_handle;
-};
-
 typedef struct dmi_mgmt_device_component dmi_mgmt_device_component_t;
 
 struct dmi_mgmt_device_component

@@ -49,22 +49,18 @@ const dmi_entity_spec_t dmi_mgmt_device_component_spec =
 static bool dmi_mgmt_device_component_decode(dmi_entity_t *entity)
 {
     dmi_mgmt_device_component_t *info;
-    const dmi_mgmt_device_component_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_MGMT_DEVICE_COMPONENT);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE_COMPONENT);
     if (info == nullptr)
         return false;
 
-    info->description      = dmi_entity_string(entity, data->description);
-    info->device_handle    = dmi_decode(data->device_handle);
-    info->component_handle = dmi_decode(data->component_handle);
-    info->threshold_handle = dmi_decode(data->threshold_handle);
+    dmi_stream_t *stream = &entity->stream;
 
-    return true;
+    return
+        dmi_stream_decode_str(stream, &info->description) and
+        dmi_stream_decode(stream, dmi_handle_t, &info->device_handle) and
+        dmi_stream_decode(stream, dmi_handle_t, &info->component_handle) and
+        dmi_stream_decode(stream, dmi_handle_t, &info->threshold_handle);
 }
 
 static bool dmi_mgmt_device_component_link(dmi_entity_t *entity)
