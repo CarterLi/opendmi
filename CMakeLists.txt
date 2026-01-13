@@ -72,7 +72,12 @@ find_program(CPPCHECK_EXECUTABLE NAMES cppcheck)
 
 include(FindPackageEx)
 
+if(APPLE)
+    list(PREPEND CMAKE_PREFIX_PATH "/opt/homebrew/opt/icu4c")
+endif()
+
 find_package(AsciiDoctor)
+find_package_ex(ICU ENABLE_ICU COMPONENTS data uc)
 find_package_ex(Curses ENABLE_CURSES)
 find_package_ex(LibXml2 ENABLE_XML)
 find_package_ex(LibYaml ENABLE_YAML)

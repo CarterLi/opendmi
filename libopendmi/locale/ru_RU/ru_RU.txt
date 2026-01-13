@@ -1,0 +1,10 @@
+ru_RU {
+    cache-types {
+        unspecified { "Не указан"       }
+        other       { "Другой"          }
+        unknown     { "Неизвестный"     }
+        instruction { "Инструкции"      }
+        data        { "Данные"          }
+        unified     { "Унифицированный" }
+    }
+}

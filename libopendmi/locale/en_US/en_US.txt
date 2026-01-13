@@ -1,0 +1,10 @@
+en_US {
+    cache-types {
+        unspecified { "Unspecified" }
+        other       { "Other"       }
+        unknown     { "Unknown"     }
+        instruction { "Instruction" }
+        data        { "Data"        }
+        unified     { "Unified"     }
+    }
+}

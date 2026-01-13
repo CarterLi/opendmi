@@ -81,6 +81,7 @@ _usage() {
     echo "        --enable-rust    Build with Rust support (libopendmi-rust, default=${ENABLE_RUST})"
     echo "        --enable-dbus    Build with D-bus support (opendmi-dbus, default=${ENABLE_DBUS})"
     echo "    Features:"
+    echo "        --with-icu       Build ICU4C support (default=${ENABLE_ICU})"
     echo "        --with-curses    Build with Curses support (default=${ENABLE_CURSES})"
     echo "        --with-json      Build with JSON support (default=${ENABLE_JSON})"
     echo "        --with-xml       Build with XML support (default=${ENABLE_XML})"
@@ -133,6 +134,9 @@ _configure() {
             --enable-dbus)
                 ENABLE_DBUS=ON
                 ;;
+            --with-icu)
+                ENABLE_ICU=ON
+                ;;
             --with-curses)
                 ENABLE_CURSES=ON
                 ;;
@@ -155,6 +159,9 @@ _configure() {
     done
 
     FEATURES=""
+    if [ "${ENABLE_ICU}" != "AUTO" ]; then
+        FEATURES="${FEATURES} -DENABLE_ICU=${ENABLE_ICU}"
+    fi
     if [ "${ENABLE_CURSES}" != "AUTO" ]; then
         FEATURES="${FEATURES} -DENABLE_CURSES=${ENABLE_CURSES}"
     fi

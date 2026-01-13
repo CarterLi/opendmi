@@ -10,12 +10,79 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
+add_library(opendmi-object OBJECT)
+
+if(ICU_FOUND)
+    set(LIBOPENDMI_RESOURCE_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/locale)
+    set(LIBOPENDMI_BUNDLE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/locale)
+
+    file(GLOB_RECURSE LIBOPENDMI_RESOURCES
+        RELATIVE ${LIBOPENDMI_RESOURCE_ROOT}
+        ${LIBOPENDMI_RESOURCE_ROOT}/*.txt)
+    make_directory(${LIBOPENDMI_BUNDLE_ROOT})
+
+    foreach(RESOURCE_PATH ${LIBOPENDMI_RESOURCES})
+        cmake_path(GET RESOURCE_PATH FILENAME RESOURCE_NAME)
+
+        cmake_path(REPLACE_EXTENSION RESOURCE_PATH ".res" OUTPUT_VARIABLE BUNDLE_PATH)
+        cmake_path(REMOVE_FILENAME BUNDLE_PATH OUTPUT_VARIABLE BUNDLE_DIR)
+
+        make_directory(${LIBOPENDMI_BUNDLE_ROOT}/${BUNDLE_DIR})
+
+        message(STATUS "Compiling ${RESOURCE_PATH} -> ${BUNDLE_PATH}")
+
+        add_custom_command(
+            OUTPUT ${LIBOPENDMI_BUNDLE_ROOT}/${BUNDLE_PATH}
+            COMMAND ${ICU_GENRB_EXECUTABLE}
+                --sourcedir ${LIBOPENDMI_RESOURCE_ROOT}/${BUNDLE_DIR}
+                --destdir ${LIBOPENDMI_BUNDLE_ROOT}/${BUNDLE_DIR}
+                --encoding UTF-8
+                ${RESOURCE_NAME}
+            DEPENDS ${LIBOPENDMI_RESOURCE_ROOT}/${RESOURCE_PATH}
+        )
+
+        list(APPEND LIBOPENDMI_BUNDLES ${BUNDLE_PATH})
+        list(APPEND LIBOPENDMI_BUNDLES_DEPS ${LIBOPENDMI_BUNDLE_ROOT}/${BUNDLE_PATH})
+    endforeach()
+
+    file(GENERATE
+        OUTPUT ${LIBOPENDMI_BUNDLE_ROOT}/package-list.txt
+        CONTENT "$<JOIN:${LIBOPENDMI_BUNDLES},\n>"
+    )
+
+    add_custom_target(opendmi-bundles
+        DEPENDS ${LIBOPENDMI_BUNDLES_DEPS}
+    )
+
+    add_custom_command(
+        OUTPUT ${LIBOPENDMI_BUNDLE_ROOT}/dmi_resources_dat.o
+        COMMAND ${ICU_PKGDATA_EXECUTABLE}
+            --name dmi-resources
+            --libname opendmi-resources
+            --mode static
+            --destdir ${LIBOPENDMI_BUNDLE_ROOT}
+            ${LIBOPENDMI_BUNDLE_ROOT}/package-list.txt
+        DEPENDS opendmi-bundles
+        WORKING_DIRECTORY ${LIBOPENDMI_BUNDLE_ROOT}
+    )
+
+    add_custom_target(opendmi-resources
+        DEPENDS ${LIBOPENDMI_BUNDLE_ROOT}/dmi_resources_dat.o
+    )
+
+    add_dependencies(opendmi-object opendmi-resources)
+
+    target_include_directories(opendmi-object PRIVATE ${ICU_INCLUDE_DIRS})
+    target_sources(opendmi-object PRIVATE ${LIBOPENDMI_BUNDLE_ROOT}/dmi_resources_dat.o)
+
+    list(APPEND LIBOPENDMI_LIBRARIES ICU::uc)
+endif()
+
 configure_file(
     ${PROJECT_SOURCE_DIR}/src/config.h.in
     ${PROJECT_SOURCE_DIR}/src/config.h
     USE_SOURCE_PERMISSIONS)
 
-add_library(opendmi-object OBJECT)
 target_include_directories(opendmi-object PUBLIC include)
 target_sources(opendmi-object
     PRIVATE
@@ -326,8 +393,6 @@ if(ASCIIDOCTOR_FOUND)
 
         set(src_path "${CMAKE_CURRENT_SOURCE_DIR}/man/${src}")
         set(dst_path "${CMAKE_CURRENT_BINARY_DIR}/man/${dst}")
-
-        message(STATUS "Man: ${src_path} -> ${dst_path}")
 
         cmake_path(REMOVE_FILENAME dst_path OUTPUT_VARIABLE dst_dir)
         make_directory(${dst_dir})
