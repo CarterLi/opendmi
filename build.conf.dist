@@ -1,3 +1,5 @@
+PREFIX=/opt/opendmi
+
 BUILD_DIR=build
 BUILD_TYPE=Release
 

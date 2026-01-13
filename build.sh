@@ -69,7 +69,8 @@ _usage() {
     echo "    distclean  Delete all files that are created by configuring or building the program"
     echo
     echo "Configure options:"
-    echo "    Build type:"
+    echo "    General:"
+    echo "        --prefix=<PATH>  Set installation prefix (default=${PREFIX})"
     echo "        --release        Release build"
     echo "        --debug          Debug build"
     echo "    Components:"
@@ -99,6 +100,9 @@ _configure() {
         shift
 
         case "$OPTION" in
+            --prefix=*)
+                PREFIX="${arg#--prefix=}"
+                ;;
             --debug)
                 BUILD_TYPE=Debug
                 ;;
@@ -163,6 +167,7 @@ _configure() {
     fi
 
     ${CMAKE} -B ${BUILD_DIR} \
+        -DCMAKE_INSTALL_PREFIX=${PREFIX} \
         -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
         -DENABLE_CXX=${ENABLE_CXX} \
         -DENABLE_GOLANG=${ENABLE_GOLANG} \
