@@ -133,7 +133,7 @@ const dmi_entity_spec_t dmi_memory_array_spec =
     .type            = DMI_TYPE_MEMORY_ARRAY,
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x0F,
-    .decoded_length  = sizeof(dmi_memory_array_t), 
+    .decoded_length  = sizeof(dmi_memory_array_t),
     .attributes      = (dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_memory_array_t, location, ENUM, {
             .code    = "location",
@@ -188,32 +188,45 @@ const char *dmi_memory_array_usage_name(dmi_memory_array_usage_t value)
 
 static bool dmi_memory_array_decode(dmi_entity_t *entity)
 {
+    bool status;
     dmi_memory_array_t *info;
-    const dmi_memory_array_data_t *data;
-    dmi_dword_t maximum_capacity;
-
-    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_ARRAY);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY);
     if (info == nullptr)
         return false;
 
-    maximum_capacity = dmi_decode(data->maximum_capacity);
+    dmi_stream_t *stream = &entity->stream;
 
-    info->location          = dmi_decode(data->location);
-    info->usage             = dmi_decode(data->usage);
-    info->error_correction  = dmi_decode(data->error_correction);
-    info->maximum_capacity  = (dmi_size_t)(maximum_capacity & 0x7FFFFFFFU) << 10;
-    info->error_info_handle = dmi_decode(data->error_info_handle);
-    info->device_count      = dmi_decode(data->device_count);
+    status =
+        dmi_stream_decode(stream, dmi_byte_t, &info->location) and
+        dmi_stream_decode(stream, dmi_byte_t, &info->usage) and
+        dmi_stream_decode(stream, dmi_byte_t, &info->error_correction);
+    if (not status)
+        return false;
 
-    if (entity->body_length > 0x0Fu) {
-        entity->level = dmi_version(2, 7, 0);
+    dmi_dword_t maximum_capacity;
+    if (not dmi_stream_decode(stream, dmi_dword_t, &maximum_capacity))
+        return false;
 
-        if (maximum_capacity & 0x80000000)
-            info->maximum_capacity = dmi_decode(data->maximum_capacity_ex);
+    info->maximum_capacity = (dmi_size_t)(maximum_capacity & 0x7FFFFFFFU) << 10;
+
+    status =
+        dmi_stream_decode(stream, dmi_handle_t, &info->error_info_handle) and
+        dmi_stream_decode(stream, dmi_word_t, &info->device_count);
+    if (not status)
+        return false;
+
+    if (dmi_stream_is_done(stream))
+        return true;
+
+    entity->level = dmi_version(2, 7, 0);
+
+    if (info->maximum_capacity & 0x80000000) {
+        dmi_qword_t maximum_capacity_ex;
+        if (not dmi_stream_decode(stream, dmi_qword_t, &maximum_capacity_ex))
+            return false;
+
+        info->maximum_capacity = maximum_capacity_ex;
     }
 
     return true;
