@@ -11,59 +11,6 @@
 
 #include <opendmi/entity.h>
 
-typedef struct dmi_mgmt_device_threshold_data dmi_mgmt_device_threshold_data_t;
-
-/**
- * @brief Management device threshold data structure (type 36).
- *
- * The information in this structure defines threshold information for a
- * component (probe or cooling-unit) contained within a management device.
- *
- * For each threshold field present in the structure:
- *
- * - The threshold units (millivolts, milliamps, 1/10th degrees C, or RPMs)
- *   are as defined by the associated probe or cooling-unit component structure.
- *
- * - If the value is unavailable, the field is set to `0x8000`.
- */
-dmi_packed_struct(dmi_mgmt_device_threshold_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief Lower non-critical threshold for this component.
-     */
-    dmi_word_t lower_non_critical;
-
-    /**
-     * @brief Upper non-critical threshold for this component.
-     */
-    dmi_word_t upper_non_critical;
-
-    /**
-     * @brief Lower critical threshold for this component.
-     */
-    dmi_word_t lower_critical;
-
-    /**
-     * @brief Upper critical threshold for this component.
-     */
-    dmi_word_t upper_critical;
-
-    /**
-     * @brief Lower non-recoverable threshold for this component.
-     */
-    dmi_word_t lower_non_recoverable;
-
-    /**
-     * @brief Upper non-recoverable threshold for this component.
-     */
-    dmi_word_t upper_non_recoverable;
-};
-
 typedef struct dmi_mgmt_device_threshold dmi_mgmt_device_threshold_t;
 
 struct dmi_mgmt_device_threshold

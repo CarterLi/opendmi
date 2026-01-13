@@ -63,22 +63,18 @@ const dmi_entity_spec_t dmi_mgmt_device_threshold_spec =
 static bool dmi_mgmt_device_threshold_decode(dmi_entity_t *entity)
 {
     dmi_mgmt_device_threshold_t *info;
-    const dmi_mgmt_device_threshold_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_MGMT_DEVICE_THRESHOLD);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE_THRESHOLD);
     if (info == nullptr)
         return false;
 
-    info->lower_non_critical    = dmi_decode(data->lower_non_critical);
-    info->upper_non_critical    = dmi_decode(data->upper_non_critical);
-    info->lower_critical        = dmi_decode(data->lower_critical);
-    info->upper_critical        = dmi_decode(data->upper_critical);
-    info->lower_non_recoverable = dmi_decode(data->lower_non_recoverable);
-    info->upper_non_recoverable = dmi_decode(data->upper_non_recoverable);
+    dmi_stream_t *stream = &entity->stream;
 
-    return true;
+    return
+        dmi_stream_decode(stream, dmi_word_t, &info->lower_non_critical) and
+        dmi_stream_decode(stream, dmi_word_t, &info->upper_non_critical) and
+        dmi_stream_decode(stream, dmi_word_t, &info->lower_critical) and
+        dmi_stream_decode(stream, dmi_word_t, &info->upper_critical) and
+        dmi_stream_decode(stream, dmi_word_t, &info->lower_non_recoverable) and
+        dmi_stream_decode(stream, dmi_word_t, &info->upper_non_recoverable);
 }
