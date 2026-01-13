@@ -1,12 +1,13 @@
-= SMBIOS dumps
+= OpenDMI: SMBIOS data index
+:toc:
 
-== By name
+== Dell
 
 [cols="2,1,1,4"]
 |===
 | Name | Vendor | SMBIOS | Structures
 
-| `dell-fy59zk3.bin`
+| `fy59zk3.bin`
 | Dell
 | 3.2
 a|[unstyled]
@@ -49,7 +50,7 @@ a|[unstyled]
 - [222] OEM-specific
 - [255] OEM-specific
 
-| `dell-poweredge-1800.bin`
+| `poweredge-1800.bin`
 | Dell
 | 2.3
 a|[unstyled]
@@ -80,7 +81,7 @@ a|[unstyled]
 - [218] OEM-specific
 - [222] OEM-specific
 
-| `dell-precision-490.bin`
+| `precision-490.bin`
 | Dell
 | 2.3
 a|[unstyled]
@@ -115,8 +116,15 @@ a|[unstyled]
 - [220] OEM-specific
 - [221] OEM-specific
 - [222] OEM-specific
+|===
 
-| `gigabyte-b560m-ds3h-v2.bin`
+== Gigabyte
+
+[cols="2,1,1,4"]
+|===
+| Name | Vendor | SMBIOS | Structures
+
+| `b560m-ds3h-v2.bin`
 | American Megatrends
 | 3.3.1
 a|[unstyled]
