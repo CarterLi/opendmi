@@ -20,7 +20,7 @@ struct dmi_extension
 {
     const char *code;
     const char *name;
-    const dmi_entity_spec_t *entities;
+    const dmi_entity_spec_t **entities;
 };
 
 #endif // !OPENDMI_EXTENSION_H

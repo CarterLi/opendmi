@@ -155,6 +155,14 @@ target_sources(opendmi-object
         src/entity/voltage-probe.c
         src/extension/apple.c
         src/extension/dell.c
+        src/entity/dell/calling-iface.c
+        src/entity/dell/indexed-io.c
+        src/entity/dell/infrared-port.c
+        src/entity/dell/parallel-port.c
+        src/entity/dell/protected-area-1.c
+        src/entity/dell/protected-area-2.c
+        src/entity/dell/revisions.c
+        src/entity/dell/serial-port.c
         src/extension/intel.c
         src/backend/dump.c
     PUBLIC FILE_SET HEADERS
@@ -235,6 +243,14 @@ target_sources(opendmi-object
             include/opendmi/entity/voltage-probe.h
             include/opendmi/extension/apple.h
             include/opendmi/extension/dell.h
+            include/opendmi/entity/dell/calling-iface.h
+            include/opendmi/entity/dell/indexed-io.h
+            include/opendmi/entity/dell/infrared-port.h
+            include/opendmi/entity/dell/parallel-port.h
+            include/opendmi/entity/dell/protected-area-1.h
+            include/opendmi/entity/dell/protected-area-2.h
+            include/opendmi/entity/dell/revisions.h
+            include/opendmi/entity/dell/serial-port.h
             include/opendmi/extension/intel.h
 )
 
