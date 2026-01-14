@@ -1,1 +1,129 @@
-=== Dell Serial Port (Type 210)
+= Dell Serial Port (Type 210)
+:sectnums:
+:sectlinks:
+
+.Dell Serial Port structure
+[width=100%, cols="1,1,2,1,1,4"]
+|===
+| Offset | Version | Name | Length | Value | Description
+
+| `0x00`
+| 2.2+
+| Type
+| `BYTE`
+| `210`
+| Dell Serial Port indicator
+
+| `0x01`
+| 2.2+
+| Length
+| `BYTE`
+| `0x0C`
+| Length of the structure
+
+| `0x02`
+| 2.2+
+| Handle
+| `WORD`
+| Varies
+|
+
+| `0x04`
+| 2.2+
+| Base I/O Address
+| `WORD`
+| `ADDRESS`
+|
+
+| `0x06`
+| 2.2+
+| IRQ
+| `BYTE`
+| `NUMBER`
+|
+
+| `0x07`
+| 2.2+
+| Connector Type
+| `BYTE`
+| `ENUM`
+| See <<dell-serial-port-connector-types>> for details
+
+| `0x08`
+| 2.2+
+| Capabilities
+| `BYTE`
+| `ENUM`
+| See <<dell-serial-port-capabilities>> for details
+
+| `0x09`
+| 2.2+
+| Maximum BIOS Speed
+| `WORD`
+| NUMBER
+|
+
+| `0x0B`
+| 2.2+
+| Security Settings
+| `BYTE`
+| `ENUM`
+| See <<dell-serial-port-security-settings>> for details
+|===
+
+[#dell-serial-port-connector-types, reftext=Connector types]
+== Dell Serial Port -- Connector types
+
+.Dell Serial Port: Connector type field
+[width=100%, cols="1,1,4"]
+|===
+| Hex Value | Dec Value | Meaning
+
+| `0x01` | `1`   | Other
+| `0x02` | `2`   | Unknown
+| `0x03` | `3`   | DB-9 Male
+| `0x04` | `4`   | DB-9 Female
+| `0x05` | `5`   | DB-25 Male
+| `0x06` | `6`   | DB-25 Female
+| `0x07` | `7`   | RJ-11
+| `0x08` | `8`   | RJ-45
+| `0x09` | `9`   | Proprietary
+| `0x0A` | `10`  | Circular DIN-8 Male
+| `0x0B` | `11`  | Circular DIN-8 Female
+| `0xA0` | `160` | Mini-Centronics Type-14
+| `0xA1` | `161` | Mini-Centronics Type-26
+|===
+
+[#dell-serial-port-capabilities, reftext=Capabilities]
+== Dell Serial Port -- Capabilities
+
+.Dell Serial Port: Capabilities field
+[width=100%, cols="1,1,4"]
+|===
+| Hex Value | Dec Value | Meaning
+
+| `0x01` | `1`   | Other
+| `0x02` | `2`   | Unknown
+| `0x03` | `3`   | XT/AT compatible
+| `0x04` | `4`   | 16450 compatible
+| `0x05` | `5`   | 16550 compatible
+| `0x06` | `6`   | 16550A compatible
+| `0xA0` | `160` | 8251 compatible
+| `0xA1` | `161` | 8251 FIFO compatible
+|===
+
+[#dell-serial-port-security-settings, reftext=Security settings]
+== Dell Serial Port -- Security settings
+
+.Dell Serial Port: Security settings field
+[width=100%, cols="1,1,4"]
+|===
+| Hex Value | Dec Value | Meaning
+
+| `0x01` | `1` | Other
+| `0x02` | `2` | Unknown
+| `0x03` | `3` | None
+| `0x04` | `4` | External Interface Locked Out
+| `0x05` | `5` | External Interface Enabled
+| `0x06` | `6` | Boot-bypass
+|===

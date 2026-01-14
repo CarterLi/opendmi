@@ -1,1 +1,148 @@
-=== Dell Parallel Port (Type 209)
+= Dell Parallel Port (Type 209)
+:sectnums:
+:sectlinks:
+
+.Dell Parallel Port structure
+[width=100%, cols="1,1,2,1,1,4"]
+|===
+| Offset | Version | Name | Length | Value | Description
+
+| `0x00`
+| 2.2+
+| Type
+| `BYTE`
+| `209`
+| Dell Parallel Port indicator
+
+| `0x01`
+| 2.2+
+| Length
+| `BYTE`
+| `0x0C`
+| Length of the structure
+
+| `0x02`
+| 2.2+
+| Handle
+| `WORD`
+| Varies
+|
+
+| `0x04`
+| 2.2+
+| Base I/O Address
+| `WORD`
+| `ADDRESS`
+|
+
+| `0x06`
+| 2.2+
+| IRQ
+| `BYTE`
+| `NUMBER`
+|
+
+| `0x07`
+| 2.2+
+| Connector Type
+| `BYTE`
+| `ENUM`
+| See <<dell-parallel-port-connector-types>> for details
+
+| `0x08`
+| 2.2+
+| Connector Pin-out
+| `BYTE`
+| `ENUM`
+| See <<dell-parallel-port-connector-pinouts>> for details
+
+| `0x09`
+| 2.2+
+| Capabilities
+| `WORD`
+| `BITFIELD`
+| See <dell-parallel-port-capabilities>> for details
+
+| `0x0B`
+| 2.2+
+| Security Settings
+| `BYTE`
+| `ENUM`
+| See <<dell-parallel-port-security-settings>> for details
+|===
+
+[#dell-parallel-port-connector-types, reftext=Connector types]
+== Dell Parallel Port -- Connector types
+
+.Dell Parallel Port: Connector type field
+[width=100%, cols="1,1,4"]
+|===
+| Hex Value | Dec Value | Meaning
+
+| `0x01` | `1`   | Other
+| `0x02` | `2`   | Unknown
+| `0x03` | `3`   | DB-25 Female IEEE 1284-A Receptacle
+| `0x04` | `4`   | DB-25 Male IEEE 1284-A Plug
+| `0x05` | `5`   | Centronics IEEE 1284-B Receptacle
+| `0x06` | `6`   | Mini-Centronics IEEE 1284-C Receptacle
+| `0x07` | `7`   | Proprietary
+| `0xA0` | `160` | Centronics-14
+| `0xA1` | `161` | DB-36 Female
+| `0xA2` | `162` | Mini-Centronics-20
+|===
+
+[#dell-parallel-port-connector-pinouts, reftext=Connector pin-outs]
+== Dell Parallel Port -- Connector Pin-outs
+
+.Dell Parallel Port: Connector pin-out field
+[width=100%, cols="1,1,4"]
+|===
+| Hex Value | Dec Value | Meaning
+
+| `0x01` | `1`   | Other
+| `0x02` | `2`   | Unknown
+| `0x03` | `3`   | XT/AT
+| `0x04` | `4`   | PS/2
+| `0x05` | `5`   | IEEE 1284
+| `0x06` | `6`   | Proprietary
+| `0xA0` | `160` | PC-98
+| `0xA1` | `161` | PC-98-Hireso
+| `0xA2` | `162` | PC-H98
+| `0xA3` | `163` | PC-98Note
+| `0xA4` | `164` | PC-98Full
+|===
+
+[#dell-parallel-port-capabilities, reftext=Capabilities]
+== Dell Parallel Port -- Capabilities
+
+.Dell Parallel Port: Connector pin-out field
+[width=100%, cols="2,4"]
+|===
+| Word Bit Position | Meaning
+
+| Bit 0     | XT/AT
+| Bit 1     | PS/2
+| Bit 2     | ECP
+| Bit 3     | EPP
+| Bit 4     | PC-98
+| Bit 5     | PC-98-Hireso
+| Bit 6     | PC-H98
+| Bits 7:14 | Reserved
+| Bit 15    | Device supports DMA
+|===
+
+[#dell-parallel-port-security-settings, reftext=Security settings]
+== Dell Parallel Port -- Security settings
+
+.Dell Parallel Port: Security settings field
+[width=100%, cols="1,1,4"]
+|===
+| Hex Value | Dec Value | Meaning
+
+| `0x01` | `1` | Other
+| `0x02` | `2` | Unknown
+| `0x03` | `3` | None
+| `0x04` | `4` | External Interface Locked Out
+| `0x05` | `5` | External Interface Enabled
+| `0x06` | `6` | Boot-bypass
+|===

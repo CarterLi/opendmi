@@ -1,1 +1,3 @@
-=== Dell Indexed IO (Type 212)
+= Dell Indexed IO (Type 212)
+:sectnums:
+:sectlinks:

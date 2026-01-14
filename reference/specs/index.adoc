@@ -1,14 +1,16 @@
 = Specifications
+:sectnums:
+:sectlinks:
 
 == Common structures
 
 == Dell-specific structures
 
-include::dell/revisions.adoc[]
-include::dell/parallel-port.adoc[]
-include::dell/serial-port.adoc[]
-include::dell/infrared-port.adoc[]
-include::dell/indexed-io.adoc[]
-include::dell/protected-area-1.adoc[]
-include::dell/protected-area-2.adoc[]
-include::dell/calling-iface.adoc[]
+include::dell/revisions.adoc[leveloffset=2]
+include::dell/parallel-port.adoc[leveloffset=2]
+include::dell/serial-port.adoc[leveloffset=2]
+include::dell/infrared-port.adoc[leveloffset=2]
+include::dell/indexed-io.adoc[leveloffset=2]
+include::dell/protected-area-1.adoc[leveloffset=2]
+include::dell/protected-area-2.adoc[leveloffset=2]
+include::dell/calling-iface.adoc[leveloffset=2]

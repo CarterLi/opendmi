@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Introduced reference manual
+- Added specifications for Dell-specific structures:
+  - Dell Revisions and IDs (type 208)
+  - Dell Parallel Port (type 209)
+  - Dell Serial Port (Type 210)
+  - Dell Infrared Port (Type 211)
 - Added memory controller structure linking
 - Added system boot status decoding
 - Added support for enumeration range names

@@ -1,1 +1,115 @@
-=== Dell Infrared Port (Type 211)
+= Dell Infrared Port (Type 211)
+:sectnums:
+:sectlinks:
+
+.Dell Infrared Port structure
+[width=100%, cols="1,1,2,1,1,4"]
+|===
+| Offset | Version | Name | Length | Value | Description
+
+| `0x00`
+| 2.2+
+| Type
+| `BYTE`
+| `211`
+| Dell Infrared Port indicator
+
+| `0x01`
+| 2.2+
+| Length
+| `BYTE`
+| `0x0D`
+| Length of the structure
+
+| `0x02`
+| 2.2+
+| Handle
+| `WORD`
+| Varies
+|
+
+| `0x04`
+| 2.2+
+| Location
+| `BYTE`
+| `STRING`
+|
+
+| `0x05`
+| 2.2+
+| Enable State
+| `BYTE`
+| `ENUM`
+| See <<dell-infrared-port-enable-states>> for details
+
+| `0x06`
+| 2.2+
+| Speed Limit Enable
+| `BYTE`
+| `ENUM`
+| See <<dell-infrared-port-enable-states>> for details
+
+| `0x07`
+| 2.2+
+| Speed Limit
+| `WORD`
+| `SPEED`
+|
+
+| `0x09`
+| 2.2+
+| Physical Port Name
+| `BYTE`
+| `STRING`
+|
+
+| `0x0A`
+| 2.2+
+| Virtual COM Port Name
+| `BYTE`
+| `STRING`
+|
+
+| `0x0B`
+| 2.2+
+| Virtual LPT Port Name
+| `BYTE`
+| `STRING`
+|
+
+| `0x0C`
+| 2.2+
+| Protocol
+| `BYTE`
+| `ENUM`
+| See <<dell-infrared-port-protocols>> for details
+|===
+
+[#dell-infrared-port-enable-states, reftext=Enable states]
+== Dell Infrared Port -- Enable states
+
+.Dell Infrared Port: Enable state field
+[width=100%, cols="1,1,4"]
+|===
+| Hex Value | Dec Value | Meaning
+
+| `0x01` | `1` | Other
+| `0x02` | `2` | Unknown
+| `0x03` | `3` | Enabled
+| `0x04` | `4` | Disabled
+|===
+
+[#dell-infrared-port-protocols, reftext=Protocols]
+== Dell Infrared Port -- Protocols
+
+.Dell Infrared Port: Protocol field
+[width=100%, cols="1,1,4"]
+|===
+| Hex Value | Dec Value | Meaning
+
+| `0x01` | `1` |  Other
+| `0x02` | `2` |  Unknown
+| `0x03` | `3` |  SIR
+| `0x04` | `4` |  FIR
+| `0x05` | `5` |  MIR
+|===

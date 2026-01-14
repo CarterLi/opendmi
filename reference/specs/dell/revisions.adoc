@@ -1,1 +1,78 @@
-=== Dell Revisions and IDs (Type 208)
+= Dell Revisions and IDs (Type 208)
+:sectnums:
+:sectlinks:
+
+.Dell Revisions and IDs structure
+[width=100%, cols="1,1,2,1,1,4"]
+|===
+| Offset | Version | Name | Length | Value | Description
+
+| `0x00`
+| 2.2+
+| Type
+| `BYTE`
+| `208`
+| Dell Revision and IDs indicator
+
+| `0x01`
+| 2.2+
+| Length
+| `BYTE`
+| `0x0C`
+| Length of the structure
+
+| `0x02`
+| 2.2+
+| Handle
+| `WORD`
+| Varies
+|
+
+| `0x04`
+| 2.2+
+| Dell Implementation, Major Revision
+| `BYTE`
+| NUMBER
+|
+
+| `0x05`
+| 2.2+
+| Dell Implementation, Minor Revision
+| `BYTE`
+| NUMBER
+|
+
+| `0x06`
+| 2.2+
+| Dell System ID
+| `BYTE`
+| NUMBER
+|
+
+| `0x07`
+| 2.2+
+| Dell Hardware Revision
+| `BYTE`
+| NUMBER
+|
+
+| `0x08`
+| 2.2+
+| Dell System ID Extension
+| `WORD`
+| NUMBER
+|
+
+| `0x0A`
+| 2.2+
+| Manufacture Date
+| `BYTE`
+| STRING
+|
+
+| `0x0B`
+| 2.2+
+| First Power-on Date
+| `BYTE`
+| STRING
+|===

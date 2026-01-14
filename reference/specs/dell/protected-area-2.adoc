@@ -1,1 +1,3 @@
-=== Dell Protected Area Type 1 (Type 215)
+= Dell Protected Area Type 1 (Type 215)
+:sectnums:
+:sectlinks:
