@@ -75,7 +75,6 @@ _usage() {
     echo "        --debug          Debug build"
     echo "    Components:"
     echo "        --enable-all     Build all components"
-    echo "        --enable-cxx     Build with C++ support (libopendmi++, default=${ENABLE_CXX})"
     echo "        --enable-golang  Build with Go support (libopendmi-go, default=${ENABLE_GOLANG})"
     echo "        --enable-python  Build with Python support (libopendmi-python, default=${ENABLE_PYTHON})"
     echo "        --enable-rust    Build with Rust support (libopendmi-rust, default=${ENABLE_RUST})"
@@ -113,14 +112,10 @@ _configure() {
                 BUILD_TYPE=Release
                 ;;
             --enable-all)
-                ENABLE_CXX=ON
                 ENABLE_GOLANG=ON
                 ENABLE_PYTHON=ON
                 ENABLE_RUST=ON
                 ENABLE_DBUS=ON
-                ;;
-            --enable-cxx)
-                ENABLE_CXX=ON
                 ;;
             --enable-golang)
                 ENABLE_GOLANG=ON
@@ -178,7 +173,6 @@ _configure() {
     ${CMAKE} -B ${BUILD_DIR} \
         -DCMAKE_INSTALL_PREFIX=${PREFIX} \
         -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
-        -DENABLE_CXX=${ENABLE_CXX} \
         -DENABLE_GOLANG=${ENABLE_GOLANG} \
         -DENABLE_PYTHON=${ENABLE_PYTHON} \
         -DENABLE_RUST=${ENABLE_RUST} \

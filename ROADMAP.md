@@ -31,4 +31,3 @@
 ## Release 1.0 (2026-12-31)
 
 * Stable API and complete documentation.
-* Basic implementation of `libopendmi++`.

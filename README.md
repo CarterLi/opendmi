@@ -8,7 +8,7 @@ The project is under active development, see [ROADMAP](ROADMAP.md) and [CHANGELO
 
 * Platform-agnostic access to DMI/SMBIOS structures.
 * Full SMBIOS support up to version 3.9.
-* Bindings for C, C++, Python, Go and Rust languages.
+* Bindings for Python, Go and Rust languages.
 * Modular extensions for handling OEM-specific structures.
 * JSON, XML and YAML output support for automation purposes.
 * Works on Linux, MacOS, BSD and Windows platforms.
@@ -22,7 +22,6 @@ The project is under active development, see [ROADMAP](ROADMAP.md) and [CHANGELO
 * `libopendmi-go` - Go bindings for `libopendmi`
 * `libopendmi-python` - Python bindings for `libopendmi`
 * `libopendmi-rust` - Rust bindings for `libopendmi`
-* `libopendmi++` - Pure C++ version of `libopendmi`
 
 ## Building from sources
 

@@ -10,7 +10,7 @@ project(opendmi
         VERSION 0.2.0
         DESCRIPTION "Cross-platform DMI/SMBIOS framework"
         HOMEPAGE_URL https://github.com/sdnvx/opendmi
-        LANGUAGES C CXX)
+        LANGUAGES C)
 
 set(OPENDMI_VERSION "${CMAKE_PROJECT_VERSION}")
 
@@ -18,7 +18,6 @@ set(OPENDMI_VERSION_MAJOR "${CMAKE_PROJECT_VERSION_MAJOR}")
 set(OPENDMI_VERSION_MINOR "${CMAKE_PROJECT_VERSION_MINOR}")
 set(OPENDMI_VERSION_PATCH "${CMAKE_PROJECT_VERSION_PATCH}")
 
-set(ENABLE_CXX OFF CACHE BOOL "Enable C++ support (libopendmi++)")
 set(ENABLE_GOLANG OFF CACHE BOOL "Enable Go support (libopendmi-go)")
 set(ENABLE_PYTHON OFF CACHE BOOL "Enable Python support (libopendmi-python)")
 set(ENABLE_RUST OFF CACHE BOOL "Enable Rust support (libopendmi-rust)")
@@ -35,9 +34,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_EXTENSIONS ON)
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_EXTENSIONS ON)
-
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 
 if(MSVC)
@@ -46,8 +42,8 @@ if(MSVC)
 else()
     add_compile_options(-Wall -Wextra)
 
-    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
-       "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+    if("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang" OR
+       "${CMAKE_C_COMPILER_ID}" STREQUAL "AppleClang")
         add_compile_options(-Wno-gnu-zero-variadic-macro-arguments -Wno-keyword-macro)
     endif()
 endif()
@@ -62,13 +58,6 @@ endif()
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     add_compile_options(-g -fno-omit-frame-pointer)
-
-#   if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
-#      "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
-#       add_compile_options(--analyze -Xanalyzer -analyzer-output=text)
-#   elseif("${CMALE_CXX_COMPILER_ID}" STREQUAL "GNU")
-#       add_compile_options(-fanalyzer)
-#   endif()
 else()
     add_compile_options(-O2)
     add_compile_definitions(NDEBUG)
@@ -100,13 +89,6 @@ enable_testing()
 
 add_subdirectory(libopendmi)
 add_subdirectory(opendmi)
-
-if(ENABLE_CXX)
-    message(STATUS "C++ support is enabled")
-    add_subdirectory(libopendmi++)
-else()
-    message(STATUS "C++ support is disabled")
-endif()
 
 if(ENABLE_GOLANG)
     message(STATUS "GoLang support is enabled")
