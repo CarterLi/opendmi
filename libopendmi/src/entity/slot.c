@@ -541,7 +541,7 @@ const dmi_entity_spec_t dmi_slot_spec =
 {
     .code            = "slot",
     .name            = "System slots",
-    .type            = DMI_TYPE_SYSTEM_SLOTS,
+    .type            = DMI_TYPE(SYSTEM_SLOTS),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x0C,
     .decoded_length  = sizeof(dmi_slot_t),

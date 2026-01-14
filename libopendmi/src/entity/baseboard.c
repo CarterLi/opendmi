@@ -118,7 +118,7 @@ const dmi_entity_spec_t dmi_baseboard_spec =
 {
     .code            = "baseboard",
     .name            = "Baseboard or module information",
-    .type            = DMI_TYPE_BASEBOARD,
+    .type            = DMI_TYPE(BASEBOARD),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x08,
     .decoded_length  = sizeof(dmi_baseboard_t),

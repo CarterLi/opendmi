@@ -61,7 +61,7 @@ const dmi_entity_spec_t dmi_battery_spec =
 {
     .code            = "portable-battery",
     .name            = "Portable battery",
-    .type            = DMI_TYPE_PORTABLE_BATTERY,
+    .type            = DMI_TYPE(PORTABLE_BATTERY),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_battery_t),

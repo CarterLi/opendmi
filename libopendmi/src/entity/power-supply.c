@@ -93,7 +93,7 @@ const dmi_entity_spec_t dmi_power_supply_spec =
 {
     .code            = "power-supply",
     .name            = "System power supply",
-    .type            = DMI_TYPE_POWER_SUPPLY,
+    .type            = DMI_TYPE(POWER_SUPPLY),
     .minimum_version = DMI_VERSION(2, 3, 1),
     .minimum_length  = 0x10,
     .decoded_length  = sizeof(dmi_power_supply_t),

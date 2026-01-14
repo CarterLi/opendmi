@@ -18,7 +18,7 @@ const dmi_entity_spec_t dmi_group_assoc_spec =
 {
     .code            = "group-associations",
     .name            = "Group associations",
-    .type            = DMI_TYPE_GROUP_ASSOC,
+    .type            = DMI_TYPE(GROUP_ASSOC),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_group_assoc_t),

@@ -17,7 +17,7 @@ const dmi_entity_spec_t dmi_mgmt_device_component_spec =
 {
     .code            = "mgmt-device-component",
     .name            = "Management device component",
-    .type            = DMI_TYPE_MGMT_DEVICE_COMPONENT,
+    .type            = DMI_TYPE(MGMT_DEVICE_COMPONENT),
     .minimum_version = DMI_VERSION(2, 3, 0),
     .minimum_length  = 0x0B,
     .decoded_length  = sizeof(dmi_mgmt_device_component_t),

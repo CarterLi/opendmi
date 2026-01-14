@@ -10,7 +10,7 @@ const dmi_entity_spec_t dmi_processor_ex_spec =
 {
     .code            = "processor-ex",
     .name            = "Processor additional information",
-    .type            = DMI_TYPE_PROCESSOR_EX,
+    .type            = DMI_TYPE(PROCESSOR_EX),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x06,
     .attributes      = (dmi_attribute_t[]){

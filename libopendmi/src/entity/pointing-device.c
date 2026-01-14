@@ -129,7 +129,7 @@ const dmi_entity_spec_t dmi_pointing_device_spec =
 {
     .code            = "pointing-device",
     .name            = "Built-in pointing device",
-    .type            = DMI_TYPE_POINTING_DEVICE,
+    .type            = DMI_TYPE(POINTING_DEVICE),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x07,
     .decoded_length  = sizeof(dmi_pointing_device_t),

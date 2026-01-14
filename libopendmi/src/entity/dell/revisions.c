@@ -9,7 +9,7 @@
 
 const dmi_entity_spec_t dmi_dell_revisions_spec =
 {
-    .type = DMI_TYPE_DELL_REVISIONS,
+    .type = DMI_TYPE(DELL_REVISIONS),
     .code = "dell-revisions",
     .name = "Dell: Revisions and IDs"
 };

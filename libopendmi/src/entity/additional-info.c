@@ -10,7 +10,7 @@ const dmi_entity_spec_t dmi_additional_info_spec =
 {
     .code            = "additional-info",
     .name            = "Additional information",
-    .type            = DMI_TYPE_ADDITIONAL_INFO,
+    .type            = DMI_TYPE(ADDITIONAL_INFO),
     .minimum_version = DMI_VERSION(2, 6, 0),
     .minimum_length  = 0x05,
     .attributes      = (dmi_attribute_t[]) {

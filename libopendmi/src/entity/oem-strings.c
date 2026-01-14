@@ -17,7 +17,7 @@ const dmi_entity_spec_t dmi_oem_strings_spec =
 {
     .code            = "oem-strings",
     .name            = "OEM strings",
-    .type            = DMI_TYPE_OEM_STRINGS,
+    .type            = DMI_TYPE(OEM_STRINGS),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_oem_strings_t),

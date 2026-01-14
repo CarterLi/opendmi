@@ -405,7 +405,7 @@ const dmi_entity_spec_t dmi_memory_device_spec =
 {
     .code            = "memory-device",
     .name            = "Memory device",
-    .type            = DMI_TYPE_MEMORY_DEVICE,
+    .type            = DMI_TYPE(MEMORY_DEVICE),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x15,
     .decoded_length  = sizeof(dmi_memory_device_t),

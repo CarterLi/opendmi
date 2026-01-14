@@ -422,7 +422,7 @@ const dmi_entity_spec_t dmi_port_connector_spec =
 {
     .code            = "port-connector",
     .name            = "Port connector information",
-    .type            = DMI_TYPE_PORT_CONNECTOR,
+    .type            = DMI_TYPE(PORT_CONNECTOR),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x09,
     .decoded_length  = sizeof(dmi_port_connector_t),

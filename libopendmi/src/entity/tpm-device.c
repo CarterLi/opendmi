@@ -45,7 +45,7 @@ const dmi_entity_spec_t dmi_tpm_device_spec =
 {
     .code            = "tpm-device",
     .name            = "TPM device",
-    .type            = DMI_TYPE_TPM_DEVICE,
+    .type            = DMI_TYPE(TPM_DEVICE),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x1F,
     .decoded_length  = sizeof(dmi_tpm_device_t),

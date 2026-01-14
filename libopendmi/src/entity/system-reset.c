@@ -44,7 +44,7 @@ const dmi_entity_spec_t dmi_system_reset_spec =
 {
     .code            = "system-reset",
     .name            = "System reset",
-    .type            = DMI_TYPE_SYSTEM_RESET,
+    .type            = DMI_TYPE(SYSTEM_RESET),
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x0D,
     .decoded_length  = sizeof(dmi_system_reset_t),

@@ -40,7 +40,7 @@ const dmi_entity_spec_t dmi_hardware_security_spec =
 {
     .code            = "hardware-security",
     .name            = "Hardware security",
-    .type            = DMI_TYPE_HARDWARE_SECURITY,
+    .type            = DMI_TYPE(HARDWARE_SECURITY),
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_hardware_security_t),

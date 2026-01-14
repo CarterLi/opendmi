@@ -250,7 +250,7 @@ const dmi_entity_spec_t dmi_firmware_spec =
 {
     .code            = "firmware",
     .name            = "Platform firmware information",
-    .type            = DMI_TYPE_FIRMWARE,
+    .type            = DMI_TYPE(FIRMWARE),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .required_from   = DMI_VERSION(2, 3, 0),
     .required_till   = DMI_VERSION_NONE,

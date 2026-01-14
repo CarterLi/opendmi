@@ -9,7 +9,7 @@
 
 const dmi_entity_spec_t dmi_dell_serial_port_spec =
 {
-    .type = DMI_TYPE_DELL_SERIAL_PORT,
+    .type = DMI_TYPE(DELL_SERIAL_PORT),
     .code = "dell-serial-port",
     .name = "Dell: Serial port"
 };

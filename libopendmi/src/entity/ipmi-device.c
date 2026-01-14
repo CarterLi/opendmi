@@ -105,7 +105,7 @@ const dmi_entity_spec_t dmi_ipmi_device_spec =
 {
     .code            = "ipmi-device",
     .name            = "IPMI device information",
-    .type            = DMI_TYPE_IPMI_DEVICE,
+    .type            = DMI_TYPE(IPMI_DEVICE),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x12,
     .decoded_length  = sizeof(dmi_ipmi_device_t),

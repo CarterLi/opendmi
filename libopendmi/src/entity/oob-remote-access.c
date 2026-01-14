@@ -35,7 +35,7 @@ const dmi_entity_spec_t dmi_oob_remote_access_spec =
 {
     .code            = "oob-remote-access",
     .name            = "Out-of-band remote access",
-    .type            = DMI_TYPE_OOB_REMOTE_ACCESS,
+    .type            = DMI_TYPE(OOB_REMOTE_ACCESS),
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x06,
     .decoded_length  = sizeof(dmi_oob_remote_access_t),

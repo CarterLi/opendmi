@@ -166,7 +166,7 @@ const dmi_entity_spec_t dmi_memory_controller_spec =
 {
     .code            = "memory-controller",
     .name            = "Memory controller information",
-    .type            = DMI_TYPE_MEMORY_CONTROLLER,
+    .type            = DMI_TYPE(MEMORY_CONTROLLER),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x08,
     .decoded_length  = sizeof(dmi_memory_controller_t),

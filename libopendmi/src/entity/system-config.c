@@ -17,7 +17,7 @@ const dmi_entity_spec_t dmi_system_config_opts_spec =
 {
     .code            = "system-config-options",
     .name            = "System configuration options",
-    .type            = DMI_TYPE_SYSTEM_CONFIG_OPTIONS,
+    .type            = DMI_TYPE(SYSTEM_CONFIG_OPTIONS),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_system_config_opts_t),

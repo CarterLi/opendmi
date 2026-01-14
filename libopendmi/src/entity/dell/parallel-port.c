@@ -9,7 +9,7 @@
 
 const dmi_entity_spec_t dmi_dell_parallel_port_spec =
 {
-    .type = DMI_TYPE_DELL_PARALLEL_PORT,
+    .type = DMI_TYPE(DELL_PARALLEL_PORT),
     .code = "dell-parallel-port",
     .name = "Dell: Parallel port"
 };

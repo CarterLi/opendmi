@@ -9,7 +9,7 @@
 
 const dmi_entity_spec_t dmi_dell_indexed_io_spec =
 {
-    .type = DMI_TYPE_DELL_INDEXED_IO,
+    .type = DMI_TYPE(DELL_INDEXED_IO),
     .code = "dell-indexed-io",
     .name = "Dell: Indexed IO"
 };

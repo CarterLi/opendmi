@@ -92,7 +92,7 @@ const dmi_entity_spec_t dmi_system_boot_spec =
 {
     .code           = "system-boot",
     .name           = "System boot information",
-    .type           = DMI_TYPE_SYSTEM_BOOT,
+    .type           = DMI_TYPE(SYSTEM_BOOT),
     .required_from  = DMI_VERSION(2, 3, 0),
     .required_till  = DMI_VERSION_NONE,
     .minimum_length = 0x0B,

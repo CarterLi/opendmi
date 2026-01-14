@@ -18,7 +18,7 @@ const dmi_entity_spec_t dmi_memory_array_addr_spec =
 {
     .code            = "memory-array-address",
     .name            = "Memory array mapped address",
-    .type            = DMI_TYPE_MEMORY_ARRAY_ADDR,
+    .type            = DMI_TYPE(MEMORY_ARRAY_ADDR),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x0F,
     .decoded_length  = sizeof(dmi_memory_array_addr_t),

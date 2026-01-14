@@ -109,7 +109,7 @@ const dmi_entity_spec_t dmi_mgmt_device_spec =
 {
     .code            = "mgmt-device",
     .name            = "Management device",
-    .type            = DMI_TYPE_MGMT_DEVICE,
+    .type            = DMI_TYPE(MGMT_DEVICE),
     .minimum_version = DMI_VERSION(2, 3, 0),
     .minimum_length  = 0x0B,
     .decoded_length  = sizeof(dmi_mgmt_device_t),

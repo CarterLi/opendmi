@@ -20,7 +20,7 @@ const dmi_entity_spec_t dmi_memory_device_addr_spec =
 {
     .code            = "memory-device-address",
     .name            = "Memory device mapped address",
-    .type            = DMI_TYPE_MEMORY_DEVICE_ADDR,
+    .type            = DMI_TYPE(MEMORY_DEVICE_ADDR),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x13,
     .decoded_length  = sizeof(dmi_memory_device_addr_t),

@@ -40,7 +40,7 @@ const dmi_entity_spec_t dmi_memory_channel_spec =
 {
     .code            = "memory-channel",
     .name            = "Memory channel",
-    .type            = DMI_TYPE_MEMORY_CHANNEL,
+    .type            = DMI_TYPE(MEMORY_CHANNEL),
     .minimum_version = DMI_VERSION(2, 3, 0),
     .minimum_length  = 0x0A,
     .decoded_length  = sizeof(dmi_memory_channel_t),

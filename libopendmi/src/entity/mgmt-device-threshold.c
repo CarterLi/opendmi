@@ -18,7 +18,7 @@ const dmi_entity_spec_t dmi_mgmt_device_threshold_spec =
 {
     .code            = "mgmt-device-threshold",
     .name            = "Management device threshold data",
-    .type            = DMI_TYPE_MGMT_DEVICE_THRESHOLD,
+    .type            = DMI_TYPE(MGMT_DEVICE_THRESHOLD),
     .minimum_version = DMI_VERSION(2, 3, 0),
     .minimum_length  = 0x10,
     .decoded_length  = sizeof(dmi_mgmt_device_threshold_t),

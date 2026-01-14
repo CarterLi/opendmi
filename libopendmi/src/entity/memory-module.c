@@ -97,7 +97,7 @@ const dmi_entity_spec_t dmi_memory_module_spec =
 {
     .code            = "memory-module",
     .name            = "Memory module information",
-    .type            = DMI_TYPE_MEMORY_MODULE,
+    .type            = DMI_TYPE(MEMORY_MODULE),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x08,
     .decoded_length  = sizeof(dmi_memory_module_t),

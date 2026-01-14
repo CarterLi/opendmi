@@ -17,7 +17,7 @@ const dmi_entity_spec_t dmi_firmware_language_spec =
 {
     .code            = "firmware-language",
     .name            = "Firmware language information",
-    .type            = DMI_TYPE_FIRMWARE_LANGUAGE,
+    .type            = DMI_TYPE(FIRMWARE_LANGUAGE),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_firmware_language_t),

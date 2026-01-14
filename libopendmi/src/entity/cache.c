@@ -194,7 +194,7 @@ const dmi_entity_spec_t dmi_cache_spec =
 {
     .code            = "cache",
     .name            = "Cache information",
-    .type            = DMI_TYPE_CACHE,
+    .type            = DMI_TYPE(CACHE),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x0F,
     .decoded_length  = sizeof(dmi_cache_t),

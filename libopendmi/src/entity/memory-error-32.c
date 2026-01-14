@@ -16,7 +16,7 @@ const dmi_entity_spec_t dmi_memory_error_32_spec =
 {
     .code            = "memory-error-32",
     .name            = "32-bit memory error information",
-    .type            = DMI_TYPE_MEMORY_ERROR_32,
+    .type            = DMI_TYPE(MEMORY_ERROR_32),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x17,
     .decoded_length  = sizeof(dmi_memory_error_32_t),

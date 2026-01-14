@@ -124,7 +124,7 @@ const dmi_entity_spec_t dmi_firmware_inventory_spec =
 {
     .code            = "firmware-inventory",
     .name            = "Firmware inventory information",
-    .type            = DMI_TYPE_FIRMWARE_INVENTORY,
+    .type            = DMI_TYPE(FIRMWARE_INVENTORY),
     .minimum_version = DMI_VERSION(3, 5, 0),
     .minimum_length  = 0x18,
     .decoded_length  = sizeof(dmi_firmware_inventory_t),

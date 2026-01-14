@@ -66,7 +66,7 @@ const dmi_entity_spec_t dmi_system_event_log_spec =
 {
     .code            = "system-event-log",
     .name            = "System event log",
-    .type            = DMI_TYPE_SYSTEM_EVENT_LOG,
+    .type            = DMI_TYPE(SYSTEM_EVENT_LOG),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x14,
     .decoded_length  = sizeof(dmi_system_event_log_t),

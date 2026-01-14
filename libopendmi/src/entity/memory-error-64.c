@@ -16,7 +16,7 @@ const dmi_entity_spec_t dmi_memory_error_64_spec =
 {
     .code            = "memory-error-64",
     .name            = "64-bit memory error information",
-    .type            = DMI_TYPE_MEMORY_ERROR_64,
+    .type            = DMI_TYPE(MEMORY_ERROR_64),
     .minimum_version = DMI_VERSION(2, 3, 0),
     .minimum_length  = 0x1F,
     .decoded_length  = sizeof(dmi_memory_error_64_t),

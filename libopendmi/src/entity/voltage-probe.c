@@ -11,7 +11,7 @@ const dmi_entity_spec_t dmi_voltage_probe_spec =
 {
     .code            = "voltage-probe",
     .name            = "Voltage probe",
-    .type            = DMI_TYPE_VOLTAGE_PROBE,
+    .type            = DMI_TYPE(VOLTAGE_PROBE),
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x14,
     .decoded_length  = sizeof(dmi_voltage_probe_t),

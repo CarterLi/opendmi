@@ -17,7 +17,7 @@ const dmi_entity_spec_t dmi_string_property_spec =
 {
     .code            = "string-property",
     .name            = "String property",
-    .type            = DMI_TYPE_STRING_PROPERTY,
+    .type            = DMI_TYPE(STRING_PROPERTY),
     .minimum_version = DMI_VERSION(3, 5, 0),
     .minimum_length  = 0x09,
     .decoded_length  = sizeof(dmi_string_property_t),

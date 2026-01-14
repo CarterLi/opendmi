@@ -236,7 +236,7 @@ const dmi_entity_spec_t dmi_chassis_spec =
 {
     .code            = "chassis",
     .name            = "System enclosure or chassis",
-    .type            = DMI_TYPE_CHASSIS,
+    .type            = DMI_TYPE(CHASSIS),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .required_from   = DMI_VERSION(2, 3, 0),
     .required_till   = DMI_VERSION_NONE,

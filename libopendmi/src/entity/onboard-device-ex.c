@@ -18,7 +18,7 @@ const dmi_entity_spec_t dmi_onboard_device_ex_spec =
 {
     .code            = "onboard-device-ex",
     .name            = "Onboard devices extended information",
-    .type            = DMI_TYPE_ONBOARD_DEVICE_EX,
+    .type            = DMI_TYPE(ONBOARD_DEVICE_EX),
     .minimum_version = DMI_VERSION(2, 6, 0),
     .minimum_length  = 0x0B,
     .decoded_length  = sizeof(dmi_onboard_device_ex_t),

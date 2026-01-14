@@ -9,7 +9,7 @@
 
 const dmi_entity_spec_t dmi_dell_calling_iface_spec =
 {
-    .type = DMI_TYPE_DELL_CALLING_IFACE,
+    .type = DMI_TYPE(DELL_CALLING_IFACE),
     .code = "dell-calling-iface",
     .name = "Dell: Calling interface"
 };
