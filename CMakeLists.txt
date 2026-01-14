@@ -18,11 +18,17 @@ set(OPENDMI_VERSION_MAJOR "${CMAKE_PROJECT_VERSION_MAJOR}")
 set(OPENDMI_VERSION_MINOR "${CMAKE_PROJECT_VERSION_MINOR}")
 set(OPENDMI_VERSION_PATCH "${CMAKE_PROJECT_VERSION_PATCH}")
 
-set(OPENDMI_CXX OFF CACHE BOOL "Enable C++ support(libopendmi++)")
-set(OPENDMI_GOLANG OFF CACHE BOOL "Enable Go support (libopendmi-go)")
-set(OPENDMI_PYTHON OFF CACHE BOOL "Enable Python support (libopendmi-python)")
-set(OPENDMI_RUST OFF CACHE BOOL "Enable Rust support (libopendmi-rust)")
-set(OPENDMI_DBUS OFF CACHE BOOL "Enable D-bus support (opendmi-dbus)")
+set(ENABLE_CXX OFF CACHE BOOL "Enable C++ support (libopendmi++)")
+set(ENABLE_GOLANG OFF CACHE BOOL "Enable Go support (libopendmi-go)")
+set(ENABLE_PYTHON OFF CACHE BOOL "Enable Python support (libopendmi-python)")
+set(ENABLE_RUST OFF CACHE BOOL "Enable Rust support (libopendmi-rust)")
+set(ENABLE_DBUS OFF CACHE BOOL "Enable D-bus support (opendmi-dbus)")
+
+set(ENABLE_ICU OFF CACHE BOOL "Build ICU4C support")
+set(ENABLE_CURSES ON CACHE BOOL "Build with Curses support")
+set(ENABLE_JSON ON CACHE BOOL "Build with JSON support")
+set(ENABLE_XML ON CACHE BOOL "Build with XML support (libxml)")
+set(ENABLE_YAML ON CACHE BOOL "Build with YAML support (libyaml)")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
@@ -74,6 +80,7 @@ include(FindPackageEx)
 
 if(APPLE)
     list(PREPEND CMAKE_PREFIX_PATH "/opt/homebrew/opt/icu4c")
+    LIST(PREPEND CMAKE_PROGRAM_PATH "/opt/homebrew/opt/icu4c/bin/")
 endif()
 
 find_package(AsciiDoctor)

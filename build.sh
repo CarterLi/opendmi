@@ -81,7 +81,7 @@ _usage() {
     echo "        --enable-rust    Build with Rust support (libopendmi-rust, default=${ENABLE_RUST})"
     echo "        --enable-dbus    Build with D-bus support (opendmi-dbus, default=${ENABLE_DBUS})"
     echo "    Features:"
-    echo "        --with-icu       Build ICU4C support (default=${ENABLE_ICU})"
+    echo "        --with-icu       Build with ICU4C support (default=${ENABLE_ICU})"
     echo "        --with-curses    Build with Curses support (default=${ENABLE_CURSES})"
     echo "        --with-json      Build with JSON support (default=${ENABLE_JSON})"
     echo "        --with-xml       Build with XML support (default=${ENABLE_XML})"

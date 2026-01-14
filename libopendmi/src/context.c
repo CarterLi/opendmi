@@ -14,6 +14,12 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <assert.h>
+#include <stdio.h>
+
+#ifdef ENABLE_ICU
+#   include <unicode/udata.h>
+#   include <unicode/ures.h>
+#endif // ENABLE_ICU
 
 #include <opendmi/context.h>
 #include <opendmi/entry.h>
@@ -170,8 +176,13 @@ static const dmi_entity_spec_t *dmi_entity_specs[] =
     [DMI_TYPE_END_OF_TABLE]            = &dmi_end_of_table_spec
 };
 
+#ifdef ENABLE_ICU
+//extern void *dmi_resources_dat;
+#endif
+
 dmi_context_t *dmi_create(void)
 {
+    bool success = false;
     dmi_context_t *context = nullptr;
 
     // Allocate context descriptor
@@ -181,21 +192,48 @@ dmi_context_t *dmi_create(void)
 
     context->log_level = DMI_LOG_INFO;
 
-    // Allocate type map
-    context->type_map = dmi_alloc_array(context, sizeof(dmi_entity_spec_t *), DMI_TYPE_MAX + 1);
-    if (context->type_map == nullptr) {
+    do {
+        // Allocate type map
+        context->type_map = dmi_alloc_array(context, sizeof(dmi_entity_spec_t *), DMI_TYPE_MAX + 1);
+        if (context->type_map == nullptr)
+            break;
+
+        // Initialize type map
+        for (size_t i = 0; i < countof(dmi_entity_specs); i++) {
+            const dmi_entity_spec_t *spec = dmi_entity_specs[i];
+
+            if (spec == nullptr)
+                continue;
+
+            context->type_map[spec->type] = spec;
+        }
+
+#       ifdef ENABLE_ICU
+//            UErrorCode status;
+
+            // Register resources package
+//            udata_setAppData("dmi", dmi_resources_dat, &status);
+//            if (not U_SUCCESS(status)) {
+//                fprintf(stderr, "Unable register resources package: %s", u_errorName(status));
+//                break;
+//            }
+
+            // Load i18n resources
+//            context->resources = ures_open("dmi", "root", &status);
+//            if (not U_SUCCESS(status)) {
+//                fprintf(stderr, "Unable to open resource bundle: %s", u_errorName(status));
+//                break;
+//            }
+#       endif
+
+        success = true;
+    } while (false);
+
+    if (not success) {
+        dmi_free(context->type_map);
         dmi_free(context);
+
         return nullptr;
-    }
-
-    // Initialize type map
-    for (size_t i = 0; i < countof(dmi_entity_specs); i++) {
-        const dmi_entity_spec_t *spec = dmi_entity_specs[i];
-
-        if (spec == nullptr)
-            continue;
-
-        context->type_map[spec->type] = spec;
     }
 
     return context;
@@ -376,6 +414,12 @@ void dmi_destroy(dmi_context_t *context)
     // Close and free context
     dmi_close(context);
     dmi_error_clear(context);
+
+#   ifdef ENABLE_ICU
+        // Close resources
+        if (context->resources != nullptr)
+            ures_close((UResourceBundle *)context->resources);
+#   endif
 
     dmi_free(context->type_map);
     dmi_free(context);

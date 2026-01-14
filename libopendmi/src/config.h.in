@@ -7,6 +7,8 @@
 #ifndef OPENDMI_CONFIG_H
 #define OPENDMI_CONFIG_H
 
+#cmakedefine ENABLE_ICU
+
 #cmakedefine HAVE_SYS_MMAN_H
 #cmakedefine HAVE_UNISTD_H
 #cmakedefine HAVE_IO_H

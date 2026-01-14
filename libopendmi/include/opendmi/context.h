@@ -106,6 +106,11 @@ struct dmi_context
      * @brief Error state.
      */
     dmi_error_state_t error_state;
+
+    /**
+     * @brief ICU4C resources.
+     */
+    void *resources;
 };
 
 __BEGIN_DECLS
