@@ -73,6 +73,8 @@ if(APPLE)
 endif()
 
 find_package(AsciiDoctor)
+find_package(AsciiDoctorPdf)
+
 find_package_ex(ICU ENABLE_ICU COMPONENTS data uc)
 find_package_ex(Curses ENABLE_CURSES)
 find_package_ex(LibXml2 ENABLE_XML)

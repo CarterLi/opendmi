@@ -6,18 +6,23 @@
 #
 project(opendmi-reference)
 
-if(ASCIIDOCTOR_FOUND)
+if(ASCIIDOCTOR_PDF_FOUND)
     set(REFERENCE_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/reference.pdf)
     file(GLOB_RECURSE REFERENCE_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.adoc)
 
     add_custom_command(
         OUTPUT ${REFERENCE_OUTPUT}
-        COMMAND ${ASCIIDOCTOR_EXECUTABLE}
+        COMMAND ${ASCIIDOCTOR_PDF_EXECUTABLE}
             --require asciidoctor-pdf
             --backend pdf
+            --attribute pdf-themesdir=${CMAKE_CURRENT_SOURCE_DIR}/themes
+            --attribute pdf-fontsdir=${CMAKE_CURRENT_SOURCE_DIR}/fonts
+            --theme opendmi
             --out-file ${REFERENCE_OUTPUT}
             ${CMAKE_CURRENT_SOURCE_DIR}/src/index.adoc
-        DEPENDS ${REFERENCE_SOURCES}
+        DEPENDS
+            themes/opendmi-theme.yml
+            ${REFERENCE_SOURCES}
     )
 
     add_custom_target(opendmi-reference ALL DEPENDS ${REFERENCE_OUTPUT})

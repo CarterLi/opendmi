@@ -1,0 +1,27 @@
+extends: default
+font:
+  catalog:
+    IBM Plex Serif:
+      normal: ibm-plex-serif/IBMPlexSerif-Regular.otf
+      bold: ibm-plex-serif/IBMPlexSerif-SemiBold.otf
+      italic: ibm-plex-serif/IBMPlexSerif-Italic.otf
+      bold_italic: ibm-plex-serif/IBMPlexSerif-SemiBoldItalic.otf
+    IBM Plex Sans:
+      normal: ibm-plex-sans/IBMPlexSans-Regular.otf
+      bold: ibm-plex-sans/IBMPlexSans-SemiBold.otf
+      italic: ibm-plex-sans/IBMPlexSans-Italic.otf
+      bold_italic: ibm-plex-sans/IBMPlexSans-SemiBoldItalic.otf
+    IBM Plex Mono:
+      normal: ibm-plex-mono/IBMPlexMono-Regular.otf
+      bold: ibm-plex-mono/IBMPlexMono-SemiBold.otf
+      italic: ibm-plex-mono/IBMPlexMono-Italic.otf
+      bold_italic: ibm-plex-mono/IBMPlexMono-SemiBoldItalic.otf
+base:
+  font-family: IBM Plex Serif
+  font-size: 10
+code:
+  font-family: IBM Plex Mono
+codespan:
+  font-family: $code-font-family
+page:
+  size: A4

@@ -32,47 +32,48 @@
 | 2.2+
 | Dell Implementation, Major Revision
 | `BYTE`
-| NUMBER
+| `NUMBER`
 |
 
 | `0x05`
 | 2.2+
 | Dell Implementation, Minor Revision
 | `BYTE`
-| NUMBER
+| `NUMBER`
 |
 
 | `0x06`
 | 2.2+
 | Dell System ID
 | `BYTE`
-| NUMBER
+| `NUMBER`
 |
 
 | `0x07`
 | 2.2+
 | Dell Hardware Revision
 | `BYTE`
-| NUMBER
+| `NUMBER`
 |
 
 | `0x08`
 | 2.2+
 | Dell System ID Extension
 | `WORD`
-| NUMBER
+| `NUMBER`
 |
 
 | `0x0A`
 | 2.2+
 | Manufacture Date
 | `BYTE`
-| STRING
+| `STRING`
 |
 
 | `0x0B`
 | 2.2+
 | First Power-on Date
 | `BYTE`
-| STRING
+| `STRING`
+|
 |===
