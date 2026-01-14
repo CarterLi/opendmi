@@ -89,6 +89,7 @@ enable_testing()
 
 add_subdirectory(libopendmi)
 add_subdirectory(opendmi)
+add_subdirectory(reference)
 
 if(ENABLE_GOLANG)
     message(STATUS "GoLang support is enabled")
