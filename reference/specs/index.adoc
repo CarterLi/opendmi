@@ -1,0 +1,14 @@
+= Specifications
+
+== Common structures
+
+== Dell-specific structures
+
+include::dell/revisions.adoc[]
+include::dell/parallel-port.adoc[]
+include::dell/serial-port.adoc[]
+include::dell/infrared-port.adoc[]
+include::dell/indexed-io.adoc[]
+include::dell/protected-area-1.adoc[]
+include::dell/protected-area-2.adoc[]
+include::dell/calling-iface.adoc[]
