@@ -1,0 +1,3 @@
+= Dell BIOS Flags (Type 177)
+:sectnums:
+:sectlinks:

@@ -1,0 +1,15 @@
+//
+// OpenDMI: Cross-platform DMI/SMBIOS framework
+// Copyright (c) 2025-2026, The OpenDMI contributors
+//
+// SPDX-License-Identifier: BSD-3-Clause
+//
+#include <opendmi/extension/dell.h>
+#include <opendmi/entity/dell/bios-flags.h>
+
+const dmi_entity_spec_t dmi_dell_bios_flags_spec =
+{
+    .type = DMI_TYPE(DELL_BIOS_FLAGS),
+    .code = "dell-bios-flags",
+    .name = "Dell: BIOS flags"
+};

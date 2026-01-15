@@ -155,6 +155,7 @@ target_sources(opendmi-object
         src/entity/voltage-probe.c
         src/extension/apple.c
         src/extension/dell.c
+        src/entity/dell/bios-flags.c
         src/entity/dell/calling-iface.c
         src/entity/dell/indexed-io.c
         src/entity/dell/infrared-port.c
@@ -243,6 +244,7 @@ target_sources(opendmi-object
             include/opendmi/entity/voltage-probe.h
             include/opendmi/extension/apple.h
             include/opendmi/extension/dell.h
+            include/opendmi/entity/dell/bios-flags.h
             include/opendmi/entity/dell/calling-iface.h
             include/opendmi/entity/dell/indexed-io.h
             include/opendmi/entity/dell/infrared-port.h

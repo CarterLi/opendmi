@@ -13,6 +13,7 @@
 
 typedef enum dmi_dell_type
 {
+    DMI_TYPE_DELL_BIOS_FLAGS        = 177, ///< Dell: BIOS flags
     DMI_TYPE_DELL_REVISIONS         = 208, ///< Dell: Revisions and IDs
     DMI_TYPE_DELL_PARALLEL_PORT     = 209, ///< Dell: Parallel port
     DMI_TYPE_DELL_SERIAL_PORT       = 210, ///< Dell: Serial port

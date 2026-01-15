@@ -6,6 +6,7 @@
 
 == Dell-specific structures
 
+include::dell/bios-flags.adoc[leveloffset=2]
 include::dell/revisions.adoc[leveloffset=2]
 include::dell/parallel-port.adoc[leveloffset=2]
 include::dell/serial-port.adoc[leveloffset=2]

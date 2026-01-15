@@ -6,6 +6,7 @@
 //
 #include <opendmi/extension/dell.h>
 
+#include <opendmi/entity/dell/bios-flags.h>
 #include <opendmi/entity/dell/revisions.h>
 #include <opendmi/entity/dell/parallel-port.h>
 #include <opendmi/entity/dell/serial-port.h>
@@ -20,6 +21,7 @@ const dmi_extension_t dmi_dell_ext =
     .code     = "dell",
     .name     = "Dell DMI extension",
     .entities = (const dmi_entity_spec_t *[]){
+        &dmi_dell_bios_flags_spec,
         &dmi_dell_revisions_spec,
         &dmi_dell_parallel_port_spec,
         &dmi_dell_serial_port_spec,
