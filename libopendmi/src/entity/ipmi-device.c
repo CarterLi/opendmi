@@ -207,7 +207,7 @@ static bool dmi_ipmi_device_decode(dmi_entity_t *entity)
     if (not dmi_stream_decode(stream, dmi_byte_t, &info->interface_type))
         return false;
     
-    dmi_byte_t spec_version;
+    dmi_byte_t spec_version = 0;
     if (not dmi_stream_decode(stream, dmi_byte_t, &spec_version))
         return false;
     
@@ -219,7 +219,7 @@ static bool dmi_ipmi_device_decode(dmi_entity_t *entity)
     if (not status)
         return false;
 
-    dmi_qword_t base_addr;
+    dmi_qword_t base_addr = 0;
     if (not dmi_stream_decode(stream, dmi_qword_t, &base_addr))
         return false;
     

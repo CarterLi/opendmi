@@ -204,7 +204,7 @@ static bool dmi_memory_array_decode(dmi_entity_t *entity)
     if (not status)
         return false;
 
-    dmi_dword_t maximum_capacity;
+    dmi_dword_t maximum_capacity = 0;
     if (not dmi_stream_decode(stream, dmi_dword_t, &maximum_capacity))
         return false;
 
@@ -222,7 +222,7 @@ static bool dmi_memory_array_decode(dmi_entity_t *entity)
     entity->level = dmi_version(2, 7, 0);
 
     if (info->maximum_capacity & 0x80000000) {
-        dmi_qword_t maximum_capacity_ex;
+        dmi_qword_t maximum_capacity_ex = 0;
         if (not dmi_stream_decode(stream, dmi_qword_t, &maximum_capacity_ex))
             return false;
 

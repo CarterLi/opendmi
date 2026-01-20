@@ -164,7 +164,7 @@ static bool dmi_cooling_device_decode(dmi_entity_t *entity)
     if (dmi_stream_is_done(stream))
         return true;
 
-    dmi_word_t nominal_speed;
+    dmi_word_t nominal_speed = 0;
     if (not dmi_stream_decode(stream, dmi_word_t, &nominal_speed))
         return false;
 
