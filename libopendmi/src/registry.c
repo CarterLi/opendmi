@@ -57,7 +57,8 @@ dmi_entity_t *dmi_registry_get(
         dmi_type_t      type,
         bool            optional)
 {
-    dmi_registry_entry_t *entry = nullptr;
+    dmi_registry_entry_t *entry  = nullptr;
+    dmi_entity_t         *entity = nullptr;
 
     if (registry == nullptr)
         return nullptr;
@@ -81,14 +82,30 @@ dmi_entity_t *dmi_registry_get(
         return nullptr;
     }
 
-    if ((type != DMI_TYPE_INVALID) and (entry->entity->type != type)) {
+    entity = entry->entity;
+
+    if ((type != DMI_TYPE_INVALID) and (entity->type != type)) {
+        if ((registry->context->flags & DMI_CONTEXT_FLAG_STRICT) == 0) {
+            //
+            // Some SMBIOS vendors report 0x0000u instead of 0xFFFFu as
+            // unspecified handle value.
+            //
+            // Since no structure references the platform firmware information,
+            // which most probably can have handle 0x0000, it is possible to
+            // 0x0000 as unspecified handle value in relaxed mode if the
+            // structure with this handle is platform firmware information.
+            //
+            if ((handle == 0x0000u) and (entity->type == DMI_TYPE_FIRMWARE))
+                return nullptr;
+        }
+
         dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_ENTITY_TYPE,
                            "0x%04x: %d (expected %d)", handle,
-                           entry->entity->type, type);
+                           entity->type, type);
         return nullptr;
     }
 
-    return entry->entity;
+    return entity;
 }
 
 dmi_entity_t *dmi_registry_get_any(

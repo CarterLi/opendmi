@@ -18,6 +18,15 @@
 #include <opendmi/utils/version.h>
 
 /**
+ * @brief Context flags.
+ */
+enum dmi_context_flags
+{
+    DMI_CONTEXT_FLAG_RELAXED = 0,
+    DMI_CONTEXT_FLAG_STRICT  = (1 << 0)
+};
+
+/**
  * @brief DMI context descriptor.
  */
 struct dmi_context
@@ -111,6 +120,11 @@ struct dmi_context
      * @brief ICU4C resources.
      */
     void *resources;
+
+    /**
+     * @brief Flags.
+     */
+    unsigned int flags;
 };
 
 __BEGIN_DECLS
@@ -118,7 +132,7 @@ __BEGIN_DECLS
 /**
  * @brief Create DMI context.
  */
-dmi_context_t *dmi_create(void);
+dmi_context_t *dmi_create(unsigned int flags);
 
 /**
  * @brief Open DMI context.

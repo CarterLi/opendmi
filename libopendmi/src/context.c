@@ -180,7 +180,7 @@ static const dmi_entity_spec_t *dmi_entity_specs[] =
 //extern void *dmi_resources_dat;
 #endif
 
-dmi_context_t *dmi_create(void)
+dmi_context_t *dmi_create(unsigned int flags)
 {
     bool success = false;
     dmi_context_t *context = nullptr;
@@ -190,6 +190,7 @@ dmi_context_t *dmi_create(void)
     if (context == nullptr)
         return nullptr;
 
+    context->flags     = flags;
     context->log_level = DMI_LOG_INFO;
 
     do {
