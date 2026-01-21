@@ -264,9 +264,6 @@ bool dmi_registry_decode(dmi_registry_t *registry)
 
     dmi_registry_iter_init(&iter, registry, nullptr);
     while ((entity = dmi_registry_iter_next(&iter)) != nullptr) {
-        if ((entity->spec == nullptr) or (entity->spec->handlers.decode == nullptr))
-            continue;
-
         dmi_log_debug(registry->context, "%p: Handle 0x%04hx, length %zu, type %d (%s)",
                       entity->data,
                       entity->handle,
@@ -274,8 +271,10 @@ bool dmi_registry_decode(dmi_registry_t *registry)
                       entity->type,
                       dmi_type_name(registry->context, entity->type));
 
-        if (not dmi_entity_decode(entity))
+        if (not dmi_entity_decode(entity)) {
+            dmi_error_raise_ex(registry->context, DMI_ERROR_ENTITY_DECODE, "0x%04hx", entity->handle);
             return false;
+        }
     }
 
     return true;

@@ -36,32 +36,32 @@ static const dmi_name_set_t dmi_connector_type_names =
         {
             .id   = DMI_CONNECTOR_TYPE_DB_25_M,
             .code = "db-25-m",
-            .name = "DB-25 pin male"
+            .name = "DB-25 male"
         },
         {
             .id   = DMI_CONNECTOR_TYPE_DB_25_F,
             .code = "db-25-f",
-            .name = "DB-25 pin female"
+            .name = "DB-25 female"
         },
         {
             .id   = DMI_CONNECTOR_TYPE_DB_15_M,
             .code = "db-15-m",
-            .name = "DB-15 pin male"
+            .name = "DB-15 male"
         },
         {
             .id   = DMI_CONNECTOR_TYPE_DB_15_F,
             .code = "db-15-f",
-            .name = "DB-15 pin female"
+            .name = "DB-15 female"
         },
         {
             .id   = DMI_CONNECTOR_TYPE_DB_9_M,
             .code = "db-9-m",
-            .name = "DB-9 pin male"
+            .name = "DB-9 male"
         },
         {
             .id   = DMI_CONNECTOR_TYPE_DB_9_F,
             .code = "db-9-f",
-            .name = "DB-9 pin female"
+            .name = "DB-9 female"
         },
         {
             .id   = DMI_CONNECTOR_TYPE_RJ_11,

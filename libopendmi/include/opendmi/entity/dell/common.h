@@ -1,0 +1,33 @@
+//
+// OpenDMI: Cross-platform DMI/SMBIOS framework
+// Copyright (c) 2025-2026, The OpenDMI contributors
+//
+// SPDX-License-Identifier: BSD-3-Clause
+//
+#ifndef OPENDMI_ENTITY_DELL_COMMON_H
+#define OPENDMI_ENTITY_DELL_COMMON_H
+
+#pragma once
+
+#include <opendmi/utils/name.h>
+
+typedef enum dmi_dell_port_security
+{
+    DMI_DELL_PORT_SECURITY_UNSPEC            = 0x00, ///< Unspecified
+    DMI_DELL_PORT_SECURITY_OTHER             = 0x01, ///< Other
+    DMI_DELL_PORT_SECURITY_UNKNOWN           = 0x02, ///< Unknown
+    DMI_DELL_PORT_SECURITY_NONE              = 0x03, ///< None
+    DMI_DELL_PORT_SECURITY_EXT_IFACE_LOCKED  = 0x04, ///< External interface locked out
+    DMI_DELL_PORT_SECURITY_EXT_IFACE_ENABLED = 0x05, ///< External interface enabled
+    DMI_DELL_PORT_SECURITY_BOOT_BYPASS       = 0x06, ///< Boot-bypass
+} dmi_dell_port_security_t;
+
+extern const dmi_name_set_t dmi_dell_port_security_names;
+
+__BEGIN_DECLS
+
+const char *dmi_dell_port_security_name(dmi_dell_port_security_t value);
+
+__END_DECLS
+
+#endif // !OPENDMI_ENTITY_DELL_COMMON_H

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Introduced reference manual
 - Added autoloading of vendor-specific extensions
+- Added Dell serial port structure decoding
 - Added specifications for Dell-specific structures:
   - Dell Revisions and IDs (type 208)
   - Dell Parallel Port (type 209)

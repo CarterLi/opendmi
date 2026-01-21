@@ -71,7 +71,6 @@ dmi_entity_t *dmi_entity_create(dmi_context_t *context, const void *data)
     entity->type        = type;
     entity->body_length = length;
     entity->handle      = handle;
-    entity->spec        = dmi_type_spec(context, entity->type);
     entity->data        = data;
 
     // Decode structure data
@@ -98,17 +97,17 @@ bool dmi_entity_decode(dmi_entity_t *entity)
 {
     if (entity == nullptr)
         return false;
-
-    if (entity->spec == nullptr)
-        return false;
-    if (entity->spec->handlers.decode == nullptr)
-        return false;
-
     if (entity->state & DMI_ENTITY_STATE_DECODED)
         return true;
 
     dmi_context_t *context = entity->context;
-    const dmi_entity_spec_t *spec = entity->spec;
+
+    const dmi_entity_spec_t *spec = dmi_type_spec(entity->context, entity->type);
+    if (spec == nullptr)
+        return true;
+
+    entity->spec  = spec;
+    entity->level = spec->minimum_version;
 
     // Check minimum length constraint
     if ((spec->minimum_length != 0) and (entity->body_length < spec->minimum_length)) {
@@ -116,13 +115,13 @@ bool dmi_entity_decode(dmi_entity_t *entity)
         return false;
     }
 
+    if (spec->handlers.decode == nullptr)
+        return true;
+
     // Allocate structure descriptor
     entity->info = dmi_alloc(context, spec->decoded_length);
     if (entity->info == nullptr)
         return false;
-
-    // Set entity level
-    entity->level = entity->spec->minimum_version;
 
     // Initialize stream
     dmi_stream_initialize(&entity->stream, entity);
