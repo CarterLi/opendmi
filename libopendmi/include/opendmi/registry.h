@@ -122,7 +122,12 @@ dmi_registry_t *dmi_registry_create(dmi_context_t *context, size_t capacity);
 /**
  * @internal
  */
-bool dmi_registry_build(dmi_registry_t *registry);
+bool dmi_registry_scan(dmi_registry_t *registry);
+
+/**
+ * @internal
+ */
+bool dmi_registry_decode(dmi_registry_t *registry);
 
 /**
  * @internal
@@ -133,8 +138,18 @@ bool dmi_registry_link(dmi_registry_t *registry);
  * @brief Get entity from registry.
  *
  * @param[in] registry Registry handle.
- * @param[in] handle   Entity handle.
- * @param[in] type     Expected structure type.
+ *
+ * @param[in] handle   Entity handle. Should be set to `DMI_HANDLE_INVALID` if
+ *                     the handle is unknown. In this case `type` is mandatory.
+ *
+ * @param[in] type     Expected structure type. Should be set to
+ *                     `DMI_TYPE_INVALID` if the type is unknown. If there is
+ *                     more than one entity of the given type and handle is not
+ *                     specified, the first one is returned.
+ *
+ * @param[in] optional Set to true if missing entity is not an error.
+ *
+ * @returns Non-owning pointer to the entity, `nullptr` if not found.
  */
 dmi_entity_t *dmi_registry_get(
         dmi_registry_t *registry,
@@ -142,6 +157,22 @@ dmi_entity_t *dmi_registry_get(
         dmi_type_t      type,
         bool            optional);
 
+/**
+ * @brief Get entity from registry, that matches any of the expected types.
+ * 
+ * @param[in] registry Registry handle.
+ *
+ * @param[in] handle   Entity handle. In constrast to `dmi_registry_get()`,
+ *                     should be always valid.
+ *
+ * @param[in] types    Array of expected structure types, terminated by
+ *                     `DMI_TYPE_INVALID`. May be set to `nullptr` to disable
+ *                     type checks.
+ *
+ * @param[in] optional Set to true if missing entity is not an error.
+ *
+ * @returns Non-owning pointer to the entity, `nullptr` if not found.
+ */
 dmi_entity_t *dmi_registry_get_any(
         dmi_registry_t   *registry,
         dmi_handle_t      handle,

@@ -80,10 +80,11 @@ bool dmi_text_entry(dmi_text_session_t *session)
     if (entity_count == 0)
         entity_count = context->registry->count;
 
-    dmi_tprintf(session, COLOR_NONE, "SMBIOS %s present.\n", version);
-    dmi_tprintf(session, COLOR_NONE, "%zu structures occupying %zu bytes.\n",
+    dmi_tprintf(session, COLOR_NONE, "SMBIOS %s present\n", version);
+    dmi_tprintf(session, COLOR_NONE, "SMBIOS vendor: %s\n", context->vendor_name ? context->vendor_name : "unknown");
+    dmi_tprintf(session, COLOR_NONE, "%zu structures occupying %zu bytes\n",
                 entity_count, context->table_area_size);
-    dmi_tprintf(session, COLOR_NONE, "Table at 0x%" PRIx64 ".\n", context->table_area_addr);
+    dmi_tprintf(session, COLOR_NONE, "Table at 0x%" PRIx64 "\n", context->table_area_addr);
     dmi_tprintf(session, COLOR_NONE, "\n");
 
     dmi_free(version);

@@ -96,6 +96,7 @@ target_sources(opendmi-object
         src/registry.c
         src/stream.c
         src/utils.c
+        src/vendor.c
         src/utils/datetime.c
         src/utils/decode.c
         src/utils/endian.c
@@ -153,6 +154,7 @@ target_sources(opendmi-object
         src/entity/temperature-probe.c
         src/entity/tpm-device.c
         src/entity/voltage-probe.c
+        src/extension/acer.c
         src/extension/apple.c
         src/extension/dell.c
         src/entity/dell/bios-flags.c
@@ -164,7 +166,11 @@ target_sources(opendmi-object
         src/entity/dell/protected-area-2.c
         src/entity/dell/revisions.c
         src/entity/dell/serial-port.c
+        src/extension/hp.c
+        src/extension/hpe.c
+        src/extension/ibm.c
         src/extension/intel.c
+        src/extension/lenovo.c
         src/backend/dump.c
     PUBLIC FILE_SET HEADERS
         BASE_DIRS include
@@ -185,6 +191,7 @@ target_sources(opendmi-object
             include/opendmi/stream.h
             include/opendmi/utils.h
             include/opendmi/value.h
+            include/opendmi/vendor.h
             include/opendmi/utils/datetime.h
             include/opendmi/utils/decode.h
             include/opendmi/utils/endian.h
@@ -242,6 +249,7 @@ target_sources(opendmi-object
             include/opendmi/entity/temperature-probe.h
             include/opendmi/entity/tpm-device.h
             include/opendmi/entity/voltage-probe.h
+            include/opendmi/extension/acer.h
             include/opendmi/extension/apple.h
             include/opendmi/extension/dell.h
             include/opendmi/entity/dell/bios-flags.h
@@ -253,7 +261,11 @@ target_sources(opendmi-object
             include/opendmi/entity/dell/protected-area-2.h
             include/opendmi/entity/dell/revisions.h
             include/opendmi/entity/dell/serial-port.h
+            include/opendmi/extension/hp.h
+            include/opendmi/extension/hpe.h
+            include/opendmi/extension/ibm.h
             include/opendmi/extension/intel.h
+            include/opendmi/extension/lenovo.h
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")

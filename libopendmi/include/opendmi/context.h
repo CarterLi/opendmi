@@ -13,6 +13,7 @@
 #include <opendmi/error.h>
 #include <opendmi/log.h>
 #include <opendmi/backend.h>
+#include <opendmi/vendor.h>
 #include <opendmi/extension.h>
 #include <opendmi/registry.h>
 #include <opendmi/utils/version.h>
@@ -105,6 +106,16 @@ struct dmi_context
      * @brief Entity specifications map.
      */
     const dmi_entity_spec_t **type_map;
+
+    /**
+     * @brief Vendor identifier.
+     */
+    dmi_vendor_t vendor;
+
+    /**
+     * @brief Vendor name.
+     */
+    const char *vendor_name;
 
     /**
      * @brief Entity registry.

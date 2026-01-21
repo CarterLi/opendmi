@@ -19,7 +19,7 @@
 const dmi_extension_t dmi_dell_ext =
 {
     .code     = "dell",
-    .name     = "Dell DMI extension",
+    .name     = "Dell",
     .entities = (const dmi_entity_spec_t *[]){
         &dmi_dell_bios_flags_spec,
         &dmi_dell_revisions_spec,
@@ -29,6 +29,7 @@ const dmi_extension_t dmi_dell_ext =
         &dmi_dell_indexed_io_spec,
         &dmi_dell_protected_area_1_spec,
         &dmi_dell_protected_area_2_spec,
-        &dmi_dell_calling_iface_spec
+        &dmi_dell_calling_iface_spec,
+        nullptr
     }
 };

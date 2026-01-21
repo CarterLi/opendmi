@@ -24,6 +24,13 @@ typedef bool dmi_entity_decode_fn(dmi_entity_t *entity);
 typedef bool dmi_entity_link_fn(dmi_entity_t *entity);
 typedef void dmi_entity_cleanup_fn(dmi_entity_t *entity);
 
+typedef enum dmi_entity_state
+{
+    DMI_ENTITY_STATE_DECODED = (1 << 0),
+    DMI_ENTITY_STATE_LINKED  = (1 << 1),
+    DMI_ENTITY_STATE_VALID   = (1 << 2)
+} dmi_entity_state_t;
+
 /**
  * @brief Entity operations.
  */
@@ -248,17 +255,35 @@ struct dmi_entity
      * @brief Structure version.
      */
     dmi_version_t level;
+
+    /**
+     * @brief Entity state mask.
+     */
+    unsigned int state;
 };
 
 __BEGIN_DECLS
 
 /**
- * @brief Decode SMBIOS structure into entity.
+ * @internal
+ * @brief Create SMBIOS entity.
  *
  * @param[in] context DMI context handle.
  * @param[in] data Pointer to SMBIOS structure data.
  */
-dmi_entity_t *dmi_entity_decode(dmi_context_t *context, const void *data);
+dmi_entity_t *dmi_entity_create(dmi_context_t *context, const void *data);
+
+/**
+ * @internal
+ * @brief Decode SMBIOS entity.
+ */
+bool dmi_entity_decode(dmi_entity_t *entity);
+
+/**
+ * @internal
+ * @brief Link SMBIOS entity.
+ */
+bool dmi_entity_link(dmi_entity_t *entity);
 
 /**
  * @brief Get entity handle.

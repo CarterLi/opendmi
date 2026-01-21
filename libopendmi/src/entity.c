@@ -29,7 +29,7 @@ static bool dmi_entity_decode_strings(dmi_entity_t *entity);
  */
 static char *dmi_entity_string_trim(dmi_context_t *context, const char *ptr);
 
-dmi_entity_t *dmi_entity_decode(dmi_context_t *context, const void *data)
+dmi_entity_t *dmi_entity_create(dmi_context_t *context, const void *data)
 {
     dmi_entity_t *entity = nullptr;
 
@@ -83,35 +83,6 @@ dmi_entity_t *dmi_entity_decode(dmi_context_t *context, const void *data)
         if (not dmi_entity_decode_strings(entity))
             break;
 
-        // Initialize stream
-        dmi_stream_initialize(&entity->stream, entity);
-        dmi_stream_seek(&entity->stream, sizeof(dmi_header_t));
-
-        // Decode information
-        if (entity->spec != nullptr) {
-            const dmi_entity_spec_t *spec = entity->spec;
-
-            // Check minimum length constraint
-            if ((spec->minimum_length != 0) and (length < spec->minimum_length)) {
-                dmi_error_raise_ex(context, DMI_ERROR_INVALID_ENTITY_LENGTH, "%zu", length);
-                break;
-            }
-
-            // Set level baseline
-            entity->level = spec->minimum_version;
-
-            if (spec->handlers.decode != nullptr) {
-                // Allocate structure descriptor
-                entity->info = dmi_alloc(context, spec->decoded_length);
-                if (entity->info == nullptr)
-                    break;
-
-                // Execute decoder
-                if (not spec->handlers.decode(entity))
-                    break;
-            }
-        }
-
         success = true;
     } while (false);
 
@@ -121,6 +92,91 @@ dmi_entity_t *dmi_entity_decode(dmi_context_t *context, const void *data)
     }
 
     return entity;
+}
+
+bool dmi_entity_decode(dmi_entity_t *entity)
+{
+    if (entity == nullptr)
+        return false;
+
+    if (entity->spec == nullptr)
+        return false;
+    if (entity->spec->handlers.decode == nullptr)
+        return false;
+
+    if (entity->state & DMI_ENTITY_STATE_DECODED)
+        return true;
+
+    dmi_context_t *context = entity->context;
+    const dmi_entity_spec_t *spec = entity->spec;
+
+    // Check minimum length constraint
+    if ((spec->minimum_length != 0) and (entity->body_length < spec->minimum_length)) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ENTITY_LENGTH, "%zu", entity->body_length);
+        return false;
+    }
+
+    // Allocate structure descriptor
+    entity->info = dmi_alloc(context, spec->decoded_length);
+    if (entity->info == nullptr)
+        return false;
+
+    // Set entity level
+    entity->level = entity->spec->minimum_version;
+
+    // Initialize stream
+    dmi_stream_initialize(&entity->stream, entity);
+    dmi_stream_seek(&entity->stream, sizeof(dmi_header_t));
+
+    // Execute decoder
+    bool status = spec->handlers.decode(entity);
+
+    if (status) {
+        entity->state |= DMI_ENTITY_STATE_DECODED;
+    } else {
+        dmi_error_raise_ex(context, DMI_ERROR_ENTITY_DECODE,
+                           "0x%04x (%s)", entity->handle, entity->spec->name);
+
+        // Call cleanup handler on errors
+        if (spec->handlers.cleanup != nullptr)
+            spec->handlers.cleanup(entity);
+
+        dmi_free(entity->info);
+
+        entity->info  = nullptr;
+        entity->level = DMI_VERSION_NONE;
+    }
+
+    // Reset stream after decoding
+    dmi_stream_reset(&entity->stream);
+
+    return status;
+}
+
+bool dmi_entity_link(dmi_entity_t *entity)
+{
+    if (entity == nullptr)
+        return false;
+
+    if (entity->spec == nullptr)
+        return false;
+    if (entity->spec->handlers.link == nullptr)
+        return false;
+
+    if (entity->state & DMI_ENTITY_STATE_LINKED)
+        return true;
+
+    dmi_context_t *context = entity->context;
+
+    if (not entity->spec->handlers.link(entity)) {
+        dmi_error_raise_ex(context, DMI_ERROR_ENTITY_LINK,
+                           "0x%04x (%s)", entity->handle, entity->spec->name);
+        return false;
+    }
+
+    entity->state |= DMI_ENTITY_STATE_LINKED;
+
+    return true;
 }
 
 dmi_handle_t dmi_entity_handle(const dmi_entity_t *entity)

@@ -57,49 +57,65 @@ dmi_entity_t *dmi_registry_get(
         dmi_type_t      type,
         bool            optional)
 {
-    dmi_registry_entry_t *entry  = nullptr;
-    dmi_entity_t         *entity = nullptr;
+    dmi_registry_entry_t *entry   = nullptr;
+    dmi_context_t        *context = nullptr;
+    dmi_entity_t         *entity  = nullptr;
 
     if (registry == nullptr)
         return nullptr;
 
-    if ((handle == DMI_HANDLE_INVALID) or (handle == DMI_HANDLE_UNSUPPORTED)) {
-        dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_ARGUMENT, "handle: 0x%04x", handle);
+    context = registry->context;
+
+    if (handle == DMI_HANDLE_UNSUPPORTED) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ARGUMENT, "handle: 0x%04x", handle);
+        return nullptr;
+    }
+    if ((handle == DMI_HANDLE_INVALID) and (type == DMI_TYPE_INVALID)) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ARGUMENT, "type: %d", type);
         return nullptr;
     }
 
-    entry = registry->index[(size_t)handle % registry->capacity];
+    if (handle != DMI_HANDLE_INVALID) {
+        entry = registry->index[(size_t)handle % registry->capacity];
 
-    while (entry != nullptr) {
-        if (entry->entity->handle == handle)
-            break;
-        entry = entry->next;
+        while (entry != nullptr) {
+            if (entry->entity->handle == handle)
+                break;
+            entry = entry->next;
+        }
+    } else {
+        entry = registry->head;
+
+        while (entry != nullptr) {
+            if (entry->entity->type == type)
+                break;
+            entry = entry->seq_next;
+        }
     }
 
     if (entry == nullptr) {
-        if (not optional)
-            dmi_error_raise_ex(registry->context, DMI_ERROR_ENTITY_NOT_FOUND, "0x%04x", handle);
+        if (not optional) {
+            if (handle != DMI_HANDLE_INVALID)
+                dmi_error_raise_ex(context, DMI_ERROR_ENTITY_NOT_FOUND, "handle 0x%04x", handle);
+            else
+                dmi_error_raise_ex(context, DMI_ERROR_ENTITY_NOT_FOUND, "type %d", type);
+        }
+
         return nullptr;
     }
 
     entity = entry->entity;
 
     if ((type != DMI_TYPE_INVALID) and (entity->type != type)) {
-        if ((registry->context->flags & DMI_CONTEXT_FLAG_STRICT) == 0) {
-            //
-            // Some SMBIOS vendors report 0x0000u instead of 0xFFFFu as
-            // unspecified handle value.
-            //
-            // Since no structure references the platform firmware information,
-            // which most probably can have handle 0x0000, it is possible to
-            // 0x0000 as unspecified handle value in relaxed mode if the
-            // structure with this handle is platform firmware information.
-            //
-            if ((handle == 0x0000u) and (entity->type == DMI_TYPE_FIRMWARE))
-                return nullptr;
-        }
+        //
+        // Some SMBIOS vendors report 0x0000u instead of 0xFFFFu as
+        // unspecified handle value, even if there is a structure with
+        // this handle.
+        //
+        if ((handle == 0x0000u) and (context->flags & DMI_CONTEXT_FLAG_STRICT) == 0)
+            return nullptr;
 
-        dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_ENTITY_TYPE,
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ENTITY_TYPE,
                            "0x%04x: %d (expected %d)", handle,
                            entity->type, type);
         return nullptr;
@@ -114,10 +130,18 @@ dmi_entity_t *dmi_registry_get_any(
         const dmi_type_t *type,
         bool              optional)
 {
-    dmi_entity_t *entity;
+    dmi_context_t *context = nullptr;
+    dmi_entity_t  *entity  = nullptr;
 
     if (registry == nullptr)
         return nullptr;
+
+    context = registry->context;
+
+    if ((handle == DMI_HANDLE_INVALID) or (handle == DMI_HANDLE_UNSUPPORTED)) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ARGUMENT, "handle: 0x%04x", handle);
+        return nullptr;
+    }
 
     entity = dmi_registry_get(registry, handle, DMI_TYPE_INVALID, optional);
     if (entity == nullptr)
@@ -131,6 +155,14 @@ dmi_entity_t *dmi_registry_get_any(
         }
 
         if (*type == DMI_TYPE_INVALID) {
+            //
+            // Some SMBIOS vendors report 0x0000u instead of 0xFFFFu as
+            // unspecified handle value, even if there is a structure with
+            // this handle.
+            //
+            if ((handle == 0x0000u) and (context->flags & DMI_CONTEXT_FLAG_STRICT) == 0)
+                return nullptr;
+
             dmi_error_raise_ex(registry->context, DMI_ERROR_INVALID_ENTITY_TYPE,
                                "0x%04x: %d", handle, entity->type);
             return nullptr;
@@ -169,7 +201,7 @@ void dmi_registry_destroy(dmi_registry_t *registry)
     dmi_free(registry);
 }
 
-bool dmi_registry_build(dmi_registry_t *registry)
+bool dmi_registry_scan(dmi_registry_t *registry)
 {
     bool success = false;
     size_t index = 0;
@@ -188,8 +220,8 @@ bool dmi_registry_build(dmi_registry_t *registry)
             goto exit;
         }
 
-        // Decode structure into entity
-        entity = dmi_entity_decode(context, ptr);
+        // Create entity for the structure
+        entity = dmi_entity_create(context, ptr);
         if (entity == nullptr) {
             dmi_error_raise(context, DMI_ERROR_ENTITY_DECODE);
             goto exit;
@@ -223,6 +255,32 @@ exit:
     return success;
 }
 
+bool dmi_registry_decode(dmi_registry_t *registry)
+{
+    dmi_registry_iter_t iter;
+    dmi_entity_t *entity;
+
+    dmi_log_debug(registry->context, "Decoding SMBIOS structures...");
+
+    dmi_registry_iter_init(&iter, registry, nullptr);
+    while ((entity = dmi_registry_iter_next(&iter)) != nullptr) {
+        if ((entity->spec == nullptr) or (entity->spec->handlers.decode == nullptr))
+            continue;
+
+        dmi_log_debug(registry->context, "%p: Handle 0x%04hx, length %zu, type %d (%s)",
+                      entity->data,
+                      entity->handle,
+                      entity->body_length,
+                      entity->type,
+                      dmi_type_name(registry->context, entity->type));
+
+        if (not dmi_entity_decode(entity))
+            return false;
+    }
+
+    return true;
+}
+
 bool dmi_registry_link(dmi_registry_t *registry)
 {
     dmi_registry_iter_t iter;
@@ -242,11 +300,8 @@ bool dmi_registry_link(dmi_registry_t *registry)
                       entity->type,
                       dmi_type_name(registry->context, entity->type));
 
-        if (not entity->spec->handlers.link(entity)) {
-            dmi_error_raise_ex(entity->context, DMI_ERROR_ENTITY_LINK,
-                               "0x%04x (%s)", entity->handle, entity->spec->name);
+        if (not dmi_entity_link(entity))
             return false;
-        }
     }
 
     return true;

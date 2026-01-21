@@ -24,6 +24,7 @@
 #include <opendmi/context.h>
 #include <opendmi/entry.h>
 #include <opendmi/entity.h>
+#include <opendmi/vendor.h>
 #include <opendmi/utils.h>
 
 #include <opendmi/entity/additional-info.h>
@@ -94,6 +95,12 @@
 #endif
 
 static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const void *arg);
+
+/**
+ * @internal
+ * @brief Setup vendor-specific extensions.
+ */
+static bool dmi_setup_extensions(dmi_context_t *context);
 
 /**
  * @internal
@@ -190,6 +197,7 @@ dmi_context_t *dmi_create(unsigned int flags)
     if (context == nullptr)
         return nullptr;
 
+    context->vendor    = DMI_VENDOR_OTHER;
     context->flags     = flags;
     context->log_level = DMI_LOG_INFO;
 
@@ -246,6 +254,36 @@ bool dmi_open(dmi_context_t *context)
         return false;
 
     return dmi_open_ex(context, dmi_backend, nullptr);
+}
+
+bool dmi_add_extension(dmi_context_t *context, const dmi_extension_t *extension)
+{
+    const dmi_entity_spec_t **pspec;
+
+    if (context == nullptr)
+        return false;
+
+    if (extension == nullptr) {
+        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "extension");
+        return false;
+    }
+
+    dmi_log_info(context, "Enabling extension: %s", extension->name);
+
+    // Check type map for conflicts
+    for (pspec = extension->entities; *pspec != nullptr; pspec++) {
+        if (context->type_map[(*pspec)->type] != nullptr) {
+            dmi_error_raise_ex(context, DMI_ERROR_EXTENSION_CONFICT, "%s", extension->name);
+            return false;
+        }
+    }
+
+    // Update type map
+    for (pspec = extension->entities; *pspec != nullptr; pspec++) {
+        context->type_map[(*pspec)->type] = *pspec;
+    }
+
+    return true;
 }
 
 bool dmi_dump_load(dmi_context_t *context, const char *path)
@@ -479,8 +517,15 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
         if (context->registry == nullptr)
             break;
 
-        // Build and link registry
-        if (not dmi_registry_build(context->registry))
+        // Scan for SMBIOS structures
+        if (not dmi_registry_scan(context->registry))
+            break;
+
+        if (not dmi_setup_extensions(context))
+            break;
+
+        // Decode and link SMBIOS structures
+        if (not dmi_registry_decode(context->registry))
             break;
         if (not dmi_registry_link(context->registry))
             break;
@@ -494,6 +539,45 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
     }
 
     return success;
+}
+
+static bool dmi_setup_extensions(dmi_context_t *context)
+{
+    dmi_entity_t *entity;
+    const dmi_firmware_t *firmware;
+    const dmi_vendor_spec_t *vendor;
+
+    dmi_log_debug(context, "Detecting SMBIOS vendor...");
+
+    entity = dmi_registry_get(context->registry, DMI_HANDLE_INVALID, DMI_TYPE_FIRMWARE, true);
+    if (entity == nullptr) {
+        if ((context->flags & DMI_CONTEXT_FLAG_STRICT) == 0) {
+            dmi_log_notice(context, dmi_error_message(DMI_ERROR_MISSING_FIRMWARE_INFO));
+            return true;
+        }
+
+        dmi_error_raise(context, DMI_ERROR_MISSING_FIRMWARE_INFO);
+        return false;
+    }
+
+    if (not dmi_entity_decode(entity))
+        return false;
+
+    firmware = dmi_cast(firmware, entity->info);
+    vendor   = dmi_vendor_detect(firmware->vendor);
+
+    if (vendor != nullptr)
+        context->vendor = vendor->id;
+    context->vendor_name = firmware->vendor;
+
+    dmi_log_info(context, "SMBIOS vendor: %s (%s)", dmi_vendor_name(context->vendor), context->vendor_name);
+
+    if (vendor->extension != nullptr) {
+        if (!dmi_add_extension(context, vendor->extension))
+            return false;
+    }
+
+    return true;
 }
 
 static void dmi_version_fixup(dmi_context_t *context)
