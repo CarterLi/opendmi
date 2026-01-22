@@ -270,17 +270,19 @@ bool dmi_add_extension(dmi_context_t *context, const dmi_extension_t *extension)
 
     dmi_log_info(context, "Enabling extension: %s", extension->name);
 
-    // Check type map for conflicts
-    for (pspec = extension->entities; *pspec != nullptr; pspec++) {
-        if (context->type_map[(*pspec)->type] != nullptr) {
-            dmi_error_raise_ex(context, DMI_ERROR_EXTENSION_CONFICT, "%s", extension->name);
-            return false;
+    if (extension->entities) {
+        // Check type map for conflicts
+        for (pspec = extension->entities; *pspec != nullptr; pspec++) {
+            if (context->type_map[(*pspec)->type] != nullptr) {
+                dmi_error_raise_ex(context, DMI_ERROR_EXTENSION_CONFICT, "%s", extension->name);
+                return false;
+            }
         }
-    }
 
-    // Update type map
-    for (pspec = extension->entities; *pspec != nullptr; pspec++) {
-        context->type_map[(*pspec)->type] = *pspec;
+        // Update type map
+        for (pspec = extension->entities; *pspec != nullptr; pspec++) {
+            context->type_map[(*pspec)->type] = *pspec;
+        }
     }
 
     return true;
@@ -566,13 +568,13 @@ static bool dmi_setup_extensions(dmi_context_t *context)
     firmware = dmi_cast(firmware, entity->info);
     vendor   = dmi_vendor_detect(firmware->vendor);
 
+    context->vendor_name = firmware->vendor;
     if (vendor != nullptr)
         context->vendor = vendor->id;
-    context->vendor_name = firmware->vendor;
 
-    dmi_log_info(context, "SMBIOS vendor: %s (%s)", dmi_vendor_name(context->vendor), context->vendor_name);
+    dmi_log_info(context, "SMBIOS vendor: %s (%s)", dmi_vendor_name(context->vendor), firmware->vendor);
 
-    if (vendor->extension != nullptr) {
+    if ((vendor != nullptr) and (vendor->extension != nullptr)) {
         if (!dmi_add_extension(context, vendor->extension))
             return false;
     }

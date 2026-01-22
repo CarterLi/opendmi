@@ -11,6 +11,22 @@
 
 #include <opendmi/utils/name.h>
 
+/**
+ * @brief Dell enable states.
+ */
+typedef enum dmi_dell_enable_state
+{
+    DMI_DELL_ENABLE_STATE_UNSPEC   = 0x00, ///< Unspecified
+    DMI_DELL_ENABLE_STATE_OTHER    = 0x01, ///< Other
+    DMI_DELL_ENABLE_STATE_UNKNOWN  = 0x02, ///< Unknown
+    DMI_DELL_ENABLE_STATE_ENABLED  = 0x03, ///< Enabled
+    DMI_DELL_ENABLE_STATE_DISABLED = 0x04, ///< Disabled
+    __DMI_DELL_ENABLE_STATE_COUNT
+} dmi_dell_enable_state_t;
+
+/**
+ * @brief Dell port security settings.
+ */
 typedef enum dmi_dell_port_security
 {
     DMI_DELL_PORT_SECURITY_UNSPEC            = 0x00, ///< Unspecified
@@ -22,10 +38,12 @@ typedef enum dmi_dell_port_security
     DMI_DELL_PORT_SECURITY_BOOT_BYPASS       = 0x06, ///< Boot-bypass
 } dmi_dell_port_security_t;
 
+extern const dmi_name_set_t dmi_dell_enable_state_names;
 extern const dmi_name_set_t dmi_dell_port_security_names;
 
 __BEGIN_DECLS
 
+const char *dmi_dell_enable_state_name(dmi_dell_enable_state_t value);
 const char *dmi_dell_port_security_name(dmi_dell_port_security_t value);
 
 __END_DECLS

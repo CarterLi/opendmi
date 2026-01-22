@@ -11,5 +11,5 @@ const dmi_entity_spec_t dmi_dell_bios_flags_spec =
 {
     .type = DMI_TYPE(DELL_BIOS_FLAGS),
     .code = "dell-bios-flags",
-    .name = "Dell: BIOS flags"
+    .name = "Dell BIOS flags"
 };

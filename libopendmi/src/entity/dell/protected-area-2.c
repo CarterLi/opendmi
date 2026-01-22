@@ -11,5 +11,5 @@ const dmi_entity_spec_t dmi_dell_protected_area_2_spec =
 {
     .type = DMI_TYPE(DELL_PROTECTED_AREA_2),
     .code = "dell-protected-area-2",
-    .name = "Dell: Protected area type 2"
+    .name = "Dell protected area type 2"
 };

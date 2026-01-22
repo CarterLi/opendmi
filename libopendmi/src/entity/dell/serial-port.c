@@ -122,7 +122,7 @@ const dmi_entity_spec_t dmi_dell_serial_port_spec =
 {
     .type            = DMI_TYPE(DELL_SERIAL_PORT),
     .code            = "dell-serial-port",
-    .name            = "Dell: Serial port",
+    .name            = "Dell serial port",
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x0C,
     .decoded_length  = sizeof(dmi_dell_serial_port_t),

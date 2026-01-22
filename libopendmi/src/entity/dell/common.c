@@ -7,9 +7,30 @@
 #include <opendmi/utils/name.h>
 #include <opendmi/entity/dell/common.h>
 
+const dmi_name_set_t dmi_dell_enable_state_names =
+{
+    .code  = "dell-enable-states",
+    .names = (const dmi_name_t[]){
+        DMI_NAME_UNSPEC(DMI_DELL_ENABLE_STATE_UNSPEC),
+        DMI_NAME_OTHER(DMI_DELL_ENABLE_STATE_OTHER),
+        DMI_NAME_UNKNOWN(DMI_DELL_ENABLE_STATE_UNKNOWN),
+        {
+            .id   = DMI_DELL_ENABLE_STATE_ENABLED,
+            .code = "enabled",
+            .name = "Enabled"
+        },
+        {
+            .id   = DMI_DELL_ENABLE_STATE_DISABLED,
+            .code = "disabled",
+            .name = "Disabled"
+        },
+        DMI_NAME_NULL
+    }
+};
+
 const dmi_name_set_t dmi_dell_port_security_names =
 {
-    .code  = "dell-port-security",
+    .code  = "dell-port-security-settings",
     .names = (const dmi_name_t[]){
         DMI_NAME_UNSPEC(DMI_DELL_PORT_SECURITY_UNSPEC),
         DMI_NAME_OTHER(DMI_DELL_PORT_SECURITY_OTHER),
@@ -33,6 +54,11 @@ const dmi_name_set_t dmi_dell_port_security_names =
         DMI_NAME_NULL
     }
 };
+
+const char *dmi_dell_enable_state_name(dmi_dell_enable_state_t value)
+{
+    return dmi_name_lookup(&dmi_dell_enable_state_names, value);
+}
 
 const char *dmi_dell_port_security_name(dmi_dell_port_security_t value)
 {

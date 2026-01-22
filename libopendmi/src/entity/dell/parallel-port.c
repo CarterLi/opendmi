@@ -169,7 +169,7 @@ const dmi_entity_spec_t dmi_dell_parallel_port_spec =
 {
     .type            = DMI_TYPE(DELL_PARALLEL_PORT),
     .code            = "dell-parallel-port",
-    .name            = "Dell: Parallel port",
+    .name            = "Dell parallel port",
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x0C,
     .decoded_length  = sizeof(dmi_dell_parallel_port_t),
