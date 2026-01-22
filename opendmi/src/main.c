@@ -54,6 +54,7 @@ typedef struct dmi_config
     char *memory_device;
     bool quiet;
     bool debug;
+    bool link;
     bool dump;
     char *input_path;
     char *output_path;
@@ -86,6 +87,7 @@ dmi_config_t config =
     .memory_device = nullptr,
     .quiet         = false,
     .debug         = false,
+    .link          = false,
     .dump          = false,
     .input_path    = nullptr,
     .output_path   = nullptr,
@@ -128,6 +130,9 @@ int main(int argc, char *argv[])
         dmi_set_log_level(context, DMI_LOG_WARNING);
     else if (config.debug)
         dmi_set_log_level(context, DMI_LOG_DEBUG);
+
+    if (config.link)
+        dmi_set_flags(context, DMI_CONTEXT_FLAG_LINK);
 
     do {
         if (isatty(STDOUT_FILENO) and (config.output_path == nullptr)) {
@@ -177,6 +182,7 @@ static bool parse_args(dmi_context_t *context, int argc, char *argv[], int *rv)
         { "dev-mem",   required_argument, nullptr, 'd' },
         { "debug",     no_argument,       nullptr, 'g' },
         { "quiet",     no_argument,       nullptr, 'q' },
+        { "link",      no_argument,       nullptr, 'l' },
         { "string",    optional_argument, nullptr, 's' },
         { "type",      optional_argument, nullptr, 't' },
         { "handle",    required_argument, nullptr, 'H' },
@@ -208,6 +214,10 @@ static bool parse_args(dmi_context_t *context, int argc, char *argv[], int *rv)
 
         case 'g':
             config.debug = true;
+            break;
+
+        case 'l':
+            config.link = true;
             break;
 
         case 's':

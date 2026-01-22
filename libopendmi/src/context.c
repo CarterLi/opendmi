@@ -248,6 +248,14 @@ dmi_context_t *dmi_create(unsigned int flags)
     return context;
 }
 
+void dmi_set_flags(dmi_context_t *context, unsigned flags)
+{
+    if (context == nullptr)
+        return;
+
+    context->flags = flags;
+}
+
 bool dmi_open(dmi_context_t *context)
 {
     if (context == nullptr)
@@ -529,8 +537,11 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
         // Decode and link SMBIOS structures
         if (not dmi_registry_decode(context->registry))
             break;
-        if (not dmi_registry_link(context->registry))
-            break;
+
+        if (context->flags & DMI_CONTEXT_FLAG_LINK) {
+            if (not dmi_registry_link(context->registry))
+                break;
+        }
 
         success = true;
     } while (false);

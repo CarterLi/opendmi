@@ -24,7 +24,8 @@
 enum dmi_context_flags
 {
     DMI_CONTEXT_FLAG_RELAXED = 0,
-    DMI_CONTEXT_FLAG_STRICT  = (1 << 0)
+    DMI_CONTEXT_FLAG_STRICT  = (1 << 0),
+    DMI_CONTEXT_FLAG_LINK    = (1 << 1)
 };
 
 /**
@@ -144,6 +145,14 @@ __BEGIN_DECLS
  * @brief Create DMI context.
  */
 dmi_context_t *dmi_create(unsigned int flags);
+
+/**
+ * @brief Set DMI context flags.
+ *
+ * @param[in] context DMI context handle.
+ * @param[in] flags Flags
+ */
+void dmi_set_flags(dmi_context_t *context, unsigned flags);
 
 /**
  * @brief Open DMI context.
