@@ -16,8 +16,8 @@ typedef struct dmi_port_connector dmi_port_connector_t;
 typedef enum dmi_connector_type
 {
     DMI_CONNECTOR_TYPE_NONE             = 0x00, ///< None
-    DMI_CONNECTOR_TYPE_IEEE_1284_B      = 0x01, ///< Centronics
-    DMI_CONNECTOR_TYPE_IEEE_1284_C      = 0x02, ///< Mini-Centronics
+    DMI_CONNECTOR_TYPE_CN_36            = 0x01, ///< Centronics
+    DMI_CONNECTOR_TYPE_HPCN_36          = 0x02, ///< Mini-Centronics
     DMI_CONNECTOR_TYPE_PROPRIETARY      = 0x03, ///< Proprietary
     DMI_CONNECTOR_TYPE_DB_25_M          = 0x04, ///< DB-25 male
     DMI_CONNECTOR_TYPE_DB_25_F          = 0x05, ///< DB-25 female
@@ -44,8 +44,8 @@ typedef enum dmi_connector_type
     DMI_CONNECTOR_TYPE_DIL_50PIN        = 0x1A, ///< 50-pin Dual Inline
     DMI_CONNECTOR_TYPE_DIL_68PIN        = 0x1B, ///< 68-pin Dual Inline
     DMI_CONNECTOR_TYPE_ONBOARD_SOUND    = 0x1C, ///< On Board Sound Input from CD-ROM
-    DMI_CONNECTOR_TYPE_IEEE_1284_C_14   = 0x1D, ///< Mini-Centronics Type-14
-    DMI_CONNECTOR_TYPE_IEEE_1284_C_26   = 0x1E, ///< Mini-Centronics Type-26
+    DMI_CONNECTOR_TYPE_HPCN_14          = 0x1D, ///< Mini-Centronics Type-14
+    DMI_CONNECTOR_TYPE_HPCN_26          = 0x1E, ///< Mini-Centronics Type-26
     DMI_CONNECTOR_TYPE_MINI_JACK        = 0x1F, ///< Mini-jack (headphones)
     DMI_CONNECTOR_TYPE_BNC              = 0x20, ///< BNC
     DMI_CONNECTOR_TYPE_IEEE_1394        = 0x21, ///< IEEE 1394

@@ -128,33 +128,37 @@ const dmi_entity_spec_t dmi_dell_serial_port_spec =
     .decoded_length  = sizeof(dmi_dell_serial_port_t),
     .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_dell_serial_port_t, base_addr, ADDRESS, {
-            .code   = "base-address",
-            .name   = "Base address",
-            .flags  = DMI_ATTRIBUTE_FLAG_HEX
+            .code    = "base-address",
+            .name    = "Base address",
+            .flags   = DMI_ATTRIBUTE_FLAG_HEX
         }),
         DMI_ATTRIBUTE(dmi_dell_serial_port_t, irq_number, INTEGER, {
-            .code   = "irq-number",
-            .name   = "IRQ number"
+            .code    = "irq-number",
+            .name    = "IRQ number"
         }),
         DMI_ATTRIBUTE(dmi_dell_serial_port_t, connector, ENUM, {
-            .code   = "connector",
-            .name   = "Connector type",
-            .values = &dmi_dell_serial_port_connector_type_names
+            .code    = "connector",
+            .name    = "Connector type",
+            .unspec  = dmi_value_ptr(DMI_DELL_SERIAL_PORT_CONNECTOR_TYPE_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_DELL_SERIAL_PORT_CONNECTOR_TYPE_UNKNOWN),
+            .values  = &dmi_dell_serial_port_connector_type_names
         }),
         DMI_ATTRIBUTE(dmi_dell_serial_port_t, capabilities, ENUM, {
-            .code   = "capabilities",
-            .name   = "Capabilities",
-            .values = &dmi_dell_serial_port_caps_names
+            .code    = "capabilities",
+            .name    = "Capabilities",
+            .values  = &dmi_dell_serial_port_caps_names
         }),
         DMI_ATTRIBUTE(dmi_dell_serial_port_t, maximum_speed, INTEGER, {
-            .code   = "maximum-speed",
-            .name   = "Maximum speeed",
-            .unit   = "baud"
+            .code    = "maximum-speed",
+            .name    = "Maximum speeed",
+            .unit    = "baud"
         }),
         DMI_ATTRIBUTE(dmi_dell_serial_port_t, security, ENUM, {
-            .code   = "security",
-            .name   = "Security",
-            .values = &dmi_dell_port_security_names
+            .code    = "security",
+            .name    = "Security",
+            .unspec  = dmi_value_ptr(DMI_DELL_PORT_SECURITY_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_DELL_PORT_SECURITY_UNKNOWN),
+            .values  = &dmi_dell_port_security_names
         }),
         DMI_ATTRIBUTE_NULL
     },

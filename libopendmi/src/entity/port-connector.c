@@ -19,13 +19,13 @@ static const dmi_name_set_t dmi_connector_type_names =
     .names = (dmi_name_t[]){
         DMI_NAME_NONE(DMI_CONNECTOR_TYPE_NONE),
         {
-            .id   = DMI_CONNECTOR_TYPE_IEEE_1284_B,
-            .code = "ieee-1284-b",
+            .id   = DMI_CONNECTOR_TYPE_CN_36,
+            .code = "cn-36",
             .name = "Centronics"
         },
         {
-            .id   = DMI_CONNECTOR_TYPE_IEEE_1284_C,
-            .code = "ieee-1284-c",
+            .id   = DMI_CONNECTOR_TYPE_HPCN_36,
+            .code = "hpcn-36",
             .name = "Mini-Centronics"
         },
         {
@@ -159,13 +159,13 @@ static const dmi_name_set_t dmi_connector_type_names =
             .name = "On Board Sound Input from CD-ROM"
         },
         {
-            .id   = DMI_CONNECTOR_TYPE_IEEE_1284_C_14,
-            .code = "ieee-1284-c-14",
+            .id   = DMI_CONNECTOR_TYPE_HPCN_14,
+            .code = "hpcn-14",
             .name = "Mini-Centronics Type-14"
         },
         {
-            .id   = DMI_CONNECTOR_TYPE_IEEE_1284_C_26,
-            .code = "ieee-1284-c-26",
+            .id   = DMI_CONNECTOR_TYPE_HPCN_26,
+            .code = "hpcn-26",
             .name = "Mini-Centronics Type-26"
         },
         {

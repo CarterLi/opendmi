@@ -9,11 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Introduced reference manual
 - Added autoloading of vendor-specific extensions
-- Added Dell serial port structure decoding
+- Added Dell parallel port structure decoding (type 209)
+- Added Dell serial port structure decoding (type 210)
 - Added specifications for Dell-specific structures:
   - Dell Revisions and IDs (type 208)
-  - Dell Parallel Port (type 209)
-  - Dell Serial Port (Type 210)
   - Dell Infrared Port (Type 211)
 - Added memory controller structure linking
 - Added system boot status decoding
@@ -27,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `dmi_pointing_device_interface_t` to `dmi_pointing_device_iface_t`
 - Moved `<opendmi/name.h>` to `<opendmi/utils/name.h>`
 - Refactored entity decoders API
+- Fixed Centronics connectors naming
 - Fixed zero handle linking behavior
 - Fixed group associations items list decoding
 
