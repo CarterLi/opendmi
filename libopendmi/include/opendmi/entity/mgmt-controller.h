@@ -11,11 +11,11 @@
 
 #include <opendmi/entity.h>
 
-typedef struct dmi_mgmt_controller           dmi_mgmt_controller_t;
-typedef struct dmi_mgmt_controller_data      dmi_mgmt_controller_data_t;
-typedef struct dmi_mgmt_controller_extra     dmi_mgmt_controller_extra_t;
-typedef struct dmi_mgmt_protocol_record      dmi_mgmt_protocol_record_t;
-typedef struct dmi_mgmt_protocol_record_data dmi_mgmt_protocol_record_data_t;
+typedef struct dmi_mgmt_controller        dmi_mgmt_controller_t;
+typedef struct dmi_mgmt_controller_data   dmi_mgmt_controller_data_t;
+typedef struct dmi_mgmt_controller_extra  dmi_mgmt_controller_extra_t;
+typedef struct dmi_mgmt_proto_record      dmi_mgmt_proto_record_t;
+typedef struct dmi_mgmt_proto_record_data dmi_mgmt_proto_record_data_t;
 
 /**
  * @brief Management interface types.
@@ -42,12 +42,12 @@ typedef enum dmi_mgmt_if_type {
 /**
  * @brief Management protocol types.
  */
-typedef enum dmi_mgmt_protocol {
-    DMI_MGMT_PROTOCOL_IPMI            = 0x02, ///< IPMI: Intelligent Platform Management Interface
-    DMI_MGMT_PROTOCOL_MCTP            = 0x03, ///< MCTP: Management Component Transport Protoco
-    DMI_MGMT_PROTOCOL_REDFISH_OVER_IP = 0x04, ///< Redfish over IP
-    DMI_MGMT_PROTOCOL_OEM             = 0xF0  ///< OEM-defined
-} dmi_mgmt_protocol_t;
+typedef enum dmi_mgmt_proto {
+    DMI_MGMT_PROTO_IPMI            = 0x02, ///< IPMI: Intelligent Platform Management Interface
+    DMI_MGMT_PROTO_MCTP            = 0x03, ///< MCTP: Management Component Transport Protoco
+    DMI_MGMT_PROTO_REDFISH_OVER_IP = 0x04, ///< Redfish over IP
+    DMI_MGMT_PROTO_OEM             = 0xF0  ///< OEM-defined
+} dmi_mgmt_proto_t;
 
 /**
  * @brief Management Controller Host Interface (Type 42) structure.
@@ -71,15 +71,15 @@ dmi_packed_struct(dmi_mgmt_controller_data)
  */
 dmi_packed_struct(dmi_mgmt_controller_extra)
 {
-    dmi_byte_t protocol_records_count;
+    dmi_byte_t proto_records_count;
 
-    dmi_byte_t protocol_records_data[];
+    dmi_byte_t proto_records_data[];
 };
 
 /**
  * @brief Protocol Record Data Format.
  */
-dmi_packed_struct(dmi_mgmt_protocol_record_data)
+dmi_packed_struct(dmi_mgmt_proto_record_data)
 {
     dmi_byte_t type;
 
@@ -99,15 +99,15 @@ struct dmi_mgmt_controller
 
     dmi_byte_t *if_data;
 
-    size_t protocol_records_count;
+    size_t proto_records_count;
 
-    dmi_mgmt_protocol_record_t **protocol_records;
+    dmi_mgmt_proto_record_t **proto_records;
 };
 
 /**
  * @brief Decoded Protocol Record Data.
  */
-struct dmi_mgmt_protocol_record
+struct dmi_mgmt_proto_record
 {
     dmi_mgmt_if_type_t type;
 

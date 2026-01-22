@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved `<opendmi/name.h>` to `<opendmi/utils/name.h>`
 - Refactored entity decoders API
 - Fixed Centronics connectors naming
+- Fixed management protocols naming
 - Fixed zero handle linking behavior
 - Fixed group associations items list decoding
 

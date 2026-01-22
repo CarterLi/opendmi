@@ -102,27 +102,27 @@ const dmi_name_set_t dmi_mgmt_if_type_names =
     }
 };
 
-const dmi_name_set_t dmi_mgmt_protocol_names =
+const dmi_name_set_t dmi_mgmt_proto_names =
 {
     .code  = "mgmt-protocols",
     .names = (dmi_name_t[]){
         {
-            .id   = DMI_MGMT_PROTOCOL_IPMI,
+            .id   = DMI_MGMT_PROTO_IPMI,
             .code = "ipmi",
             .name = "IPMI"
         },
         {
-            .id   = DMI_MGMT_PROTOCOL_MCTP,
+            .id   = DMI_MGMT_PROTO_MCTP,
             .code = "mctp",
             .name = "MCTP"
         },
         {
-            .id   = DMI_MGMT_PROTOCOL_REDFISH_OVER_IP,
+            .id   = DMI_MGMT_PROTO_REDFISH_OVER_IP,
             .code = "redfish-over-ip",
             .name = "Redfish over IP"
         },
         {
-            .id   = DMI_MGMT_PROTOCOL_OEM,
+            .id   = DMI_MGMT_PROTO_OEM,
             .code = "oem-defined",
             .name = "OEM-defined"
         },
@@ -179,23 +179,23 @@ static bool dmi_mgmt_controller_decode(dmi_entity_t *entity)
     }
     memcpy(info->if_data, data->if_data, info->if_data_length);
 
-    info->protocol_records_count = dmi_decode(extra->protocol_records_count);
+    info->proto_records_count = dmi_decode(extra->proto_records_count);
 
-    const size_t memsize = sizeof(*info->protocol_records) * info->protocol_records_count;
-    info->protocol_records = dmi_alloc(entity->context, memsize);
-    if (info->protocol_records == nullptr) {
+    const size_t memsize = sizeof(*info->proto_records) * info->proto_records_count;
+    info->proto_records = dmi_alloc(entity->context, memsize);
+    if (info->proto_records == nullptr) {
         dmi_mgmt_controller_cleanup(entity);
         return false;
     }
 
-    const dmi_byte_t *cursor = extra->protocol_records_data;
-    for (size_t i = 0; i < info->protocol_records_count; i++) {
-        dmi_mgmt_protocol_record_data_t *rec_data = dmi_cast(rec_data, cursor);
+    const dmi_byte_t *cursor = extra->proto_records_data;
+    for (size_t i = 0; i < info->proto_records_count; i++) {
+        dmi_mgmt_proto_record_data_t *rec_data = dmi_cast(rec_data, cursor);
 
         dmi_mgmt_if_type_t type   = dmi_decode(rec_data->type);
         size_t             length = dmi_decode(rec_data->length);
 
-        dmi_mgmt_protocol_record_t *rec = dmi_alloc(entity->context, sizeof(*rec) + length);
+        dmi_mgmt_proto_record_t *rec = dmi_alloc(entity->context, sizeof(*rec) + length);
         if (rec == nullptr) {
             dmi_mgmt_controller_cleanup(entity);
             return false;
@@ -204,7 +204,7 @@ static bool dmi_mgmt_controller_decode(dmi_entity_t *entity)
         rec->length = length;
         memcpy(rec->data, rec_data->data, length);
 
-        info->protocol_records[i] = rec;
+        info->proto_records[i] = rec;
 
         cursor += sizeof(*rec_data) + rec_data->length;
     }
@@ -222,10 +222,10 @@ static void dmi_mgmt_controller_cleanup(dmi_entity_t *entity)
 
     dmi_free(info->if_data);
 
-    if (info->protocol_records != nullptr) {
-        for (size_t i = 0; i < info->protocol_records_count; i++) {
-            dmi_free(info->protocol_records[i]);
+    if (info->proto_records != nullptr) {
+        for (size_t i = 0; i < info->proto_records_count; i++) {
+            dmi_free(info->proto_records[i]);
         }
     }
-    dmi_free(info->protocol_records);
+    dmi_free(info->proto_records);
 }

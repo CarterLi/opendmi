@@ -1,19 +1,19 @@
-# OpenDMI: Coding conventions
+= OpenDMI: Coding conventions
 
-## Formatting
+== Formatting
 
-### Spacing and braces
+=== Spacing and braces
 
 * Indent using four (4) spaces. Do not use tabs for indentation.
 * Use no space between `*` and the variable name in pointer expressions (`int *foo`).
 * Use space between keywords and parentheses; e.g., `if (condition)`.
 * Put the opening brace of a function implementation on the line after the function’s return type, name, and argument list.
 
-## Header guards
+== Header guards
 
 * Use `#pragma once` in addition to include guargs in header files to avoid duplicated includes.
 
-## Naming
+== Naming
 
 * Use `snake_case` to name a multi-word variable or type.
 
@@ -32,3 +32,10 @@
 expressions and conditionals.
 
 * Avoid magic numbers; define meaningful constants. Prefer C language symbols over preprocessor symbols, because the former are visible in a symbolic debugger like gdb.
+
+=== Common abbreviations
+
+[horizontal]
+addr:: Address
+iface:: Interface
+proto:: Protocol
