@@ -47,7 +47,8 @@
 | Dell System ID
 | `BYTE`
 | `NUMBER`
-|
+| A value of `0xFE` indicates that the actual system ID is stored in the system
+ID extensio field.
 
 | `0x07`
 | 2.2+
@@ -61,7 +62,7 @@
 | Dell System ID Extension
 | `WORD`
 | `NUMBER`
-|
+| The field is valid only when system ID field is set to `0xFE`.
 
 | `0x0A`
 | 2.2+
