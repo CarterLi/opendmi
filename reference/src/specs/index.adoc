@@ -15,3 +15,11 @@ include::dell/indexed-io.adoc[leveloffset=2]
 include::dell/protected-area-1.adoc[leveloffset=2]
 include::dell/protected-area-2.adoc[leveloffset=2]
 include::dell/calling-iface.adoc[leveloffset=2]
+
+== Sun-specific structures
+
+include::sun/processor-ex.adoc[leveloffset=2]
+include::sun/port-ex.adoc[leveloffset=2]
+include::sun/pcie-root-complex.adoc[leveloffset=2]
+include::sun/memory-array-ex.adoc[leveloffset=2]
+include::sun/memory-device-ex.adoc[leveloffset=2]

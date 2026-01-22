@@ -1,0 +1,3 @@
+= Sun Processor Extended Information (Type 132)
+:sectnums:
+:sectlinks:

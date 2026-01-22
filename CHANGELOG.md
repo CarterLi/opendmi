@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Introduced reference manual
+- Introduced Sun extension
 - Added autoloading of vendor-specific extensions
 - Added Dell revisions and IDs structure decoding (type 208)
 - Added Dell parallel port structure decoding (type 209)
 - Added Dell serial port structure decoding (type 210)
 - Added Dell infrared port structure decoding (type 211)
-- Added specifications for OEM-specific structures
+- Added specifications for OEM-specific structures:
+  - Dell revisions and IDs (type 208)
+  - Dell parallel port (type 209)
+  - Dell serial port (type 210)
+  - Dell infrared port (type 211)
 - Added memory controller structure linking
 - Added system boot status decoding
 - Added support for enumeration range names

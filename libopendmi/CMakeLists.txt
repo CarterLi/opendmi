@@ -172,6 +172,12 @@ target_sources(opendmi-object
         src/extension/ibm.c
         src/extension/intel.c
         src/extension/lenovo.c
+        src/extension/sun.c
+        src/entity/sun/memory-array-ex.c
+        src/entity/sun/memory-device-ex.c
+        src/entity/sun/pcie-root-complex.c
+        src/entity/sun/port-ex.c
+        src/entity/sun/processor-ex.c
         src/backend/dump.c
     PUBLIC FILE_SET HEADERS
         BASE_DIRS include
@@ -268,6 +274,12 @@ target_sources(opendmi-object
             include/opendmi/extension/ibm.h
             include/opendmi/extension/intel.h
             include/opendmi/extension/lenovo.h
+            include/opendmi/extension/sun.h
+            include/opendmi/entity/sun/memory-array-ex.h
+            include/opendmi/entity/sun/memory-device-ex.h
+            include/opendmi/entity/sun/pcie-root-complex.h
+            include/opendmi/entity/sun/port-ex.h
+            include/opendmi/entity/sun/processor-ex.h
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
