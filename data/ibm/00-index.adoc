@@ -1,0 +1,48 @@
+= IBM
+
+[cols="2,1,1,4"]
+|===
+| Name | Vendor | SMBIOS | Structures
+
+| `x3950-m2-0.bin`
+| IBM
+| `2.4`
+a|[unstyled]
+- [0] Platform firmware information
+- [1] System information
+- [2] Baseboard or module information
+- [3] System enclosure or chassis
+- [4] Processor information
+- [7] Cache information
+- [8] Port connector information
+- [9] System slots
+- [11] OEM strings
+- [12] System configuration options
+- [13] Firmware language information
+- [16] Physical memory array
+- [17] Memory device
+- [19] Memory array mapped address
+- [32] System boot information
+- [38] IPMI device information
+
+| `x3590-m2-1.bin`
+| IBM
+| `2.4`
+a|[unstyled]
+- [0] Platform firmware information
+- [1] System information
+- [2] Baseboard or module information
+- [3] System enclosure or chassis
+- [4] Processor information
+- [7] Cache information
+- [8] Port connector information
+- [9] System slots
+- [11] OEM strings
+- [12] System configuration options
+- [13] Firmware language information
+- [16] Physical memory array
+- [17] Memory device
+- [19] Memory array mapped address
+- [32] System boot information
+- [38] IPMI device information
+|===

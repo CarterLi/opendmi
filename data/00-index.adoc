@@ -1,164 +1,17 @@
 = OpenDMI: SMBIOS data index
 :toc:
 
-== Dell
-
-[cols="2,1,1,4"]
-|===
-| Name | Vendor | SMBIOS | Structures
-
-| `fy59zk3.bin`
-| Dell
-| 3.2
-a|[unstyled]
-- [0] Platform firmware information
-- [1] System information
-- [2] Baseboard or module information
-- [3] System enclosure or chassis
-- [4] Processor information
-- [7] Cache information
-- [9] System slots
-- [11] OEM strings
-- [12] System configuration options
-- [13] Firmware language information
-- [14] Group associations
-- [16] Physical memory array
-- [17] Memory device
-- [19] Memory array mapped address
-- [21] Built-in pointing device
-- [22] Portable battery
-- [24] Hardware security
-- [27] Cooling device
-- [28] Temperature probe
-- [32] System boot information
-- [39] System power supply
-- [41] Onboard devices extended information
-- [131] OEM-specific
-- [136] OEM-specific
-- [177] OEM-specific
-- [178] OEM-specific
-- [179] OEM-specific
-- [203] OEM-specific
-- [205] OEM-specific
-- [206] OEM-specific
-- [208] OEM-specific
-- [216] OEM-specific
-- [217] OEM-specific
-- [218] OEM-specific
-- [220] OEM-specific
-- [221] OEM-specific
-- [222] OEM-specific
-- [255] OEM-specific
-
-| `poweredge-1800.bin`
-| Dell
-| 2.3
-a|[unstyled]
-- [0] Platform firmware information
-- [1] System information
-- [2] Baseboard or module information
-- [3] System enclosure or chassis
-- [4] Processor information
-- [7] Cache information
-- [8] Port connector information
-- [9] System slots
-- [10] Onboard devices information
-- [11] OEM strings
-- [12] System configuration options
-- [13] Firmware language information
-- [16] Physical memory array
-- [17] Memory device
-- [19] Memory array mapped address
-- [20] Memory device mapped address
-- [32] System boot information
-- [38] IPMI device information
-- [126] Inactive
-- [208] OEM-specific
-- [209] OEM-specific
-- [210] OEM-specific
-- [212] OEM-specific
-- [216] OEM-specific
-- [218] OEM-specific
-- [222] OEM-specific
-
-| `precision-490.bin`
-| Dell
-| 2.3
-a|[unstyled]
-- [0] Platform firmware information
-- [1] System information
-- [2] Baseboard or module information
-- [3] System enclosure or chassis
-- [4] Processor information
-- [7] Cache information
-- [8] Port connector information
-- [9] System slots
-- [10] Onboard devices information
-- [11] OEM strings
-- [13] Firmware language information
-- [15] System event log
-- [16] Physical memory array
-- [17] Memory device
-- [20] Memory device mapped address
-- [24] Hardware security
-- [25] System power controls
-- [26] Voltage probe
-- [27] Cooling device
-- [28] Temperature probe
-- [32] System boot information
-- [126] Inactive
-- [136] OEM-specific
-- [208] OEM-specific
-- [209] OEM-specific
-- [210] OEM-specific
-- [212] OEM-specific
-- [218] OEM-specific
-- [220] OEM-specific
-- [221] OEM-specific
-- [222] OEM-specific
-|===
-
-== Gigabyte
-
-[cols="2,1,1,4"]
-|===
-| Name | Vendor | SMBIOS | Structures
-
-| `b560m-ds3h-v2.bin`
-| American Megatrends
-| 3.3.1
-a|[unstyled]
-- [0] Platform firmware information
-- [1] System information
-- [2] Baseboard or module information
-- [3] System enclosure or chassis
-- [4] Processor information
-- [7] Cache information
-- [8] Port connector information
-- [9] System slots
-- [10] Onboard devices information
-- [11] OEM strings
-- [12] System configuration options
-- [13] Firmware language information
-- [14] Group associations
-- [16] Physical memory array
-- [17] Memory device
-- [19] Memory array mapped address
-- [20] Memory device mapped address
-- [26] Voltage probe
-- [27] Cooling device
-- [28] Temperature probe
-- [29] Electrical current probe
-- [32] System boot information
-- [34] Management device
-- [35] Management device component
-- [36] Management device threshold data
-- [39] System power supply
-- [41] Onboard devices extended information
-- [43] TPM device
-- [44] Processor additional information
-- [131] OEM-specific
-- [136] OEM-specific
-- [219] OEM-specific
-- [221] OEM-specific
-|===
+include::acer/00-index.adoc[leveloffset=1]
+include::asrock/00-index.adoc[leveloffset=1]
+include::asus/00-index.adoc[leveloffset=1]
+include::dell/00-index.adoc[leveloffset=1]
+include::gigabyte/00-index.adoc[leveloffset=1]
+include::hp/00-index.adoc[leveloffset=1]
+include::huawei/00-index.adoc[leveloffset=1]
+include::ibm/00-index.adoc[leveloffset=1]
+include::lenovo/00-index.adoc[leveloffset=1]
+include::msi/00-index.adoc[leveloffset=1]
+include::supermicro/00-index.adoc[leveloffset=1]
+include::synology/00-index.adoc[leveloffset=1]
+include::toshiba/00-index.adoc[leveloffset=1]
+include::vmware/00-index.adoc[leveloffset=1]

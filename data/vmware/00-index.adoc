@@ -1,0 +1,55 @@
+= VMware
+
+[cols="2,1,1,4"]
+|===
+| Name | Vendor | SMBIOS | Structures
+
+| `fusion-pro-25h2.bin`
+| VMware, Inc.
+| `3.2.1`
+a|[unstyled]
+- [0] Platform firmware information
+- [1] System information
+- [2] Baseboard or module information
+- [3] System enclosure or chassis
+- [4] Processor information
+- [7] Cache information
+- [11] OEM strings
+- [16] Physical memory array
+- [17] Memory device
+- [18] 32-bit memory error information
+- [19] Memory array mapped address
+- [20] Memory device mapped address
+- [23] System reset
+- [24] Hardware security
+- [30] Out-of-band remote access
+- [32] System boot information
+- [33] 64-bit memory error information
+- [126] Inactive
+
+| `workstation-pro-17.bin`
+| VMware, Inc.
+| `2.7`
+a|[unstyled]
+- [0] Platform firmware information
+- [1] System information
+- [2] Baseboard or module information
+- [3] System enclosure or chassis
+- [4] Processor information
+- [7] Cache information
+- [8] Port connector information
+- [9] System slots
+- [10] Onboard devices information
+- [11] OEM strings
+- [16] Physical memory array
+- [17] Memory device
+- [18] 32-bit memory error information
+- [19] Memory array mapped address
+- [20] Memory device mapped address
+- [23] System reset
+- [24] Hardware security
+- [30] Out-of-band remote access
+- [32] System boot information
+- [33] 64-bit memory error information
+- [126] Inactive
+|===

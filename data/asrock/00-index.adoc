@@ -1,0 +1,49 @@
+= ASRock
+
+[cols="2,1,1,4"]
+|===
+| Name | Vendor | SMBIOS | Structures
+
+| `h61m-gs.bin`
+| American Megatrends Inc.
+| `2.7`
+a|[unstyled]
+- [0] Platform firmware information
+- [1] System information
+- [2] Baseboard or module information
+- [3] System enclosure or chassis
+- [4] Processor information
+- [7] Cache information
+- [9] System slots
+- [11] OEM strings
+- [16] Physical memory array
+- [17] Memory device
+- [19] Memory array mapped address
+- [20] Memory device mapped address
+- [32] System boot information
+- [131] OEM-specific
+
+| `x870e-nova-wifi.bin`
+| American Megatrends International, LLC.
+| `3.4.1`
+a|[unstyled]
+- [0]  Platform firmware information
+- [1]  System information
+- [2]  Baseboard or module information
+- [3]  System enclosure or chassis
+- [4]  Processor information
+- [7]  Cache information
+- [10]  Onboard devices information
+- [11]  OEM strings
+- [12]  System configuration options
+- [13]  Firmware language information
+- [16]  Physical memory array
+- [17]  Memory device
+- [18]  32-bit memory error information
+- [19]  Memory array mapped address
+- [20]  Memory device mapped address
+- [32]  System boot information
+- [40]  Additional information
+- [43]  TPM device
+- [44]  Processor additional information
+|===

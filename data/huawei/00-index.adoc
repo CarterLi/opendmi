@@ -1,0 +1,57 @@
+= Huawei
+
+[cols="2,1,1,4"]
+|===
+| Name | Vendor | SMBIOS | Structures
+
+| `matebook-d-mdf-xx-m1010.bin`
+| HUAWEI
+| `3.4`
+a|[unstyled]
+- [0] Platform firmware information
+- [1] System information
+- [2] Baseboard or module information
+- [3] System enclosure or chassis
+- [4] Processor information
+- [7] Cache information
+- [9] System slots
+- [11] OEM strings
+- [13] Firmware language information
+- [14] Group associations
+- [14] Group associations
+- [16] Physical memory array
+- [17] Memory device
+- [19] Memory array mapped address
+- [20] Memory device mapped address
+- [21] Built-in pointing device
+- [22] Portable battery
+- [131] OEM-specific
+- [136] OEM-specific
+- [219] OEM-specific
+- [221] AMI type 221
+
+| `matebook-d-mdg-xx-m1010.bin`
+| HUAWEI
+| `3.4`
+a|[unstyled]
+- [0] Platform firmware information
+- [1] System information
+- [2] Baseboard or module information
+- [3] System enclosure or chassis
+- [4] Processor information
+- [7] Cache information
+- [9] System slots
+- [11] OEM strings
+- [13] Firmware language information
+- [14] Group associations
+- [16] Physical memory array
+- [17] Memory device
+- [19] Memory array mapped address
+- [20] Memory device mapped address
+- [21] Built-in pointing device
+- [22] Portable battery
+- [131] OEM-specific
+- [136] OEM-specific
+- [219] OEM-specific
+- [221] OEM-specific
+|===

@@ -1,0 +1,42 @@
+= MSI
+
+[cols="2,1,1,4"]
+|===
+| Name | Vendor | SMBIOS | Structures
+
+| `modern-15.bin`
+| American Megatrends Inc.
+| 3.2.1
+a|[unstyled]
+- [0] Platform firmware information
+- [1] System information
+- [2] Baseboard or module information
+- [3] System enclosure or chassis
+- [4] Processor information
+- [7] Cache information
+- [8] Port connector information
+- [9] System slots
+- [10] Onboard devices information
+- [11] OEM strings
+- [12] System configuration options
+- [13] Firmware language information
+- [14] Group associations
+- [16] Physical memory array
+- [17] Memory device
+- [19] Memory array mapped address
+- [20] Memory device mapped address
+- [26] Voltage probe
+- [27] Cooling device
+- [28] Temperature probe
+- [29] Electrical current probe
+- [32] System boot information
+- [34] Management device
+- [35] Management device component
+- [36] Management device threshold data
+- [39] System power supply
+- [41] Onboard devices extended information
+- [131] OEM-specific
+- [136] OEM-specific
+- [219] OEM-specific
+- [221] OEM-specific
+|===

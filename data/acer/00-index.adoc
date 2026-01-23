@@ -1,0 +1,33 @@
+= Acer
+
+[cols="2,1,1,4"]
+|===
+| Name | Vendor | SMBIOS | Structures
+
+| `nitro-an515-31.bin`
+| Insyde Corp.
+| `3.0`
+a|[unstyled]
+* [0] Platform firmware information
+* [1] System information
+* [2] Baseboard or module information
+* [3] System enclosure or chassis
+* [4] Processor information
+* [7] Cache information
+* [10] Onboard devices information
+* [11] OEM strings
+* [12] System configuration options
+* [14] Group associations
+* [16] Physical memory array
+* [17] Memory device
+* [19] Memory array mapped address
+* [20] Memory device mapped address
+* [131] OEM-specific
+* [170] OEM-specific
+* [171] OEM-specific
+* [172] OEM-specific
+* [219] OEM-specific
+* [221] OEM-specific
+* [222] OEM-specific
+* [248] OEM-specific
+|===

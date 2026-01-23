@@ -1,0 +1,36 @@
+= Synology
+
+[cols="2,1,1,4"]
+|===
+| Name | Vendor | SMBIOS | Structures
+
+| `ds718-plus.bin`
+| INSYDE Corp.
+| `3.0.1`
+a|[unstyled]
+- [0] Platform firmware information
+- [1] System information
+- [2] Baseboard or module information
+- [3] System enclosure or chassis
+- [4] Processor information
+- [7] Cache information
+- [8] Port connector information
+- [9] System slots
+- [11] OEM strings
+- [12] System configuration options
+- [13] Firmware language information
+- [15] System event log
+- [16] Physical memory array
+- [17] Memory device
+- [19] Memory array mapped address
+- [20] Memory device mapped address
+- [21] Built-in pointing device
+- [22] Portable battery
+- [26] Voltage probe
+- [27] Cooling device
+- [28] Temperature probe
+- [32] System boot information
+- [39] System power supply
+- [41] Onboard devices extended information
+- [131] OEM-specific
+|===
