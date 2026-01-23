@@ -5,7 +5,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 import os
+import getopt
 import subprocess
+import sys
 import yaml
 from yaml.loader import SafeLoader
 
@@ -42,17 +44,44 @@ def load_dump(dump_path: str):
         print("FAILED:")
         print(e.stderr)
 
-def process_file(dump_path: str, spec_path: str):
+def generate_spec(dump_path: str, spec_path: str):
+    print(f"Generating spec: {dump_path}")
+    pass
+
+def check_spec(dump_path: str, spec_path: str):
+    if not os.path.isfile(spec_path):
+        print(f"Skipping: {dump_path} (no spec)")
+        return
+
+    print(f"Checking spec: {dump_path}")
     spec = load_spec(spec_path)
     data = load_dump(dump_path)
 
-def main():
+def show_usage():
+    pass
+
+def main(argv):
+    mode = "test"
+
+    try:
+        opts, args = getopt.getopt(argv, "hb", ["help", "baseline"])
+    except getopt.GetoptError as e:
+        print(str(e))
+        print('Use -h or --help for help')
+        sys.exit(1)
+
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            show_usage()
+            sys.exit(0)
+        elif opt in ("-b", "--baseline"):
+            mode = "generate"
+
     for dump_path, spec_path in data_files():
-        if os.path.isfile(spec_path):
-            print(f"Processing {dump_path}")
-            process_file(dump_path, spec_path)
+        if mode == "generate":
+            generate_spec(dump_path, spec_path)
         else:
-            print(f"Skipping {dump_path}")
+            check_spec(dump_path, spec_path)
 
 if __name__ == "__main__":
-	main()
+	main(sys.argv[1:])
