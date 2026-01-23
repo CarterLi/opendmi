@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `dmi_pointing_device_interface_t` to `dmi_pointing_device_iface_t`
 - Moved `<opendmi/name.h>` to `<opendmi/utils/name.h>`
 - Refactored entity decoders API
+- Fixed build on FreeBSD platform
 - Fixed Centronics connectors naming
 - Fixed management protocols naming
 - Fixed zero handle linking behavior

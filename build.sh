@@ -1,21 +1,33 @@
-#!/bin/bash
+#!/bin/sh
 #
 # OpenDMI: Cross-platform DMI/SMBIOS framework
 # Copyright (c) 2025-2026, The OpenDMI contributors
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
-SCRIPT=`basename $0`
-OSNAME=`uname -s`
-CMAKE=`which cmake`
-CTEST=`which ctest`
+SCRIPT_PATH=`readlink -f "$0"`
+SCRIPT_ROOT=`dirname "$0"`
+SCRIPT_NAME=`basename "$0"`
 
-source ./build.conf.dist
+CONFIG_DIST="${SCRIPT_ROOT}/build.conf.dist"
+CONFIG_LOCAL="${SCRIPT_ROOT}/build.conf"
 
-if [ -f ./build.conf ]; then
-    source ./build.conf
+. ${CONFIG_DIST}
+
+if [ -f "${CONFIG_LOCAL}" ]; then
+    . ${CONFIG_LOCAL}
 fi
 
+case "${BUILD_DIR}" in
+    /*)
+        ;;
+    *)
+        BUILD_DIR="${SCRIPT_ROOT}/${BUILD_DIR}"
+        ;;
+esac
+BUILD_DIR=`readlink -f "${BUILD_DIR}"`
+
+OSNAME=`uname -s`
 case "${OSNAME}" in
     Linux)
         NPROC=`nproc --all`
@@ -26,6 +38,18 @@ case "${OSNAME}" in
     *)
         NPROC=1
 esac
+
+CMAKE=`which cmake`
+if [ "$?" -ne "0" ]; then
+    echo "CMake not found" 1>&2
+    exit 1
+fi
+
+CTEST=`which ctest`
+if [ "$?" -ne "0" ]; then
+    echo "CTest not found" 1>&2
+    exit 1
+fi
 
 _missing_command() {
     echo "Missing command. Use -h or --help for help" 1>&2
@@ -54,7 +78,7 @@ _usage() {
     echo "Copyright (c) 2025-2026, The OpenDMI contributors"
     echo
     echo "Usage:"
-    echo "    ${SCRIPT} [global options] <command> [command options]"
+    echo "    ${SCRIPT_NAME} [global options] <command> [command options]"
     echo
     echo "Global options:"
     echo "    -h, --help         Print this help and exit"
@@ -169,6 +193,15 @@ _configure() {
     if [ "${VERBOSE}" == "ON" ]; then
         FEATURES="${FEATURES} -DCMAKE_VERBOSE_MAKEFILE=TRUE"
     fi
+
+    echo
+    echo "Target:          ${OSNAME}"
+    echo "Using CMake:     ${CMAKE}"
+    echo "Using CTest:     ${CTEST}"
+    echo "Build directory: ${BUILD_DIR}"
+    echo "Build type:      ${BUILD_TYPE}"
+    echo "Number of jobs:  ${NPROC}"
+    echo
 
     ${CMAKE} -B ${BUILD_DIR} \
         -DCMAKE_INSTALL_PREFIX=${PREFIX} \
