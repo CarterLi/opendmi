@@ -45,7 +45,8 @@ typedef enum dmi_command_type
 {
     DMI_COMMAND_DUMP_TABLE,
     DMI_COMMAND_LIST_KEYWORDS,
-    DMI_COMMAND_LIST_TYPES
+    DMI_COMMAND_LIST_TYPES,
+    DMI_COMMAND_LIST_ENTITIES
 } dmi_command_type_t;
 
 typedef struct dmi_config
@@ -71,6 +72,7 @@ static void show_usage(const char *proc);
 
 static bool list_keywords(dmi_context_t *context);
 static bool list_types(dmi_context_t *context);
+static bool list_entities(dmi_context_t *context);
 
 static void print_all(dmi_context_t *context, const dmi_format_t *format);
 static void print_entity(const dmi_format_t *format, const dmi_entity_t *entity, void *session);
@@ -158,6 +160,11 @@ int main(int argc, char *argv[])
         if (not status)
             break;
 
+        if (config.command == DMI_COMMAND_LIST_ENTITIES) {
+            list_entities(context);
+            break;
+        }
+
         if (config.output_path != nullptr) {
             status = dmi_dump_save(context, config.output_path, false);
             if (not status)
@@ -182,9 +189,10 @@ static bool parse_args(dmi_context_t *context, int argc, char *argv[], int *rv)
         { "dev-mem",   required_argument, nullptr, 'd' },
         { "debug",     no_argument,       nullptr, 'g' },
         { "quiet",     no_argument,       nullptr, 'q' },
-        { "link",      no_argument,       nullptr, 'l' },
+        { "link",      no_argument,       nullptr, 'L' },
         { "string",    optional_argument, nullptr, 's' },
         { "type",      optional_argument, nullptr, 't' },
+        { "list",      no_argument,       nullptr, 'l' },
         { "handle",    required_argument, nullptr, 'H' },
         { "dump",      no_argument,       nullptr, 'u' },
         { "dump-bin",  required_argument, nullptr, 'o' },
@@ -198,7 +206,7 @@ static bool parse_args(dmi_context_t *context, int argc, char *argv[], int *rv)
 
     while (true) {
         int idx = 0;
-        int opt = getopt_long(argc, argv, "d:qs?t?H:uo:i:hv", long_options, &idx);
+        int opt = getopt_long(argc, argv, "d:qLs?tl?H:uo:i:hv", long_options, &idx);
 
         if (opt < 0)
             break;
@@ -216,7 +224,7 @@ static bool parse_args(dmi_context_t *context, int argc, char *argv[], int *rv)
             config.debug = true;
             break;
 
-        case 'l':
+        case 'L':
             config.link = true;
             break;
 
@@ -240,6 +248,10 @@ static bool parse_args(dmi_context_t *context, int argc, char *argv[], int *rv)
                 *rv = EXIT_FAILURE;
                 return false;
             }
+            break;
+
+        case 'l':
+            config.command = DMI_COMMAND_LIST_ENTITIES;
             break;
 
         case 'H':
@@ -384,6 +396,19 @@ static bool list_types(dmi_context_t *context)
             continue;
 
         printf(format, (int)spec->type, spec->code, spec->name);
+    }
+
+    return true;
+}
+
+static bool list_entities(dmi_context_t *context)
+{
+    dmi_registry_iter_t iter;
+    dmi_entity_t *entity;
+
+    dmi_registry_iter_init(&iter, context->registry, &config.filter);
+    while ((entity = dmi_registry_iter_next(&iter)) != nullptr) {
+        printf("0x%04hX %-3u %s\n", entity->handle, entity->type, dmi_entity_name(entity));
     }
 
     return true;
