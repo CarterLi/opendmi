@@ -155,6 +155,8 @@ target_sources(opendmi-object
         src/entity/tpm-device.c
         src/entity/voltage-probe.c
         src/extension/acer.c
+        src/extension/ami.c
+        src/entity/ami/type-221.c
         src/extension/apple.c
         src/extension/dell.c
         src/entity/dell/common.c
@@ -257,6 +259,8 @@ target_sources(opendmi-object
             include/opendmi/entity/tpm-device.h
             include/opendmi/entity/voltage-probe.h
             include/opendmi/extension/acer.h
+            include/opendmi/extension/ami.h
+            include/opendmi/entity/ami/type-221.h
             include/opendmi/extension/apple.h
             include/opendmi/extension/dell.h
             include/opendmi/entity/dell/common.h

@@ -227,11 +227,6 @@ bool dmi_registry_scan(dmi_registry_t *registry)
             goto exit;
         }
 
-        if (entity->type == DMI_TYPE_END_OF_TABLE) {
-            dmi_entity_destroy(entity);
-            break;
-        }
-
         // Add entity to registry
         if (not dmi_registry_put(registry, entity)) {
             dmi_error_raise_ex(context, DMI_ERROR_ENTITY_REGISTER,
@@ -239,6 +234,10 @@ bool dmi_registry_scan(dmi_registry_t *registry)
             dmi_entity_destroy(entity);
             goto exit;
         }
+
+        // Stop at the end of table
+        if (entity->type == DMI_TYPE_END_OF_TABLE)
+            break;
 
         // Update structure pointer and index
         ptr += entity->total_length;

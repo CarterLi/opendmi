@@ -10,6 +10,7 @@
 #include <opendmi/utils/name.h>
 
 #include <opendmi/extension/acer.h>
+#include <opendmi/extension/ami.h>
 #include <opendmi/extension/apple.h>
 #include <opendmi/extension/dell.h>
 #include <opendmi/extension/hp.h>
@@ -27,6 +28,11 @@ static const dmi_name_set_t dmi_vendor_names =
             .id   = DMI_VENDOR_ACER,
             .code = "acer",
             .name = "Acer"
+        },
+        {
+            .id   = DMI_VENDOR_AMI,
+            .code = "ami",
+            .name = "AMI"
         },
         {
             .id   = DMI_VENDOR_APPLE,
@@ -77,6 +83,17 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             nullptr
         },
         .extension = &dmi_acer_ext
+    },
+    {
+        .id    = DMI_VENDOR_AMI,
+        .code  = "ami",
+        .names = (const char *[]){
+            "American Megatrends Inc.",
+            "American Megatrends International, LLC.",
+            "HUAWEI",
+            nullptr
+        },
+        .extension = &dmi_ami_ext
     },
     {
         .id    = DMI_VENDOR_DELL,

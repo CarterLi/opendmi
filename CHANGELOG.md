@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Introduced reference manual
+- Introduced AMI extension
 - Introduced Sun extension
 - Added autoloading of vendor-specific extensions
+- Added AMI type 221 structure decoding (partial)
 - Added Dell revisions and IDs structure decoding (type 208)
 - Added Dell parallel port structure decoding (type 209)
 - Added Dell serial port structure decoding (type 210)
@@ -32,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved `<opendmi/name.h>` to `<opendmi/utils/name.h>`
 - Refactored entity decoders API
 - Fixed build on FreeBSD platform
+- Fixed displaying of end-of-table structure
 - Fixed Centronics connectors naming
 - Fixed management protocols naming
 - Fixed zero handle linking behavior

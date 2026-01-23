@@ -11,6 +11,9 @@
 
 #include <opendmi/extension.h>
 
+/**
+ * @brief Dell structure type identifiers.
+ */
 typedef enum dmi_dell_type
 {
     DMI_TYPE_DELL_BIOS_FLAGS        = 177, ///< Dell BIOS flags

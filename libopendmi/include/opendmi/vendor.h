@@ -21,6 +21,7 @@ typedef enum dmi_vendor
     DMI_VENDOR_INVALID = -1, ///< Invalid
     DMI_VENDOR_OTHER,        ///< Other
     DMI_VENDOR_ACER,         ///< Acer
+    DMI_VENDOR_AMI,          ///< AMI
     DMI_VENDOR_APPLE,        ///< Apple
     DMI_VENDOR_DELL,         ///< Dell
     DMI_VENDOR_HP,           ///< HP

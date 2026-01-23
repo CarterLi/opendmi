@@ -11,6 +11,9 @@
 
 #include <opendmi/extension.h>
 
+/**
+ * @brief Sun structure type identifiers.
+ */
 typedef enum dmi_sun_type
 {
     DMI_TYPE_SUN_PROCESSOR_EX      = 132, ///< Sun processor extended information
