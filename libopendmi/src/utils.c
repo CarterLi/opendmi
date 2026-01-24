@@ -46,6 +46,7 @@ typedef struct stat stat_t;
 #endif // !defined(_WIN32)
 
 static ssize_t dmi_file_read_data(int fd, dmi_data_t *data, size_t avail);
+static void dmi_memory_read_data(dmi_data_t *dst, const dmi_data_t *src, size_t length);
 
 void *dmi_alloc(dmi_context_t *context, size_t size)
 {
@@ -313,7 +314,7 @@ dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, off_t base
             break;
         }
 
-        memcpy(data, ptr + offset, length);
+        dmi_memory_read_data(data, ptr + offset, length);
 
         success = true;
     } while (false);
@@ -329,5 +330,17 @@ dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, off_t base
     }
 
     return data;
+}
+
+static void dmi_memory_read_data(dmi_data_t *dst, const dmi_data_t *src, size_t length)
+{
+#   if defined(__aarch64__)
+        // Avoid unaligned memory access on memory device
+        for (size_t i = 0; i < length; i++) {
+            *(dst + i) = *(src + i);
+        }
+#   else
+        memcpy(dst, src, length);
+#   endif
 }
 #endif // !defined(_WIN32)

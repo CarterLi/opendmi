@@ -25,6 +25,11 @@ case "${BUILD_DIR}" in
         BUILD_DIR="${SCRIPT_ROOT}/${BUILD_DIR}"
         ;;
 esac
+
+if [ ! -d "${BUILD_DIR}" ]; then
+    mkdir -p "${BUILD_DIR}"
+fi
+
 BUILD_DIR=`readlink -f "${BUILD_DIR}"`
 
 OSNAME=`uname -s`
