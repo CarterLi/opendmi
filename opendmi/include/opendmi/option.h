@@ -31,6 +31,7 @@ struct dmi_option
     const char *description;
     dmi_argument_t argument;
     unsigned flags;
+    void *value;
 };
 
 struct dmi_option_group
@@ -42,6 +43,11 @@ struct dmi_option_group
 __BEGIN_DECLS
 
 void dmi_option_list(const dmi_option_group_t *group);
+
+const dmi_option_t *dmi_option_find_short(const dmi_option_group_t *group, char name);
+const dmi_option_t *dmi_option_find_long(const dmi_option_group_t *group, const char *name);
+
+int dmi_option_parse(const dmi_option_group_t *group, int argc, char *argv[]);
 
 __END_DECLS
 

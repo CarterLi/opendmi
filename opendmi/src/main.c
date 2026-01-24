@@ -113,12 +113,14 @@ const dmi_option_group_t global_opts =
         {
             .short_names = "q",
             .long_names  = (const char *[]){ "quiet", nullptr },
-            .description = "Less verbose output"
+            .description = "Less verbose output",
+            .value       = &config.quiet
         },
         {
             .short_names = "g",
             .long_names  = (const char *[]){ "debug", nullptr },
-            .description = "Turn on debug logging"
+            .description = "Turn on debug logging",
+            .value       = &config.debug
         },
         {
             .short_names = nullptr,
@@ -129,6 +131,7 @@ const dmi_option_group_t global_opts =
             .short_names = "d",
             .long_names  = (const char *[]){ "device", nullptr },
             .description = "Set path to memory device (default: /dev/mem)",
+            .value       = &config.memory_device,
             .argument    = {
                 .name     = "PATH",
                 .type     = DMI_ARGUMENT_TYPE_STRING,
@@ -139,11 +142,12 @@ const dmi_option_group_t global_opts =
             .short_names = "i",
             .long_names  = (const char *[]){ "file", nullptr },
             .description = "Read the DMI data from a binary file",
+            .value       = &config.output_path,
             .argument    = {
                 .name     = "PATH",
                 .type     = DMI_ARGUMENT_TYPE_STRING,
                 .required = true
-            },
+            }
         },
         {}
     }

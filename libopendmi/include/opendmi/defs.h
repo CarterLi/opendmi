@@ -45,6 +45,9 @@
 #define countof(x) (sizeof(x) / sizeof((x)[0]))
 #endif // !countof
 
+// Type-cast macro
+#define dmi_cast(dst, expr) ((__typeof__(dst))(expr))
+
 // Value pointer macro
 #define dmi_value_ptr(x) &(typeof(x)){ (x) }
 

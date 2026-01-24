@@ -22,8 +22,6 @@
 
 #include <opendmi/defs.h>
 
-#define dmi_cast(dst, expr) ((__typeof__(dst))(expr))
-
 #define DMI_HANDLE_INVALID     ((dmi_handle_t)0xFFFFu)
 #define DMI_HANDLE_UNSUPPORTED ((dmi_handle_t)0xFFFEu)
 

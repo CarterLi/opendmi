@@ -18,7 +18,6 @@ typedef bool dmi_argument_fn(const char *value);
 typedef enum dmi_argument_type
 {
     DMI_ARGUMENT_TYPE_NONE,
-    DMI_ARGUMENT_TYPE_BOOL,
     DMI_ARGUMENT_TYPE_STRING
 } dmi_argument_type_t;
 
