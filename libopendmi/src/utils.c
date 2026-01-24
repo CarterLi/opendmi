@@ -259,7 +259,7 @@ static ssize_t dmi_file_read_data(int fd, dmi_data_t *data, size_t avail)
 }
 
 #if !defined(_WIN32)
-dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, off_t base, size_t length)
+dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, size_t base, size_t length)
 {
     int         fd   = -1;
     dmi_data_t *ptr  = MAP_FAILED;
@@ -273,14 +273,14 @@ dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, off_t base
         dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "path");
         return nullptr;
     }
-    if ((length == 0) or (length > OFF_MAX)) {
+    if (length == 0) {
         dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "length");
         return nullptr;
     }
 
     bool   success   = false;
     size_t page_size = sysconf(_SC_PAGE_SIZE);
-    off_t  offset    = base % page_size;
+    size_t offset    = base % page_size;
 
     do {
         fd = open(path, O_RDONLY);
@@ -298,7 +298,7 @@ dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, off_t base
             dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "%s: not a character device", path);
             break;
         }
-        if (S_ISREG(st.st_mode) and (base + (off_t)length > st.st_size)) {
+        if (S_ISREG(st.st_mode) and (base + length > (size_t)st.st_size)) {
             dmi_error_raise_ex(context, DMI_ERROR_INTERNAL, "%s: unable to map beyond the end of file", path);
             break;
         }

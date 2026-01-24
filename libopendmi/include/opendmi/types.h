@@ -20,10 +20,6 @@
     typedef SSIZE_T ssize_t;
 #endif
 
-#if !defined(OFF_MAX)
-#   define OFF_MAX dmi_maxof(off_t)
-#endif
-
 #include <opendmi/defs.h>
 
 #define dmi_cast(dst, expr) ((__typeof__(dst))(expr))

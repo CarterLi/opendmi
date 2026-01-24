@@ -27,7 +27,7 @@ int dmi_vasprintf(char **strp, const char *fmt, va_list ap);
 dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plength);
 
 #if !defined(_WIN32)
-    dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, off_t base, size_t length);
+    dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, size_t base, size_t length);
 #endif // !defined(_WIN32)
 
 __END_DECLS

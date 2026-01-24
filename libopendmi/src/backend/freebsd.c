@@ -36,17 +36,18 @@ static dmi_data_t *dmi_freebsd_read_table(dmi_context_t *context, size_t *plengt
 static bool dmi_freebsd_close(dmi_context_t *context);
 static void dmi_freebsd_session_free(dmi_freebsd_session_t *session);
 
-static off_t dmi_freebsd_get_entry_address(dmi_context_t *context);
+static bool dmi_freebsd_get_entry_addr(dmi_context_t *context, size_t *paddr);
 
 #if defined(__i386__) or defined(__x86_64__)
-    static off_t dmi_freebsd_find_entry_address(dmi_context_t *context);
+    static bool dmi_freebsd_find_entry_addr(dmi_context_t *context, size_t *paddr);
 
-    static off_t dmi_freebsd_find_anchor(
+    static bool dmi_freebsd_find_anchor(
             dmi_context_t *context,
             dmi_data_t    *buffer,
-            size_t         base,
+            size_t         base_addr,
             size_t         area_size,
-            const char    *anchor);
+            const char    *anchor,
+            size_t        *paddr);
 #endif
 
 dmi_backend_t dmi_freebsd_backend =
@@ -85,20 +86,21 @@ static dmi_data_t *dmi_freebsd_read_entry(dmi_context_t *context, size_t *plengt
     dmi_freebsd_session_t *session = dmi_cast(session, context->session);
 
     if (session->entry == nullptr) {
-        off_t address;
+        size_t addr  = 0;
+        bool   found = false;
 
-        address = dmi_freebsd_get_entry_address(context);
+        found = dmi_freebsd_get_entry_addr(context, &addr);
 #       if defined(__i386__) || defined(__x86_64__)
-            if (address < 0)
-                address = dmi_freebsd_find_entry_address(context);
+            if (not found)
+                found = dmi_freebsd_find_entry_addr(context, &addr);
 #       endif
 
-        if (address < 0) {
+        if (not found) {
             dmi_error_raise(context, DMI_ERROR_EPS_NOT_FOUND);
             return nullptr;
         }
 
-        session->entry = dmi_memory_read(context, DMI_FREEBSD_DEV_MEMORY, address, DMI_ENTRY_MAX_SIZE);
+        session->entry = dmi_memory_read(context, DMI_FREEBSD_DEV_MEMORY, addr, DMI_ENTRY_MAX_SIZE);
         if (session->entry == nullptr)
             return nullptr;
 
@@ -156,10 +158,13 @@ static void dmi_freebsd_session_free(dmi_freebsd_session_t *session)
     dmi_free(session);
 }
 
-static off_t dmi_freebsd_get_entry_address(dmi_context_t *context)
+static bool dmi_freebsd_get_entry_addr(dmi_context_t *context, size_t *paddr)
 {
     char str[KENV_MVALLEN + 1];
-    unsigned long long value;
+    unsigned long long addr;
+
+    assert(context != nullptr);
+    assert(paddr   != nullptr);
 
     dmi_log_debug(context, "Getting SMBIOS address from EFI...");
 
@@ -169,72 +174,69 @@ static off_t dmi_freebsd_get_entry_address(dmi_context_t *context)
         else
             dmi_log_debug(context, "No SMBIOS address found");
 
-		return -1;
+		return false;
 	}
 
     errno = 0;
-    value = strtoull(str, NULL, 0);
+    addr  = strtoull(str, NULL, 0);
 
-    if (((errno == ERANGE) and (value == ULLONG_MAX)) or (value > OFF_MAX)) {
+    if (((errno == ERANGE) and (addr == ULLONG_MAX)) or (addr > SIZE_MAX)) {
         dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "SMBIOS address is out of range: %s", str);
-        return -1;
+        return false;
     }
 
-    dmi_log_debug(context, "Found SMBIOS address: 0x%zx", value);
+    dmi_log_debug(context, "Found SMBIOS address: 0x%zx", addr);
+    *paddr = addr;
 
-    return value;
+    return true;
 }
 
 #if defined(__i386__) or defined(__x86_64__)
-static off_t dmi_freebsd_find_entry_address(dmi_context_t *context)
+static bool dmi_freebsd_find_entry_addr(dmi_context_t *context, size_t *paddr)
 {
     const size_t base_addr = 0xF0000;
     const size_t area_size = 0x10000;
 
-    dmi_data_t *buffer;
-    off_t address;
+    dmi_data_t *buffer = nullptr;
+    size_t      addr   = 0;
+    bool        found  = false;
 
     dmi_log_debug(context, "Running memory scan...");
 
     buffer = dmi_memory_read(context, DMI_FREEBSD_DEV_MEMORY, base_addr, area_size);
     if (buffer == nullptr)
-        return -1;
+        return false;
 
-    do {
-        address = dmi_freebsd_find_anchor(context, buffer, base_addr, area_size, DMI_ANCHOR_V30);
-        if (address >= 0)
-            break;
+    found =
+        dmi_freebsd_find_anchor(context, buffer, base_addr, area_size, DMI_ANCHOR_V30, paddr) or
+        dmi_freebsd_find_anchor(context, buffer, base_addr, area_size, DMI_ANCHOR_V21, paddr) or
+        dmi_freebsd_find_anchor(context, buffer, base_addr, area_size, DMI_ANCHOR_LEGACY, paddr);
 
-        address = dmi_freebsd_find_anchor(context, buffer, base_addr, area_size, DMI_ANCHOR_V21);
-        if (address >= 0)
-            break;
-
-        address = dmi_freebsd_find_anchor(context, buffer, base_addr, area_size, DMI_ANCHOR_LEGACY);
-        if (address >= 0)
-            break;
-    } while (false);
-
-    if (address < 0)
+    if (not found)
         dmi_log_debug(context, "No SMBIOS entry point found");
 
     dmi_free(buffer);
 
-    return address;
+    return found;
 }
 
-static off_t dmi_freebsd_find_anchor(
+static bool dmi_freebsd_find_anchor(
         dmi_context_t *context,
         dmi_data_t    *buffer,
-        size_t         base,
+        size_t         base_addr,
         size_t         area_size,
-        const char    *anchor)
+        const char    *anchor,
+        size_t        *paddr)
 {
     size_t length;
     size_t offset;
 
     assert(context != nullptr);
     assert(buffer != nullptr);
-    assert((size >= 16) and (size % 16 == 0));
+    assert(base_addr % 16 == 0);
+    assert((area_size >= 16) and (area_size % 16 == 0));
+    assert(anchor != nullptr);
+    assert(paddr != nullptr);
 
     length = strlen(anchor);
     assert(length <= 16);
@@ -243,12 +245,14 @@ static off_t dmi_freebsd_find_anchor(
 
     for (offset = 0; offset <= area_size - DMI_ENTRY_MAX_SIZE; offset += 16) {
         if (memcmp(buffer + offset, anchor, length) == 0) {
-            dmi_log_debug(context, "Found SMBIOS address: 0x%zx", base + offset);
-            return base + offset;
+            *paddr = base_addr + offset;
+            dmi_log_debug(context, "Found SMBIOS address: 0x%zx", *paddr);
+            return true;
         }
     }
 
     dmi_log_debug(context, "No SMBIOS anchor found");
-    return -1;
+
+    return false;
 }
 #endif
