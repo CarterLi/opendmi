@@ -132,7 +132,7 @@ static bool dmi_linux_close(dmi_context_t *context)
     context->session = nullptr;
     context->backend = nullptr;
 
-    return false;
+    return true;
 }
 
 static void dmi_linux_session_free(dmi_linux_session_t *session)

@@ -39,6 +39,16 @@ struct dmi_context
     dmi_version_t smbios_version;
 
     /**
+     * @brief Address of SMBIOS entry point.
+     */
+    uint64_t entry_address;
+
+    /**
+     * @brief Actual size of entry point data.
+     */
+    size_t entry_size;
+
+    /**
      * @brief SMBIOS entry point revision.
      */
     dmi_version_t entry_version;
@@ -47,11 +57,6 @@ struct dmi_context
      * @brief Pointer to SMBIOS entry point data.
      */
     void *entry_data;
-
-    /**
-     * @brief Actual size of entry point data.
-     */
-    size_t entry_size;
 
     /**
      * @brief Total number of SMBIOS structures.

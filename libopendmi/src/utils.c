@@ -27,6 +27,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <limits.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <assert.h>
@@ -258,9 +259,10 @@ static ssize_t dmi_file_read_data(int fd, dmi_data_t *data, size_t avail)
 }
 
 #if !defined(_WIN32)
-dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *plength)
+dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, off_t base, size_t length)
 {
     int         fd   = -1;
+    dmi_data_t *ptr  = nullptr;
     dmi_data_t *data = nullptr;
     stat_t      st;
 
@@ -271,12 +273,15 @@ dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *pleng
         dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "path");
         return nullptr;
     }
-    if (plength == nullptr) {
-        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "plength");
+    if ((length == 0) or (length > OFF_MAX)) {
+        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "length");
         return nullptr;
     }
 
-    bool success = false;
+    bool   success   = false;
+    size_t page_size = sysconf(_SC_PAGE_SIZE);
+    off_t  offset    = base % page_size;
+
     do {
         fd = open(path, O_RDONLY);
         if (fd < 0) {
@@ -289,21 +294,39 @@ dmi_data_t *dmi_file_map(dmi_context_t *context, const char *path, size_t *pleng
             break;
         }
 
-        if ((data = mmap(nullptr, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED) {
+        if ((geteuid() == 0) and (not S_ISCHR(st.st_mode))) {
+            dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "%s: not a character device", path);
+            break;
+        }
+        if (S_ISREG(st.st_mode) and (base + (off_t)length > st.st_size)) {
+            dmi_error_raise_ex(context, DMI_ERROR_INTERNAL, "%s: unable to map beyond the end of file", path);
+            break;
+        }
+
+        data = dmi_alloc(context, length);
+        if (!data)
+            break;
+
+        ptr = mmap(nullptr, offset + length, PROT_READ, MAP_SHARED, fd, base - offset);
+        if (ptr == MAP_FAILED) {
             dmi_error_raise_ex(context, DMI_ERROR_FILE_MAP, "%s: %s", path, strerror(errno));
             break;
         }
 
+        memcpy(data, ptr + offset, length);
+
         success = true;
     } while (false);
 
+    if (ptr != nullptr)
+        munmap(ptr, offset + length);
     if (fd >= 0)
         close(fd);
 
-    if (not success)
+    if (not success) {
+        dmi_free(data);
         return nullptr;
-
-    *plength = st.st_size;
+    }
 
     return data;
 }

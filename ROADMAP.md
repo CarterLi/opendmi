@@ -8,15 +8,15 @@
 
 ## Release 0.2 (2026-02-28)
 
-* JSON output support.
+* FreeBSD backend.
 * Decoders for OEM-specific structures.
 * Autoloading of OEM extensions.
-* ICU4C support.
 
 ## Release 0.3 (2026-03-31)
 
 * Complete implementation of `opendmi` command line tool.
-* FreeBSD backend.
+* JSON output support.
+* ICU4C support.
 
 ## Release 0.4 (2026-06-30)
 

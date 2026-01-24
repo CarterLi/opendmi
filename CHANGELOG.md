@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Introduced reference manual
 - Introduced AMI extension
 - Introduced Sun extension
+- Implemented FreeBSD backend
 - Added autoloading of vendor-specific extensions
 - Added AMI type 221 structure decoding (partial)
 - Added Dell revisions and IDs structure decoding (type 208)
