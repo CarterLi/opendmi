@@ -96,6 +96,59 @@ dmi_config_t config =
     .filter        = {}
 };
 
+const dmi_option_group_t global_opts =
+{
+    .name    = "Global options",
+    .options = (const dmi_option_t[]){
+        {
+            .short_names = "v",
+            .long_names  = (const char *[]){ "version", nullptr },
+            .description = "Print version information and exit"
+        },
+        {
+            .short_names = "?h",
+            .long_names  = (const char *[]){ "help", nullptr },
+            .description = "Print this help and exit"
+        },
+        {
+            .short_names = "q",
+            .long_names  = (const char *[]){ "quiet", nullptr },
+            .description = "Less verbose output"
+        },
+        {
+            .short_names = "g",
+            .long_names  = (const char *[]){ "debug", nullptr },
+            .description = "Turn on debug logging"
+        },
+        {
+            .short_names = nullptr,
+            .long_names  = (const char *[]){ "no-sysfs", nullptr },
+            .description = "Do not attempt to read DMI data from SysFS"
+        },
+        {
+            .short_names = "d",
+            .long_names  = (const char *[]){ "device", nullptr },
+            .description = "Set path to memory device (default: /dev/mem)",
+            .argument    = {
+                .name     = "PATH",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = true
+            },
+        },
+        {
+            .short_names = "i",
+            .long_names  = (const char *[]){ "file", nullptr },
+            .description = "Read the DMI data from a binary file",
+            .argument    = {
+                .name     = "PATH",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = true
+            },
+        },
+        {}
+    }
+};
+
 static bool tty = false;
 
 int main(int argc, char *argv[])
@@ -360,8 +413,10 @@ static dmi_type_t parse_type(dmi_context_t *context, const char *str)
 
 static void show_version(void)
 {
-    printf("OpenDMI, version %s\n", OPENDMI_VERSION);
-    printf("Copyright (c) 2025-2026, The OpenDMI contributors\n\n");
+    printf("OpenDMI, version %s\n\n", OPENDMI_VERSION);
+
+    printf("Copyright (c) 2025-2026, The OpenDMI contributors\n");
+    printf("Licensed under the BSD 3-Clause License\n\n");
 }
 
 static void show_usage(const char *proc)
@@ -369,9 +424,12 @@ static void show_usage(const char *proc)
     show_version();
 
     printf("Usage:\n");
-    printf("    %s <command> [options]\n\n", proc);
+    printf("    %s [global options] <command> [command options] [command args]\n\n", proc);
 
     dmi_command_list();
+    dmi_option_list(&global_opts);
+
+    printf("Use %s <command> --help for more information\n\n", proc);
 }
 
 static bool list_keywords(dmi_context_t *context __attribute__((unused)))

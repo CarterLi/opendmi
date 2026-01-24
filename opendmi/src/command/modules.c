@@ -14,7 +14,7 @@ static int dmi_modules_main(dmi_context_t *context);
 const dmi_command_t dmi_modules_command =
 {
     .name        = "modules",
-    .description = "List OpenDMI extensions",
+    .description = "List available extensions",
     .handler     = dmi_modules_main
 };
 

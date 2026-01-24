@@ -26,8 +26,8 @@ typedef enum dmi_option_flag
  */
 struct dmi_option
 {
-    char short_name;
-    const char *long_name;
+    const char *short_names;
+    const char **long_names;
     const char *description;
     dmi_argument_t argument;
     unsigned flags;
@@ -40,6 +40,8 @@ struct dmi_option_group
 };
 
 __BEGIN_DECLS
+
+void dmi_option_list(const dmi_option_group_t *group);
 
 __END_DECLS
 

@@ -26,18 +26,19 @@ configure_file(
 add_executable(opendmi
     src/main.c
     src/pager.c
-    src/format.c
-    src/format/text.c
-    src/format/text/handlers.c
-    src/format/text/helpers.c
+    src/option.c
     src/command.c
-    src/command/check.c
     src/command/dump.c
     src/command/entry.c
     src/command/list.c
     src/command/modules.c
     src/command/show.c
+    src/command/lint.c
     src/command/types.c
+    src/format.c
+    src/format/text.c
+    src/format/text/handlers.c
+    src/format/text/helpers.c
 )
 
 if(ENABLE_JSON)

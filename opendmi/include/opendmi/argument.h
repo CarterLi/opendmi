@@ -26,7 +26,7 @@ typedef struct dmi_argument
 {
     const char *name;
     dmi_argument_type_t type;
-    bool is_required;
+    bool required;
     void *data;
     dmi_argument_fn *handler;
 } dmi_argument_t;

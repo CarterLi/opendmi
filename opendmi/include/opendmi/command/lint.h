@@ -4,13 +4,13 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_COMMAND_CHECK_H
-#define OPENDMI_COMMAND_CHECK_H
+#ifndef OPENDMI_COMMAND_LINT_H
+#define OPENDMI_COMMAND_LINT_H
 
 #pragma once
 
 #include <opendmi/command.h>
 
-extern const dmi_command_t dmi_check_command;
+extern const dmi_command_t dmi_lint_command;
 
-#endif // !OPENDMI_COMMAND_CHECK_H
+#endif // !OPENDMI_COMMAND_LINT_H
