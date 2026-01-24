@@ -305,8 +305,11 @@ dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, off_t base
         }
 
         data = dmi_alloc(context, length);
-        if (!data)
+        if (data == nullptr)
             break;
+
+        dmi_log_debug(context, "Mapping request: offset=0x%zx length=%zu", base, length);
+        dmi_log_debug(context, "Mapping actual: offset=0x%zx length=%zu", base - offset, length + offset);
 
         ptr = mmap(nullptr, offset + length, PROT_READ, MAP_SHARED, fd, base - offset);
         if (ptr == MAP_FAILED) {
