@@ -30,21 +30,24 @@ struct dmi_freebsd_session
     size_t table_size;
 };
 
-static bool dmi_freebsd_open(dmi_context_t *context, const void *arg __attribute__((unused)));
+static bool dmi_freebsd_open(dmi_context_t *context, const void *arg);
 static dmi_data_t *dmi_freebsd_read_entry(dmi_context_t *context, size_t *plength);
 static dmi_data_t *dmi_freebsd_read_table(dmi_context_t *context, size_t *plength);
 static bool dmi_freebsd_close(dmi_context_t *context);
 static void dmi_freebsd_session_free(dmi_freebsd_session_t *session);
 
 static off_t dmi_freebsd_get_entry_address(dmi_context_t *context);
-static off_t dmi_freebsd_find_entry_address(dmi_context_t *context);
 
-static off_t dmi_freebsd_find_anchor(
-        dmi_context_t *context,
-        dmi_data_t    *buffer,
-        size_t         base,
-        size_t         area_size,
-        const char    *anchor);
+#if defined(__i386__) or defined(__x86_64__)
+    static off_t dmi_freebsd_find_entry_address(dmi_context_t *context);
+
+    static off_t dmi_freebsd_find_anchor(
+            dmi_context_t *context,
+            dmi_data_t    *buffer,
+            size_t         base,
+            size_t         area_size,
+            const char    *anchor);
+#endif
 
 dmi_backend_t dmi_freebsd_backend =
 {
@@ -182,6 +185,7 @@ static off_t dmi_freebsd_get_entry_address(dmi_context_t *context)
     return value;
 }
 
+#if defined(__i386__) or defined(__x86_64__)
 static off_t dmi_freebsd_find_entry_address(dmi_context_t *context)
 {
     const size_t base_addr = 0xF0000;
@@ -247,3 +251,4 @@ static off_t dmi_freebsd_find_anchor(
     dmi_log_debug(context, "No SMBIOS anchor found");
     return -1;
 }
+#endif
