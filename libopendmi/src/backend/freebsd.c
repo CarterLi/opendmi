@@ -86,8 +86,10 @@ static dmi_data_t *dmi_freebsd_read_entry(dmi_context_t *context, size_t *plengt
         off_t address;
 
         address = dmi_freebsd_get_entry_address(context);
-        if (address < 0)
-            address = dmi_freebsd_find_entry_address(context);
+#       if defined(__i386__) || defined(__x86_64__)
+            if (address < 0)
+                address = dmi_freebsd_find_entry_address(context);
+#       endif
 
         if (address < 0) {
             dmi_error_raise(context, DMI_ERROR_EPS_NOT_FOUND);
