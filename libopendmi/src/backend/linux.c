@@ -11,7 +11,6 @@
 #include <sys/mman.h>
 
 #include <stdio.h>
-#include <limits.h>
 #include <assert.h>
 
 #include <opendmi/context.h>

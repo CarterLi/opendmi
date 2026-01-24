@@ -10,7 +10,6 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <limits.h>
 #include <kenv.h>
 #include <errno.h>
 #include <assert.h>

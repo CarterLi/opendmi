@@ -4,8 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <limits.h>
-
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
 #include <opendmi/utils/decode.h>

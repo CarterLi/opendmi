@@ -73,6 +73,11 @@
 #   endif
 #endif // !thread_local && !__cplusplus
 
+#define dmi_bits(t)      (sizeof(typeof(t)) * CHAR_BIT)
+#define dmi_is_signed(t) (!((typeof(t))0 < (typeof(t))-1))
+#define dmi_minof(t)     ((typeof(t)) (!dmi_is_signed(t) ? (typeof(t))0 : ((typeof(t))1 << (dmi_bits(t) - 1))))
+#define dmi_maxof(t)     ((!dmi_is_signed(t) ? (typeof(t))-1 : (typeof(t)) ~ (~(typeof(t))0 << (dmi_bits(t) - 1))))
+
 #define dmi_member_size(__type, __member)   sizeof(((__type *)0)->__member)
 #define dmi_member_offset(__type, __member) offsetof(__type, __member)
 #define dmi_element_size(__type, __member)  sizeof(*((__type *)0)->__member)

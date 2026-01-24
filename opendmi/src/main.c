@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <limits.h>
 #include <libgen.h>
 #include <getopt.h>
 #include <errno.h>

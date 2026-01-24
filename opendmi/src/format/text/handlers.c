@@ -7,7 +7,6 @@
 #include "../../config.h"
 
 #include <string.h>
-#include <limits.h>
 #include <inttypes.h>
 #include <assert.h>
 
