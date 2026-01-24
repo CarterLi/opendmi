@@ -41,4 +41,35 @@ a|[unstyled]
 - [136] OEM-specific
 - [219] OEM-specific
 - [221] OEM-specific
+
+| `g5-mf.bin`
+| INSYDE Corp.
+| `3.4`
+a|[unstyled]
+- [0] Platform firmware information
+- [1] System information
+- [2] Baseboard or module information
+- [3] System enclosure or chassis
+- [4] Processor information
+- [7] Cache information
+- [8] Port connector information
+- [9] System slots
+- [10] Onboard devices information
+- [11] OEM strings
+- [12] System configuration options
+- [13] Firmware language information
+- [14] Group associations
+- [15] System event log
+- [16] Physical memory array
+- [17] Memory device
+- [19] Memory array mapped address
+- [20] Memory device mapped address
+- [32] System boot information
+- [43] TPM device
+- [128] OEM-specific
+- [129] OEM-specific
+- [131] OEM-specific
+- [136] OEM-specific
+- [219] OEM-specific
+- [221] OEM-specific
 |===
