@@ -263,7 +263,7 @@ static ssize_t dmi_file_read_data(int fd, dmi_data_t *data, size_t avail)
 dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, off_t base, size_t length)
 {
     int         fd   = -1;
-    dmi_data_t *ptr  = nullptr;
+    dmi_data_t *ptr  = MAP_FAILED;
     dmi_data_t *data = nullptr;
     stat_t      st;
 
@@ -319,7 +319,7 @@ dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, off_t base
         success = true;
     } while (false);
 
-    if (ptr != nullptr)
+    if (ptr != MAP_FAILED)
         munmap(ptr, offset + length);
     if (fd >= 0)
         close(fd);
