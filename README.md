@@ -83,7 +83,7 @@ $ ./build.sh test
 
 ## Contributing
 
-Please feel free to test it and create create bug reports or feature requests
+Please feel free to test it and create bug reports or feature requests
 on GitHub. You can also help the project by sending SMBIOS dumps to the
 authors. To get the dump you can use the following command:
 
