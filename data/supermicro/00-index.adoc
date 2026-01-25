@@ -1,98 +1,141 @@
-= Supermicro
+= SuperMicro
+:toc:
+:toclevels: 1
 
-[cols="2,1,1,4"]
+== X10DDW-I (x10ddw-i.bin)
+
+[horizontal]
+File path:: `supermicro/x10ddw-i.bin`
+Product name:: X10DDW-i
+Product version:: 123456789
+Product family:: To be filled by O.E.M.
+Firmware vendor:: American Megatrends Inc.
+Firmware version:: 3.4
+Release date:: 2021-10-18
+SMBIOS version:: 3.0.1
+
+=== Contents
+
+[cols="1,3,1,2"]
 |===
-| Name | Vendor | SMBIOS | Structures
+| Type | Description | Count | Handles
 
-| `x10ddw-i.bin`
-| American Megatrends Inc.
-| `3.0.1`
-a|[unstyled]
-- [0] Platform firmware information
-- [1] System information
-- [2] Baseboard or module information
-- [3] System enclosure or chassis
-- [4] Processor information
-- [7] Cache information
-- [8] Port connector information
-- [9] System slots
-- [10] Onboard devices information
-- [11] OEM strings
-- [12] System configuration options
-- [13] Firmware language information
-- [15] System event log
-- [16] Physical memory array
-- [17] Memory device
-- [19] Memory array mapped address
-- [20] Memory device mapped address
-- [26] Voltage probe
-- [27] Cooling device
-- [28] Temperature probe
-- [29] Electrical current probe
-- [32] System boot information
-- [34] Management device
-- [35] Management device component
-- [36] Management device threshold data
-- [38] IPMI device information
-- [39] System power supply
-- [41] Onboard devices extended information
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0001`
+a| `2` | Baseboard or module information | 1  a| `0x0002`
+a| `3` | System enclosure or chassis | 1  a| `0x0003`
+a| `4` | Processor information | 2  a| `0x0082`, `0x0086`
+a| `7` | Cache information | 6  a| `0x007F`, `0x0080`, `0x0081`, `0x0083`, `0x0084`, `0x0085`
+a| `8` | Port connector information | 24  a| `0x0004`, `0x0005`, `0x0006`, `0x0007`, `0x0008`, `0x0009`, `0x000A`, `0x000B`, `0x000C`, `0x000D`, `0x000E`, `0x000F`, `0x0010`, `0x0011`, `0x0012`, `0x0013`, `0x0014`, `0x0015`, `0x0016`, `0x0017`, `0x0018`, `0x0019`, `0x001A`, `0x001B`
+a| `9` | System slots | 6  a| `0x001C`, `0x001D`, `0x001E`, `0x001F`, `0x0020`, `0x0021`
+a| `10` | Onboard devices information | 1  a| `0x0022`
+a| `11` | OEM strings | 1  a| `0x0023`
+a| `12` | System configuration options | 1  a| `0x0024`
+a| `13` | Firmware language information | 1  a| `0x0087`
+a| `15` | System event log | 1  a| `0x005C`
+a| `16` | Physical memory array | 4  a| `0x005D`, `0x0065`, `0x006D`, `0x0075`
+a| `17` | Memory device | 16  a| `0x005F`, `0x0061`, `0x0062`, `0x0064`, `0x0067`, `0x0069`, `0x006A`, `0x006C`, `0x006F`, `0x0071`, `0x0072`, `0x0074`, `0x0077`, `0x0079`, `0x007A`, `0x007C`
+a| `19` | Memory array mapped address | 4  a| `0x005E`, `0x0066`, `0x006E`, `0x0076`
+a| `20` | Memory device mapped address | 8  a| `0x0060`, `0x0063`, `0x0068`, `0x006B`, `0x0070`, `0x0073`, `0x0078`, `0x007B`
+a| `26` | Voltage probe | 4  a| `0x0027`, `0x0037`, `0x003A`, `0x004F`
+a| `27` | Cooling device | 5  a| `0x002D`, `0x0030`, `0x0040`, `0x0046`, `0x0051`
+a| `28` | Temperature probe | 4  a| `0x002A`, `0x003D`, `0x0043`, `0x0050`
+a| `29` | Electrical current probe | 4  a| `0x0033`, `0x0049`, `0x004C`, `0x0052`
+a| `32` | System boot information | 1  a| `0x0025`
+a| `34` | Management device | 2  a| `0x0026`, `0x0036`
+a| `35` | Management device component | 13  a| `0x0029`, `0x002C`, `0x002F`, `0x0032`, `0x0035`, `0x0039`, `0x003C`, `0x003F`, `0x0042`, `0x0045`, `0x0048`, `0x004B`, `0x004E`
+a| `36` | Management device threshold data | 13  a| `0x0028`, `0x002B`, `0x002E`, `0x0031`, `0x0034`, `0x0038`, `0x003B`, `0x003E`, `0x0041`, `0x0044`, `0x0047`, `0x004A`, `0x004D`
+a| `38` | IPMI device information | 1  a| `0x0057`
+a| `39` | System power supply | 2  a| `0x007D`, `0x007E`
+a| `41` | Onboard devices extended information | 3  a| `0x0054`, `0x0055`, `0x0056`
+a| `127` | End of table | 1  a| `0x0088`
+|===
+== X10SLL-F (x10sll-f.bin)
 
-| `x10ssl-f.bin`
-| American Megatrends Inc.
-| `2.7`
-a|[unstyled]
-- [0] Platform firmware information
-- [1] System information
-- [2] Baseboard or module information
-- [3] System enclosure or chassis
-- [4] Processor information
-- [7] Cache information
-- [8] Port connector information
-- [9] System slots
-- [11] OEM strings
-- [12] System configuration options
-- [13] Firmware language information
-- [15] System event log
-- [16] Physical memory array
-- [17] Memory device
-- [19] Memory array mapped address
-- [20] Memory device mapped address
-- [26] Voltage probe
-- [27] Cooling device
-- [28] Temperature probe
-- [29] Electrical current probe
-- [32] System boot information
-- [34] Management device
-- [35] Management device component
-- [36] Management device threshold data
-- [38] IPMI device information
-- [39] System power supply
-- [41] Onboard devices extended information
-- [136] OEM-specific
+[horizontal]
+File path:: `supermicro/x10sll-f.bin`
+Product name:: SYS-5018D-MF
+Product version:: 0123456789
+Product family:: To be filled by O.E.M.
+Firmware vendor:: American Megatrends Inc.
+Firmware version:: 3.2
+Release date:: 2018-05-14
+SMBIOS version:: 2.7
 
-| `x11sll-f.bin`
-| American Megatrends Inc.
-| `3.0.1`
-a|[unstyled]
-- [0] Platform firmware information
-- [1] System information
-- [2] Baseboard or module information
-- [3] System enclosure or chassis
-- [4] Processor information
-- [7] Cache information
-- [8] Port connector information
-- [9] System slots
-- [11] OEM strings
-- [15] System event log
-- [16] Physical memory array
-- [17] Memory device
-- [19] Memory array mapped address
-- [20] Memory device mapped address
-- [32] System boot information
-- [38] IPMI device information
-- [39] System power supply
-- [40] Additional information
-- [41] Onboard devices extended information
-- [136] OEM-specific
-- [221] OEM-specific
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0001`
+a| `2` | Baseboard or module information | 1  a| `0x0002`
+a| `3` | System enclosure or chassis | 1  a| `0x0003`
+a| `4` | Processor information | 1  a| `0x0045`
+a| `7` | Cache information | 3  a| `0x0046`, `0x0047`, `0x0048`
+a| `8` | Port connector information | 24  a| `0x0004`, `0x0005`, `0x0006`, `0x0007`, `0x0008`, `0x0009`, `0x000A`, `0x000B`, `0x000C`, `0x000D`, `0x000E`, `0x000F`, `0x0010`, `0x0011`, `0x0012`, `0x0013`, `0x0014`, `0x0015`, `0x0016`, `0x0017`, `0x0018`, `0x0019`, `0x001A`, `0x001B`
+a| `9` | System slots | 3  a| `0x001C`, `0x001D`, `0x001E`
+a| `11` | OEM strings | 1  a| `0x001F`
+a| `12` | System configuration options | 1  a| `0x0020`
+a| `13` | Firmware language information | 1  a| `0x0061`
+a| `15` | System event log | 1  a| `0x0054`
+a| `16` | Physical memory array | 1  a| `0x004A`
+a| `17` | Memory device | 4  a| `0x004B`, `0x004C`, `0x004D`, `0x004E`
+a| `19` | Memory array mapped address | 1  a| `0x004F`
+a| `20` | Memory device mapped address | 4  a| `0x0050`, `0x0051`, `0x0052`, `0x0053`
+a| `26` | Voltage probe | 2  a| `0x002D`, `0x003C`
+a| `27` | Cooling device | 3  a| `0x0033`, `0x0036`, `0x003E`
+a| `28` | Temperature probe | 2  a| `0x0030`, `0x003D`
+a| `29` | Electrical current probe | 2  a| `0x0039`, `0x003F`
+a| `32` | System boot information | 1  a| `0x002B`
+a| `34` | Management device | 1  a| `0x002C`
+a| `35` | Management device component | 5  a| `0x002F`, `0x0032`, `0x0035`, `0x0038`, `0x003B`
+a| `36` | Management device threshold data | 5  a| `0x002E`, `0x0031`, `0x0034`, `0x0037`, `0x003A`
+a| `38` | IPMI device information | 1  a| `0x0044`
+a| `39` | System power supply | 1  a| `0x0040`
+a| `41` | Onboard devices extended information | 3  a| `0x0041`, `0x0042`, `0x0043`
+a| `127` | End of table | 1  a| `0x0062`
+a| `136` | OEM-specific | 1  a| `0x0060`
+|===
+== X11SSL-F (x11ssl-f.bin)
+
+[horizontal]
+File path:: `supermicro/x11ssl-f.bin`
+Product name:: SYS-5019S-L
+Product version:: 0123456789
+Product family:: To be filled by O.E.M.
+Firmware vendor:: American Megatrends Inc.
+Firmware version:: 2.2a
+Release date:: 2019-05-24
+SMBIOS version:: 3.0.1
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0001`
+a| `2` | Baseboard or module information | 1  a| `0x0002`
+a| `3` | System enclosure or chassis | 1  a| `0x0003`
+a| `4` | Processor information | 1  a| `0x002C`
+a| `7` | Cache information | 4  a| `0x0028`, `0x0029`, `0x002A`, `0x002B`
+a| `8` | Port connector information | 24  a| `0x0004`, `0x0005`, `0x0006`, `0x0007`, `0x0008`, `0x0009`, `0x000A`, `0x000B`, `0x000C`, `0x000D`, `0x000E`, `0x000F`, `0x0010`, `0x0011`, `0x0012`, `0x0013`, `0x0014`, `0x0015`, `0x0016`, `0x0017`, `0x0018`, `0x0019`, `0x001A`, `0x001B`
+a| `9` | System slots | 3  a| `0x001D`, `0x001E`, `0x001F`
+a| `11` | OEM strings | 1  a| `0x0020`
+a| `15` | System event log | 1  a| `0x0033`
+a| `16` | Physical memory array | 1  a| `0x002D`
+a| `17` | Memory device | 4  a| `0x002E`, `0x002F`, `0x0030`, `0x0031`
+a| `19` | Memory array mapped address | 1  a| `0x0032`
+a| `20` | Memory device mapped address | 4  a| `0x0034`, `0x0035`, `0x0036`, `0x0037`
+a| `32` | System boot information | 1  a| `0x0021`
+a| `38` | IPMI device information | 1  a| `0x0027`
+a| `39` | System power supply | 2  a| `0x0022`, `0x0023`
+a| `40` | Additional information | 4  a| `0x003B`, `0x003C`, `0x003D`, `0x003E`
+a| `41` | Onboard devices extended information | 3  a| `0x0024`, `0x0025`, `0x0026`
+a| `127` | End of table | 1  a| `0x0040`
+a| `136` | OEM-specific | 1  a| `0x003F`
+a| `221` | AMI type 221 | 3  a| `0x0038`, `0x0039`, `0x003A`
 |===

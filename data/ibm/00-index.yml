@@ -1,0 +1,6 @@
+vendor: IBM
+files:
+  x3950-m2-1.bin:
+    product: System x3950 M2 [1]
+  x3950-m2-2.bin:
+    product: System x3950 M2 [2]

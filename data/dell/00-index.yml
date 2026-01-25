@@ -1,0 +1,8 @@
+vendor: Dell
+files:
+  g15-5510.bin:
+    product: G15 5510
+  poweredge-1800.bin:
+    product: PowerEdge 1800
+  precision-490.bin:
+    product: Precision 490

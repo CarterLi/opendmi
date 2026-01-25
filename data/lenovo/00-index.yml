@@ -1,0 +1,18 @@
+vendor: Lenovo
+files:
+  ideapad-g580-20150.bin:
+    product: IdeaPad G580 20150
+  ideapad-slim-5-14irl8.bin:
+    product: IdeaPad Slim 5 14IRL8
+  thinkcentre-m70s-11db.bin:
+    product: ThinkCentre M70s 11DB
+  thinkcentre-m700-10hy.bin:
+    product: ThinkCentre M700 10HY
+  thinkcentre-m720s-10st.bin:
+    product: ThinkCentre M720s 10ST
+  thinkpad-t14-g2a-20xk.bin:
+    product: ThinkPad T14 Gen 2a 20XK
+  thinkpad-t61p-6460-6xg.bin:
+    product: ThinkPad T61p 6460-6XG
+  thinkpad-x280-20kf.bin:
+    product: ThinkPad X280 20KF

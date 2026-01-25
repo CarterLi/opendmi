@@ -1,0 +1,4 @@
+vendor: Synology
+files:
+  ds718-plus.bin:
+    product: DiskStation DS718+

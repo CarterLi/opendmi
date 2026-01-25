@@ -1,0 +1,6 @@
+vendor: VMware
+files:
+  fusion-pro-25h2.bin:
+    product: Fusion Pro 25H2
+  workstation-pro-17.bin:
+    product: Workstation Pro 17

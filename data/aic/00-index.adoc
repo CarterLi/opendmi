@@ -1,0 +1,69 @@
+= AIC
+:toc:
+:toclevels: 1
+
+== HA401-LB2 (ha401-lb2.bin)
+
+[horizontal]
+File path:: `aic/ha401-lb2.bin`
+Product name:: HA401-LB2
+Product version:: 1
+Product family:: Type1Family
+Firmware vendor:: INSYDE Corp.
+Firmware version:: LIBRV090
+Release date:: 2019-01-28
+SMBIOS version:: 2.8
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0001`
+a| `2` | Baseboard or module information | 1  a| `0x0002`
+a| `3` | System enclosure or chassis | 1  a| `0x0003`
+a| `4` | Processor information | 2  a| `0x0004`, `0x0005`
+a| `7` | Cache information | 6  a| `0x0006`, `0x0007`, `0x0008`, `0x0009`, `0x000A`, `0x000B`
+a| `11` | OEM strings | 1  a| `0x000C`
+a| `15` | System event log | 1  a| `0x000D`
+a| `16` | Physical memory array | 1  a| `0x000E`
+a| `17` | Memory device | 16  a| `0x000F`, `0x0010`, `0x0011`, `0x0012`, `0x0013`, `0x0014`, `0x0015`, `0x0016`, `0x0017`, `0x0018`, `0x0019`, `0x001A`, `0x001B`, `0x001C`, `0x001D`, `0x001E`
+a| `19` | Memory array mapped address | 1  a| `0x001F`
+a| `20` | Memory device mapped address | 4  a| `0x0020`, `0x0021`, `0x0022`, `0x0023`
+a| `38` | IPMI device information | 1  a| `0x0024`
+a| `127` | End of table | 1  a| `0xFEFF`
+|===
+== HA401-VG (ha401-vg.bin)
+
+[horizontal]
+File path:: `aic/ha401-vg.bin`
+Product name:: HA401-VG
+Product version:: 1
+Product family:: Type1Family
+Firmware vendor:: INSYDE Corp.
+Firmware version:: VIRH_1.03.0
+Release date:: 2021-08-31
+SMBIOS version:: 3.0.1
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0001`
+a| `2` | Baseboard or module information | 1  a| `0x0002`
+a| `3` | System enclosure or chassis | 1  a| `0x0003`
+a| `4` | Processor information | 2  a| `0x001F`, `0x0023`
+a| `7` | Cache information | 6  a| `0x001C`, `0x001D`, `0x001E`, `0x0020`, `0x0021`, `0x0022`
+a| `11` | OEM strings | 1  a| `0x0004`
+a| `16` | Physical memory array | 1  a| `0x0005`
+a| `17` | Memory device | 12  a| `0x0008`, `0x000A`, `0x000C`, `0x000E`, `0x0010`, `0x0011`, `0x0012`, `0x0014`, `0x0016`, `0x0018`, `0x001A`, `0x001B`
+a| `19` | Memory array mapped address | 2  a| `0x0006`, `0x0007`
+a| `20` | Memory device mapped address | 8  a| `0x0009`, `0x000B`, `0x000D`, `0x000F`, `0x0013`, `0x0015`, `0x0017`, `0x0019`
+a| `38` | IPMI device information | 1  a| `0x0024`
+a| `127` | End of table | 1  a| `0xFEFF`
+|===

@@ -1,0 +1,6 @@
+vendor: AIC
+files:
+  ha401-lb2.bin:
+    product: HA401-LB2
+  ha401-vg.bin:
+    product: HA401-VG

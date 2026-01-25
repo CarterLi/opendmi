@@ -1,0 +1,16 @@
+vendor: ASUS
+files:
+  prime-b350-plus.bin:
+    product: PRIME B350-Plus
+  prime-h610m-r.bin:
+    product: PRIME H610M-R
+  sabertooth-990fx-r2.0.bin:
+    product: SABERTOOTH 990FX R2.0
+  tuf-gaming-a620m-plus-wifi.bin:
+    product: TUF GAMING A620M-Plus WiFi
+  tuf-gaming-b450-pro.bin:
+    product: TUF GAMING B450-Pro
+  tuf-gaming-b650-plus.bin:
+    product: TUF GAMING B650-Plus
+  zenbook-ux425ja.bin:
+    product: Zenbook 14 UX425JA

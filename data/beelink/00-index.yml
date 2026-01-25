@@ -1,0 +1,6 @@
+vendor: BeeLink
+files:
+  sei.bin:
+    product: SEi
+  ser.bin:
+    product: SER

@@ -1,1 +1,682 @@
 = HP
+:toc:
+:toclevels: 1
+
+== EliteBook 820 G4 X3T22AV (elitebook-820-g4-x3t22av.bin)
+
+[horizontal]
+File path:: `hp/elitebook-820-g4-x3t22av.bin`
+Product name:: HP EliteBook 820 G4
+Product version:: None
+Product family:: 103C_5336AN HP EliteBook
+Firmware vendor:: HP
+Firmware version:: P78 Ver. 01.47
+Release date:: 2023-06-16
+SMBIOS version:: 3.0.1
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0004`
+a| `1` | System information | 1  a| `0x0005`
+a| `2` | Baseboard or module information | 1  a| `0x0006`
+a| `3` | System enclosure or chassis | 1  a| `0x0007`
+a| `4` | Processor information | 1  a| `0x000D`
+a| `7` | Cache information | 3  a| `0x000A`, `0x000B`, `0x000C`
+a| `8` | Port connector information | 2  a| `0x000E`, `0x000F`
+a| `9` | System slots | 2  a| `0x0010`, `0x0011`
+a| `10` | Onboard devices information | 1  a| `0x001D`
+a| `11` | OEM strings | 1  a| `0x0008`
+a| `13` | Firmware language information | 1  a| `0x0009`
+a| `14` | Group associations | 1  a| `0x001E`
+a| `16` | Physical memory array | 1  a| `0x0000`
+a| `17` | Memory device | 2  a| `0x0014`, `0x0001`
+a| `19` | Memory array mapped address | 1  a| `0x0003`
+a| `20` | Memory device mapped address | 2  a| `0x0002`, `0x0015`
+a| `22` | Portable battery | 1  a| `0x0016`
+a| `24` | Hardware security | 1  a| `0x0017`
+a| `32` | System boot information | 1  a| `0x0018`
+a| `41` | Onboard devices extended information | 1  a| `0x0012`
+a| `127` | End of table | 1  a| `0xFEFF`
+a| `131` | OEM-specific | 1  a| `0x0013`
+a| `219` | OEM-specific | 1  a| `0x001F`
+a| `221` | OEM-specific | 4  a| `0x0019`, `0x001A`, `0x001B`, `0x001C`
+|===
+== HP ProBook 440 G10 7Z7K0PC (probook-440-g10-7z7k0pc.bin)
+
+[horizontal]
+File path:: `hp/probook-440-g10-7z7k0pc.bin`
+Product name:: HP ProBook 440 14 inch G10 Notebook PC
+Product version:: None
+Product family:: 103C_5336AN HP ProBook
+Firmware vendor:: HP
+Firmware version:: V72 Ver. 01.02.03
+Release date:: 2023-09-13
+SMBIOS version:: 3.4
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0013`
+a| `1` | System information | 1  a| `0x0014`
+a| `2` | Baseboard or module information | 1  a| `0x0018`
+a| `3` | System enclosure or chassis | 1  a| `0x0015`
+a| `4` | Processor information | 1  a| `0x0026`
+a| `7` | Cache information | 8  a| `0x001E`, `0x001F`, `0x0020`, `0x0021`, `0x0022`, `0x0023`, `0x0024`, `0x0025`
+a| `8` | Port connector information | 11  a| `0x0027`, `0x0028`, `0x0029`, `0x002A`, `0x002B`, `0x002C`, `0x002D`, `0x002E`, `0x002F`, `0x0030`, `0x0031`
+a| `9` | System slots | 4  a| `0x0032`, `0x0033`, `0x0034`, `0x0035`
+a| `10` | Onboard devices information | 1  a| `0x0008`
+a| `11` | OEM strings | 1  a| `0x0007`
+a| `13` | Firmware language information | 1  a| `0x0017`
+a| `14` | Group associations | 1  a| `0x0009`
+a| `16` | Physical memory array | 1  a| `0x0001`
+a| `17` | Memory device | 2  a| `0x0039`, `0x003B`
+a| `19` | Memory array mapped address | 1  a| `0x0012`
+a| `20` | Memory device mapped address | 2  a| `0x0002`, `0x0003`
+a| `22` | Portable battery | 1  a| `0x0004`
+a| `24` | Hardware security | 1  a| `0x0005`
+a| `32` | System boot information | 1  a| `0x0006`
+a| `41` | Onboard devices extended information | 3  a| `0x0036`, `0x0037`, `0x0038`
+a| `43` | TPM device | 1  a| `0x0000`
+a| `127` | End of table | 1  a| `0xFEFF`
+a| `131` | OEM-specific | 1  a| `0x003A`
+a| `219` | OEM-specific | 1  a| `0x000A`
+a| `221` | OEM-specific | 5  a| `0x0019`, `0x001A`, `0x001B`, `0x001C`, `0x001D`
+|===
+== ProLiant BL460c G1 416656-B21 (proliant-bl460c-g1-416656-b21.bin)
+
+[horizontal]
+File path:: `hp/proliant-bl460c-g1-416656-b21.bin`
+Product name:: ProLiant BL460c G1
+Product version:: None
+Product family:: ProLiant
+Firmware vendor:: HP
+Firmware version:: I15
+Release date:: 2007-11-13
+SMBIOS version:: 2.4
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0100`
+a| `3` | System enclosure or chassis | 1  a| `0x0300`
+a| `4` | Processor information | 2  a| `0x0400`, `0x0406`
+a| `7` | Cache information | 6  a| `0x0710`, `0x0716`, `0x0720`, `0x0726`, `0x0730`, `0x0736`
+a| `8` | Port connector information | 3  a| `0x0801`, `0x0802`, `0x0803`
+a| `9` | System slots | 3  a| `0x0901`, `0x0902`, `0x0903`
+a| `11` | OEM strings | 1  a| `0x0B00`
+a| `16` | Physical memory array | 1  a| `0x1000`
+a| `17` | Memory device | 8  a| `0x1100`, `0x1101`, `0x1102`, `0x1103`, `0x1104`, `0x1105`, `0x1106`, `0x1107`
+a| `19` | Memory array mapped address | 1  a| `0x1300`
+a| `20` | Memory device mapped address | 8  a| `0x1400`, `0x1401`, `0x1402`, `0x1403`, `0x1404`, `0x1405`, `0x1406`, `0x1407`
+a| `32` | System boot information | 1  a| `0x2000`
+a| `38` | IPMI device information | 1  a| `0x2600`
+a| `127` | End of table | 1  a| `0x7F00`
+a| `193` | OEM-specific | 1  a| `0xC100`
+a| `194` | OEM-specific | 1  a| `0xC200`
+a| `195` | OEM-specific | 1  a| `0xC300`
+a| `196` | OEM-specific | 1  a| `0xC400`
+a| `197` | OEM-specific | 2  a| `0xC500`, `0xC506`
+a| `198` | OEM-specific | 1  a| `0xC600`
+a| `199` | OEM-specific | 1  a| `0xC700`
+a| `202` | OEM-specific | 8  a| `0xCA00`, `0xCA01`, `0xCA02`, `0xCA03`, `0xCA04`, `0xCA05`, `0xCA06`, `0xCA07`
+a| `204` | OEM-specific | 1  a| `0xCC00`
+a| `205` | OEM-specific | 1  a| `0xCD00`
+a| `209` | OEM-specific | 1  a| `0xD100`
+a| `210` | OEM-specific | 1  a| `0xD200`
+a| `211` | OEM-specific | 2  a| `0xD300`, `0xD306`
+a| `212` | OEM-specific | 1  a| `0xD400`
+a| `213` | OEM-specific | 1  a| `0xD500`
+a| `214` | OEM-specific | 1  a| `0xD600`
+a| `215` | OEM-specific | 1  a| `0xD700`
+a| `218` | OEM-specific | 1  a| `0xDC00`
+a| `219` | OEM-specific | 1  a| `0xDB00`
+a| `220` | OEM-specific | 1  a| `0xDC01`
+a| `221` | OEM-specific | 1  a| `0xDD00`
+a| `222` | OEM-specific | 1  a| `0xDE00`
+a| `223` | OEM-specific | 1  a| `0xDF00`
+|===
+== ProLiant DL360 G6 484184-B21 (proliant-dl360-g6-484184-b21.bin)
+
+[horizontal]
+File path:: `hp/proliant-dl360-g6-484184-b21.bin`
+Product name:: ProLiant DL360 G6
+Product version:: None
+Product family:: ProLiant
+Firmware vendor:: HP
+Firmware version:: P64
+Release date:: 2015-08-16
+SMBIOS version:: 2.7
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0100`
+a| `3` | System enclosure or chassis | 1  a| `0x0300`
+a| `4` | Processor information | 2  a| `0x0400`, `0x0406`
+a| `7` | Cache information | 6  a| `0x0710`, `0x0716`, `0x0720`, `0x0726`, `0x0730`, `0x0736`
+a| `8` | Port connector information | 12  a| `0x0801`, `0x0802`, `0x0803`, `0x0804`, `0x0805`, `0x0806`, `0x0807`, `0x0808`, `0x0809`, `0x080A`, `0x080B`, `0x080C`
+a| `9` | System slots | 2  a| `0x0901`, `0x0902`
+a| `11` | OEM strings | 1  a| `0x0B00`
+a| `16` | Physical memory array | 2  a| `0x1000`, `0x1001`
+a| `17` | Memory device | 18  a| `0x1100`, `0x1101`, `0x1102`, `0x1103`, `0x1104`, `0x1105`, `0x1106`, `0x1107`, `0x1108`, `0x1109`, `0x110A`, `0x110B`, `0x110C`, `0x110D`, `0x110E`, `0x110F`, `0x1110`, `0x1111`
+a| `19` | Memory array mapped address | 3  a| `0x1300`, `0x1302`, `0x1303`
+a| `32` | System boot information | 1  a| `0x2000`
+a| `38` | IPMI device information | 1  a| `0x2600`
+a| `39` | System power supply | 2  a| `0x2700`, `0x2701`
+a| `127` | End of table | 1  a| `0x7F00`
+a| `193` | OEM-specific | 1  a| `0xC101`
+a| `194` | OEM-specific | 1  a| `0xC200`
+a| `195` | OEM-specific | 1  a| `0xC300`
+a| `196` | OEM-specific | 1  a| `0xC400`
+a| `197` | OEM-specific | 2  a| `0xC500`, `0xC506`
+a| `198` | OEM-specific | 1  a| `0xC600`
+a| `199` | OEM-specific | 1  a| `0xC700`
+a| `202` | OEM-specific | 18  a| `0xCA00`, `0xCA01`, `0xCA02`, `0xCA03`, `0xCA04`, `0xCA05`, `0xCA06`, `0xCA07`, `0xCA08`, `0xCA09`, `0xCA0A`, `0xCA0B`, `0xCA0C`, `0xCA0D`, `0xCA0E`, `0xCA0F`, `0xCA10`, `0xCA11`
+a| `205` | OEM-specific | 1  a| `0xCD00`
+a| `209` | OEM-specific | 1  a| `0xD100`
+a| `211` | OEM-specific | 2  a| `0xD300`, `0xD306`
+a| `212` | OEM-specific | 1  a| `0xD400`
+a| `215` | OEM-specific | 1  a| `0xD700`
+a| `218` | OEM-specific | 6  a| `0x1301`, `0x1304`, `0x1305`, `0x1306`, `0x1307`, `0xDC00`
+a| `219` | OEM-specific | 1  a| `0xDB00`
+a| `220` | OEM-specific | 1  a| `0xDC01`
+a| `221` | OEM-specific | 1  a| `0xDD00`
+a| `223` | OEM-specific | 1  a| `0xDF00`
+a| `224` | OEM-specific | 1  a| `0xE000`
+a| `226` | OEM-specific | 1  a| `0xE200`
+a| `227` | OEM-specific | 18  a| `0xE300`, `0xE301`, `0xE302`, `0xE303`, `0xE304`, `0xE305`, `0xE306`, `0xE307`, `0xE308`, `0xE309`, `0xE30A`, `0xE30B`, `0xE30C`, `0xE30D`, `0xE30E`, `0xE30F`, `0xE310`, `0xE311`
+a| `228` | OEM-specific | 8  a| `0xE400`, `0xE401`, `0xE402`, `0xE403`, `0xE404`, `0xE405`, `0xE406`, `0xE407`
+a| `229` | OEM-specific | 1  a| `0xE500`
+a| `230` | OEM-specific | 2  a| `0xE600`, `0xE601`
+|===
+== ProLiant DL385 G1 [1] (proliant-dl385-g1-1.bin)
+
+[horizontal]
+File path:: `hp/proliant-dl385-g1-1.bin`
+Product name:: ProLiant DL385 G1
+Product version:: None
+Product family:: -
+Firmware vendor:: HP
+Firmware version:: A05
+Release date:: 2006-03-01
+SMBIOS version:: 2.3
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0100`
+a| `3` | System enclosure or chassis | 1  a| `0x0300`
+a| `4` | Processor information | 2  a| `0x0400`, `0x0406`
+a| `7` | Cache information | 6  a| `0x0716`, `0x0714`, `0x0726`, `0x0724`, `0x0736`, `0x0734`
+a| `8` | Port connector information | 3  a| `0x0801`, `0x0802`, `0x0803`
+a| `9` | System slots | 3  a| `0x0901`, `0x0902`, `0x0903`
+a| `11` | OEM strings | 1  a| `0x0B00`
+a| `16` | Physical memory array | 1  a| `0x1000`
+a| `17` | Memory device | 8  a| `0x1100`, `0x1101`, `0x1102`, `0x1103`, `0x1104`, `0x1105`, `0x1106`, `0x1107`
+a| `19` | Memory array mapped address | 2  a| `0x1300`, `0x1301`
+a| `20` | Memory device mapped address | 8  a| `0x1400`, `0x1401`, `0x1402`, `0x1403`, `0x1404`, `0x1405`, `0x1406`, `0x1407`
+a| `32` | System boot information | 1  a| `0x2000`
+a| `127` | End of table | 1  a| `0x7F00`
+a| `193` | OEM-specific | 1  a| `0xC100`
+a| `194` | OEM-specific | 1  a| `0xC200`
+a| `195` | OEM-specific | 1  a| `0xC300`
+a| `196` | OEM-specific | 1  a| `0xC400`
+a| `197` | OEM-specific | 2  a| `0xC506`, `0xC504`
+a| `198` | OEM-specific | 1  a| `0xC600`
+a| `199` | OEM-specific | 1  a| `0xC700`
+a| `202` | OEM-specific | 8  a| `0xCA00`, `0xCA01`, `0xCA02`, `0xCA03`, `0xCA04`, `0xCA05`, `0xCA06`, `0xCA07`
+a| `205` | OEM-specific | 1  a| `0xCD00`
+a| `209` | OEM-specific | 1  a| `0xD100`
+a| `212` | OEM-specific | 2  a| `0xD400`, `0xD401`
+a| `213` | OEM-specific | 1  a| `0xD500`
+a| `214` | OEM-specific | 1  a| `0xD600`
+a| `217` | OEM-specific | 2  a| `0xD900`, `0xD906`
+a| `219` | OEM-specific | 1  a| `0xDB00`
+|===
+== ProLiant DL385 G1 [2] (proliant-dl385-g1-2.bin)
+
+[horizontal]
+File path:: `hp/proliant-dl385-g1-2.bin`
+Product name:: ProLiant DL385 G1
+Product version:: None
+Product family:: -
+Firmware vendor:: HP
+Firmware version:: A05
+Release date:: 2005-04-22
+SMBIOS version:: 2.3
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0100`
+a| `3` | System enclosure or chassis | 1  a| `0x0300`
+a| `4` | Processor information | 2  a| `0x0400`, `0x0406`
+a| `7` | Cache information | 6  a| `0x0716`, `0x0714`, `0x0726`, `0x0724`, `0x0736`, `0x0734`
+a| `8` | Port connector information | 3  a| `0x0801`, `0x0802`, `0x0803`
+a| `9` | System slots | 3  a| `0x0901`, `0x0902`, `0x0903`
+a| `11` | OEM strings | 1  a| `0x0B00`
+a| `16` | Physical memory array | 1  a| `0x1000`
+a| `17` | Memory device | 8  a| `0x1100`, `0x1101`, `0x1102`, `0x1103`, `0x1104`, `0x1105`, `0x1106`, `0x1107`
+a| `19` | Memory array mapped address | 2  a| `0x1300`, `0x1301`
+a| `20` | Memory device mapped address | 8  a| `0x1400`, `0x1401`, `0x1402`, `0x1403`, `0x1404`, `0x1405`, `0x1406`, `0x1407`
+a| `32` | System boot information | 1  a| `0x2000`
+a| `127` | End of table | 1  a| `0x7F00`
+a| `193` | OEM-specific | 1  a| `0xC100`
+a| `194` | OEM-specific | 1  a| `0xC200`
+a| `195` | OEM-specific | 1  a| `0xC300`
+a| `196` | OEM-specific | 1  a| `0xC400`
+a| `197` | OEM-specific | 2  a| `0xC506`, `0xC504`
+a| `198` | OEM-specific | 1  a| `0xC600`
+a| `199` | OEM-specific | 1  a| `0xC700`
+a| `202` | OEM-specific | 8  a| `0xCA00`, `0xCA01`, `0xCA02`, `0xCA03`, `0xCA04`, `0xCA05`, `0xCA06`, `0xCA07`
+a| `205` | OEM-specific | 1  a| `0xCD00`
+a| `209` | OEM-specific | 1  a| `0xD100`
+a| `212` | OEM-specific | 2  a| `0xD400`, `0xD401`
+a| `213` | OEM-specific | 1  a| `0xD500`
+a| `214` | OEM-specific | 1  a| `0xD600`
+a| `217` | OEM-specific | 2  a| `0xD900`, `0xD906`
+|===
+== ProLiant DL385 G1 [3] (proliant-dl385-g1-3.bin)
+
+[horizontal]
+File path:: `hp/proliant-dl385-g1-3.bin`
+Product name:: ProLiant DL385 G1
+Product version:: None
+Product family:: -
+Firmware vendor:: HP
+Firmware version:: A05
+Release date:: 2006-03-01
+SMBIOS version:: 2.3
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0100`
+a| `3` | System enclosure or chassis | 1  a| `0x0300`
+a| `4` | Processor information | 2  a| `0x0400`, `0x0406`
+a| `7` | Cache information | 6  a| `0x0716`, `0x0714`, `0x0726`, `0x0724`, `0x0736`, `0x0734`
+a| `8` | Port connector information | 3  a| `0x0801`, `0x0802`, `0x0803`
+a| `9` | System slots | 3  a| `0x0901`, `0x0902`, `0x0903`
+a| `11` | OEM strings | 1  a| `0x0B00`
+a| `16` | Physical memory array | 1  a| `0x1000`
+a| `17` | Memory device | 8  a| `0x1100`, `0x1101`, `0x1102`, `0x1103`, `0x1104`, `0x1105`, `0x1106`, `0x1107`
+a| `19` | Memory array mapped address | 2  a| `0x1300`, `0x1301`
+a| `20` | Memory device mapped address | 8  a| `0x1400`, `0x1401`, `0x1402`, `0x1403`, `0x1404`, `0x1405`, `0x1406`, `0x1407`
+a| `32` | System boot information | 1  a| `0x2000`
+a| `127` | End of table | 1  a| `0x7F00`
+a| `193` | OEM-specific | 1  a| `0xC100`
+a| `194` | OEM-specific | 1  a| `0xC200`
+a| `195` | OEM-specific | 1  a| `0xC300`
+a| `196` | OEM-specific | 1  a| `0xC400`
+a| `197` | OEM-specific | 2  a| `0xC506`, `0xC504`
+a| `198` | OEM-specific | 1  a| `0xC600`
+a| `199` | OEM-specific | 1  a| `0xC700`
+a| `202` | OEM-specific | 8  a| `0xCA00`, `0xCA01`, `0xCA02`, `0xCA03`, `0xCA04`, `0xCA05`, `0xCA06`, `0xCA07`
+a| `205` | OEM-specific | 1  a| `0xCD00`
+a| `209` | OEM-specific | 1  a| `0xD100`
+a| `212` | OEM-specific | 2  a| `0xD400`, `0xD401`
+a| `213` | OEM-specific | 1  a| `0xD500`
+a| `214` | OEM-specific | 1  a| `0xD600`
+a| `217` | OEM-specific | 2  a| `0xD900`, `0xD906`
+a| `219` | OEM-specific | 1  a| `0xDB00`
+|===
+== ProLiant DL385 G2 (proliant-dl385-g2.bin)
+
+[horizontal]
+File path:: `hp/proliant-dl385-g2.bin`
+Product name:: ProLiant DL385 G2
+Product version:: None
+Product family:: -
+Firmware vendor:: HP
+Firmware version:: A09
+Release date:: 2007-01-08
+SMBIOS version:: 2.3
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0100`
+a| `3` | System enclosure or chassis | 1  a| `0x0300`
+a| `4` | Processor information | 2  a| `0x0400`, `0x0401`
+a| `7` | Cache information | 4  a| `0x0710`, `0x0711`, `0x0720`, `0x0721`
+a| `8` | Port connector information | 3  a| `0x0801`, `0x0802`, `0x0803`
+a| `9` | System slots | 5  a| `0x0901`, `0x0902`, `0x0903`, `0x0904`, `0x0905`
+a| `11` | OEM strings | 1  a| `0x0B00`
+a| `16` | Physical memory array | 1  a| `0x1000`
+a| `17` | Memory device | 8  a| `0x1100`, `0x1101`, `0x1102`, `0x1103`, `0x1104`, `0x1105`, `0x1106`, `0x1107`
+a| `19` | Memory array mapped address | 2  a| `0x1300`, `0x1301`
+a| `20` | Memory device mapped address | 8  a| `0x1400`, `0x1401`, `0x1402`, `0x1403`, `0x1404`, `0x1405`, `0x1406`, `0x1407`
+a| `32` | System boot information | 1  a| `0x2000`
+a| `38` | IPMI device information | 1  a| `0x2600`
+a| `127` | End of table | 1  a| `0x7F00`
+a| `193` | OEM-specific | 1  a| `0xC100`
+a| `194` | OEM-specific | 1  a| `0xC200`
+a| `195` | OEM-specific | 1  a| `0xC300`
+a| `196` | OEM-specific | 1  a| `0xC400`
+a| `197` | OEM-specific | 2  a| `0xC500`, `0xC501`
+a| `198` | OEM-specific | 1  a| `0xC600`
+a| `199` | OEM-specific | 1  a| `0xC700`
+a| `202` | OEM-specific | 8  a| `0xCA00`, `0xCA01`, `0xCA02`, `0xCA03`, `0xCA04`, `0xCA05`, `0xCA06`, `0xCA07`
+a| `205` | OEM-specific | 1  a| `0xCD00`
+a| `209` | OEM-specific | 1  a| `0xD100`
+a| `212` | OEM-specific | 1  a| `0xD400`
+a| `215` | OEM-specific | 1  a| `0xD700`
+a| `219` | OEM-specific | 1  a| `0xDB00`
+a| `220` | OEM-specific | 1  a| `0xDC00`
+a| `221` | OEM-specific | 1  a| `0xDD00`
+|===
+== ProLiant DL580 G5 438087-371 (proliant-dl580-g5-438087-371.bin)
+
+[horizontal]
+File path:: `hp/proliant-dl580-g5-438087-371.bin`
+Product name:: ProLiant DL580 G5
+Product version:: None
+Product family:: ProLiant
+Firmware vendor:: HP
+Firmware version:: P61
+Release date:: 2007-12-07
+SMBIOS version:: 2.5
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0100`
+a| `3` | System enclosure or chassis | 1  a| `0x0300`
+a| `4` | Processor information | 4  a| `0x0401`, `0x0402`, `0x0403`, `0x0404`
+a| `7` | Cache information | 12  a| `0x0711`, `0x0712`, `0x0713`, `0x0714`, `0x0721`, `0x0722`, `0x0723`, `0x0724`, `0x0731`, `0x0732`, `0x0733`, `0x0734`
+a| `8` | Port connector information | 4  a| `0x0801`, `0x0802`, `0x0803`, `0x0804`
+a| `9` | System slots | 8  a| `0x0904`, `0x0905`, `0x0906`, `0x0907`, `0x0908`, `0x0909`, `0x090A`, `0x090B`
+a| `11` | OEM strings | 1  a| `0x0B00`
+a| `16` | Physical memory array | 5  a| `0x1000`, `0x1001`, `0x1002`, `0x1003`, `0x1004`
+a| `17` | Memory device | 32  a| `0x1100`, `0x1101`, `0x1102`, `0x1103`, `0x1104`, `0x1105`, `0x1106`, `0x1107`, `0x1108`, `0x1109`, `0x110A`, `0x110B`, `0x110C`, `0x110D`, `0x110E`, `0x110F`, `0x1110`, `0x1111`, `0x1112`, `0x1113`, `0x1114`, `0x1115`, `0x1116`, `0x1117`, `0x1118`, `0x1119`, `0x111A`, `0x111B`, `0x111C`, `0x111D`, `0x111E`, `0x111F`
+a| `19` | Memory array mapped address | 5  a| `0x1300`, `0x1301`, `0x1302`, `0x1303`, `0x1304`
+a| `20` | Memory device mapped address | 32  a| `0x1400`, `0x1401`, `0x1402`, `0x1403`, `0x1404`, `0x1405`, `0x1406`, `0x1407`, `0x1408`, `0x1409`, `0x140A`, `0x140B`, `0x140C`, `0x140D`, `0x140E`, `0x140F`, `0x1410`, `0x1411`, `0x1412`, `0x1413`, `0x1414`, `0x1415`, `0x1416`, `0x1417`, `0x1418`, `0x1419`, `0x141A`, `0x141B`, `0x141C`, `0x141D`, `0x141E`, `0x141F`
+a| `32` | System boot information | 1  a| `0x2000`
+a| `38` | IPMI device information | 1  a| `0x2600`
+a| `127` | End of table | 1  a| `0x7F00`
+a| `193` | OEM-specific | 1  a| `0xC100`
+a| `194` | OEM-specific | 1  a| `0xC200`
+a| `195` | OEM-specific | 1  a| `0xC300`
+a| `196` | OEM-specific | 1  a| `0xC400`
+a| `197` | OEM-specific | 4  a| `0xC501`, `0xC502`, `0xC503`, `0xC504`
+a| `198` | OEM-specific | 1  a| `0xC600`
+a| `199` | OEM-specific | 1  a| `0xC700`
+a| `202` | OEM-specific | 32  a| `0xCA00`, `0xCA01`, `0xCA02`, `0xCA03`, `0xCA04`, `0xCA05`, `0xCA06`, `0xCA07`, `0xCA08`, `0xCA09`, `0xCA0A`, `0xCA0B`, `0xCA0C`, `0xCA0D`, `0xCA0E`, `0xCA0F`, `0xCA10`, `0xCA11`, `0xCA12`, `0xCA13`, `0xCA14`, `0xCA15`, `0xCA16`, `0xCA17`, `0xCA18`, `0xCA19`, `0xCA1A`, `0xCA1B`, `0xCA1C`, `0xCA1D`, `0xCA1E`, `0xCA1F`
+a| `205` | OEM-specific | 1  a| `0xCD00`
+a| `209` | OEM-specific | 1  a| `0xD100`
+a| `211` | OEM-specific | 4  a| `0xD301`, `0xD302`, `0xD303`, `0xD304`
+a| `212` | OEM-specific | 1  a| `0xD400`
+a| `213` | OEM-specific | 1  a| `0xD500`
+a| `214` | OEM-specific | 1  a| `0xD600`
+a| `215` | OEM-specific | 1  a| `0xD700`
+a| `218` | OEM-specific | 4  a| `0xDA00`, `0xDA00`, `0xDA00`, `0xDA00`
+a| `219` | OEM-specific | 1  a| `0xDB00`
+a| `220` | OEM-specific | 1  a| `0xDC00`
+a| `221` | OEM-specific | 1  a| `0xDD00`
+a| `223` | OEM-specific | 1  a| `0xDF00`
+a| `224` | OEM-specific | 1  a| `0xE000`
+|===
+== ProLiant DL585 G1 [1] (proliant-dl585-g1-1.bin)
+
+[horizontal]
+File path:: `hp/proliant-dl585-g1-1.bin`
+Product name:: ProLiant DL585 G1
+Product version:: None
+Product family:: -
+Firmware vendor:: HP
+Firmware version:: A01
+Release date:: 2006-01-20
+SMBIOS version:: 2.3
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0100`
+a| `3` | System enclosure or chassis | 1  a| `0x0300`
+a| `4` | Processor information | 4  a| `0x0404`, `0x0406`, `0x0402`, `0x0400`
+a| `7` | Cache information | 12  a| `0x0716`, `0x0714`, `0x0712`, `0x0710`, `0x0726`, `0x0724`, `0x0722`, `0x0720`, `0x0736`, `0x0734`, `0x0732`, `0x0730`
+a| `8` | Port connector information | 2  a| `0x0801`, `0x0802`
+a| `9` | System slots | 8  a| `0x0901`, `0x0902`, `0x0903`, `0x0904`, `0x0905`, `0x0906`, `0x0907`, `0x0908`
+a| `16` | Physical memory array | 4  a| `0x1000`, `0x1001`, `0x1002`, `0x1003`
+a| `17` | Memory device | 32  a| `0x1100`, `0x1101`, `0x1102`, `0x1103`, `0x1104`, `0x1105`, `0x1106`, `0x1107`, `0x1108`, `0x1109`, `0x110A`, `0x110B`, `0x110C`, `0x110D`, `0x110E`, `0x110F`, `0x1110`, `0x1111`, `0x1112`, `0x1113`, `0x1114`, `0x1115`, `0x1116`, `0x1117`, `0x1118`, `0x1119`, `0x111A`, `0x111B`, `0x111C`, `0x111D`, `0x111E`, `0x111F`
+a| `19` | Memory array mapped address | 4  a| `0x1300`, `0x1301`, `0x1302`, `0x1303`
+a| `20` | Memory device mapped address | 32  a| `0x1400`, `0x1401`, `0x1402`, `0x1403`, `0x1404`, `0x1405`, `0x1406`, `0x1407`, `0x1408`, `0x1409`, `0x140A`, `0x140B`, `0x140C`, `0x140D`, `0x140E`, `0x140F`, `0x1410`, `0x1411`, `0x1412`, `0x1413`, `0x1414`, `0x1415`, `0x1416`, `0x1417`, `0x1418`, `0x1419`, `0x141A`, `0x141B`, `0x141C`, `0x141D`, `0x141E`, `0x141F`
+a| `32` | System boot information | 1  a| `0x2000`
+a| `127` | End of table | 1  a| `0x7F00`
+a| `193` | OEM-specific | 1  a| `0xC100`
+a| `194` | OEM-specific | 1  a| `0xC200`
+a| `195` | OEM-specific | 1  a| `0xC300`
+a| `196` | OEM-specific | 1  a| `0xC400`
+a| `197` | OEM-specific | 4  a| `0xC506`, `0xC504`, `0xC502`, `0xC500`
+a| `198` | OEM-specific | 1  a| `0xC600`
+a| `199` | OEM-specific | 1  a| `0xC700`
+a| `202` | OEM-specific | 32  a| `0xCA00`, `0xCA01`, `0xCA02`, `0xCA03`, `0xCA04`, `0xCA05`, `0xCA06`, `0xCA07`, `0xCA08`, `0xCA09`, `0xCA0A`, `0xCA0B`, `0xCA0C`, `0xCA0D`, `0xCA0E`, `0xCA0F`, `0xCA10`, `0xCA11`, `0xCA12`, `0xCA13`, `0xCA14`, `0xCA15`, `0xCA16`, `0xCA17`, `0xCA18`, `0xCA19`, `0xCA1A`, `0xCA1B`, `0xCA1C`, `0xCA1D`, `0xCA1E`, `0xCA1F`
+a| `205` | OEM-specific | 1  a| `0xCD00`
+a| `209` | OEM-specific | 1  a| `0xD100`
+a| `212` | OEM-specific | 2  a| `0xD400`, `0xD401`
+a| `213` | OEM-specific | 1  a| `0xD500`
+a| `214` | OEM-specific | 1  a| `0xD600`
+a| `219` | OEM-specific | 1  a| `0xDB00`
+|===
+== ProLiant DL585 G1 [2] (proliant-dl585-g1-2.bin)
+
+[horizontal]
+File path:: `hp/proliant-dl585-g1-2.bin`
+Product name:: ProLiant DL585 G1
+Product version:: None
+Product family:: -
+Firmware vendor:: HP
+Firmware version:: A01
+Release date:: 2006-01-20
+SMBIOS version:: 2.3
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0100`
+a| `3` | System enclosure or chassis | 1  a| `0x0300`
+a| `4` | Processor information | 4  a| `0x0404`, `0x0406`, `0x0402`, `0x0400`
+a| `7` | Cache information | 12  a| `0x0716`, `0x0714`, `0x0712`, `0x0710`, `0x0726`, `0x0724`, `0x0722`, `0x0720`, `0x0736`, `0x0734`, `0x0732`, `0x0730`
+a| `8` | Port connector information | 2  a| `0x0801`, `0x0802`
+a| `9` | System slots | 8  a| `0x0901`, `0x0902`, `0x0903`, `0x0904`, `0x0905`, `0x0906`, `0x0907`, `0x0908`
+a| `16` | Physical memory array | 4  a| `0x1000`, `0x1001`, `0x1002`, `0x1003`
+a| `17` | Memory device | 32  a| `0x1100`, `0x1101`, `0x1102`, `0x1103`, `0x1104`, `0x1105`, `0x1106`, `0x1107`, `0x1108`, `0x1109`, `0x110A`, `0x110B`, `0x110C`, `0x110D`, `0x110E`, `0x110F`, `0x1110`, `0x1111`, `0x1112`, `0x1113`, `0x1114`, `0x1115`, `0x1116`, `0x1117`, `0x1118`, `0x1119`, `0x111A`, `0x111B`, `0x111C`, `0x111D`, `0x111E`, `0x111F`
+a| `19` | Memory array mapped address | 4  a| `0x1300`, `0x1301`, `0x1302`, `0x1303`
+a| `20` | Memory device mapped address | 32  a| `0x1400`, `0x1401`, `0x1402`, `0x1403`, `0x1404`, `0x1405`, `0x1406`, `0x1407`, `0x1408`, `0x1409`, `0x140A`, `0x140B`, `0x140C`, `0x140D`, `0x140E`, `0x140F`, `0x1410`, `0x1411`, `0x1412`, `0x1413`, `0x1414`, `0x1415`, `0x1416`, `0x1417`, `0x1418`, `0x1419`, `0x141A`, `0x141B`, `0x141C`, `0x141D`, `0x141E`, `0x141F`
+a| `32` | System boot information | 1  a| `0x2000`
+a| `127` | End of table | 1  a| `0x7F00`
+a| `193` | OEM-specific | 1  a| `0xC100`
+a| `194` | OEM-specific | 1  a| `0xC200`
+a| `195` | OEM-specific | 1  a| `0xC300`
+a| `196` | OEM-specific | 1  a| `0xC400`
+a| `197` | OEM-specific | 4  a| `0xC506`, `0xC504`, `0xC502`, `0xC500`
+a| `198` | OEM-specific | 1  a| `0xC600`
+a| `199` | OEM-specific | 1  a| `0xC700`
+a| `202` | OEM-specific | 32  a| `0xCA00`, `0xCA01`, `0xCA02`, `0xCA03`, `0xCA04`, `0xCA05`, `0xCA06`, `0xCA07`, `0xCA08`, `0xCA09`, `0xCA0A`, `0xCA0B`, `0xCA0C`, `0xCA0D`, `0xCA0E`, `0xCA0F`, `0xCA10`, `0xCA11`, `0xCA12`, `0xCA13`, `0xCA14`, `0xCA15`, `0xCA16`, `0xCA17`, `0xCA18`, `0xCA19`, `0xCA1A`, `0xCA1B`, `0xCA1C`, `0xCA1D`, `0xCA1E`, `0xCA1F`
+a| `205` | OEM-specific | 1  a| `0xCD00`
+a| `209` | OEM-specific | 1  a| `0xD100`
+a| `212` | OEM-specific | 2  a| `0xD400`, `0xD401`
+a| `213` | OEM-specific | 1  a| `0xD500`
+a| `214` | OEM-specific | 1  a| `0xD600`
+a| `219` | OEM-specific | 1  a| `0xDB00`
+|===
+== ProLiant DL585 G1 [3] (proliant-dl585-g1-3.bin)
+
+[horizontal]
+File path:: `hp/proliant-dl585-g1-3.bin`
+Product name:: ProLiant DL585 G1
+Product version:: None
+Product family:: -
+Firmware vendor:: HP
+Firmware version:: A01
+Release date:: 2005-08-26
+SMBIOS version:: 2.3
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0100`
+a| `3` | System enclosure or chassis | 1  a| `0x0300`
+a| `4` | Processor information | 4  a| `0x0404`, `0x0406`, `0x0402`, `0x0400`
+a| `7` | Cache information | 12  a| `0x0716`, `0x0714`, `0x0712`, `0x0710`, `0x0726`, `0x0724`, `0x0722`, `0x0720`, `0x0736`, `0x0734`, `0x0732`, `0x0730`
+a| `8` | Port connector information | 2  a| `0x0801`, `0x0802`
+a| `9` | System slots | 8  a| `0x0901`, `0x0902`, `0x0903`, `0x0904`, `0x0905`, `0x0906`, `0x0907`, `0x0908`
+a| `16` | Physical memory array | 4  a| `0x1000`, `0x1001`, `0x1002`, `0x1003`
+a| `17` | Memory device | 16  a| `0x1104`, `0x1105`, `0x1106`, `0x1107`, `0x110C`, `0x110D`, `0x110E`, `0x110F`, `0x1114`, `0x1115`, `0x1116`, `0x1117`, `0x111C`, `0x111D`, `0x111E`, `0x111F`
+a| `19` | Memory array mapped address | 4  a| `0x1300`, `0x1301`, `0x1302`, `0x1303`
+a| `20` | Memory device mapped address | 32  a| `0x1400`, `0x1401`, `0x1402`, `0x1403`, `0x1404`, `0x1405`, `0x1406`, `0x1407`, `0x1408`, `0x1409`, `0x140A`, `0x140B`, `0x140C`, `0x140D`, `0x140E`, `0x140F`, `0x1410`, `0x1411`, `0x1412`, `0x1413`, `0x1414`, `0x1415`, `0x1416`, `0x1417`, `0x1418`, `0x1419`, `0x141A`, `0x141B`, `0x141C`, `0x141D`, `0x141E`, `0x141F`
+a| `32` | System boot information | 1  a| `0x2000`
+a| `127` | End of table | 1  a| `0x7F00`
+a| `193` | OEM-specific | 1  a| `0xC100`
+a| `194` | OEM-specific | 1  a| `0xC200`
+a| `195` | OEM-specific | 1  a| `0xC300`
+a| `196` | OEM-specific | 1  a| `0xC400`
+a| `197` | OEM-specific | 4  a| `0xC506`, `0xC504`, `0xC502`, `0xC500`
+a| `198` | OEM-specific | 1  a| `0xC600`
+a| `199` | OEM-specific | 1  a| `0xC700`
+a| `202` | OEM-specific | 16  a| `0xCA04`, `0xCA05`, `0xCA06`, `0xCA07`, `0xCA0C`, `0xCA0D`, `0xCA0E`, `0xCA0F`, `0xCA14`, `0xCA15`, `0xCA16`, `0xCA17`, `0xCA1C`, `0xCA1D`, `0xCA1E`, `0xCA1F`
+a| `205` | OEM-specific | 1  a| `0xCD00`
+a| `209` | OEM-specific | 1  a| `0xD100`
+a| `212` | OEM-specific | 2  a| `0xD400`, `0xD401`
+a| `213` | OEM-specific | 1  a| `0xD500`
+a| `214` | OEM-specific | 1  a| `0xD600`
+a| `218` | OEM-specific | 32  a| `0xDA00`, `0xDA01`, `0xDA02`, `0xDA03`, `0xDA08`, `0xDA09`, `0xDA0A`, `0xDA0B`, `0xDA10`, `0xDA11`, `0xDA12`, `0xDA13`, `0xDA18`, `0xDA19`, `0xDA1A`, `0xDA1B`, `0xDA21`, `0xDA22`, `0xDA23`, `0xDA24`, `0xDA25`, `0xDA26`, `0xDA27`, `0xDA28`, `0xDA29`, `0xDA2A`, `0xDA2B`, `0xDA2C`, `0xDA2D`, `0xDA2E`, `0xDA2F`, `0xDA30`
+a| `219` | OEM-specific | 1  a| `0xDB00`
+|===
+== ProLiant DL585 G2 (proliant-dl585-g2.bin)
+
+[horizontal]
+File path:: `hp/proliant-dl585-g2.bin`
+Product name:: ProLiant DL585 G2
+Product version:: None
+Product family:: -
+Firmware vendor:: HP
+Firmware version:: A07
+Release date:: 2007-02-27
+SMBIOS version:: 2.3
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0000`
+a| `1` | System information | 1  a| `0x0100`
+a| `3` | System enclosure or chassis | 1  a| `0x0300`
+a| `4` | Processor information | 4  a| `0x0400`, `0x0401`, `0x0402`, `0x0403`
+a| `7` | Cache information | 8  a| `0x0710`, `0x0711`, `0x0712`, `0x0713`, `0x0720`, `0x0721`, `0x0722`, `0x0723`
+a| `8` | Port connector information | 3  a| `0x0801`, `0x0802`, `0x0803`
+a| `9` | System slots | 9  a| `0x0901`, `0x0902`, `0x0903`, `0x0904`, `0x0905`, `0x0906`, `0x0907`, `0x0908`, `0x0909`
+a| `11` | OEM strings | 1  a| `0x0B00`
+a| `16` | Physical memory array | 1  a| `0x1000`
+a| `17` | Memory device | 32  a| `0x1100`, `0x1101`, `0x1102`, `0x1103`, `0x1104`, `0x1105`, `0x1106`, `0x1107`, `0x1108`, `0x1109`, `0x110A`, `0x110B`, `0x110C`, `0x110D`, `0x110E`, `0x110F`, `0x1110`, `0x1111`, `0x1112`, `0x1113`, `0x1114`, `0x1115`, `0x1116`, `0x1117`, `0x1118`, `0x1119`, `0x111A`, `0x111B`, `0x111C`, `0x111D`, `0x111E`, `0x111F`
+a| `19` | Memory array mapped address | 4  a| `0x1300`, `0x1301`, `0x1302`, `0x1303`
+a| `20` | Memory device mapped address | 32  a| `0x1400`, `0x1401`, `0x1402`, `0x1403`, `0x1404`, `0x1405`, `0x1406`, `0x1407`, `0x1408`, `0x1409`, `0x140A`, `0x140B`, `0x140C`, `0x140D`, `0x140E`, `0x140F`, `0x1410`, `0x1411`, `0x1412`, `0x1413`, `0x1414`, `0x1415`, `0x1416`, `0x1417`, `0x1418`, `0x1419`, `0x141A`, `0x141B`, `0x141C`, `0x141D`, `0x141E`, `0x141F`
+a| `32` | System boot information | 1  a| `0x2000`
+a| `38` | IPMI device information | 1  a| `0x2600`
+a| `127` | End of table | 1  a| `0x7F00`
+a| `193` | OEM-specific | 1  a| `0xC100`
+a| `194` | OEM-specific | 1  a| `0xC200`
+a| `195` | OEM-specific | 1  a| `0xC300`
+a| `196` | OEM-specific | 1  a| `0xC400`
+a| `197` | OEM-specific | 4  a| `0xC500`, `0xC501`, `0xC502`, `0xC503`
+a| `198` | OEM-specific | 1  a| `0xC600`
+a| `199` | OEM-specific | 1  a| `0xC700`
+a| `202` | OEM-specific | 32  a| `0xCA00`, `0xCA01`, `0xCA02`, `0xCA03`, `0xCA04`, `0xCA05`, `0xCA06`, `0xCA07`, `0xCA08`, `0xCA09`, `0xCA0A`, `0xCA0B`, `0xCA0C`, `0xCA0D`, `0xCA0E`, `0xCA0F`, `0xCA10`, `0xCA11`, `0xCA12`, `0xCA13`, `0xCA14`, `0xCA15`, `0xCA16`, `0xCA17`, `0xCA18`, `0xCA19`, `0xCA1A`, `0xCA1B`, `0xCA1C`, `0xCA1D`, `0xCA1E`, `0xCA1F`
+a| `205` | OEM-specific | 1  a| `0xCD00`
+a| `209` | OEM-specific | 1  a| `0xD100`
+a| `212` | OEM-specific | 1  a| `0xD400`
+a| `215` | OEM-specific | 1  a| `0xD700`
+a| `219` | OEM-specific | 1  a| `0xDB00`
+a| `220` | OEM-specific | 1  a| `0xDC00`
+a| `221` | OEM-specific | 1  a| `0xDD00`
+|===
+== Z600 WD059AV (z600-wd059av.bin)
+
+[horizontal]
+File path:: `hp/z600-wd059av.bin`
+Product name:: HP Z600 Workstation
+Product version:: None
+Product family:: 103C_53335X
+Firmware vendor:: Hewlett-Packard
+Firmware version:: 786G4 v03.54
+Release date:: 2011-11-02
+SMBIOS version:: 2.6
+
+=== Contents
+
+[cols="1,3,1,2"]
+|===
+| Type | Description | Count | Handles
+
+a| `0` | Platform firmware information | 1  a| `0x0001`
+a| `1` | System information | 1  a| `0x0002`
+a| `2` | Baseboard or module information | 1  a| `0x0003`
+a| `3` | System enclosure or chassis | 1  a| `0x0004`
+a| `4` | Processor information | 2  a| `0x0005`, `0x0006`
+a| `7` | Cache information | 6  a| `0x0007`, `0x0008`, `0x0009`, `0x000A`, `0x000B`, `0x000C`
+a| `8` | Port connector information | 37  a| `0x000D`, `0x000E`, `0x000F`, `0x0010`, `0x0011`, `0x0012`, `0x0013`, `0x0014`, `0x0015`, `0x0016`, `0x0017`, `0x0018`, `0x0019`, `0x001A`, `0x001B`, `0x001C`, `0x001D`, `0x001E`, `0x001F`, `0x0020`, `0x0021`, `0x0022`, `0x0023`, `0x0024`, `0x0025`, `0x0026`, `0x0027`, `0x0028`, `0x0029`, `0x002A`, `0x002B`, `0x002C`, `0x002D`, `0x002E`, `0x002F`, `0x0030`, `0x0031`
+a| `9` | System slots | 6  a| `0x0032`, `0x0033`, `0x0034`, `0x0035`, `0x0036`, `0x0037`
+a| `11` | OEM strings | 1  a| `0x0038`
+a| `13` | Firmware language information | 1  a| `0x0039`
+a| `16` | Physical memory array | 3  a| `0x003A`, `0x003B`, `0x003C`
+a| `17` | Memory device | 7  a| `0x003D`, `0x003E`, `0x003F`, `0x0040`, `0x0041`, `0x0042`, `0x0044`
+a| `19` | Memory array mapped address | 4  a| `0x0045`, `0x0046`, `0x0047`, `0x0049`
+a| `20` | Memory device mapped address | 1  a| `0x004A`
+a| `27` | Cooling device | 7  a| `0x004D`, `0x004F`, `0x0051`, `0x0053`, `0x0055`, `0x0057`, `0x0059`
+a| `28` | Temperature probe | 3  a| `0x005B`, `0x005D`, `0x005F`
+a| `32` | System boot information | 1  a| `0x004B`
+a| `127` | End of table | 1  a| `0x0064`
+a| `136` | OEM-specific | 1  a| `0x004C`
+a| `153` | OEM-specific | 10  a| `0x004E`, `0x0050`, `0x0052`, `0x0054`, `0x0056`, `0x0058`, `0x005A`, `0x005C`, `0x005E`, `0x0060`
+a| `197` | OEM-specific | 2  a| `0x0061`, `0x0062`
+a| `207` | OEM-specific | 1  a| `0x0063`
+|===

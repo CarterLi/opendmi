@@ -1,0 +1,8 @@
+vendor: ASRock
+files:
+  a520m-itx-ac.bin:
+    product: A520M-ITX/ac
+  h61m-gs.bin:
+    product: H61M-GS
+  x870e-nova-wifi.bin:
+    product: X870E Nova WiFi

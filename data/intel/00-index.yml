@@ -1,0 +1,4 @@
+vendor: Intel
+files:
+  nuc-nuc5ppyb.bin:
+    product: NUC NUC5PPYB

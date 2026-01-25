@@ -1,0 +1,10 @@
+vendor: Gigabyte
+files:
+  b560m-ds3h-v2.bin:
+    product: B560M DS3H-V2
+  g5-mf.bin:
+    product: G5 MF
+  ga-970a-ds3p.bin:
+    product: GA-970A DS3P
+  j4005n-d2p-cf.bin:
+    product: J4005N D2P-CF

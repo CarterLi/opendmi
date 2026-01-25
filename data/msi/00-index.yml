@@ -1,0 +1,8 @@
+vendor: MSI
+files:
+  modern-15-a10m.bin:
+    product: Modern 15 A10M
+  ms-7210.bin:
+    product: MS-7210 945GM2-FI
+  wind-u100.bin:
+    product: Wind U-100

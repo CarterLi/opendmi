@@ -1,0 +1,8 @@
+vendor: Huawei
+files:
+  matebook-16s-2023-crefg-x.bin:
+    product: MateBook 16s 2023 CREFG-X
+  matebook-d14-2023-mdf-x.bin:
+    product: MateBook D 14 2023 MDF-X
+  matebook-d14-2024-mdg-x.bin:
+    product: MateBook D 14 2024 MDG-X

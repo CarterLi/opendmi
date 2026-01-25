@@ -5,6 +5,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 import os
+import re
 import sys
 import logging
 import subprocess
@@ -76,7 +77,7 @@ def get_type_map(data: dict) -> dict:
 def read_file_data(file_path: str) -> dict:
     try:
         process = subprocess.Popen(
-            [f"{build_dir}/bin/opendmi", "--from-dump", file_path, "--format=yaml"],
+            [f"{build_dir}/bin/opendmi", "--from-dump", file_path, "--format=yaml", "--quiet"],
             stdout = subprocess.PIPE,
             stderr = subprocess.PIPE
         )
@@ -92,6 +93,8 @@ def read_file_data(file_path: str) -> dict:
         return None
 
 def process_file(file_path: str, spec: dict, out_file) -> bool:
+    file_rel = os.path.relpath(file_path, data_dir)
+
     data = read_file_data(file_path)
     if not data:
         logging.error("Update failed")
@@ -102,15 +105,16 @@ def process_file(file_path: str, spec: dict, out_file) -> bool:
     type_map = get_type_map(data)
 
     if 'product' in spec:
-        product_name = spec['product']
+        title = spec['product']
     else:
-        product_name = system['product']
+        title = system['product']
 
-    print(f"== {product_name} ({os.path.basename(file_path)})", file=out_file)
+    print(f"== {title} ({os.path.basename(file_path)})", file=out_file)
     print("", file=out_file)
 
     print("[horizontal]", file=out_file)
-    print(f"Product name:: {product_name}", file=out_file)
+    print(f"File path:: `{file_rel}`", file=out_file)
+    print(f"Product name:: {system.get('product', '-')}", file=out_file)
     print(f"Product version:: {system.get('version', '-')}", file=out_file)
     print(f"Product family:: {system.get('family', '-')}", file=out_file)
     print(f"Firmware vendor:: {firmware.get('vendor', '-')}", file=out_file)
@@ -163,7 +167,7 @@ def process_vendor(vendor_dir: str):
         print(":toclevels: 1", file=out_file)
         print("", file=out_file)
 
-        for file_path in files:
+        for file_path in sorted(files):
             file_name = os.path.basename(file_path)
 
             logging.info(f"==> {vendor_rel}/{file_name}...")

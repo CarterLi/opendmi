@@ -1,0 +1,30 @@
+vendor: HP
+files:
+  elitebook-820-g4-x3t22av.bin:
+    product: EliteBook 820 G4 X3T22AV
+  probook-440-g10-7z7k0pc.bin:
+    product: HP ProBook 440 G10 7Z7K0PC
+  proliant-bl460c-g1-416656-b21.bin:
+    product: ProLiant BL460c G1 416656-B21
+  proliant-dl360-g6-484184-b21.bin:
+    product: ProLiant DL360 G6 484184-B21
+  proliant-dl385-g1-1.bin:
+    product: ProLiant DL385 G1 [1]
+  proliant-dl385-g1-2.bin:
+    product: ProLiant DL385 G1 [2]
+  proliant-dl385-g1-3.bin:
+    product: ProLiant DL385 G1 [3]
+  proliant-dl385-g2.bin:
+    product: ProLiant DL385 G2
+  proliant-dl580-g5-438087-371.bin:
+    product: ProLiant DL580 G5 438087-371
+  proliant-dl585-g1-1.bin:
+    product: ProLiant DL585 G1 [1]
+  proliant-dl585-g1-2.bin:
+    product: ProLiant DL585 G1 [2]
+  proliant-dl585-g1-3.bin:
+    product: ProLiant DL585 G1 [3]
+  proliant-dl585-g2.bin:
+    product: ProLiant DL585 G2
+  z600-wd059av.bin:
+    product: Z600 WD059AV

@@ -1,0 +1,8 @@
+vendor: SuperMicro
+files:
+  x10ddw-i.bin:
+    product: X10DDW-I
+  x10sll-f.bin:
+    product: X10SLL-F
+  x11ssl-f.bin:
+    product: X11SSL-F
