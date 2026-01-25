@@ -17,6 +17,8 @@
 #include <opendmi/command/modules.h>
 #include <opendmi/command/show.h>
 #include <opendmi/command/lint.h>
+#include <opendmi/command/export.h>
+#include <opendmi/command/import.h>
 #include <opendmi/command/types.h>
 
 const dmi_command_t *dmi_commands[] =
@@ -26,6 +28,8 @@ const dmi_command_t *dmi_commands[] =
     &dmi_list_command,
     &dmi_show_command,
     &dmi_lint_command,
+    &dmi_export_command,
+    &dmi_import_command,
     &dmi_types_command,
     &dmi_modules_command,
     nullptr
