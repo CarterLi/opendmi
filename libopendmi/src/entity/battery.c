@@ -184,18 +184,22 @@ static bool dmi_battery_decode(dmi_entity_t *entity)
     if (entity->body_length > 0x10u) {
         entity->level = dmi_version(2, 2, 0);
 
-        info->sbds_serial_number    = dmi_decode(data->sbds_serial_number);
+        info->sbds_serial_number = dmi_decode(data->sbds_serial_number);
 
         if (manufacture_date == nullptr) {
-            info->manufacture_date = dmi_date(
-                ((data->sbds_manufacture_date >> 9) & 0x7Fu) + 1980,
-                (data->sbds_manufacture_date >> 5) & 0x0Fu,
-                data->sbds_manufacture_date & 0x1Fu
-            );
+            uint16_t sbds_manufacture_date = dmi_decode(data->sbds_manufacture_date);
+    
+            if (manufacture_date != 0) {
+                info->manufacture_date = dmi_date(
+                    ((sbds_manufacture_date >> 9) & 0x7Fu) + 1980,
+                    (sbds_manufacture_date >> 5) & 0x0Fu,
+                    sbds_manufacture_date & 0x1Fu
+                );
+            }
         }
 
-        info->sbds_chemistry        = dmi_entity_string(entity, data->sbds_chemistry);
-        info->oem_defined           = dmi_decode(data->oem_defined);
+        info->sbds_chemistry = dmi_entity_string(entity, data->sbds_chemistry);
+        info->oem_defined    = dmi_decode(data->oem_defined);
 
         info->capacity *= dmi_decode(data->capacity_factor);
     }

@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved `<opendmi/name.h>` to `<opendmi/utils/name.h>`
 - Refactored entity decoders API
 - Fixed build on FreeBSD platform
+- Fixed firmware inventory components list decoding
+- Fixed portable battery SBDS manufacture date decoding
 - Fixed displaying of end-of-table structure
 - Fixed Centronics connectors naming
 - Fixed management protocols naming
