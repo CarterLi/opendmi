@@ -9,7 +9,18 @@
 #include <opendmi/context.h>
 #include <opendmi/command/list.h>
 
+typedef struct dmi_list_params
+{
+    bool help;
+} dmi_list_params_t;
+
 static int dmi_list_main(dmi_context_t *context, int argc, char *argv[]);
+static void dmi_list_usage(void);
+
+static dmi_list_params_t dmi_list_params =
+{
+    .help = false
+};
 
 const dmi_command_t dmi_list_command =
 {
@@ -25,7 +36,8 @@ static const dmi_option_group_t dmi_list_options =
         {
             .short_names = "?h",
             .long_names  = (const char *[]){ "help", nullptr },
-            .description = "Print this help and exit"
+            .description = "Print this help and exit",
+            .value       = &dmi_list_params.help
         },
         {}
     }
@@ -38,5 +50,14 @@ static int dmi_list_main(dmi_context_t *context, int argc, char *argv[])
     if (dmi_option_parse(&dmi_list_options, argc, argv) < 0)
         return EXIT_FAILURE;
 
+    if (dmi_list_params.help) {
+        dmi_list_usage();
+        return EXIT_SUCCESS;
+    }
+
     return EXIT_SUCCESS;
+}
+
+static void dmi_list_usage(void)
+{
 }

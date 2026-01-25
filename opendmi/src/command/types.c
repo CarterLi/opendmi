@@ -9,7 +9,18 @@
 #include <opendmi/context.h>
 #include <opendmi/command/types.h>
 
+typedef struct dmi_types_params
+{
+    bool help;
+} dmi_types_params_t;
+
 static int dmi_types_main(dmi_context_t *context, int argc, char *argv[]);
+static void dmi_types_usage(void);
+
+static dmi_types_params_t dmi_types_params =
+{
+    .help = false
+};
 
 const dmi_command_t dmi_types_command =
 {
@@ -25,7 +36,8 @@ static const dmi_option_group_t dmi_types_options =
         {
             .short_names = "?h",
             .long_names  = (const char *[]){ "help", nullptr },
-            .description = "Print this help and exit"
+            .description = "Print this help and exit",
+            .value       = &dmi_types_params.help
         },
         {
             .short_names = "a",
@@ -43,5 +55,14 @@ static int dmi_types_main(dmi_context_t *context, int argc, char *argv[])
     if (dmi_option_parse(&dmi_types_options, argc, argv) < 0)
         return EXIT_FAILURE;
 
+    if (dmi_types_params.help) {
+        dmi_types_usage();
+        return EXIT_SUCCESS;
+    }
+
     return EXIT_SUCCESS;
+}
+
+static void dmi_types_usage(void)
+{
 }

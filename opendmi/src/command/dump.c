@@ -9,7 +9,20 @@
 #include <opendmi/context.h>
 #include <opendmi/command/dump.h>
 
+typedef struct dmi_dump_params
+{
+    bool help;
+    char *path;
+} dmi_dump_params_t;
+
 static int dmi_dump_main(dmi_context_t *context, int argc, char *argv[]);
+static void dmi_dump_usage(void);
+
+static dmi_dump_params_t dmi_dump_params =
+{
+    .help = false,
+    .path = "smbios.bin"
+};
 
 const dmi_command_t dmi_dump_command =
 {
@@ -25,7 +38,19 @@ static const dmi_option_group_t dmi_dump_options =
         {
             .short_names = "?h",
             .long_names  = (const char *[]){ "help", nullptr },
-            .description = "Print this help and exit"
+            .description = "Print this help and exit",
+            .value       = &dmi_dump_params.help
+        },
+        {
+            .short_names = "o",
+            .long_names  = (const char *[]){ "output", nullptr },
+            .description = "Set output file path (default: smbios.bin)",
+            .value       = &dmi_dump_params.path,
+            .argument    = {
+                .name     = "PATH",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = true
+            }
         },
         {}
     }
@@ -38,5 +63,14 @@ static int dmi_dump_main(dmi_context_t *context, int argc, char *argv[])
     if (dmi_option_parse(&dmi_dump_options, argc, argv) < 0)
         return EXIT_FAILURE;
 
+    if (dmi_dump_params.help) {
+        dmi_dump_usage();
+        return EXIT_SUCCESS;
+    }
+
     return EXIT_SUCCESS;
+}
+
+static void dmi_dump_usage(void)
+{
 }

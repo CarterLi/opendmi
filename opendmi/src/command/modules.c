@@ -9,7 +9,18 @@
 #include <opendmi/context.h>
 #include <opendmi/command/modules.h>
 
+typedef struct dmi_modules_params
+{
+    bool help;
+} dmi_modules_params_t;
+
 static int dmi_modules_main(dmi_context_t *context, int argc, char *argv[]);
+static void dmi_modules_usage(void);
+
+static dmi_modules_params_t dmi_modules_params =
+{
+    .help = false
+};
 
 const dmi_command_t dmi_modules_command =
 {
@@ -25,7 +36,8 @@ static const dmi_option_group_t dmi_modules_options =
         {
             .short_names = "?h",
             .long_names  = (const char *[]){ "help", nullptr },
-            .description = "Print this help and exit"
+            .description = "Print this help and exit",
+            .value       = &dmi_modules_params.help
         },
         {}
     }
@@ -38,5 +50,14 @@ static int dmi_modules_main(dmi_context_t *context, int argc, char *argv[])
     if (dmi_option_parse(&dmi_modules_options, argc, argv) < 0)
         return EXIT_FAILURE;
 
+    if (dmi_modules_params.help) {
+        dmi_modules_usage();
+        return EXIT_SUCCESS;
+    }
+
     return EXIT_SUCCESS;
+}
+
+static void dmi_modules_usage(void)
+{
 }

@@ -9,7 +9,18 @@
 #include <opendmi/context.h>
 #include <opendmi/command/import.h>
 
+typedef struct dmi_entry_params
+{
+    bool help;
+} dmi_import_params_t;
+
 static int dmi_import_main(dmi_context_t *context, int argc, char *argv[]);
+static void dmi_import_usage(void);
+
+static dmi_import_params_t dmi_import_params =
+{
+    .help = false
+};
 
 const dmi_command_t dmi_import_command =
 {
@@ -25,7 +36,8 @@ static const dmi_option_group_t dmi_import_options =
         {
             .short_names = "?h",
             .long_names  = (const char *[]){ "help", nullptr },
-            .description = "Print this help and exit"
+            .description = "Print this help and exit",
+            .value       = &dmi_import_params.help
         },
         {}
     }
@@ -38,5 +50,14 @@ static int dmi_import_main(dmi_context_t *context, int argc, char *argv[])
     if (dmi_option_parse(&dmi_import_options, argc, argv) < 0)
         return EXIT_FAILURE;
 
+    if (dmi_import_params.help) {
+        dmi_import_usage();
+        return EXIT_SUCCESS;
+    }
+
     return EXIT_SUCCESS;
+}
+
+static void dmi_import_usage(void)
+{
 }

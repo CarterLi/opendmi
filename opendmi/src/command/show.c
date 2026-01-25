@@ -9,7 +9,18 @@
 #include <opendmi/context.h>
 #include <opendmi/command/show.h>
 
+typedef struct dmi_show_params
+{
+    bool help;
+} dmi_show_params_t;
+
 static int dmi_show_main(dmi_context_t *context, int argc, char *argv[]);
+static void dmi_show_usage(void);
+
+static dmi_show_params_t dmi_show_params =
+{
+    .help = false
+};
 
 const dmi_command_t dmi_show_command =
 {
@@ -25,7 +36,8 @@ const dmi_option_group_t dmi_show_options =
         {
             .short_names = "?h",
             .long_names  = (const char *[]){ "help", nullptr },
-            .description = "Print this help and exit"
+            .description = "Print this help and exit",
+            .value       = &dmi_show_params.help
         },
         {
             .short_names = "H",
@@ -78,5 +90,14 @@ static int dmi_show_main(dmi_context_t *context, int argc, char *argv[])
     if (dmi_option_parse(&dmi_show_options, argc, argv) < 0)
         return EXIT_FAILURE;
 
+    if (dmi_show_params.help) {
+        dmi_show_usage();
+        return EXIT_SUCCESS;
+    }
+
     return EXIT_SUCCESS;
+}
+
+static void dmi_show_usage(void)
+{
 }

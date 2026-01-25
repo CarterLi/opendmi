@@ -48,6 +48,9 @@ typedef enum dmi_command_type
 typedef struct dmi_config
 {
     dmi_command_type_t command;
+    bool show_version;
+    bool show_help;
+    char *log_file;
     char *memory_device;
     bool quiet;
     bool debug;
@@ -100,12 +103,14 @@ const dmi_option_group_t global_opts =
         {
             .short_names = "v",
             .long_names  = (const char *[]){ "version", nullptr },
-            .description = "Print version information and exit"
+            .description = "Print version information and exit",
+            .value       = &config.show_version
         },
         {
             .short_names = "?h",
             .long_names  = (const char *[]){ "help", nullptr },
-            .description = "Print this help and exit"
+            .description = "Print this help and exit",
+            .value       = &config.show_help
         },
         {
             .short_names = "q",
@@ -123,6 +128,7 @@ const dmi_option_group_t global_opts =
             .short_names = "l",
             .long_names  = (const char *[]){ "log", nullptr },
             .description = "Write log to file",
+            .value       = &config.log_file,
             .argument    = {
                 .name     = "path",
                 .type     = DMI_ARGUMENT_TYPE_STRING,
