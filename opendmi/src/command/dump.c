@@ -9,7 +9,7 @@
 #include <opendmi/context.h>
 #include <opendmi/command/dump.h>
 
-static int dmi_dump_main(dmi_context_t *context);
+static int dmi_dump_main(dmi_context_t *context, int argc, char *argv[]);
 
 const dmi_command_t dmi_dump_command =
 {
@@ -18,9 +18,25 @@ const dmi_command_t dmi_dump_command =
     .handler     = dmi_dump_main
 };
 
-static int dmi_dump_main(dmi_context_t *context)
+static const dmi_option_group_t dmi_dump_options =
+{
+    .name    = "Command options",
+    .options = (const dmi_option_t[]){
+        {
+            .short_names = "?h",
+            .long_names  = (const char *[]){ "help", nullptr },
+            .description = "Print this help and exit"
+        },
+        {}
+    }
+};
+
+static int dmi_dump_main(dmi_context_t *context, int argc, char *argv[])
 {
     dmi_unused(context);
+
+    if (dmi_option_parse(&dmi_dump_options, argc, argv) < 0)
+        return EXIT_FAILURE;
 
     return EXIT_SUCCESS;
 }

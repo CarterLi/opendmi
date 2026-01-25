@@ -36,6 +36,8 @@ void dmi_option_list(const dmi_option_group_t *group)
 
             while (*name != 0) {
                 printf("%s-%c", count > 0 ? ", " : "    ", *name);
+                if (arg->type != DMI_ARGUMENT_TYPE_NONE)
+                    printf(arg->required ? " <%s>" : " [%s]", arg->name);
                 name++, count++;
             }
         }
@@ -45,12 +47,10 @@ void dmi_option_list(const dmi_option_group_t *group)
 
             while (*name != nullptr) {
                 printf("%s--%s", count > 0 ? ", " : "    ", *name);
+                if (arg->type != DMI_ARGUMENT_TYPE_NONE)
+                    printf(arg->required ? "=<%s>" : "[=<%s>]", arg->name);
                 name++, count++;
             }
-        }
-
-        if (arg->type != DMI_ARGUMENT_TYPE_NONE) {
-            printf(arg->required ? " <%s>" : " [%s]", arg->name);
         }
 
         printf("\n%8s%s\n", "", opt->description);

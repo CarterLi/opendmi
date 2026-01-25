@@ -16,8 +16,12 @@ typedef struct dmi_command dmi_command_t;
 
 /**
  * @brief Command handler function.
+ *
+ * @param[in] context Context handle.
+ * @param[in] argc    Number of arguments.
+ * @param[in] argv    Arguments array.
  */
-typedef int dmi_command_handler_fn(dmi_context_t *context);
+typedef int dmi_command_handler_fn(dmi_context_t *context, int argc, char *argv[]);
 
 /**
  * @brief Command specification.
@@ -54,7 +58,13 @@ __BEGIN_DECLS
 
 void dmi_command_list(void);
 
-int dmi_command_run(const char *name, dmi_context_t *context);
+const dmi_command_t *dmi_command_find(const char *name);
+
+int dmi_command_run(
+        const dmi_command_t *command,
+        dmi_context_t       *context,
+        int                  argc,
+        char                *argv[]);
 
 __END_DECLS
 

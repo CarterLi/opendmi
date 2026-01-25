@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include <opendmi/command.h>
 #include <opendmi/command/dump.h>
@@ -40,17 +41,29 @@ void dmi_command_list(void)
     printf("\n");
 }
 
-int dmi_command_run(const char *name, dmi_context_t *context)
+const dmi_command_t *dmi_command_find(const char *name)
 {
     const dmi_command_t **pcommand;
 
+    assert(name != nullptr);
+
     for (pcommand = dmi_commands; *pcommand != nullptr; pcommand++) {
         if (strcmp((*pcommand)->name, name) == 0)
-            return (*pcommand)->handler(context);
+            return *pcommand;
     }
 
-    fprintf(stderr, "Unexpected command: %s\n", name);
-    fprintf(stderr, "Use --help or -h for help\n");
+    return nullptr;
+}
 
-    return EXIT_FAILURE;
+int dmi_command_run(
+        const dmi_command_t *command,
+        dmi_context_t       *context,
+        int                  argc,
+        char                *argv[])
+{
+    assert(command != nullptr);
+    assert(context != nullptr);
+    assert(argv != nullptr);
+
+    return command->handler(context, argc, argv);
 }

@@ -123,7 +123,17 @@ const dmi_option_group_t global_opts =
             .value       = &config.debug
         },
         {
-            .short_names = nullptr,
+            .short_names = "l",
+            .long_names  = (const char *[]){ "log", nullptr },
+            .description = "Write log to file",
+            .argument    = {
+                .name     = "path",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = true
+            }
+        },
+        {
+            .short_names = "S",
             .long_names  = (const char *[]){ "no-sysfs", nullptr },
             .description = "Do not attempt to read DMI data from SysFS"
         },
@@ -133,7 +143,7 @@ const dmi_option_group_t global_opts =
             .description = "Set path to memory device (default: /dev/mem)",
             .value       = &config.memory_device,
             .argument    = {
-                .name     = "PATH",
+                .name     = "path",
                 .type     = DMI_ARGUMENT_TYPE_STRING,
                 .required = true
             },
@@ -144,7 +154,7 @@ const dmi_option_group_t global_opts =
             .description = "Read the DMI data from a binary file",
             .value       = &config.output_path,
             .argument    = {
-                .name     = "PATH",
+                .name     = "path",
                 .type     = DMI_ARGUMENT_TYPE_STRING,
                 .required = true
             }
