@@ -40,7 +40,6 @@ void *dmi_yaml_initialize(dmi_context_t *context, FILE *stream)
         initialized = true;
 
         yaml_emitter_set_output_file(session->emitter, stream);
-
         yaml_emitter_set_unicode(session->emitter, true);
         yaml_emitter_set_indent(session->emitter, 2);
 
@@ -67,133 +66,103 @@ void *dmi_yaml_initialize(dmi_context_t *context, FILE *stream)
 
 bool dmi_yaml_dump_start(dmi_yaml_session_t *session)
 {
-    assert(session != nullptr);
-
-    bool success = false;
+    bool result = false;
     yaml_event_t event = {};
 
-    do {
-        if (not yaml_document_start_event_initialize(&event, nullptr, nullptr, nullptr, true))
-            break;
-        if (not yaml_emitter_emit(session->emitter, &event))
-            break;
+    assert(session != nullptr);
 
-        if (not dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE))
-            break;
+    result =
+        yaml_document_start_event_initialize(&event, nullptr, nullptr, nullptr, true) and
+        yaml_emitter_emit(session->emitter, &event) and
+        dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE);
 
-        success = true;
-    } while (false);
-
-    if (not success)
+    if (not result)
         dmi_error_raise_ex(session->context, DMI_ERROR_INTERNAL, "Unable to start YAML document");
 
-    return success;
+    return result;
 }
 
 bool dmi_yaml_entry(dmi_yaml_session_t *session)
 {
+    bool result;
+    char *smbios_version;
+
     assert(session != nullptr);
 
-    bool success = false;
-    char *smbios_version = nullptr;
+    smbios_version = dmi_version_format(session->context->smbios_version);
+    if (smbios_version == nullptr)
+        return false;
 
-    do {
-        smbios_version = dmi_version_format(session->context->smbios_version);
-        if (smbios_version == nullptr)
-            break;
-
-        if (not dmi_yaml_label(session, "entry"))
-            break;
-        if (not dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE))
-            break;
-
-        if (not dmi_yaml_label(session, "smbios-version"))
-            break;
-        if (not dmi_yaml_scalar(session, smbios_version, YAML_PLAIN_SCALAR_STYLE))
-            break;
-
-        if (not dmi_yaml_mapping_end(session))
-            break;
-
-        success = true;
-    } while (false);
+    result =
+        dmi_yaml_label(session, "entry") and
+        dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE) and
+        dmi_yaml_label(session, "smbios-version") and
+        dmi_yaml_scalar(session, smbios_version, YAML_SINGLE_QUOTED_SCALAR_STYLE) and
+        dmi_yaml_mapping_end(session);
 
     dmi_free(smbios_version);
 
-    return success;
+    return result;
 }
 
 bool dmi_yaml_table_start(dmi_yaml_session_t *session)
 {
+    bool result;
+
     assert(session != nullptr);
 
-    bool success = false;
+    result =
+        dmi_yaml_label(session, "table") and
+        dmi_yaml_sequence_start(session, YAML_BLOCK_SEQUENCE_STYLE);
 
-    do {
-        if (not dmi_yaml_label(session, "table"))
-            break;
-        if (not dmi_yaml_sequence_start(session, YAML_BLOCK_SEQUENCE_STYLE))
-            break;
-
-        success = true;
-    } while (false);
-
-    return success;
+    return result;
 }
 
 bool dmi_yaml_entity_start(dmi_yaml_session_t *session, const dmi_entity_t *entity)
 {
+    bool result;
+    char entity_handle[8];
+    char entity_type[8];
+    const char *entity_description;
+    char entity_length[8];
+
     assert(session != nullptr);
+    assert(entity != nullptr);
 
-    bool success = false;
-    char buf[32];
+    snprintf(entity_handle, sizeof(entity_handle), "0x%04hx", entity->handle);
+    snprintf(entity_type, sizeof(entity_type), "%u", entity->type);
+    snprintf(entity_length, sizeof(entity_length), "%zu", entity->total_length);
 
-    do {
-        if (not dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE))
-            break;
+    entity_description = dmi_type_name(session->context, entity->type);
 
-        snprintf(buf, sizeof(buf), "0x%04hx", entity->handle);
-        if (not dmi_yaml_label(session, "handle"))
-            break;
-        if (not dmi_yaml_scalar(session, buf, YAML_PLAIN_SCALAR_STYLE))
-            break;
+    result =
+        dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE) and
+        dmi_yaml_label(session, "handle") and
+        dmi_yaml_scalar(session, entity_handle, YAML_PLAIN_SCALAR_STYLE) and
+        dmi_yaml_label(session, "type") and
+        dmi_yaml_scalar(session, entity_type, YAML_PLAIN_SCALAR_STYLE) and
+        dmi_yaml_label(session, "description") and
+        dmi_yaml_scalar(session, entity_description, YAML_PLAIN_SCALAR_STYLE) and
+        dmi_yaml_label(session, "length") and
+        dmi_yaml_scalar(session, entity_length, YAML_PLAIN_SCALAR_STYLE);
 
-        snprintf(buf, sizeof(buf), "%u", entity->type);
-        if (not dmi_yaml_label(session, "type"))
-            break;
-        if (not dmi_yaml_scalar(session, buf, YAML_PLAIN_SCALAR_STYLE))
-            break;
-
-        snprintf(buf, sizeof(buf), "%zu", entity->total_length);
-        if (not dmi_yaml_label(session, "length"))
-            break;
-        if (not dmi_yaml_scalar(session, buf, YAML_PLAIN_SCALAR_STYLE))
-            break;
-
-        success = true;
-    } while (false);
-
-    return success;
+    return result;
 }
 
 bool dmi_yaml_entity_attrs_start(dmi_yaml_session_t *session, const dmi_entity_t *entity)
 {
+    bool result;
+
     assert(session != nullptr);
+    assert(entity != nullptr);
 
     dmi_unused(entity);
 
-    bool success = false;
+    result =
+        dmi_yaml_label(session, "attributes") and
+        dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE);
 
-    do {
-        if (not dmi_yaml_label(session, "attributes"))
-            break;
-        if (not dmi_yaml_mapping_start(session, YAML_BLOCK_MAPPING_STYLE))
-            break;
-
-        success = true;
-    } while (false);
-
-    return success;
+    return result;
 }
 
 bool dmi_yaml_entity_attr(
@@ -210,21 +179,21 @@ bool dmi_yaml_entity_attr(
     bool success = false;
 
     do {
-        bool rv;
+        bool result;
 
         if (not dmi_yaml_label(session, attr->params.code))
             break;
 
         if (not dmi_member_is_present(attr->counter)) {
             if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT)
-                rv = dmi_yaml_entity_attr_struct(session, attr, value);
+                result = dmi_yaml_entity_attr_struct(session, attr, value);
             else
-                rv = dmi_yaml_entity_attr_value(session, attr, value);
+                result = dmi_yaml_entity_attr_value(session, attr, value);
         } else {
-            rv = dmi_yaml_entity_attr_array(session, attr, entity->info, value);
+            result = dmi_yaml_entity_attr_array(session, attr, entity->info, value);
         }
 
-        if (not rv)
+        if (not result)
             break;
 
         success = true;
@@ -252,13 +221,15 @@ bool dmi_yaml_entity_attr_array(
         return false;
 
     for (size_t i = 0; i < count; i++, ptr += attr->value.size) {
-        if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT) {
-            if (not dmi_yaml_entity_attr_struct(session, attr, ptr))
-                return false;
-        } else {
-            if (not dmi_yaml_entity_attr_value(session, attr, ptr))
-                return false;
-        }
+        bool result;
+
+        if (attr->type == DMI_ATTRIBUTE_TYPE_STRUCT)
+            result = dmi_yaml_entity_attr_struct(session, attr, ptr);
+        else
+            result = dmi_yaml_entity_attr_value(session, attr, ptr);
+
+        if (not result)
+            return false;
     }
 
     if (not dmi_yaml_sequence_end(session))
@@ -284,9 +255,11 @@ bool dmi_yaml_entity_attr_struct(
     for (child_attr = attr->params.attrs; child_attr->params.name; child_attr++) {
         const dmi_data_t *ptr = dmi_member_ptr(value, child_attr->value, dmi_data_t);
 
-        if (not dmi_yaml_label(session, child_attr->params.code))
-            return false;
-        if (not dmi_yaml_entity_attr_value(session, child_attr, ptr))
+        bool result =
+            dmi_yaml_label(session, child_attr->params.code) and
+            dmi_yaml_entity_attr_value(session, child_attr, ptr);
+
+        if (not result)
             return false;
     }
 
@@ -363,10 +336,11 @@ bool dmi_yaml_entity_attr_set(
             continue;
 
         bool flag = mask & (1 << i);
+        bool result =
+            dmi_yaml_label(session, name) and
+            dmi_yaml_scalar(session, flag ? "true" : "false", YAML_PLAIN_SCALAR_STYLE);
 
-        if (not dmi_yaml_label(session, name))
-            return false;
-        if (not dmi_yaml_scalar(session, flag ? "true" : "false", YAML_PLAIN_SCALAR_STYLE))
+        if (not result)
             return false;
     }
 
@@ -419,29 +393,21 @@ bool dmi_yaml_table_end(dmi_yaml_session_t *session)
 
 bool dmi_yaml_dump_end(dmi_yaml_session_t *session)
 {
-    assert(session != nullptr);
-
-    bool success = false;
+    bool result;
     yaml_event_t event = {};
 
-    do {
-        if (not dmi_yaml_mapping_end(session))
-            break;
+    assert(session != nullptr);
 
-        if (not yaml_document_end_event_initialize(&event, true))
-            break;
-        if (not yaml_emitter_emit(session->emitter, &event))
-            break;
-        if (not yaml_emitter_flush(session->emitter))
-            break;
+    result =
+        dmi_yaml_mapping_end(session) and
+        yaml_document_end_event_initialize(&event, true) and
+        yaml_emitter_emit(session->emitter, &event) and
+        yaml_emitter_flush(session->emitter);
 
-        success = true;
-    } while (false);
-
-    if (not success)
+    if (not result)
         dmi_error_raise_ex(session->context, DMI_ERROR_INTERNAL, "Unable to end YAML document");
 
-    return success;
+    return result;
 }
 
 void dmi_yaml_finalize(dmi_yaml_session_t *session)
