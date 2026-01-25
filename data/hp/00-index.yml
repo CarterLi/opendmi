@@ -1,5 +1,7 @@
 vendor: HP
 files:
+  elitebook-6930p-nn187ea.bin:
+    product: EliteBook 6930p NN187EA
   elitebook-820-g4-x3t22av.bin:
     product: EliteBook 820 G4 X3T22AV
   probook-440-g10-7z7k0pc.bin:

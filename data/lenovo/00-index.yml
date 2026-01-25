@@ -1,5 +1,7 @@
 vendor: Lenovo
 files:
+  b590.bin:
+    product: B590
   ideapad-g580-20150.bin:
     product: IdeaPad G580 20150
   ideapad-slim-5-14irl8.bin:
@@ -12,6 +14,8 @@ files:
     product: ThinkCentre M720s 10ST
   thinkpad-t14-g2a-20xk.bin:
     product: ThinkPad T14 Gen 2a 20XK
+  thinkpad-t14-g3-21aj.bin:
+    product: ThinkPad T14 Gen 3 21AJ
   thinkpad-t61p-6460-6xg.bin:
     product: ThinkPad T61p 6460-6XG
   thinkpad-x280-20kf.bin:

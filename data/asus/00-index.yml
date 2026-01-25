@@ -1,5 +1,11 @@
 vendor: ASUS
 files:
+  c60m1-i.bin:
+    product: C60M1-I
+  k53u.bin:
+    product: K53U
+  m4a88td-m-usb3.bin:
+    product: M4A88TD-M/USB3
   prime-b350-plus.bin:
     product: PRIME B350-Plus
   prime-h610m-r.bin:
