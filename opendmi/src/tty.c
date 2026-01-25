@@ -24,9 +24,10 @@
 #   include <term.h>
 #endif // ENABLE_CURSES
 
-static int dmi_tty_attr_mask(int attrs);
-
 static bool dmi_tty = false;
+static int  dmi_tty_bg_color = DMI_TTY_COLOR_BLACK;
+static int  dmi_tty_fg_color = DMI_TTY_COLOR_WHITE;
+static int  dmi_tty_attrs = 0;
 
 void dmi_tty_init(void)
 {
@@ -46,42 +47,59 @@ bool dmi_has_tty(void)
 
 void dmi_tty_attr_on(int attrs)
 {
-#ifdef ENABLE_CURSES
-    if (dmi_tty)
-        attron(dmi_tty_attr_mask(attrs));
-#else
-    dmi_unused(attrs);
-#endif
+    if (not dmi_tty)
+        return;
+
+    dmi_tty_attrs |= attrs;
+
+#   ifdef ENABLE_CURSES
+        if (attrs & DMI_TTY_ATTR_BOLD)
+            tputs(tparm(tigetstr("bold")), 1, putchar);
+        if (attrs & DMI_TTY_ATTR_UNDERLINE)
+            tputs(tparm(tigetstr("smul")), 1, putchar);
+        if (attrs & DMI_TTY_ATTR_BLINK)
+            tputs(tparm(tigetstr("blink")), 1, putchar);
+#   endif
 }
 
 void dmi_tty_attr_off(int attrs)
 {
-#ifdef ENABLE_CURSES
-    if (dmi_tty)
-        attroff(dmi_tty_attr_mask(attrs));
-#else
-    dmi_unused(attrs);
-#endif
+    if (not dmi_tty)
+        return;
+
+    dmi_tty_attrs &= ~attrs;
+
+#   ifdef ENABLE_CURSES
+        dmi_tty_exit_attr_mode();
+
+        dmi_tty_attr_on(dmi_tty_attrs);
+        dmi_tty_set_bg_color(dmi_tty_bg_color);
+        dmi_tty_set_fg_color(dmi_tty_fg_color);
+#   endif
 }
 
 void dmi_tty_set_fg_color(dmi_tty_color_t color)
 {
-#ifdef ENABLE_CURSES
-    if (dmi_tty)
+    if (not dmi_tty)
+        return;
+
+    dmi_tty_fg_color = color;
+
+#   ifdef ENABLE_CURSES
         tputs(tparm(tigetstr("setaf"), color), 1, putchar);
-#else
-    dmi_unused(color);
-#endif
+#   endif
 }
 
 void dmi_tty_set_bg_color(dmi_tty_color_t color)
 {
-#ifdef ENABLE_CURSES
-    if (dmi_tty)
+    if (not dmi_tty)
+        return;
+
+    dmi_tty_bg_color = color;
+
+#   ifdef ENABLE_CURSES
         tputs(tparm(tigetstr("setab"), color), 1, putchar);
-#else
-    dmi_unused(color);
-#endif
+#   endif
 }
 
 void dmi_tty_cprintf(int color, const char *format, ...)
@@ -119,16 +137,4 @@ void dmi_tty_header(const char *format, ...)
     va_end(args);
 
     printf("\n");
-}
-
-static int dmi_tty_attr_mask(int attrs)
-{
-    int mask = 0;
-
-    if (attrs & DMI_TTY_ATTR_BOLD)
-        mask |= A_BOLD;
-    if (attrs & DMI_TTY_ATTR_UNDERLINE)
-        mask |= A_UNDERLINE;
-
-    return mask;
 }

@@ -37,7 +37,8 @@ typedef enum dmi_tty_color
 typedef enum dmi_tty_attr
 {
     DMI_TTY_ATTR_BOLD      = 1 << 0,
-    DMI_TTY_ATTR_UNDERLINE = 1 << 1
+    DMI_TTY_ATTR_UNDERLINE = 1 << 1,
+    DMI_TTY_ATTR_BLINK     = 1 << 2
 } dmi_tty_attr_t;
 
 __BEGIN_DECLS
