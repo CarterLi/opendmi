@@ -19,19 +19,6 @@
 #include <errno.h>
 #include <assert.h>
 
-#ifdef ENABLE_CURSES
-#   if defined(CURSES_HAVE_NCURSES_NCURSES_H)
-#       include <ncurses/ncurses.h>
-#   elif defined(CURSES_HAVE_NCURSES_CURSES_H)
-#       include <ncurses/curses.h>
-#   elif defined(CURSES_HAVE_NCURSES_H)
-#       include <ncurses.h>
-#   elif defined(CURSES_HAVE_CURSES_H)
-#       include <curses.h>
-#   endif
-#   include <term.h>
-#endif // ENABLE_CURSES
-
 #include <opendmi/context.h>
 #include <opendmi/command.h>
 #include <opendmi/pager.h>
@@ -39,6 +26,16 @@
 #include <opendmi/filter.h>
 #include <opendmi/format.h>
 #include <opendmi/format/text.h>
+#include <opendmi/tty.h>
+
+/**
+ * @brief Command line usage error.
+ * 
+ * @note Status `2` is what command line utilities actually return when
+ * called improperly. The `EX_USAGE`status from `<sysexits.h>` doesn't
+ * reflect reality and common practice.
+ */
+#define EXIT_USAGE 2
 
 typedef enum dmi_command_type
 {
@@ -163,12 +160,13 @@ const dmi_option_group_t global_opts =
     }
 };
 
-static bool tty = false;
-
 int main(int argc, char *argv[])
 {
     dmi_context_t *context;
     bool status = false;
+
+    // Initialize terminal
+    dmi_tty_init();
 
     // Create DMI context
     context = dmi_create(DMI_CONTEXT_FLAG_RELAXED);
@@ -183,14 +181,6 @@ int main(int argc, char *argv[])
 
     argc -= optind;
     argv += optind;
-
-#ifdef ENABLE_CURSES
-    // Initialize terminal
-    if (isatty(STDOUT_FILENO)) {
-        if (setupterm(nullptr, STDOUT_FILENO, nullptr) == 0)
-            tty = has_colors() and (start_color() != 0);
-    }
-#endif // ENABLE_CURSES
 
     // Initialize logging
     dmi_set_logger(context, log_error);
@@ -307,11 +297,11 @@ static bool parse_args(dmi_context_t *context, int argc, char *argv[], int *rv)
 
             dmi_type_t type = parse_type(context, optarg);
             if (type == DMI_TYPE_INVALID) {
-                *rv = EXIT_FAILURE;
+                *rv = EXIT_USAGE;
                 return false;
             }
             if (not dmi_filter_add_type(&config.filter, type)) {
-                *rv = EXIT_FAILURE;
+                *rv = EXIT_USAGE;
                 return false;
             }
             break;
@@ -323,11 +313,11 @@ static bool parse_args(dmi_context_t *context, int argc, char *argv[], int *rv)
         case 'H':
             dmi_handle_t handle = parse_handle(optarg);
             if (handle == DMI_HANDLE_INVALID) {
-                *rv = EXIT_FAILURE;
+                *rv = EXIT_USAGE;
                 return false;
             }
             if (not dmi_filter_add_handle(&config.filter, handle)) {
-                *rv = EXIT_FAILURE;
+                *rv = EXIT_USAGE;
                 return false;
             }
             break;
@@ -347,7 +337,7 @@ static bool parse_args(dmi_context_t *context, int argc, char *argv[], int *rv)
         case 'f':
             config.output_format = dmi_format_get(optarg);
             if (config.output_format == nullptr) {
-                *rv = EXIT_FAILURE;
+                *rv = EXIT_USAGE;
                 fprintf(stderr, "%s: Invalid output format: %s", proc, optarg);
                 return false;
             }
@@ -362,7 +352,7 @@ static bool parse_args(dmi_context_t *context, int argc, char *argv[], int *rv)
             return false;
 
         default:
-            *rv = EXIT_FAILURE;
+            *rv = EXIT_USAGE;
             return false;
         }
     }
@@ -429,16 +419,16 @@ static void show_version(void)
 {
     printf("OpenDMI, version %s\n\n", OPENDMI_VERSION);
 
-    printf("Copyright (c) 2025-2026, The OpenDMI contributors\n");
-    printf("Licensed under the BSD 3-Clause License\n\n");
+    dmi_tty_cprintf(DMI_COLOR_GREY, "Copyright (c) 2025-2026, The OpenDMI contributors\n");
+    dmi_tty_cprintf(DMI_COLOR_GREY, "Licensed under the BSD 3-Clause License\n\n");
 }
 
 static void show_usage(const char *proc)
 {
     show_version();
 
-    printf("Usage:\n");
-    printf("    %s [global options] <command> [command options] [command args]\n\n", proc);
+    dmi_tty_cprintf(DMI_COLOR_LIME, "Usage:\n");
+    printf("    %s [global options] <command> [command options] [--] [command args]\n\n", proc);
 
     dmi_command_list();
     dmi_option_list(&global_opts);
@@ -446,8 +436,10 @@ static void show_usage(const char *proc)
     printf("Use %s <command> --help for more information\n\n", proc);
 }
 
-static bool list_keywords(dmi_context_t *context __attribute__((unused)))
+static bool list_keywords(dmi_context_t *context)
 {
+    dmi_unused(context);
+
     return true;
 }
 
@@ -565,43 +557,37 @@ static void log_error(
 {
     FILE *out = stderr;
 
-#ifdef ENABLE_CURSES
-    if (tty) {
+    if (dmi_has_tty())
         out = stdout;
 
-        switch (level) {
-        case DMI_LOG_DEBUG:
-            tputs(tparm(tigetstr("setaf"), 8), 1, putchar);
-            break;
+    switch (level) {
+    case DMI_LOG_DEBUG:
+        dmi_tty_set_fg_color(8);
+        break;
 
-        case DMI_LOG_INFO:
-            tputs(tparm(tigetstr("setaf"), COLOR_GREEN), 1, putchar);
-            break;
+    case DMI_LOG_INFO:
+        dmi_tty_set_fg_color(DMI_COLOR_GREEN);
+        break;
 
-        case DMI_LOG_NOTICE:
-            tputs(tparm(tigetstr("setaf"), COLOR_CYAN), 1, putchar);
-            break;
+    case DMI_LOG_NOTICE:
+        dmi_tty_set_fg_color(DMI_COLOR_TEAL);
+        break;
 
-        case DMI_LOG_WARNING:
-            tputs(tparm(tigetstr("setaf"), COLOR_YELLOW), 1, putchar);
-            break;
+    case DMI_LOG_WARNING:
+        dmi_tty_set_fg_color(DMI_COLOR_YELLOW);
+        break;
 
-        case DMI_LOG_ERROR:
-            tputs(tparm(tigetstr("setaf"), COLOR_RED), 1, putchar);
-            break;
+    case DMI_LOG_ERROR:
+        dmi_tty_set_fg_color(DMI_COLOR_RED);
+        break;
 
-        default:
-            // fallthrough
-        }
+    default:
+        // fallthrough
     }
-#endif // ENABLE_CURSES
 
     fprintf(out, "[%s] ", dmi_log_level_name(level));
 
-#ifdef ENABLE_CURSES
-    if (tty)
-        tputs(tparm(tigetstr("sgr0")), 1, putchar);
-#endif // ENABLE_CURSES
+    dmi_tty_exit_attr_mode();
 
     vfprintf(out, format, args);
     fprintf(out, "\n");

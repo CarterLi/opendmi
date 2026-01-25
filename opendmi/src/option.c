@@ -9,7 +9,7 @@
 #include <assert.h>
 
 #include <opendmi/option.h>
-#include <opendmi/types.h>
+#include <opendmi/tty.h>
 
 static void dmi_option_toggle(const dmi_option_t *opt);
 static bool dmi_option_set(const dmi_option_t *opt, const char *value);
@@ -21,7 +21,7 @@ void dmi_option_list(const dmi_option_group_t *group)
 
     assert(group != nullptr);
 
-    printf("%s:\n", group->name);
+    dmi_tty_cprintf(DMI_COLOR_LIME, "%s:\n", group->name);
 
     for (opt = group->options; opt->short_names || opt->long_names; opt++) {
         arg = &opt->argument;
@@ -35,7 +35,9 @@ void dmi_option_list(const dmi_option_group_t *group)
             const char *name = opt->short_names;
 
             while (*name != 0) {
-                printf("%s-%c", count > 0 ? ", " : "    ", *name);
+                printf("%s", count > 0 ? ", " : "    ");
+
+                dmi_tty_cprintf(DMI_COLOR_YELLOW, "-%c", *name);
                 if (arg->type != DMI_ARGUMENT_TYPE_NONE)
                     printf(arg->required ? " <%s>" : " [%s]", arg->name);
                 name++, count++;
@@ -46,7 +48,9 @@ void dmi_option_list(const dmi_option_group_t *group)
             const char **name = opt->long_names;
 
             while (*name != nullptr) {
-                printf("%s--%s", count > 0 ? ", " : "    ", *name);
+                printf("%s", count > 0 ? ", " : "    ");
+
+                dmi_tty_cprintf(DMI_COLOR_YELLOW, "--%s", *name);
                 if (arg->type != DMI_ARGUMENT_TYPE_NONE)
                     printf(arg->required ? "=<%s>" : "[=<%s>]", arg->name);
                 name++, count++;

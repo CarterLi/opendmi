@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <assert.h>
 
+#include <opendmi/tty.h>
 #include <opendmi/command.h>
 #include <opendmi/command/dump.h>
 #include <opendmi/command/entry.h>
@@ -34,9 +35,11 @@ void dmi_command_list(void)
 {
     const dmi_command_t **pcommand;
 
-    printf("Commands:\n");
+    dmi_tty_cprintf(DMI_COLOR_LIME, "Commands:\n");
+
     for (pcommand = dmi_commands; *pcommand != nullptr; pcommand++) {
-        printf("    %-8s  %s\n", (*pcommand)->name, (*pcommand)->description);
+        dmi_tty_cprintf(DMI_COLOR_YELLOW, "%4s%-8s", "", (*pcommand)->name);
+        dmi_tty_cprintf(DMI_COLOR_WHITE, " %s\n", (*pcommand)->description);
     }
     printf("\n");
 }
