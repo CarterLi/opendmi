@@ -24,6 +24,8 @@
 #   include <term.h>
 #endif // ENABLE_CURSES
 
+static int dmi_tty_attr_mask(int attrs);
+
 static bool dmi_tty = false;
 
 void dmi_tty_init(void)
@@ -46,7 +48,7 @@ void dmi_tty_attr_on(int attrs)
 {
 #ifdef ENABLE_CURSES
     if (dmi_tty)
-        attroff(attrs);
+        attron(dmi_tty_attr_mask(attrs));
 #else
     dmi_unused(attrs);
 #endif
@@ -56,13 +58,13 @@ void dmi_tty_attr_off(int attrs)
 {
 #ifdef ENABLE_CURSES
     if (dmi_tty)
-        attron(attrs);
+        attroff(dmi_tty_attr_mask(attrs));
 #else
     dmi_unused(attrs);
 #endif
 }
 
-void dmi_tty_set_fg_color(dmi_color_t color)
+void dmi_tty_set_fg_color(dmi_tty_color_t color)
 {
 #ifdef ENABLE_CURSES
     if (dmi_tty)
@@ -72,7 +74,7 @@ void dmi_tty_set_fg_color(dmi_color_t color)
 #endif
 }
 
-void dmi_tty_set_bg_color(dmi_color_t color)
+void dmi_tty_set_bg_color(dmi_tty_color_t color)
 {
 #ifdef ENABLE_CURSES
     if (dmi_tty)
@@ -86,12 +88,15 @@ void dmi_tty_cprintf(int color, const char *format, ...)
 {
     va_list args;
 
-    dmi_tty_set_fg_color(color);
-
     va_start(args, format);
-    vprintf(format, args);
+    dmi_tty_vcprintf(color, format, args);
     va_end(args);
+}
 
+void dmi_tty_vcprintf(int color, const char *format, va_list args)
+{
+    dmi_tty_set_fg_color(color);
+    vprintf(format, args);
     dmi_tty_exit_attr_mode();
 }
 
@@ -101,4 +106,29 @@ void dmi_tty_exit_attr_mode(void)
     if (dmi_tty)
         tputs(tparm(tigetstr("sgr0")), 1, putchar);
 #endif // ENABLE_CURSES
+}
+
+void dmi_tty_header(const char *format, ...)
+{
+    va_list args;
+
+    va_start(args, format);
+    dmi_tty_attr_on(DMI_TTY_ATTR_BOLD);
+    dmi_tty_vcprintf(DMI_TTY_COLOR_WHITE, format, args);
+    dmi_tty_exit_attr_mode();
+    va_end(args);
+
+    printf("\n");
+}
+
+static int dmi_tty_attr_mask(int attrs)
+{
+    int mask = 0;
+
+    if (attrs & DMI_TTY_ATTR_BOLD)
+        mask |= A_BOLD;
+    if (attrs & DMI_TTY_ATTR_UNDERLINE)
+        mask |= A_UNDERLINE;
+
+    return mask;
 }

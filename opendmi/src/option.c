@@ -21,7 +21,7 @@ void dmi_option_list(const dmi_option_group_t *group)
 
     assert(group != nullptr);
 
-    dmi_tty_cprintf(DMI_COLOR_LIME, "%s:\n", group->name);
+    dmi_tty_header("%s:", group->name);
 
     for (opt = group->options; opt->short_names || opt->long_names; opt++) {
         arg = &opt->argument;
@@ -37,9 +37,9 @@ void dmi_option_list(const dmi_option_group_t *group)
             while (*name != 0) {
                 printf("%s", count > 0 ? ", " : "    ");
 
-                dmi_tty_cprintf(DMI_COLOR_YELLOW, "-%c", *name);
+                dmi_tty_cprintf(DMI_TTY_COLOR_AQUA, "-%c", *name);
                 if (arg->type != DMI_ARGUMENT_TYPE_NONE)
-                    printf(arg->required ? " <%s>" : " [%s]", arg->name);
+                    dmi_tty_cprintf(DMI_TTY_COLOR_LIME, arg->required ? " <%s>" : " [%s]", arg->name);
                 name++, count++;
             }
         }
@@ -50,14 +50,17 @@ void dmi_option_list(const dmi_option_group_t *group)
             while (*name != nullptr) {
                 printf("%s", count > 0 ? ", " : "    ");
 
-                dmi_tty_cprintf(DMI_COLOR_YELLOW, "--%s", *name);
-                if (arg->type != DMI_ARGUMENT_TYPE_NONE)
-                    printf(arg->required ? "=<%s>" : "[=<%s>]", arg->name);
+                dmi_tty_cprintf(DMI_TTY_COLOR_AQUA, "--%s", *name);
+                if (arg->type != DMI_ARGUMENT_TYPE_NONE) {
+                    printf(arg->required ? "=" : "[=");
+                    dmi_tty_cprintf(DMI_TTY_COLOR_LIME, "<%s>", arg->name);
+                    printf(arg->required ? "" : "]");
+                }
                 name++, count++;
             }
         }
 
-        printf("\n%8s%s\n", "", opt->description);
+        dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "\n%8s%s\n", "", opt->description);
     }
 
     printf("\n");

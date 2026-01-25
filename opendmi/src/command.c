@@ -35,11 +35,11 @@ void dmi_command_list(void)
 {
     const dmi_command_t **pcommand;
 
-    dmi_tty_cprintf(DMI_COLOR_LIME, "Commands:\n");
+    dmi_tty_header("Commands:");
 
     for (pcommand = dmi_commands; *pcommand != nullptr; pcommand++) {
-        dmi_tty_cprintf(DMI_COLOR_YELLOW, "%4s%-8s", "", (*pcommand)->name);
-        dmi_tty_cprintf(DMI_COLOR_WHITE, " %s\n", (*pcommand)->description);
+        dmi_tty_cprintf(DMI_TTY_COLOR_YELLOW, "%4s%-8s", "", (*pcommand)->name);
+        dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, " %s\n", (*pcommand)->description);
     }
     printf("\n");
 }

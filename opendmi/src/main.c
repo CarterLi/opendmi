@@ -417,17 +417,18 @@ static dmi_type_t parse_type(dmi_context_t *context, const char *str)
 
 static void show_version(void)
 {
-    printf("OpenDMI, version %s\n\n", OPENDMI_VERSION);
+    dmi_tty_header("OpenDMI Framework, version %s\n", OPENDMI_VERSION);
 
-    dmi_tty_cprintf(DMI_COLOR_GREY, "Copyright (c) 2025-2026, The OpenDMI contributors\n");
-    dmi_tty_cprintf(DMI_COLOR_GREY, "Licensed under the BSD 3-Clause License\n\n");
+    dmi_tty_cprintf(DMI_TTY_COLOR_GREY, "Copyright (c) 2025-2026, The OpenDMI contributors\n");
+    dmi_tty_cprintf(DMI_TTY_COLOR_GREY, "Licensed under the BSD 3-Clause License\n\n");
 }
 
 static void show_usage(const char *proc)
 {
     show_version();
 
-    dmi_tty_cprintf(DMI_COLOR_LIME, "Usage:\n");
+    dmi_tty_header("Usage:");
+
     printf("    %s [global options] <command> [command options] [--] [command args]\n\n", proc);
 
     dmi_command_list();
@@ -566,19 +567,19 @@ static void log_error(
         break;
 
     case DMI_LOG_INFO:
-        dmi_tty_set_fg_color(DMI_COLOR_GREEN);
+        dmi_tty_set_fg_color(DMI_TTY_COLOR_GREEN);
         break;
 
     case DMI_LOG_NOTICE:
-        dmi_tty_set_fg_color(DMI_COLOR_TEAL);
+        dmi_tty_set_fg_color(DMI_TTY_COLOR_TEAL);
         break;
 
     case DMI_LOG_WARNING:
-        dmi_tty_set_fg_color(DMI_COLOR_YELLOW);
+        dmi_tty_set_fg_color(DMI_TTY_COLOR_YELLOW);
         break;
 
     case DMI_LOG_ERROR:
-        dmi_tty_set_fg_color(DMI_COLOR_RED);
+        dmi_tty_set_fg_color(DMI_TTY_COLOR_RED);
         break;
 
     default:
