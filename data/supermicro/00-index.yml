@@ -1,5 +1,9 @@
 vendor: SuperMicro
 files:
+  sys-5019s-l.bin:
+    product: SYS-5019S-L
+  sys-5019s-m.bin:
+    product: SYS-5019-M
   x10ddw-i.bin:
     product: X10DDW-I
   x10sll-f.bin:

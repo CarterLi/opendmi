@@ -1,0 +1,6 @@
+vendor: Neousys
+files:
+  nuvo-7000-a2-cfl-s.bin:
+    product: Nuvo-7000 A2 CFL-S
+  nuvo-9000-a3-rpl-adl-s.bin:
+    product: Nuvo-9000 A3 RPL/ADL-S

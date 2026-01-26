@@ -10,6 +10,14 @@ files:
     product: PRIME B350-Plus
   prime-h610m-r.bin:
     product: PRIME H610M-R
+  rs100-x7.bin:
+    product: RS100-X7
+  rs300-e8-rs4.bin:
+    product: RS300-E8-RS4
+  rs300-e11-rs4.bin:
+    product: RS300-E11-RS4
+  rs520-e9-rs8.bin:
+    product: RS520-E9-RS8
   sabertooth-990fx-r2.0.bin:
     product: SABERTOOTH 990FX R2.0
   tuf-gaming-a620m-plus-wifi.bin:

@@ -6,6 +6,8 @@ files:
     product: IdeaPad G580 20150
   ideapad-slim-5-14irl8.bin:
     product: IdeaPad Slim 5 14IRL8
+  thinkbook-15-g2-itl-20ve.bin:
+    product: ThinkBook 15 G2 ITL 20VE
   thinkcentre-m70s-11db.bin:
     product: ThinkCentre M70s 11DB
   thinkcentre-m700-10hy.bin:

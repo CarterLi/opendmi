@@ -2,6 +2,8 @@ vendor: Gigabyte
 files:
   b550-aorus-master.bin:
     product: B550 AORUS MASTER
+  b550i-aorus-pro-ax.bin:
+    product: B550I AORUS PRO AX
   b560m-ds3h-v2.bin:
     product: B560M DS3H-V2
   g5-mf.bin:

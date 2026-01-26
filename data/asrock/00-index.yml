@@ -2,6 +2,8 @@ vendor: ASRock
 files:
   a520m-itx-ac.bin:
     product: A520M-ITX/ac
+  b460-pro4.bin:
+    product: B460 Pro4
   h61m-gs.bin:
     product: H61M-GS
   x870e-nova-wifi.bin:
