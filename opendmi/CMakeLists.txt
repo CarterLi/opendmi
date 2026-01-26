@@ -34,6 +34,7 @@ add_executable(opendmi
     src/command/list.c
     src/command/modules.c
     src/command/show.c
+    src/command/explain.c
     src/command/lint.c
     src/command/export.c
     src/command/import.c

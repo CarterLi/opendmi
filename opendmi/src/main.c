@@ -162,6 +162,16 @@ const dmi_option_group_t global_opts =
                 .required = true
             }
         },
+        {
+            .short_names = "m",
+            .long_names  = (const char *[]){ "module", nullptr },
+            .description = "Load specified module",
+            .argument    = {
+                .name     = "module",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = true
+            }
+        },
         {}
     }
 };
@@ -423,7 +433,7 @@ static dmi_type_t parse_type(dmi_context_t *context, const char *str)
 
 static void show_version(void)
 {
-    dmi_tty_header("OpenDMI Framework, version %s\n", OPENDMI_VERSION);
+    dmi_tty_header("OpenDMI Framework, version %s", OPENDMI_VERSION);
 
     dmi_tty_cprintf(DMI_TTY_COLOR_GREY, "Copyright (c) 2025-2026, The OpenDMI contributors\n");
     dmi_tty_cprintf(DMI_TTY_COLOR_GREY, "Licensed under the BSD 3-Clause License\n\n");

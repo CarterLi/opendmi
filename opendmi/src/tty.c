@@ -136,5 +136,5 @@ void dmi_tty_header(const char *format, ...)
     dmi_tty_exit_attr_mode();
     va_end(args);
 
-    printf("\n");
+    printf("\n\n");
 }
