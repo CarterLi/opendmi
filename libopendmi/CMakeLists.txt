@@ -277,6 +277,15 @@ target_sources(opendmi-object
             include/opendmi/extension/hpe.h
             include/opendmi/extension/ibm.h
             include/opendmi/extension/intel.h
+            include/opendmi/entity/intel/rsd-cabled-pcie-port.h
+            include/opendmi/entity/intel/rsd-fpga.h
+            include/opendmi/entity/intel/rsd-memory-device-ex.h
+            include/opendmi/entity/intel/rsd-network-card.h
+            include/opendmi/entity/intel/rsd-physical-device-mapping.h
+            include/opendmi/entity/intel/rsd-processor-cpuid.h
+            include/opendmi/entity/intel/rsd-storage-device.h
+            include/opendmi/entity/intel/rsd-tpm.h
+            include/opendmi/entity/intel/rsd-txt.h
             include/opendmi/extension/lenovo.h
             include/opendmi/extension/sun.h
             include/opendmi/entity/sun/memory-array-ex.h

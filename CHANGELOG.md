@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Introduced reference manual
 - Introduced AMI extension
+- Introduced Intel extension
 - Introduced Sun extension
 - Implemented FreeBSD backend
 - Added SMBIOS data reindexing tool
