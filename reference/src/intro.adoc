@@ -1,0 +1,86 @@
+= Introduction
+
+== Terminology
+
+[horizontal]
+AC:: Alternating Current.
+ACPI:: Advanced Configuration and Power Interface.
+AGP:: Accelerated Graphics Port.
+APM:: Advanced Power Management.
+ASCII:: American Standard Code for Information Interchange.
+ATA:: Advanced Technology Attachment.
+ATAPI:: ATA Packet Interface.
+BCD:: Binary-Coded Decimal.
+BIOS:: Basic Input/Output System.
+BMC:: Baseboard Management Controller.
+CGA:: Color Graphics Array.
+CMOS:: Complementary Metal-Oxide Semiconductor. "CMOS" is commonly used as a shorthand for "CMOS RAM", the non-volatile RAM used on industry-standard PCs.
+CPU:: Central Processing Unit.
+CPUID:: CPU Identification.
+CRC:: Cyclic Redundancy Check.
+DDC:: Display Data Channel.
+DDR:: Double Data Rate SDRAM.
+DIMM:: Dual In-line Memory Module.
+DMA:: Direct Memory Access.
+DMI:: Desktop Management Interface.
+DRAM:: Dynamic RAM.
+DSP:: Digital Signal Processing.
+ECC:: Error Checking and Correction.
+EDD:: Enhanced Disk Drive.
+EDO:: Extended Data Out.
+EEPROM:: Electrically Erasable PROM.
+EISA:: Extended Industry-Standard Architecture.
+EPS:: Entry Point Structure.
+ESCD:: Extended System Configuration Data.
+FDC:: Floppy Drive Controller.
+FIFO:: First In, First Out.
+FPGA:: Field-Programmable Gate Array.
+GPNV:: General-Purpose NVRAM.
+I2O:: Intelligent Input/Output.
+IEPS:: Intermediate Entry Point Structure.
+IO:: Input/Output
+IPMI:: Intelligent Platform Management Interface.
+IRQ:: Interrupt Request.
+ISA:: Industry Standard Architecture.
+LIF:: Low Insertion Force.
+LSB:: Least-Significant Bit.
+MCA:: Micro Channel Architecture.
+MOF:: Managed Object Format.
+MSB:: Most Significant Bit.
+NMI:: Non-Maskable Interrupt.
+NV:: Non-Volatile.
+NVRAM:: Non-Volatile RAM.
+OEM:: Original Equipment Manufacturer.
+OS:: Operating System.
+PATA:: Parallel ATA.
+PCI:: Peripheral Component Interconnect.
+PCIe:: Peripheral Component Interconnect Express (PCI Express).
+PCMCIA:: Personal Computer Memory Card International Association.
+PME:: Power Management Event.
+PNP:: Plug-And-Play.
+POST:: Power-On Self-Test.
+PROM:: Programmable ROM.
+PXE:: Pre-boot Execution Environment.
+RAID:: Redundant Array of Inexpensive Disks.
+RAM:: Random-Access Memory.
+ROM:: Read-Only Memory.
+RPM:: Revolutions per Minute.
+RTC:: Real-Time Clock.
+SAS:: Serial-Attached SCSI.
+SATA:: Serial ATA.
+SCSI:: Small Computer System Interface.
+SDRAM:: Synchronous DRAM.
+SIMM:: Single In-line Memory Module.
+SKU:: Stock-Keeping Unit.
+SMBus:: System Management Bus.
+SMM:: System Management Module.
+SRAM:: Static RAM
+UEFI:: Unified Extensible Firmware Interface.
+UPS:: Uninterruptible Power Supply.
+USB:: Universal Serial Bus.
+UUID:: Universally Unique Identifier.
+VESA:: Video Electronics Standards Association.
+VL-VESA:: VESA Video Local Bus.
+ZIF:: Zero Insertion Force.
+
+== Reference Documents
