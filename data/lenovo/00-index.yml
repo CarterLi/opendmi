@@ -20,5 +20,7 @@ files:
     product: ThinkPad T14 Gen 3 21AJ
   thinkpad-t61p-6460-6xg.bin:
     product: ThinkPad T61p 6460-6XG
+  thinkpad-x220-4290le6.bin:
+    product: ThinkPad X220 4290LE6
   thinkpad-x280-20kf.bin:
     product: ThinkPad X280 20KF
