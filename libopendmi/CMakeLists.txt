@@ -100,6 +100,7 @@ target_sources(opendmi-object
         src/utils/datetime.c
         src/utils/decode.c
         src/utils/endian.c
+        src/utils/file.c
         src/utils/name.c
         src/utils/uuid.c
         src/utils/vector.c
@@ -204,6 +205,7 @@ target_sources(opendmi-object
             include/opendmi/utils/datetime.h
             include/opendmi/utils/decode.h
             include/opendmi/utils/endian.h
+            include/opendmi/utils/file.h
             include/opendmi/utils/name.h
             include/opendmi/utils/uuid.h
             include/opendmi/utils/vector.h

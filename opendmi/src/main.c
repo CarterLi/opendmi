@@ -23,6 +23,7 @@
 #include <opendmi/context.h>
 #include <opendmi/command.h>
 #include <opendmi/tty.h>
+#include <opendmi/utils/file.h>
 
 static void dmi_show_version(void);
 static void dmi_show_usage(void);
@@ -36,7 +37,20 @@ static void dmi_log_handler(
         const char      *format,
         va_list          args);
 
+static void dmi_log_tty_handler(
+        dmi_log_level_t  level,
+        const char      *format,
+        va_list          args);
+static void dmi_log_file_handler(
+        dmi_log_level_t  level,
+        const char      *format,
+        va_list          args);
+
+static off_t dmi_log_file_lock(void);
+static void dmi_log_file_unlock(off_t start);
+
 FILE *log_file = nullptr;
+bool  log_lock = true;
 
 int main(int argc, char *argv[])
 {
@@ -156,57 +170,139 @@ static void dmi_log_handler(
         const char      *format,
         va_list          args)
 {
-    FILE *out = log_file ? log_file : stderr;
-
     dmi_unused(context);
     assert(level >= 0);
     assert(format != nullptr);
 
-    if (log_file == nullptr) {
-        if (dmi_has_tty())
-            out = stdout;
+    if (log_file != nullptr)
+        dmi_log_file_handler(level, format, args);
+    else
+        dmi_log_tty_handler(level, format, args);
+}
 
-        switch (level) {
-        case DMI_LOG_DEBUG:
-            dmi_tty_set_fg_color(8);
-            break;
+static void dmi_log_tty_handler(
+        dmi_log_level_t  level,
+        const char      *format,
+        va_list          args)
+{
+    FILE *out = stderr;
 
-        case DMI_LOG_INFO:
-            dmi_tty_set_fg_color(DMI_TTY_COLOR_GREEN);
-            break;
+    assert(level >= 0);
+    assert(format != nullptr);
 
-        case DMI_LOG_NOTICE:
-            dmi_tty_set_fg_color(DMI_TTY_COLOR_TEAL);
-            break;
+    if (dmi_has_tty())
+        out = stdout;
 
-        case DMI_LOG_WARNING:
-            dmi_tty_set_fg_color(DMI_TTY_COLOR_YELLOW);
-            break;
+    switch (level) {
+    case DMI_LOG_DEBUG:
+        dmi_tty_set_fg_color(8);
+        break;
 
-        case DMI_LOG_ERROR:
-            dmi_tty_set_fg_color(DMI_TTY_COLOR_RED);
-            break;
+    case DMI_LOG_INFO:
+        dmi_tty_set_fg_color(DMI_TTY_COLOR_GREEN);
+        break;
 
-        default:
-            // fallthrough
-        }
-    } else {
-        time_t now;
-        struct tm now_tm;
+    case DMI_LOG_NOTICE:
+        dmi_tty_set_fg_color(DMI_TTY_COLOR_TEAL);
+        break;
 
-        time(&now);
-        localtime_r(&now, &now_tm);
+    case DMI_LOG_WARNING:
+        dmi_tty_set_fg_color(DMI_TTY_COLOR_YELLOW);
+        break;
 
-        fprintf(out, "[%04u-%02u-%02u %02u:%02u:%02u] ",
-                now_tm.tm_year + 1900, now_tm.tm_mon + 1, now_tm.tm_mday,
-                now_tm.tm_hour, now_tm.tm_min, now_tm.tm_sec);
+    case DMI_LOG_ERROR:
+        dmi_tty_set_fg_color(DMI_TTY_COLOR_RED);
+        break;
+
+    default:
+        // fallthrough
     }
 
     fprintf(out, "%s: ", dmi_log_level_name(level));
-
-    if (log_file == nullptr)
-        dmi_tty_exit_attr_mode();
+    dmi_tty_exit_attr_mode();
 
     vfprintf(out, format, args);
     fprintf(out, "\n");
+}
+
+static void dmi_log_file_handler(
+        dmi_log_level_t  level,
+        const char      *format,
+        va_list          args)
+{
+    time_t now;
+    struct tm now_tm;
+    off_t pos;
+
+    assert(level >= 0);
+    assert(format != nullptr);
+
+    time(&now);
+    localtime_r(&now, &now_tm);
+
+    pos = dmi_log_file_lock();
+
+    fprintf(log_file, "[%04u-%02u-%02u %02u:%02u:%02u] %s: ",
+            now_tm.tm_year + 1900, now_tm.tm_mon + 1, now_tm.tm_mday,
+            now_tm.tm_hour, now_tm.tm_min, now_tm.tm_sec,
+            dmi_log_level_name(level));
+    vfprintf(log_file, format, args);
+    fprintf(log_file, "\n");
+
+    fflush(log_file);
+    dmi_log_file_unlock(pos);
+}
+
+static off_t dmi_log_file_lock(void)
+{
+    int fd = fileno(log_file);
+    off_t start = -1;
+
+    if (not log_lock)
+        return -1;
+
+    log_lock = false;
+
+    do {
+        if (not dmi_file_lock(fd, 0)) {
+            dmi_command_message("Unable to lock log file: %s", strerror(errno));
+            break;
+        }
+
+        start = dmi_file_tell(fd);
+        if (start < 0) {
+            dmi_command_message("Unable to get log position: %s", strerror(errno));
+            break;
+        }
+
+        log_lock = true;
+    } while (false);
+
+    return start;
+}
+
+static void dmi_log_file_unlock(off_t start)
+{
+    int fd = fileno(log_file);
+    off_t end;
+
+    if (not(log_lock) or (start < 0))
+        return;
+
+    log_lock = false;
+
+    do {
+        end = dmi_file_tell(fd);
+        if (end < 0) {
+            dmi_command_message("Unable to get log position: %s", strerror(errno));
+            break;
+        }
+
+        if (not dmi_file_unlock(fd, start - end)) {
+            dmi_command_message("Unable to unlock log file: %s", strerror(errno));
+            break;
+        }
+
+        log_lock = true;
+    } while (false);
 }
