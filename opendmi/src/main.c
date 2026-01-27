@@ -10,6 +10,7 @@
 #   include <unistd.h>
 #endif // HAVE_UNISTD_H
 
+#include <time.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -26,11 +27,16 @@
 static void dmi_show_version(void);
 static void dmi_show_usage(void);
 
+static bool dmi_log_init(dmi_context_t *context);
+static void dmi_log_close(void);
+
 static void dmi_log_handler(
         dmi_context_t   *context,
         dmi_log_level_t  level,
         const char      *format,
         va_list          args);
+
+FILE *log_file = nullptr;
 
 int main(int argc, char *argv[])
 {
@@ -89,10 +95,7 @@ int main(int argc, char *argv[])
         argc--, argv++;
 
         // Initialize logging
-        if (dmi_global_config.log_enable) {
-            dmi_set_logger(context, dmi_log_handler);
-            dmi_set_log_level(context, dmi_global_config.log_level);
-        }
+        dmi_log_init(context);
 
         // Execute command
         rv = dmi_command_run(command, context, argc, argv);
@@ -118,47 +121,91 @@ static void dmi_show_usage(void)
     dmi_command_usage(nullptr);    
 }
 
+static bool dmi_log_init(dmi_context_t *context)
+{
+    assert(context != nullptr);
+
+    if (not dmi_global_config.log_enable)
+        return true;
+
+    dmi_set_logger(context, dmi_log_handler);
+    dmi_set_log_level(context, dmi_global_config.log_level);
+
+    if (dmi_global_config.log_path != nullptr) {
+        log_file = fopen(dmi_global_config.log_path, "a");
+        if (log_file == nullptr) {
+            dmi_command_message("Unable to open log file: %s", strerror(errno));
+            return false;
+        }
+
+        atexit(dmi_log_close);
+    }
+
+    return true;
+}
+
+static void dmi_log_close(void)
+{
+    if (log_file != nullptr)
+        fclose(log_file);
+}
+
 static void dmi_log_handler(
         dmi_context_t   *context,
         dmi_log_level_t  level,
         const char      *format,
         va_list          args)
 {
-    FILE *out = stderr;
+    FILE *out = log_file ? log_file : stderr;
 
     dmi_unused(context);
+    assert(level >= 0);
+    assert(format != nullptr);
 
-    if (dmi_has_tty())
-        out = stdout;
+    if (log_file == nullptr) {
+        if (dmi_has_tty())
+            out = stdout;
 
-    switch (level) {
-    case DMI_LOG_DEBUG:
-        dmi_tty_set_fg_color(8);
-        break;
+        switch (level) {
+        case DMI_LOG_DEBUG:
+            dmi_tty_set_fg_color(8);
+            break;
 
-    case DMI_LOG_INFO:
-        dmi_tty_set_fg_color(DMI_TTY_COLOR_GREEN);
-        break;
+        case DMI_LOG_INFO:
+            dmi_tty_set_fg_color(DMI_TTY_COLOR_GREEN);
+            break;
 
-    case DMI_LOG_NOTICE:
-        dmi_tty_set_fg_color(DMI_TTY_COLOR_TEAL);
-        break;
+        case DMI_LOG_NOTICE:
+            dmi_tty_set_fg_color(DMI_TTY_COLOR_TEAL);
+            break;
 
-    case DMI_LOG_WARNING:
-        dmi_tty_set_fg_color(DMI_TTY_COLOR_YELLOW);
-        break;
+        case DMI_LOG_WARNING:
+            dmi_tty_set_fg_color(DMI_TTY_COLOR_YELLOW);
+            break;
 
-    case DMI_LOG_ERROR:
-        dmi_tty_set_fg_color(DMI_TTY_COLOR_RED);
-        break;
+        case DMI_LOG_ERROR:
+            dmi_tty_set_fg_color(DMI_TTY_COLOR_RED);
+            break;
 
-    default:
-        // fallthrough
+        default:
+            // fallthrough
+        }
+    } else {
+        time_t now;
+        struct tm now_tm;
+
+        time(&now);
+        localtime_r(&now, &now_tm);
+
+        fprintf(out, "[%04u-%02u-%02u %02u:%02u:%02u] ",
+                now_tm.tm_year + 1900, now_tm.tm_mon + 1, now_tm.tm_mday,
+                now_tm.tm_hour, now_tm.tm_min, now_tm.tm_sec);
     }
 
-    fprintf(out, "[%s] ", dmi_log_level_name(level));
+    fprintf(out, "%s: ", dmi_log_level_name(level));
 
-    dmi_tty_exit_attr_mode();
+    if (log_file == nullptr)
+        dmi_tty_exit_attr_mode();
 
     vfprintf(out, format, args);
     fprintf(out, "\n");

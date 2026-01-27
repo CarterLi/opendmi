@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Introduced Sun extension
 - Implemented FreeBSD backend
 - Added SMBIOS data reindexing tool
+- Added logging to file
 - Added autoloading of vendor-specific extensions
 - Added AMI type 221 structure decoding (partial)
 - Added Dell revisions and IDs structure decoding (type 208)
