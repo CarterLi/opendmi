@@ -94,16 +94,17 @@ const dmi_option_t *dmi_option_find_short(const dmi_option_set_t *set, char name
 
 const dmi_option_t *dmi_option_find_short_ex(const dmi_option_set_t **options, char name)
 {
-    const dmi_option_set_t *set;
     const dmi_option_t *option;
 
     assert(options != nullptr);
     assert(name != 0);
 
-    for (set = *options; set != nullptr; set++) {
-        option = dmi_option_find_short(set, name);
+    while (*options) {
+        option = dmi_option_find_short(*options, name);
         if (option != nullptr)
             return option;
+
+        options++;
     }
 
     return nullptr;
@@ -131,16 +132,17 @@ const dmi_option_t *dmi_option_find_long(const dmi_option_set_t *set, const char
 
 const dmi_option_t *dmi_option_find_long_ex(const dmi_option_set_t **options, const char *name)
 {
-    const dmi_option_set_t *set;
     const dmi_option_t *option;
 
     assert(options != nullptr);
     assert(name != 0);
 
-    for (set = *options; set != nullptr; set++) {
-        option = dmi_option_find_long(set, name);
+    while (*options) {
+        option = dmi_option_find_long(*options, name);
         if (option != nullptr)
             return option;
+
+        options++;
     }
 
     return nullptr;
