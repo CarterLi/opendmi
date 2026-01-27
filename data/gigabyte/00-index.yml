@@ -5,7 +5,9 @@ files:
   b550i-aorus-pro-ax.bin:
     product: B550I AORUS PRO AX
   b560m-ds3h-v2.bin:
-    product: B560M DS3H-V2
+    product: B560M DS3H V2
+  b760m-ds3h-gen5.bin:
+    product: B760M DS3H GEN5
   g5-mf.bin:
     product: G5 MF
   ga-970a-ds3p.bin:
