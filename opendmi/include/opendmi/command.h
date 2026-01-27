@@ -57,10 +57,10 @@ struct dmi_global_config
     bool  show_usage;
     bool  quiet;
     bool  log_enable;
-    char *log_path;
+    const char *log_path;
     dmi_log_level_t log_level;
-    char *device_path;
-    char *input_path;
+    const char *device_path;
+    const char *input_path;
 };
 
 struct dmi_command_config

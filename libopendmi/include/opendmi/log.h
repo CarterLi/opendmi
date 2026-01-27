@@ -17,11 +17,12 @@
  */
 typedef enum dmi_log_level
 {
-    DMI_LOG_ERROR,   ///< Error
-    DMI_LOG_WARNING, ///< Warning
-    DMI_LOG_NOTICE,  ///< Notice
-    DMI_LOG_INFO,    ///< Info
-    DMI_LOG_DEBUG,   ///< Debug
+    DMI_LOG_INVALID = -1, ///< Invalid
+    DMI_LOG_ERROR,        ///< Error
+    DMI_LOG_WARNING,      ///< Warning
+    DMI_LOG_NOTICE,       ///< Notice
+    DMI_LOG_INFO,         ///< Info
+    DMI_LOG_DEBUG,        ///< Debug
     __DMI_LOG_LEVEL_COUNT
 } dmi_log_level_t;
 
@@ -32,6 +33,7 @@ __BEGIN_DECLS
 void dmi_log(dmi_context_t *context, dmi_log_level_t level, const char *fmt, ...);
 
 const char *dmi_log_level_name(dmi_log_level_t value);
+dmi_log_level_t dmi_log_level_find(const char *code);
 
 __END_DECLS
 

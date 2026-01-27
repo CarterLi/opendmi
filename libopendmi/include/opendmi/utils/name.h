@@ -51,6 +51,8 @@ struct dmi_name_set
 __BEGIN_DECLS
 
 const char *dmi_code_lookup(const dmi_name_set_t *dict, int id);
+int dmi_code_lookup_rev(const dmi_name_set_t *dict, const char *code);
+
 const char *dmi_name_lookup(const dmi_name_set_t *dict, int id);
 
 __END_DECLS

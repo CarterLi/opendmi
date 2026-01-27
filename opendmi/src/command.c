@@ -31,6 +31,9 @@
 #include <opendmi/command/import.h>
 #include <opendmi/command/types.h>
 
+static bool dmi_command_set_log_path(dmi_context_t *context, const char *value);
+static bool dmi_command_set_log_level(dmi_context_t *context, const char *value);
+
 dmi_global_config_t dmi_global_config =
 {
     .show_version = false,
@@ -73,7 +76,7 @@ const dmi_option_set_t dmi_global_options =
             .short_names = "l",
             .long_names  = (const char *[]){ "log", nullptr },
             .description = "Enable logging",
-            .value       = &dmi_global_config.log_path,
+            .handler     = dmi_command_set_log_path,
             .argument    = {
                 .name     = "path",
                 .type     = DMI_ARGUMENT_TYPE_STRING,
@@ -84,7 +87,12 @@ const dmi_option_set_t dmi_global_options =
             .short_names = "L",
             .long_names  = (const char *[]){ "log-level", nullptr },
             .description = "Set logging level",
-            .value       = &dmi_global_config.log_level
+            .handler     = dmi_command_set_log_level,
+            .argument    = {
+                .name     = "level",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = true
+            }
         },
         {
             .short_names = "S",
@@ -326,4 +334,30 @@ int dmi_command_run(
         command->handlers.cleanup(context);
 
     return rv;
+}
+
+static bool dmi_command_set_log_path(dmi_context_t *context, const char *value)
+{
+    dmi_unused(context);
+
+    dmi_global_config.log_enable = true;
+    dmi_global_config.log_path   = value;
+
+    return true;
+}
+
+static bool dmi_command_set_log_level(dmi_context_t *context, const char *value)
+{
+    dmi_log_level_t level;
+
+    dmi_unused(context);
+
+    level = dmi_log_level_find(value);
+    if (level == DMI_LOG_INVALID) {
+        dmi_command_message("Invalid logging level: %s", value);
+        return false;
+    }
+
+    dmi_global_config.log_level = level;
+    return true;
 }

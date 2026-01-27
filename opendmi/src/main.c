@@ -52,15 +52,15 @@ int main(int argc, char *argv[])
 
     rv = EXIT_FAILURE;
     do {
-        int count;
+        int nopts;
 
         // Parse global options
-        count = dmi_option_parse(context, options, argc, argv);
-        if (count < 0) {
+        nopts = dmi_option_parse(context, options, argc, argv);
+        if (nopts < 0) {
             rv = EXIT_USAGE;
             break;
         }
-        argc -= count, argv += count;
+        argc -= nopts, argv += nopts;
 
         if (dmi_global_config.show_version) {
             rv = EXIT_SUCCESS;

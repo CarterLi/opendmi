@@ -4,6 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <string.h>
+
 #include <opendmi/utils/name.h>
 
 const char *dmi_code_lookup(const dmi_name_set_t *dict, int id)
@@ -26,6 +28,19 @@ const char *dmi_code_lookup(const dmi_name_set_t *dict, int id)
     }
 
     return nullptr;
+}
+
+int dmi_code_lookup_rev(const dmi_name_set_t *dict, const char *code)
+{
+    if ((dict == nullptr) or (dict->names == nullptr))
+        return -1;
+
+    for (const dmi_name_t *entry = dict->names; entry->code != nullptr; entry++) {
+        if (strcmp(code, entry->code) == 0)
+            return entry->id;
+    }
+
+    return -1;
 }
 
 const char *dmi_name_lookup(const dmi_name_set_t *dict, int id)
