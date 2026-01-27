@@ -4,12 +4,21 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include "config.h"
+
+#ifdef HAVE_UNISTD_H
+#   include <unistd.h>
+#endif // HAVE_UNISTD_H
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
 
+#include <opendmi/context.h>
+#include <opendmi/pager.h>
 #include <opendmi/tty.h>
+
 #include <opendmi/command.h>
 #include <opendmi/command/dump.h>
 #include <opendmi/command/entry.h>
@@ -21,6 +30,102 @@
 #include <opendmi/command/export.h>
 #include <opendmi/command/import.h>
 #include <opendmi/command/types.h>
+
+dmi_global_config_t dmi_global_config =
+{
+    .show_version = false,
+    .show_usage   = false,
+    .quiet        = false,
+    .log_enable   = false,
+    .log_path     = nullptr,
+    .log_level    = DMI_LOG_NOTICE,
+    .device_path  = nullptr,
+    .input_path   = nullptr,
+};
+
+dmi_command_config_t dmi_command_config =
+{
+    .show_usage = false
+};
+
+const dmi_option_set_t dmi_global_options =
+{
+    .options = (const dmi_option_t[]){
+        {
+            .short_names = "v",
+            .long_names  = (const char *[]){ "version", nullptr },
+            .description = "Print version information and exit",
+            .value       = &dmi_global_config.show_version
+        },
+        {
+            .short_names = "?h",
+            .long_names  = (const char *[]){ "help", nullptr },
+            .description = "Print this help and exit",
+            .value       = &dmi_global_config.show_usage
+        },
+        {
+            .short_names = "q",
+            .long_names  = (const char *[]){ "quiet", nullptr },
+            .description = "Less verbose output",
+            .value       = &dmi_global_config.quiet
+        },
+        {
+            .short_names = "l",
+            .long_names  = (const char *[]){ "log", nullptr },
+            .description = "Enable logging",
+            .value       = &dmi_global_config.log_path,
+            .argument    = {
+                .name     = "path",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = false
+            }
+        },
+        {
+            .short_names = "L",
+            .long_names  = (const char *[]){ "log-level", nullptr },
+            .description = "Set logging level",
+            .value       = &dmi_global_config.log_level
+        },
+        {
+            .short_names = "S",
+            .long_names  = (const char *[]){ "no-sysfs", nullptr },
+            .description = "Do not attempt to read DMI data from SysFS"
+        },
+        {
+            .short_names = "d",
+            .long_names  = (const char *[]){ "device", nullptr },
+            .description = "Set path to memory device (default: /dev/mem)",
+            .value       = &dmi_global_config.device_path,
+            .argument    = {
+                .name     = "path",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = true
+            },
+        },
+        {
+            .short_names = "i",
+            .long_names  = (const char *[]){ "file", nullptr },
+            .description = "Read the DMI data from a binary file",
+            .value       = &dmi_global_config.input_path,
+            .argument    = {
+                .name     = "path",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = true
+            }
+        },
+        {
+            .short_names = "m",
+            .long_names  = (const char *[]){ "module", nullptr },
+            .description = "Load specified module",
+            .argument    = {
+                .name     = "module",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = true
+            }
+        },
+        {}
+    }
+};
 
 const dmi_command_t *dmi_commands[] =
 {
@@ -36,6 +141,15 @@ const dmi_command_t *dmi_commands[] =
     &dmi_modules_command,
     nullptr
 };
+
+const char *dmi_process = nullptr;
+
+void dmi_command_init(const char *process)
+{
+    dmi_process = process;
+
+    dmi_tty_init();
+}
 
 void dmi_command_list(void)
 {
@@ -64,15 +178,152 @@ const dmi_command_t *dmi_command_find(const char *name)
     return nullptr;
 }
 
+void dmi_command_usage(const dmi_command_t *command)
+{
+    const dmi_option_set_t **set;
+    const dmi_argument_t *arg;
+
+    dmi_tty_header("Usage:");
+
+    if (command == nullptr) {
+        printf("    %s [global options] <command> [command options] [--] [command args]\n\n", dmi_process);
+        dmi_command_list();
+    } else {
+        printf("    %s [global options] %s [command options]", dmi_process, command->name);
+
+        if (command->arguments != nullptr) {
+            printf(" [--]");
+            for (arg = command->arguments; arg->name != nullptr; arg++) {
+                printf(arg->required ? " <%s>" : " [<%s>]", arg->name);
+            }
+        }
+        printf("\n\n");
+    }
+
+    dmi_tty_header("Global options:");
+    dmi_option_list(&dmi_global_options);
+    printf("\n");
+
+    if (command != nullptr) {
+        dmi_tty_header("Command options:");
+        for (set = command->options; *set != nullptr; set++)
+            dmi_option_list(*set);
+    } else {
+        printf("Use %s <command> --help for more information\n\n", dmi_process);
+    }
+    printf("\n");
+}
+
+void dmi_command_message(const char *format, ...)
+{
+    va_list args;
+
+    assert(format != nullptr);
+
+    va_start(args, format);
+
+    fprintf(stderr, "%s: ", dmi_process);
+    vfprintf(stderr, format, args);
+    fprintf(stderr, "\n");
+
+    va_end(args);
+}
+
+void dmi_command_message_ex(const dmi_command_t *command, const char *format, ...)
+{
+    va_list args;
+
+    assert(command != nullptr);
+    assert(format != nullptr);
+
+    va_start(args, format);
+
+    fprintf(stderr, "%s: %s: ", dmi_process, command->name);
+    vfprintf(stderr, format, args);
+    fprintf(stderr, "\n");
+
+    va_end(args);
+}
+
+void dmi_command_trace(dmi_context_t *context)
+{
+    dmi_error_t *error;
+
+    assert(context != nullptr);
+
+    while ((error = dmi_error_get(context)) != nullptr) {
+        const char *reason = dmi_error_message(error->reason);
+
+        if (error->message != nullptr)
+            dmi_command_message("%s: %s", reason, error->message);
+        else
+            dmi_command_message("%s", error->message);
+    }
+}
+
 int dmi_command_run(
         const dmi_command_t *command,
         dmi_context_t       *context,
         int                  argc,
         char                *argv[])
 {
+    int rv = EXIT_FAILURE;
+
     assert(command != nullptr);
     assert(context != nullptr);
     assert(argv != nullptr);
 
-    return command->handler(context, argc, argv);
+    do {
+        // Parse command-specific options
+        if (command->options != nullptr) {
+            int nopts;
+
+            nopts = dmi_option_parse(context, command->options, argc, argv);
+            if (nopts < 0) {
+                rv = EXIT_USAGE;
+                break;
+            }
+
+            argc -= nopts;
+            argv += nopts;
+        }
+
+        // Print command usage if requested
+        if (dmi_command_config.show_usage) {
+            rv = EXIT_SUCCESS;
+            command->handlers.usage();
+            break;
+        }
+
+        // Load SMBIOS data
+        if ((command->flags & DMI_COMMAND_FLAG_DETACHED) == 0) {
+            bool status;
+
+            if (dmi_global_config.input_path != nullptr)
+                status = dmi_dump_load(context, dmi_global_config.input_path);
+            else
+                status = dmi_open(context, dmi_global_config.device_path);
+
+            if (not status) {
+                dmi_command_trace(context);
+                break;
+            }
+        }
+
+        // Start pager
+        if (isatty(STDOUT_FILENO) and (command->flags & DMI_COMMAND_FLAG_PAGER)) {
+            if (not dmi_pager_start(context)) {
+                dmi_command_trace(context);
+                break;
+            }
+        }
+
+        rv = command->handlers.main(context, argc, argv);
+    } while (false);
+
+    // Cleanup
+    if (command->handlers.cleanup != nullptr)
+        command->handlers.cleanup(context);
+
+    return rv;
 }

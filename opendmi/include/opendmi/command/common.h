@@ -1,0 +1,43 @@
+//
+// OpenDMI: Cross-platform DMI/SMBIOS framework
+// Copyright (c) 2025-2026, The OpenDMI contributors
+//
+// SPDX-License-Identifier: BSD-3-Clause
+//
+#ifndef OPENDMI_COMMAND_COMMON_H
+#define OPENDMI_COMMAND_COMMON_H
+
+#pragma once
+
+#include <opendmi/option.h>
+#include <opendmi/filter.h>
+#include <opendmi/format.h>
+
+typedef struct dmi_filter_config dmi_filter_config_t;
+
+struct dmi_filter_config
+{
+    dmi_filter_t filter;
+};
+
+/**
+ * @brief Entity filtering options.
+ */
+extern const dmi_option_set_t dmi_filter_options;
+extern dmi_filter_config_t dmi_filter_config;
+
+__BEGIN_DECLS
+
+dmi_handle_t dmi_parse_handle(const char *str);
+dmi_type_t dmi_parse_type(dmi_context_t *context, const char *str);
+
+void dmi_print_all(dmi_context_t *context, const dmi_format_t *format);
+
+void dmi_print_entity(
+        const dmi_format_t *format,
+        const dmi_entity_t *entity,
+        void               *session);
+
+__END_DECLS
+
+#endif // !OPENDMI_COMMAND_COMMON_H

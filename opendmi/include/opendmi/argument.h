@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <opendmi/defs.h>
+#include <opendmi/types.h>
 
 typedef struct dmi_argument dmi_argument_t;
 

@@ -21,7 +21,7 @@ struct dmi_dump_session
     size_t data_size;
 };
 
-static bool dmi_dump_open(dmi_context_t *context, const void *arg);
+static bool dmi_dump_open(dmi_context_t *context, const char *path);
 static dmi_data_t *dmi_dump_read_entry(dmi_context_t *context, size_t *plength);
 static dmi_data_t *dmi_dump_read_table(dmi_context_t *context, size_t *plength);
 static bool dmi_dump_close(dmi_context_t *context);
@@ -35,15 +35,15 @@ dmi_backend_t dmi_dump_backend =
     .close      = dmi_dump_close
 };
 
-static bool dmi_dump_open(dmi_context_t *context, const void *arg)
+static bool dmi_dump_open(dmi_context_t *context, const char *path)
 {
     bool success = false;
 
     if (context == nullptr)
         return false;
 
-    if (arg == nullptr) {
-        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ARGUMENT, "arg");
+    if (path == nullptr) {
+        dmi_error_raise_ex(context, DMI_ERROR_INVALID_ARGUMENT, "path");
         return false;
     }
 
@@ -52,7 +52,7 @@ static bool dmi_dump_open(dmi_context_t *context, const void *arg)
         return false;
 
     do {
-        session->data = dmi_file_read(context, (const char *)arg, &session->data_size);
+        session->data = dmi_file_read(context, (const char *)path, &session->data_size);
         if (session->data == nullptr)
             break;
         if (session->data_size < DMI_ENTRY_MAX_SIZE + sizeof(dmi_header_t))

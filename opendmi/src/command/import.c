@@ -9,55 +9,45 @@
 #include <opendmi/context.h>
 #include <opendmi/command/import.h>
 
-typedef struct dmi_entry_params
-{
-    bool help;
-} dmi_import_params_t;
-
-static int dmi_import_main(dmi_context_t *context, int argc, char *argv[]);
 static void dmi_import_usage(void);
+static int dmi_import_main(dmi_context_t *context, int argc, char *argv[]);
 
-static dmi_import_params_t dmi_import_params =
+static const dmi_option_set_t dmi_import_options =
 {
-    .help = false
+    .options = (const dmi_option_t[]){
+        {
+            .short_names = "?h",
+            .long_names  = (const char *[]){ "help", nullptr },
+            .description = "Print this help and exit",
+            .value       = &dmi_command_config.show_usage
+        },
+        {}
+    }
 };
 
 const dmi_command_t dmi_import_command =
 {
     .name        = "import",
     .description = "Import SMBIOS data from external format",
-    .handler     = dmi_import_main
-};
-
-static const dmi_option_group_t dmi_import_options =
-{
-    .name    = "Command options",
-    .options = (const dmi_option_t[]){
-        {
-            .short_names = "?h",
-            .long_names  = (const char *[]){ "help", nullptr },
-            .description = "Print this help and exit",
-            .value       = &dmi_import_params.help
-        },
-        {}
+    .options     = dmi_options(&dmi_import_options),
+    .handlers    = {
+        .usage = dmi_import_usage,
+        .main  = dmi_import_main
     }
 };
+
+static void dmi_import_usage(void)
+{
+    dmi_command_usage(&dmi_import_command);
+}
 
 static int dmi_import_main(dmi_context_t *context, int argc, char *argv[])
 {
     dmi_unused(context);
+    dmi_unused(argc);
+    dmi_unused(argv);
 
-    if (dmi_option_parse(&dmi_import_options, argc, argv) < 0)
-        return EXIT_FAILURE;
+    dmi_command_message_ex(&dmi_import_command, "Not implemented yet");
 
-    if (dmi_import_params.help) {
-        dmi_import_usage();
-        return EXIT_SUCCESS;
-    }
-
-    return EXIT_SUCCESS;
-}
-
-static void dmi_import_usage(void)
-{
+    return EXIT_FAILURE;
 }

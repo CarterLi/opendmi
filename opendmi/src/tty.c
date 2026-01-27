@@ -6,10 +6,11 @@
 //
 #include "config.h"
 
-#include <unistd.h>
-#include <stdio.h>
+#ifdef HAVE_UNISTD_H
+#   include <unistd.h>
+#endif // HAVE_UNISTD_H
 
-#include <opendmi/tty.h>
+#include <stdio.h>
 
 #ifdef ENABLE_CURSES
 #   if defined(CURSES_HAVE_NCURSES_NCURSES_H)
@@ -23,6 +24,8 @@
 #   endif
 #   include <term.h>
 #endif // ENABLE_CURSES
+
+#include <opendmi/tty.h>
 
 static bool dmi_tty = false;
 static int  dmi_tty_bg_color = DMI_TTY_COLOR_BLACK;

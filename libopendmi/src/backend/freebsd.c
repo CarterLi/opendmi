@@ -30,7 +30,7 @@ struct dmi_freebsd_session
     size_t table_size;
 };
 
-static bool dmi_freebsd_open(dmi_context_t *context, const void *arg);
+static bool dmi_freebsd_open(dmi_context_t *context, const char *path);
 static dmi_data_t *dmi_freebsd_read_entry(dmi_context_t *context, size_t *plength);
 static dmi_data_t *dmi_freebsd_read_table(dmi_context_t *context, size_t *plength);
 static bool dmi_freebsd_close(dmi_context_t *context);
@@ -59,14 +59,14 @@ dmi_backend_t dmi_freebsd_backend =
     .close      = dmi_freebsd_close
 };
 
-static bool dmi_freebsd_open(dmi_context_t *context, const void *arg)
+static bool dmi_freebsd_open(dmi_context_t *context, const char *path)
 {
     dmi_freebsd_session_t *session = nullptr;
 
     assert(context != nullptr);
     assert(context->session == nullptr);
 
-    dmi_unused(arg);
+    dmi_unused(path);
 
     session = dmi_alloc(context, sizeof(*session));
     if (session == nullptr)

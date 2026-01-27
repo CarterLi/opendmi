@@ -28,7 +28,7 @@ typedef struct dmi_linux_session
     size_t table_size;
 } dmi_linux_session_t;
 
-static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__((unused)));
+static bool dmi_linux_open(dmi_context_t *context, const char *path);
 static dmi_data_t *dmi_linux_read_entry(dmi_context_t *context, size_t *plength);
 static dmi_data_t *dmi_linux_read_table(dmi_context_t *context, size_t *plength);
 static bool dmi_linux_close(dmi_context_t *context);
@@ -60,39 +60,47 @@ dmi_backend_t dmi_linux_backend =
     .close      = dmi_linux_close
 };
 
-static bool dmi_linux_open(dmi_context_t *context, const void *arg __attribute__((unused)))
+static bool dmi_linux_open(dmi_context_t *context, const char *path)
 {
-    bool rv = false;
+    bool success = false;
     dmi_linux_session_t *session = nullptr;
+    char *entry_path = nullptr;
+    char *table_path = nullptr;
 
     assert(context != nullptr);
     assert(context->session == nullptr);
+
+    dmi_unused(path);
 
     session = dmi_alloc(context, sizeof(*session));
     if (session == nullptr)
         return false;
 
     do {
-        char path[PATH_MAX];
+        if (asprintf(&entry_path, "%s/%s", dmi_linux_sysfs_path, dmi_linux_entry_file) < 0)
+            break;
+        if (asprintf(&table_path, "%s/%s", dmi_linux_sysfs_path, dmi_linux_table_file) < 0)
+            break;
 
-        snprintf(path, sizeof(path), "%s/%s", dmi_linux_sysfs_path, dmi_linux_entry_file);
-        session->entry = dmi_file_read(context, path, &session->entry_size);
+        session->entry = dmi_file_read(context, entry_path, &session->entry_size);    
         if (session->entry == nullptr)
             break;
 
-        snprintf(path, sizeof(path), "%s/%s", dmi_linux_sysfs_path, dmi_linux_table_file);
-        session->table = dmi_file_read(context, path, &session->table_size);
+        session->table = dmi_file_read(context, table_path, &session->table_size);
         if (session->table == nullptr)
             break;
 
         context->session = session;
-        rv = true;
+        success = true;
     } while (false);
 
-    if (not rv)
+    dmi_free(entry_path);
+    dmi_free(table_path);
+
+    if (not success)
         dmi_linux_session_free(session);
 
-    return rv;
+    return success;
 }
 
 static dmi_data_t *dmi_linux_read_entry(dmi_context_t *context, size_t *plength)

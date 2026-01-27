@@ -94,7 +94,10 @@
 #   error "Unsupported OS type"
 #endif
 
-static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const void *arg);
+static bool dmi_open_ex(
+        dmi_context_t       *context,
+        const dmi_backend_t *backend,
+        const char          *device);
 
 /**
  * @internal
@@ -256,12 +259,12 @@ void dmi_set_flags(dmi_context_t *context, unsigned flags)
     context->flags = flags;
 }
 
-bool dmi_open(dmi_context_t *context)
+bool dmi_open(dmi_context_t *context, const char *device)
 {
     if (context == nullptr)
         return false;
 
-    return dmi_open_ex(context, dmi_backend, nullptr);
+    return dmi_open_ex(context, dmi_backend, device);
 }
 
 bool dmi_add_extension(dmi_context_t *context, const dmi_extension_t *extension)
@@ -474,7 +477,10 @@ void dmi_destroy(dmi_context_t *context)
     dmi_free(context);
 }
 
-static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const void *arg)
+static bool dmi_open_ex(
+        dmi_context_t       *context,
+        const dmi_backend_t *backend,
+        const char          *device)
 {
     assert(context != nullptr);
 
@@ -492,7 +498,7 @@ static bool dmi_open_ex(dmi_context_t *context, dmi_backend_t *backend, const vo
         context->backend = backend;
 
         // Initialize backend
-        if (not context->backend->open(context, arg)) {
+        if (not context->backend->open(context, device)) {
             dmi_log_error(context, "Unable to open backend: %s", backend->name);
             break;
         }

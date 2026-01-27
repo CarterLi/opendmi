@@ -12,13 +12,17 @@
 #include <opendmi/argument.h>
 
 typedef struct dmi_option dmi_option_t;
-typedef struct dmi_option_group dmi_option_group_t;
+typedef struct dmi_option_set dmi_option_set_t;
+
+/**
+ * @brief Option handler function type.
+ */
+typedef bool dmi_option_handler_fn(dmi_context_t *context, const char *value);
 
 typedef enum dmi_option_flag
 {
-    DMI_OPTION_FLAG_HIDDEN       = 0x01,
-    DMI_OPTION_FLAG_REVERSE      = 0x02,
-    DMI_OPTION_FLAG_OPTIONAL_ARG = 0x04
+    DMI_OPTION_FLAG_HIDDEN  = 0x01,
+    DMI_OPTION_FLAG_REVERSE = 0x02
 } dmi_option_flag_t;
 
 /**
@@ -29,25 +33,33 @@ struct dmi_option
     const char *short_names;
     const char **long_names;
     const char *description;
-    dmi_argument_t argument;
-    unsigned flags;
     void *value;
+    unsigned flags;
+    dmi_option_handler_fn *handler;
+    dmi_argument_t argument;
 };
 
-struct dmi_option_group
+struct dmi_option_set
 {
-    const char *name;
     const dmi_option_t *options;
 };
 
+#define dmi_options(...) ((const dmi_option_set_t *[]){ __VA_ARGS__, nullptr })
+
 __BEGIN_DECLS
 
-void dmi_option_list(const dmi_option_group_t *group);
+void dmi_option_list(const dmi_option_set_t *set);
 
-const dmi_option_t *dmi_option_find_short(const dmi_option_group_t *group, char name);
-const dmi_option_t *dmi_option_find_long(const dmi_option_group_t *group, const char *name);
+const dmi_option_t *dmi_option_find_short(const dmi_option_set_t *set, char name);
+const dmi_option_t *dmi_option_find_short_ex(const dmi_option_set_t **set, char name);
+const dmi_option_t *dmi_option_find_long(const dmi_option_set_t *options, const char *name);
+const dmi_option_t *dmi_option_find_long_ex(const dmi_option_set_t **options, const char *name);
 
-int dmi_option_parse(const dmi_option_group_t *group, int argc, char *argv[]);
+int dmi_option_parse(
+        dmi_context_t           *context,
+        const dmi_option_set_t **options,
+        int                      argc,
+        char                    *argv[]);
 
 __END_DECLS
 

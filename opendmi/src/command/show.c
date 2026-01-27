@@ -7,97 +7,73 @@
 #include <stdlib.h>
 
 #include <opendmi/context.h>
+#include <opendmi/command/common.h>
 #include <opendmi/command/show.h>
+#include <opendmi/format/text.h>
 
-typedef struct dmi_show_params
+typedef struct dmi_show_config
 {
-    bool help;
-} dmi_show_params_t;
+    bool show_all;
+    bool show_dump;
+} dmi_show_config_t;
 
-static int dmi_show_main(dmi_context_t *context, int argc, char *argv[]);
 static void dmi_show_usage(void);
+static int dmi_show_main(dmi_context_t *context, int argc, char *argv[]);
 
-static dmi_show_params_t dmi_show_params =
+static dmi_show_config_t dmi_show_config =
 {
-    .help = false
+    .show_all  = false,
+    .show_dump = false
+};
+
+const dmi_option_set_t dmi_show_options =
+{
+    .options = (const dmi_option_t[]){
+        {
+            .short_names = "?h",
+            .long_names  = (const char *[]){ "help", nullptr },
+            .description = "Print this help and exit",
+            .value       = &dmi_command_config.show_usage
+        },
+        {
+            .short_names = "u",
+            .long_names  = (const char *[]){ "dump", nullptr },
+            .description = "Do not decode the entries",
+            .value       = &dmi_show_config.show_dump
+        },
+        {
+            .short_names = "a",
+            .long_names  = (const char *[]){ "all", nullptr },
+            .description = "Show all entries (including unknown)",
+            .value       = &dmi_show_config.show_all
+        },
+        {}
+    }
 };
 
 const dmi_command_t dmi_show_command =
 {
     .name        = "show",
     .description = "Show SMBIOS structures data",
-    .handler     = dmi_show_main
-};
-
-const dmi_option_group_t dmi_show_options =
-{
-    .name = "Command options",
-    .options = (const dmi_option_t[]){
-        {
-            .short_names = "?h",
-            .long_names  = (const char *[]){ "help", nullptr },
-            .description = "Print this help and exit",
-            .value       = &dmi_show_params.help
-        },
-        {
-            .short_names = "H",
-            .long_names  = (const char *[]){ "handle", nullptr },
-            .description = "Only display the entries of given handle(s)",
-            .argument    = {
-                .name     = "HANDLE",
-                .type     = DMI_ARGUMENT_TYPE_STRING,
-                .required = true
-            }
-        },
-        {
-            .short_names = "T",
-            .long_names  = (const char *[]){ "type", nullptr },
-            .description = "Only display the entries of given type(s)",
-            .argument    = {
-                .name     = "TYPE",
-                .type     = DMI_ARGUMENT_TYPE_STRING,
-                .required = true
-            }
-        },
-        {
-            .short_names = "f",
-            .long_names  = (const char *[]){ "format", nullptr },
-            .description = "Set output format",
-            .argument    = {
-                .name     = "FORMAT",
-                .type     = DMI_ARGUMENT_TYPE_STRING,
-                .required = true
-            }
-        },
-        {
-            .short_names = "o",
-            .long_names  = (const char *[]){ "output", nullptr },
-            .description = "Set output file",
-            .argument    = {
-                .name     = "PATH",
-                .type     = DMI_ARGUMENT_TYPE_STRING,
-                .required = true
-            }
-        },
-        {}
+    .options     = dmi_options(&dmi_show_options, &dmi_filter_options),
+    .handlers    = {
+        .usage = dmi_show_usage,
+        .main  = dmi_show_main
     }
 };
+
+static void dmi_show_usage(void)
+{
+    dmi_command_usage(&dmi_show_command);
+}
 
 static int dmi_show_main(dmi_context_t *context, int argc, char *argv[])
 {
     dmi_unused(context);
+    dmi_unused(argc);
+    dmi_unused(argv);
 
-    if (dmi_option_parse(&dmi_show_options, argc, argv) < 0)
-        return EXIT_FAILURE;
+    dmi_print_all(context, &dmi_text_format);
 
-    if (dmi_show_params.help) {
-        dmi_show_usage();
-        return EXIT_SUCCESS;
-    }
-
-    return EXIT_SUCCESS;
-}
-
-static void dmi_show_usage(void)
-{
+    return EXIT_FAILURE;
 }

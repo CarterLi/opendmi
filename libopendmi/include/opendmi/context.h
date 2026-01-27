@@ -101,7 +101,7 @@ struct dmi_context
     /**
      * @brief Backend handle.
      */
-    dmi_backend_t *backend;
+    const dmi_backend_t *backend;
 
     /**
      * @brief Backend-specific data.
@@ -163,9 +163,11 @@ void dmi_set_flags(dmi_context_t *context, unsigned flags);
  * @brief Open DMI context.
  *
  * @param[in] context DMI context handle.
+ * @param[in] device  Path to memory device.
+ *
  * @return The function returns `true` on success and `false` otherwise.
  */
-bool dmi_open(dmi_context_t *context);
+bool dmi_open(dmi_context_t *context, const char *device);
 
 /**
  * @brief Add DMI extension.

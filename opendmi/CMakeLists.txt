@@ -29,6 +29,7 @@ add_executable(opendmi
     src/pager.c
     src/option.c
     src/command.c
+    src/command/common.c
     src/command/dump.c
     src/command/entry.c
     src/command/list.c

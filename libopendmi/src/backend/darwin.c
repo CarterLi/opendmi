@@ -26,7 +26,7 @@ struct dmi_darwin_session
     io_service_t service;
 };
 
-static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute__((unused)));
+static bool dmi_darwin_open(dmi_context_t *context, const char *path);
 static dmi_data_t *dmi_darwin_read_entry(dmi_context_t *context, size_t *plength);
 static dmi_data_t *dmi_darwin_read_table(dmi_context_t *context, size_t *plength);
 static bool dmi_darwin_close(dmi_context_t *context);
@@ -42,12 +42,14 @@ dmi_backend_t dmi_darwin_backend =
     .close      = dmi_darwin_close
 };
 
-static bool dmi_darwin_open(dmi_context_t *context, const void *arg __attribute__((unused)))
+static bool dmi_darwin_open(dmi_context_t *context, const char *path)
 {
     dmi_darwin_session_t *session = nullptr;
 
     assert(context != nullptr);
     assert(context->session == nullptr);
+
+    dmi_unused(path);
 
     // Allocate backend descriptor
     session = dmi_alloc(context, sizeof(dmi_darwin_session_t));

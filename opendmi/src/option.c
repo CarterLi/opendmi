@@ -9,43 +9,51 @@
 #include <assert.h>
 
 #include <opendmi/option.h>
+#include <opendmi/command.h>
 #include <opendmi/tty.h>
 
-static void dmi_option_toggle(const dmi_option_t *opt);
-static bool dmi_option_set(const dmi_option_t *opt, const char *value);
+static bool dmi_option_toggle(
+        dmi_context_t      *context,
+        const dmi_option_t *option);
 
-void dmi_option_list(const dmi_option_group_t *group)
+static bool dmi_option_set(
+        dmi_context_t      *context,
+        const dmi_option_t *option,
+        const char         *value);
+
+void dmi_option_list(const dmi_option_set_t *set)
 {
-    const dmi_option_t *opt;
+    const dmi_option_t *option;
     const dmi_argument_t *arg;
 
-    assert(group != nullptr);
+    assert(set != nullptr);
 
-    dmi_tty_header("%s:", group->name);
+    for (option = set->options; option->short_names || option->long_names; option++) {
+        arg = &option->argument;
 
-    for (opt = group->options; opt->short_names || opt->long_names; opt++) {
-        arg = &opt->argument;
-
-        if (opt->flags & DMI_OPTION_FLAG_HIDDEN)
+        if (option->flags & DMI_OPTION_FLAG_HIDDEN)
             continue;
 
         int count = 0;
 
-        if (opt->short_names != nullptr) {
-            const char *name = opt->short_names;
+        if (option->short_names != nullptr) {
+            const char *name = option->short_names;
 
             while (*name != 0) {
                 printf("%s", count > 0 ? ", " : "    ");
 
                 dmi_tty_cprintf(DMI_TTY_COLOR_AQUA, "-%c", *name);
-                if (arg->type != DMI_ARGUMENT_TYPE_NONE)
-                    dmi_tty_cprintf(DMI_TTY_COLOR_LIME, arg->required ? " <%s>" : " [%s]", arg->name);
+                if (arg->type != DMI_ARGUMENT_TYPE_NONE) {
+                    printf(arg->required ? " " : " [");
+                    dmi_tty_cprintf(DMI_TTY_COLOR_LIME, "<%s>", arg->name);
+                    printf(arg->required ? "" : "]");
+                }
                 name++, count++;
             }
         }
 
-        if (opt->long_names != nullptr) {
-            const char **name = opt->long_names;
+        if (option->long_names != nullptr) {
+            const char **name = option->long_names;
 
             while (*name != nullptr) {
                 printf("%s", count > 0 ? ", " : "    ");
@@ -60,56 +68,92 @@ void dmi_option_list(const dmi_option_group_t *group)
             }
         }
 
-        dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "\n%8s%s\n", "", opt->description);
+        dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "\n%8s%s\n", "", option->description);
     }
-
-    printf("\n");
 }
 
-const dmi_option_t *dmi_option_find_short(const dmi_option_group_t *group, char name)
+const dmi_option_t *dmi_option_find_short(const dmi_option_set_t *set, char name)
 {
-    const dmi_option_t *opt;
+    const dmi_option_t *option;
 
-    assert(group != nullptr);
+    assert(set != nullptr);
     assert(name != 0);
 
-    for (opt = group->options; opt->short_names || opt->long_names; opt++) {
-        if (!opt->short_names)
+    for (option = set->options; option->short_names || option->long_names; option++) {
+        if (!option->short_names)
             continue;
 
-        for (const char *item = opt->short_names; *item != 0; item++) {
+        for (const char *item = option->short_names; *item != 0; item++) {
             if (name == *item)
-                return opt;
+                return option;
         }
     }
 
     return nullptr;
 }
 
-const dmi_option_t *dmi_option_find_long(const dmi_option_group_t *group, const char *name)
+const dmi_option_t *dmi_option_find_short_ex(const dmi_option_set_t **options, char name)
 {
-    const dmi_option_t *opt;
+    const dmi_option_set_t *set;
+    const dmi_option_t *option;
 
-    assert(group != nullptr);
+    assert(options != nullptr);
+    assert(name != 0);
+
+    for (set = *options; set != nullptr; options++) {
+        option = dmi_option_find_short(set, name);
+        if (option != nullptr)
+            return option;
+    }
+
+    return nullptr;
+}
+
+const dmi_option_t *dmi_option_find_long(const dmi_option_set_t *set, const char *name)
+{
+    const dmi_option_t *option;
+
+    assert(set != nullptr);
     assert(name != nullptr);
 
-    for (opt = group->options; opt->short_names || opt->long_names; opt++) {
-        if (!opt->short_names)
+    for (option = set->options; option->short_names || option->long_names; option++) {
+        if (!option->short_names)
             continue;
 
-        for (const char **item = opt->long_names; *item != nullptr; item++) {
+        for (const char **item = option->long_names; *item != nullptr; item++) {
             if (strcmp(name, *item) == 0)
-                return opt;
+                return option;
         }
     }
 
     return nullptr;
 }
 
-int dmi_option_parse(const dmi_option_group_t *group, int argc, char *argv[])
+const dmi_option_t *dmi_option_find_long_ex(const dmi_option_set_t **options, const char *name)
+{
+    const dmi_option_set_t *set;
+    const dmi_option_t *option;
+
+    assert(options != nullptr);
+    assert(name != 0);
+
+    for (set = *options; set != nullptr; options++) {
+        option = dmi_option_find_long(set, name);
+        if (option != nullptr)
+            return option;
+    }
+
+    return nullptr;
+}
+
+int dmi_option_parse(
+        dmi_context_t           *context,
+        const dmi_option_set_t **options,
+        int                      argc,
+        char                    *argv[])
 {
     int count = 0;
-    const dmi_option_t *opt;
+    const dmi_option_t *option;
 
     while (argc > 0) {
         char *arg = *argv;
@@ -123,46 +167,49 @@ int dmi_option_parse(const dmi_option_group_t *group, int argc, char *argv[])
         if (*arg == '-') {
             arg++;
 
-            if (*arg == 0)
+            if (*arg == 0) {
+                count++;
                 break;
+            }
 
             value = strchr(arg, '=');
             if (value != nullptr)
                 *value++ = 0;
 
-            opt = dmi_option_find_long(group, arg);
-            if (opt == nullptr) {
-                fprintf(stderr, "Unknown option: --%s\n", arg);
+            option = dmi_option_find_long_ex(options, arg);
+            if (option == nullptr) {
+                dmi_command_message("Unknown option: --%s\n", arg);
                 return -1;
             }
 
-            if (opt->argument.type == DMI_ARGUMENT_TYPE_NONE) {
+            if (option->argument.type == DMI_ARGUMENT_TYPE_NONE) {
                 if (value != nullptr) {
-                    fprintf(stderr, "Option --%s doesn't have arguments\n", arg);
+                    dmi_command_message("Option --%s doesn't have arguments\n", arg);
                     return -1;
                 }
 
-                dmi_option_toggle(opt);
-            } else if (opt->argument.required) {
+                if (not dmi_option_toggle(context, option))
+                    return false;
+            } else if (option->argument.required) {
                 if (value == nullptr) {
                     if ((argc == 0) or (*argv[0] == '-')) {
-                        fprintf(stderr, "Option --%s requires an argument\n", arg);
+                        dmi_command_message("Option --%s requires an argument\n", arg);
                         return -1;
                     }
 
                     value = *argv;
-                    argc--, argv++;
-
-                    if (not dmi_option_set(opt, value))
-                        return false;
+                    argc--, argv++, count++;
                 }
+
+                if (not dmi_option_set(context, option, value))
+                    return false;
             } else {
                 if ((value == nullptr) and (argc > 0) and (*argv[0] != '-')) {
                     value = *argv;
-                    argc--, argv++;
+                    argc--, argv++, count++;
                 }
 
-                if (not dmi_option_set(opt, value))
+                if (not dmi_option_set(context, option, value))
                         return false;
             }
 
@@ -173,21 +220,23 @@ int dmi_option_parse(const dmi_option_group_t *group, int argc, char *argv[])
     
                 value = nullptr;
 
-                opt = dmi_option_find_short(group, flag);
-                if (opt == nullptr) {
-                    fprintf(stderr, "Unknown option: -%c\n", flag);
+                option = dmi_option_find_short_ex(options, flag);
+                if (option == nullptr) {
+                    dmi_command_message("Unknown option: -%c\n", flag);
                     return -1;
                 }
 
-                if (opt->argument.type == DMI_ARGUMENT_TYPE_NONE) {
-                    dmi_option_toggle(opt);
+                if (option->argument.type == DMI_ARGUMENT_TYPE_NONE) {
+                    if (not dmi_option_toggle(context, option))
+                        return false;
+
                     arg++, count++;
-                } else if (opt->argument.required) {
+                } else if (option->argument.required) {
                     arg++;
 
                     if (*arg == 0) {
                         if ((argc == 0) or (*argv[0] == '-')) {
-                            fprintf(stderr, "Option -%c requires an argument\n", flag);
+                            dmi_command_message("Option -%c requires an argument\n", flag);
                             return -1;
                         }
 
@@ -197,7 +246,7 @@ int dmi_option_parse(const dmi_option_group_t *group, int argc, char *argv[])
                         value = arg;
                     }
 
-                    if (not dmi_option_set(opt, value))
+                    if (not dmi_option_set(context, option, value))
                         return -1;
 
                     count++;
@@ -210,7 +259,7 @@ int dmi_option_parse(const dmi_option_group_t *group, int argc, char *argv[])
                         argc--, argv++;
                     }
 
-                    if (not dmi_option_set(opt, value))
+                    if (not dmi_option_set(context, option, value))
                         return -1;
 
                     count++;
@@ -223,24 +272,39 @@ int dmi_option_parse(const dmi_option_group_t *group, int argc, char *argv[])
     return count;
 }
 
-static void dmi_option_toggle(const dmi_option_t *opt)
+static bool dmi_option_toggle(
+        dmi_context_t      *context,
+        const dmi_option_t *option)
 {
-    assert(opt != nullptr);
+    assert(context != nullptr);
+    assert(option != nullptr);
 
-    bool *flag = dmi_cast(flag, opt->value);
-    if (opt->flags & DMI_OPTION_FLAG_REVERSE)
+    if (option->handler != nullptr)
+        return option->handler(context, nullptr);
+
+    bool *flag = dmi_cast(flag, option->value);
+    if (option->flags & DMI_OPTION_FLAG_REVERSE)
         *flag = false;
     else
         *flag = true;
+
+    return true;
 }
 
-static bool dmi_option_set(const dmi_option_t *opt, const char *value)
+static bool dmi_option_set(
+        dmi_context_t      *context,
+        const dmi_option_t *option,
+        const char         *value)
 {
-    assert(opt != nullptr);
+    assert(context != nullptr);
+    assert(option != nullptr);
 
-    switch (opt->argument.type) {
+    if (option->handler != nullptr)
+        return option->handler(context, value);
+
+    switch (option->argument.type) {
     case DMI_ARGUMENT_TYPE_STRING:
-        *((const char **)opt->value) = value;
+        *((const char **)option->value) = value;
         break;
 
     default:

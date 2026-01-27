@@ -9,55 +9,46 @@
 #include <opendmi/context.h>
 #include <opendmi/command/modules.h>
 
-typedef struct dmi_modules_params
-{
-    bool help;
-} dmi_modules_params_t;
-
-static int dmi_modules_main(dmi_context_t *context, int argc, char *argv[]);
 static void dmi_modules_usage(void);
+static int dmi_modules_main(dmi_context_t *context, int argc, char *argv[]);
 
-static dmi_modules_params_t dmi_modules_params =
+static const dmi_option_set_t dmi_modules_options =
 {
-    .help = false
+    .options = (const dmi_option_t[]){
+        {
+            .short_names = "?h",
+            .long_names  = (const char *[]){ "help", nullptr },
+            .description = "Print this help and exit",
+            .value       = &dmi_command_config.show_usage
+        },
+        {}
+    }
 };
 
 const dmi_command_t dmi_modules_command =
 {
     .name        = "modules",
     .description = "List available extensions",
-    .handler     = dmi_modules_main
-};
-
-static const dmi_option_group_t dmi_modules_options =
-{
-    .name    = "Command options",
-    .options = (const dmi_option_t[]){
-        {
-            .short_names = "?h",
-            .long_names  = (const char *[]){ "help", nullptr },
-            .description = "Print this help and exit",
-            .value       = &dmi_modules_params.help
-        },
-        {}
+    .options     = dmi_options(&dmi_modules_options),
+    .flags       = DMI_COMMAND_FLAG_DETACHED,
+    .handlers    = {
+        .usage = dmi_modules_usage,
+        .main  = dmi_modules_main
     }
 };
+
+static void dmi_modules_usage(void)
+{
+    dmi_command_usage(&dmi_modules_command);
+}
 
 static int dmi_modules_main(dmi_context_t *context, int argc, char *argv[])
 {
     dmi_unused(context);
+    dmi_unused(argc);
+    dmi_unused(argv);
 
-    if (dmi_option_parse(&dmi_modules_options, argc, argv) < 0)
-        return EXIT_FAILURE;
+    dmi_command_message_ex(&dmi_modules_command, "Not implemented yet");
 
-    if (dmi_modules_params.help) {
-        dmi_modules_usage();
-        return EXIT_SUCCESS;
-    }
-
-    return EXIT_SUCCESS;
-}
-
-static void dmi_modules_usage(void)
-{
+    return EXIT_FAILURE;
 }

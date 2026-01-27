@@ -10,7 +10,7 @@
 
 #include <opendmi/backend/windows.h>
 
-static bool dmi_windows_open(dmi_context_t *context, const void *arg);
+static bool dmi_windows_open(dmi_context_t *context, const char *path);
 static dmi_data_t *dmi_windows_read_entry(dmi_context_t *context, size_t *plength);
 static dmi_data_t *dmi_windows_read_table(dmi_context_t *context, size_t *plength);
 static bool dmi_windows_close(dmi_context_t *context);
@@ -24,10 +24,10 @@ dmi_backend_t dmi_windows_backend =
     .close      = dmi_windows_close
 };
 
-static bool dmi_windows_open(dmi_context_t *context, const void *arg)
+static bool dmi_windows_open(dmi_context_t *context, const char *path)
 {
     dmi_unused(context);
-    dmi_unused(arg);
+    dmi_unused(path);
 
     return false;
 }

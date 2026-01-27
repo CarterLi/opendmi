@@ -5,54 +5,51 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <stdlib.h>
+#include <assert.h>
 
 #include <opendmi/context.h>
 #include <opendmi/format.h>
 #include <opendmi/format/yaml.h>
 #include <opendmi/command/export.h>
-typedef struct dmi_export_params
+
+typedef struct dmi_export_config
 {
-    bool help;
-    char *path;
-    const dmi_format_t *format;
-    bool pretty;
+    bool show_usage;
+    char *output_path;
+    const dmi_format_t *output_format;
+    bool export_dump;
+    bool export_pretty;
     bool force;
-} dmi_export_params_t;
+} dmi_export_config_t;
 
-static int dmi_export_main(dmi_context_t *context, int argc, char *argv[]);
 static void dmi_export_usage(void);
+static bool dmi_export_set_format(dmi_context_t *context, const char *value);
+static int dmi_export_main(dmi_context_t *context, int argc, char *argv[]);
 
-static dmi_export_params_t dmi_export_params =
+static dmi_export_config_t dmi_export_config =
 {
-    .help   = false,
-    .path   = nullptr,
-    .format = &dmi_yaml_format,
-    .pretty = false,
-    .force  = false
+    .show_usage    = false,
+    .output_path   = nullptr,
+    .output_format = &dmi_yaml_format,
+    .export_dump   = false,
+    .export_pretty = false,
+    .force         = false
 };
 
-const dmi_command_t dmi_export_command =
+static const dmi_option_set_t dmi_export_options =
 {
-    .name        = "export",
-    .description = "Export SMBIOS data to external format",
-    .handler     = dmi_export_main
-};
-
-static const dmi_option_group_t dmi_export_options =
-{
-    .name    = "Command options",
     .options = (const dmi_option_t[]){
         {
             .short_names = "?h",
             .long_names  = (const char *[]){ "help", nullptr },
             .description = "Print this help and exit",
-            .value       = &dmi_export_params.help,
+            .value       = &dmi_export_config.show_usage,
         },
         {
             .short_names = "o",
             .long_names  = (const char *[]){ "output", nullptr },
             .description = "Set output file path (default: stdout)",
-            .value       = &dmi_export_params.path,
+            .value       = &dmi_export_config.output_path,
             .argument    = {
                 .name     = "PATH",
                 .type     = DMI_ARGUMENT_TYPE_STRING,
@@ -63,6 +60,7 @@ static const dmi_option_group_t dmi_export_options =
             .short_names = "f",
             .long_names  = (const char *[]){ "format", nullptr },
             .description = "Set output format (default: yaml)",
+            .handler     = dmi_export_set_format,
             .argument    = {
                 .name     = "FORMAT",
                 .type     = DMI_ARGUMENT_TYPE_STRING,
@@ -70,36 +68,68 @@ static const dmi_option_group_t dmi_export_options =
             }
         },
         {
+            .short_names = "u",
+            .long_names  = (const char *[]){ "dump", nullptr },
+            .description = "Do not decode the entries",
+            .value       = &dmi_export_config.export_dump,
+        },
+        {
             .short_names = "p",
             .long_names  = (const char *[]){ "pretty", nullptr },
             .description = "Enable pretty output",
-            .value       = &dmi_export_params.pretty
+            .value       = &dmi_export_config.export_pretty
         },
         {
             .short_names = "F",
             .long_names  = (const char *[]){ "force", nullptr },
             .description = "Overwrite existing files",
-            .value       = &dmi_export_params.force
+            .value       = &dmi_export_config.force
         },
         {}
     }
 };
 
-static int dmi_export_main(dmi_context_t *context, int argc, char *argv[])
+const dmi_command_t dmi_export_command =
 {
-    dmi_unused(context);
-
-    if (dmi_option_parse(&dmi_export_options, argc, argv) < 0)
-        return EXIT_FAILURE;
-
-    if (dmi_export_params.help) {
-        dmi_export_usage();
-        return EXIT_SUCCESS;
+    .name        = "export",
+    .description = "Export SMBIOS data to external format",
+    .options     = dmi_options(&dmi_export_options),
+    .handlers    = {
+        .usage = dmi_export_usage,
+        .main  = dmi_export_main
     }
-
-    return EXIT_SUCCESS;
-}
+};
 
 static void dmi_export_usage(void)
 {
+    dmi_command_usage(&dmi_export_command);
+}
+
+static bool dmi_export_set_format(dmi_context_t *context, const char *value)
+{
+    const dmi_format_t *format;
+
+    dmi_unused(context);
+    assert(value != nullptr);
+
+    format = dmi_format_get(value);
+    if (format == nullptr) {
+        dmi_command_message("Invalid output format: %s", value);
+        return false;
+    }
+
+    dmi_export_config.output_format = format;
+
+    return true;
+}
+
+static int dmi_export_main(dmi_context_t *context, int argc, char *argv[])
+{
+    dmi_unused(context);
+    dmi_unused(argc);
+    dmi_unused(argv);
+
+    dmi_command_message_ex(&dmi_export_command, "Not implemented yet");
+
+    return EXIT_FAILURE;
 }
