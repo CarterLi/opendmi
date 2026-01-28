@@ -6,20 +6,20 @@
 //
 #include "config.h"
 
-#ifdef HAVE_UNISTD_H
+#if __has_include(<unistd.h>)
 #   include <unistd.h>
-#endif // HAVE_UNISTD_H
+#endif
 
 #include <stdio.h>
 
 #ifdef ENABLE_CURSES
-#   if defined(CURSES_HAVE_NCURSES_NCURSES_H)
+#   if __has_include(<ncurses/ncurses.h>)
 #       include <ncurses/ncurses.h>
-#   elif defined(CURSES_HAVE_NCURSES_CURSES_H)
+#   elif __has_include(<ncurses/curses.h>)
 #       include <ncurses/curses.h>
-#   elif defined(CURSES_HAVE_NCURSES_H)
+#   elif __has_include(<ncurses.h>)
 #       include <ncurses.h>
-#   elif defined(CURSES_HAVE_CURSES_H)
+#   elif __has_include(<curses.h>)
 #       include <curses.h>
 #   endif
 #   include <term.h>

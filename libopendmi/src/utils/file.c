@@ -4,11 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include "../config.h"
-
-#ifdef HAVE_UNISTD_H
+#if __has_include(<unistd.h>)
 #   include <unistd.h>
-#endif // HAVE_UNISTD_H
+#endif
 
 #include <errno.h>
 #include <assert.h>

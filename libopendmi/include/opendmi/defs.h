@@ -9,9 +9,11 @@
 
 #pragma once
 
-#ifndef _WIN32
+#if __has_include(<sys/cdefs.h>)
 #   include <sys/cdefs.h>
-#else // _WIN32
+#endif
+
+#ifdef _WIN32
 #   if defined(__cplusplus)
 #       define __BEGIN_DECLS extern "C" {
 #       define __END_DECLS   }

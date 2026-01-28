@@ -4,25 +4,23 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include "config.h"
-
 #include <sys/stat.h>
 
-#ifdef HAVE_SYS_MMAN_H
+#if __has_include(<sys/mman.h>)
 #   include <sys/mman.h>
-#endif // HAVE_SYS_MMAN_H
+#endif
 
-#ifdef HAVE_UNISTD_H
+#if __has_include(<unistd.h>)
 #   include <unistd.h>
-#endif // HAVE_UNISTD_H
+#endif
 
-#ifdef HAVE_SHARE_H
+#if __has_include(<share.h>)
 #   include <share.h>
-#endif // !HAVE_SHARE_H
+#endif
 
-#ifdef HAVE_IO_H
+#if __has_include(<io.h>)
 #   include <io.h>
-#endif // HAVE_IO_H
+#endif
 
 #include <string.h>
 #include <stdlib.h>

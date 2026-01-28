@@ -80,13 +80,6 @@ find_package_ex(Curses ENABLE_CURSES)
 find_package_ex(LibXml2 ENABLE_XML)
 find_package_ex(LibYaml ENABLE_YAML)
 
-include(CheckIncludeFile)
-
-check_include_file(sys/mman.h HAVE_SYS_MMAN_H)
-check_include_file(unistd.h HAVE_UNISTD_H)
-check_include_file(share.h HAVE_SHARE_H)
-check_include_file(io.h HAVE_IO_H)
-
 enable_testing()
 
 add_subdirectory(libopendmi)

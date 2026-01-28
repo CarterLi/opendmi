@@ -6,9 +6,9 @@
 //
 #include "config.h"
 
-#ifdef HAVE_UNISTD_H
+#if __has_include(<unistd.h>)
 #   include <unistd.h>
-#endif // HAVE_UNISTD_H
+#endif
 
 #include <string.h>
 #include <fcntl.h>

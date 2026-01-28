@@ -6,22 +6,22 @@
 //
 #include "../../config.h"
 
+#if __has_include(<unistd.h>)
+#   include <unistd.h>
+#endif
+
 #include <string.h>
 #include <inttypes.h>
 #include <assert.h>
 
-#ifdef HAVE_UNISTD_H
-#   include <unistd.h>
-#endif // HAVE_UNISTD_H
-
 #ifdef ENABLE_CURSES
-#   if defined(CURSES_HAVE_NCURSES_NCURSES_H)
+#   if __has_include(<ncurses/ncurses.h>)
 #       include <ncurses/ncurses.h>
-#   elif defined(CURSES_HAVE_NCURSES_CURSES_H)
+#   elif __has_include(<ncurses/curses.h>)
 #       include <ncurses/curses.h>
-#   elif defined(CURSES_HAVE_NCURSES_H)
+#   elif __has_include(<ncurses.h>)
 #       include <ncurses.h>
-#   elif defined(CURSES_HAVE_CURSES_H)
+#   elif __has_include(<curses.h>)
 #       include <curses.h>
 #   endif
 #   include <term.h>
