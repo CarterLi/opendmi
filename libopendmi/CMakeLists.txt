@@ -339,19 +339,6 @@ if(NOT MSVC)
     target_compile_options(opendmi-object PRIVATE -fPIC)
 endif()
 
-if(CPPCHECK_EXECUTABLE)
-    set(CPPCHECK_ARGS
-        --library=posix
-        --check-library
-        --inline-suppr
-        --enable=all
-    )
-
-    set_target_properties(opendmi-object PROPERTIES
-        C_CPPCHECK ${CPPCHECK_EXECUTABLE} ${CPPCHECK_ARGS}
-    )
-endif()
-
 add_library(opendmi-static STATIC $<TARGET_OBJECTS:opendmi-object>)
 target_include_directories(opendmi-static INTERFACE include)
 target_link_libraries(opendmi-static PUBLIC ${LIBOPENDMI_LIBRARIES})

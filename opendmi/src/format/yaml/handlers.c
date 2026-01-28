@@ -130,7 +130,7 @@ bool dmi_yaml_entity_start(dmi_yaml_session_t *session, const dmi_entity_t *enti
     assert(entity != nullptr);
 
     snprintf(entity_handle, sizeof(entity_handle), "0x%04hx", entity->handle);
-    snprintf(entity_type, sizeof(entity_type), "%u", entity->type);
+    snprintf(entity_type, sizeof(entity_type), "%d", entity->type);
     snprintf(entity_length, sizeof(entity_length), "%zu", entity->total_length);
 
     entity_description = dmi_type_name(session->context, entity->type);

@@ -63,8 +63,6 @@ else()
     add_compile_definitions(NDEBUG)
 endif()
 
-find_program(CPPCHECK_EXECUTABLE NAMES cppcheck)
-
 include(FindPackageEx)
 
 if(APPLE)
@@ -72,6 +70,7 @@ if(APPLE)
     LIST(PREPEND CMAKE_PROGRAM_PATH "/opt/homebrew/opt/icu4c/bin/")
 endif()
 
+find_package(CppCheck)
 find_package(AsciiDoctor)
 find_package(AsciiDoctorPdf)
 

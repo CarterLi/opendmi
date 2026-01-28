@@ -24,7 +24,7 @@ bool dmi_xml_entity_attr(
         dmi_xml_session_t     *session,
         const dmi_entity_t    *entity,
         const dmi_attribute_t *attr,
-        const void            *data);
+        const void            *value);
 
 bool dmi_xml_entity_attr_array(
         dmi_xml_session_t     *session,
