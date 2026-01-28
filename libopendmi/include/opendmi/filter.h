@@ -14,10 +14,20 @@
 
 typedef struct dmi_filter dmi_filter_t;
 
+typedef enum dmi_filter_mask : unsigned
+{
+    DMI_FILTER_MASK_COMMON   = 1 << 0,
+    DMI_FILTER_MASK_OEM      = 1 << 1,
+    DMI_FILTER_MASK_INACTIVE = 1 << 2,
+    DMI_FILTER_MASK_UNKNOWN  = 1 << 3,
+    DMI_FILTER_MASK_ALL      = ~0u
+} dmi_filter_mask_t;
+
 struct dmi_filter
 {
     dmi_context_t *context;
 
+    unsigned mask;
     dmi_vector_t handles;
     dmi_vector_t types;
 };

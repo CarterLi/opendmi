@@ -17,6 +17,7 @@ static int dmi_list_main(dmi_context_t *context, int argc, char *argv[]);
 
 static const dmi_option_set_t dmi_list_options =
 {
+    .name    = "Command options",
     .options = (const dmi_option_t[]){
         {
             .short_names = "?h",

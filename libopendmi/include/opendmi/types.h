@@ -139,6 +139,7 @@ typedef enum dmi_type
     DMI_TYPE_STRING_PROPERTY         = 46,  ///< String property
     DMI_TYPE_INACTIVE                = 126, ///< Inactive
     DMI_TYPE_END_OF_TABLE            = 127, ///< End of table
+    __DMI_TYPE_OEM_START             = 128,
     __DMI_TYPE_COUNT
 } dmi_type_t;
 

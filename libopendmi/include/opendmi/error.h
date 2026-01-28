@@ -49,7 +49,8 @@ typedef enum dmi_error_code
     DMI_ERROR_SERVICE_UNAVAILABLE,   ///< Service unavailable
     DMI_ERROR_SYSTEM,                ///< System error
     DMI_ERROR_INTERNAL,              ///< Internal error
-    DMI_ERROR_BACKEND_OPEN,          ///< Unable to open backend
+    DMI_ERROR_BACKEND_INIT,          ///< Unable to open backend
+    DMI_ERROR_CONTEXT_OPEN,          ///< Unable to open context
     __DMI_ERROR_COUNT
 } dmi_error_code_t;
 

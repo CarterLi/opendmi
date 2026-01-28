@@ -27,6 +27,8 @@ void dmi_option_list(const dmi_option_set_t *set)
     
     assert(set != nullptr);
 
+    dmi_tty_header("%s:", set->name);
+
     for (option = set->options; option->short_names || option->long_names; option++) {
         const dmi_argument_t *arg = &option->argument;
 
@@ -69,6 +71,8 @@ void dmi_option_list(const dmi_option_set_t *set)
 
         dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "\n%8s%s\n", "", option->description);
     }
+
+    printf("\n");
 }
 
 const dmi_option_t *dmi_option_find_short(const dmi_option_set_t *set, char name)

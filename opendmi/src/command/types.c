@@ -32,6 +32,7 @@ static dmi_types_config_t dmi_types_config =
 
 static const dmi_option_set_t dmi_types_options =
 {
+    .name    = "Command options",
     .options = (const dmi_option_t[]){
         {
             .short_names = "?h",

@@ -36,7 +36,6 @@ dmi_global_config_t dmi_global_config =
 {
     .show_version = false,
     .show_usage   = false,
-    .quiet        = false,
     .log_enable   = false,
     .log_path     = nullptr,
     .log_level    = DMI_LOG_NOTICE,
@@ -51,6 +50,7 @@ dmi_command_config_t dmi_command_config =
 
 const dmi_option_set_t dmi_global_options =
 {
+    .name    = "Global options",
     .options = (const dmi_option_t[]){
         {
             .short_names = "v",
@@ -63,12 +63,6 @@ const dmi_option_set_t dmi_global_options =
             .long_names  = (const char *[]){ "help", nullptr },
             .description = "Print this help and exit",
             .value       = &dmi_global_config.show_usage
-        },
-        {
-            .short_names = "q",
-            .long_names  = (const char *[]){ "quiet", nullptr },
-            .description = "Less verbose output",
-            .value       = &dmi_global_config.quiet
         },
         {
             .short_names = "l",
@@ -203,18 +197,14 @@ void dmi_command_usage(const dmi_command_t *command)
         printf("\n\n");
     }
 
-    dmi_tty_header("Global options:");
     dmi_option_list(&dmi_global_options);
-    printf("\n");
 
     if (command != nullptr) {
-        dmi_tty_header("Command options:");
         for (const dmi_option_set_t **set = command->options; *set != nullptr; set++)
             dmi_option_list(*set);
     } else {
         printf("Use %s <command> --help for more information\n\n", dmi_process);
     }
-    printf("\n");
 }
 
 void dmi_command_message(const char *format, ...)
@@ -260,7 +250,7 @@ void dmi_command_trace(dmi_context_t *context)
         if (error->message != nullptr)
             dmi_command_message("%s: %s", reason, error->message);
         else
-            dmi_command_message("%s", error->message);
+            dmi_command_message("%s", reason);
     }
 }
 

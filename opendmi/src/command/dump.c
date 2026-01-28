@@ -26,6 +26,7 @@ static dmi_dump_config_t dmi_dump_config =
 
 static const dmi_option_set_t dmi_dump_options =
 {
+    .name    = "Command options",
     .options = (const dmi_option_t[]){
         {
             .short_names = "?h",

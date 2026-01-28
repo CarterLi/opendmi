@@ -38,6 +38,7 @@ static dmi_export_config_t dmi_export_config =
 
 static const dmi_option_set_t dmi_export_options =
 {
+    .name    = "Command options",
     .options = (const dmi_option_t[]){
         {
             .short_names = "?h",

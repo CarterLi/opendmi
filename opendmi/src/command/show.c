@@ -13,8 +13,8 @@
 
 typedef struct dmi_show_config
 {
-    bool show_all;
     bool show_dump;
+    bool quiet;
 } dmi_show_config_t;
 
 static void dmi_show_usage(void);
@@ -22,12 +22,13 @@ static int dmi_show_main(dmi_context_t *context, int argc, char *argv[]);
 
 static dmi_show_config_t dmi_show_config =
 {
-    .show_all  = false,
-    .show_dump = false
+    .show_dump = false,
+    .quiet     = false
 };
 
 const dmi_option_set_t dmi_show_options =
 {
+    .name    = "Command options",
     .options = (const dmi_option_t[]){
         {
             .short_names = "?h",
@@ -36,16 +37,16 @@ const dmi_option_set_t dmi_show_options =
             .value       = &dmi_command_config.show_usage
         },
         {
+            .short_names = "q",
+            .long_names  = (const char *[]){ "quiet", nullptr },
+            .description = "Hide meta-data and handle references",
+            .value       = &dmi_show_config.quiet
+        },
+        {
             .short_names = "u",
             .long_names  = (const char *[]){ "dump", nullptr },
             .description = "Do not decode the entries",
             .value       = &dmi_show_config.show_dump
-        },
-        {
-            .short_names = "a",
-            .long_names  = (const char *[]){ "all", nullptr },
-            .description = "Show all entries (including unknown)",
-            .value       = &dmi_show_config.show_all
         },
         {}
     }

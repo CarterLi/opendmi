@@ -499,7 +499,7 @@ static bool dmi_open_ex(
 
         // Initialize backend
         if (not context->backend->open(context, device)) {
-            dmi_error_raise_ex(context, DMI_ERROR_BACKEND_OPEN, "%s", backend->name);
+            dmi_error_raise_ex(context, DMI_ERROR_BACKEND_INIT, "%s", backend->name);
             break;
         }
 
@@ -553,7 +553,7 @@ static bool dmi_open_ex(
     } while (false);
 
     if (not success) {
-        dmi_log_error(context, "Unable to open DMI context");
+        dmi_error_raise(context, DMI_ERROR_CONTEXT_OPEN);
         dmi_close(context);
     }
 

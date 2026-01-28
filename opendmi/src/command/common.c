@@ -21,11 +21,14 @@ static bool dmi_filter_config_add_type(dmi_context_t *context, const char *value
 
 dmi_filter_config_t dmi_filter_config =
 {
-    .filter = {}
+    .filter = {
+        .mask = DMI_FILTER_MASK_ALL
+    }
 };
 
 const dmi_option_set_t dmi_filter_options =
 {
+    .name    = "Filter options",
     .options = (const dmi_option_t[]){
         {
             .short_names = "H",
@@ -39,7 +42,7 @@ const dmi_option_set_t dmi_filter_options =
             }
         },
         {
-            .short_names = "T",
+            .short_names = "t",
             .long_names  = (const char *[]){ "type", nullptr },
             .description = "Only display the entries of given type(s)",
             .handler     = dmi_filter_config_add_type,
@@ -48,6 +51,51 @@ const dmi_option_set_t dmi_filter_options =
                 .type     = DMI_ARGUMENT_TYPE_STRING,
                 .required = true
             }
+        },
+        {
+            .short_names = "s",
+            .long_names  = (const char *[]){ "standard", nullptr },
+            .description = "Show standard entries"
+        },
+        {
+            .short_names = "S",
+            .long_names  = (const char *[]){ "no-standard", nullptr },
+            .description = "Don't show standard entries"
+        },
+        {
+            .short_names = "e",
+            .long_names  = (const char *[]){ "oem", nullptr },
+            .description = "Show OEM-specific entries"
+        },
+        {
+            .short_names = "E",
+            .long_names  = (const char *[]){ "no-oem", nullptr },
+            .description = "Don't show OEM-specific entries"
+        },
+        {
+            .short_names = "i",
+            .long_names  = (const char *[]){ "inactive", nullptr },
+            .description = "Show inactive entries"
+        },
+        {
+            .short_names = "I",
+            .long_names  = (const char *[]){ "no-inactive", nullptr },
+            .description = "Don't show inactive entries"
+        },
+        {
+            .short_names = "u",
+            .long_names  = (const char *[]){ "unknown", nullptr },
+            .description = "Show unknown entries"
+        },
+        {
+            .short_names = "U",
+            .long_names  = (const char *[]){ "no-unknown", nullptr },
+            .description = "Don't show unknown entries"
+        },
+        {
+            .short_names = "a",
+            .long_names  = (const char *[]){ "all", nullptr },
+            .description = "Show all entries"
         },
         {}
     }

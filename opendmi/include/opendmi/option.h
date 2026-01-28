@@ -41,6 +41,7 @@ struct dmi_option
 
 struct dmi_option_set
 {
+    const char *name;
     const dmi_option_t *options;
 };
 
