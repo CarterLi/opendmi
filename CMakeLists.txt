@@ -18,6 +18,10 @@ set(OPENDMI_VERSION_MAJOR "${CMAKE_PROJECT_VERSION_MAJOR}")
 set(OPENDMI_VERSION_MINOR "${CMAKE_PROJECT_VERSION_MINOR}")
 set(OPENDMI_VERSION_PATCH "${CMAKE_PROJECT_VERSION_PATCH}")
 
+if(NOT OPENDMI_RELEASE_DATE)
+    string(TIMESTAMP OPENDMI_RELEASE_DATE "%Y-%m-%d")
+endif()
+
 set(ENABLE_GOLANG OFF CACHE BOOL "Enable Go support (libopendmi-go)")
 set(ENABLE_PYTHON OFF CACHE BOOL "Enable Python support (libopendmi-python)")
 set(ENABLE_RUST OFF CACHE BOOL "Enable Rust support (libopendmi-rust)")

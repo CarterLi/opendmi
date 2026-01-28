@@ -124,6 +124,14 @@ _usage() {
 }
 
 _configure() {
+    RELEASE_BRANCH=`git branch --show-current`
+    if [ "${RELEASE_BRANCH}" == "main" ]; then
+        RELEASE_DATE=`date +'%Y-%m-%d'`
+    else
+        RELEASE_TAG=`git describe --tags --abbrev=0`
+        RELEASE_DATE=`git log -1 --format="%ai" ${RELEASE_TAG} | awk '{print $1}'`
+    fi
+
     while [ $# -gt 0 ]; do
         OPTION=$1
         shift
@@ -204,6 +212,8 @@ _configure() {
     echo "Using CMake:     ${CMAKE}"
     echo "Using CTest:     ${CTEST}"
     echo "Build directory: ${BUILD_DIR}"
+    echo "Release branch:  ${RELEASE_BRANCH}"
+    echo "Release date:    ${RELEASE_DATE}"
     echo "Build type:      ${BUILD_TYPE}"
     echo "Number of jobs:  ${NPROC}"
     echo
@@ -211,6 +221,7 @@ _configure() {
     ${CMAKE} -B ${BUILD_DIR} \
         -DCMAKE_INSTALL_PREFIX=${PREFIX} \
         -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+        -DOPENDMI_RELEASE_DATE=${RELEASE_DATE} \
         -DENABLE_GOLANG=${ENABLE_GOLANG} \
         -DENABLE_PYTHON=${ENABLE_PYTHON} \
         -DENABLE_RUST=${ENABLE_RUST} \
@@ -291,6 +302,8 @@ fi
 
 COMMAND=$1
 shift
+
+cd "${SCRIPT_ROOT}"
 
 case "${COMMAND}" in
     configure)
