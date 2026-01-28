@@ -57,14 +57,12 @@ dmi_entity_t *dmi_registry_get(
         dmi_type_t      type,
         bool            optional)
 {
-    dmi_registry_entry_t *entry   = nullptr;
-    dmi_context_t        *context = nullptr;
-    dmi_entity_t         *entity  = nullptr;
-
     if (registry == nullptr)
         return nullptr;
 
-    context = registry->context;
+    dmi_context_t *context = registry->context;
+    const dmi_registry_entry_t *entry = nullptr;
+    dmi_entity_t *entity = nullptr;
 
     if (handle == DMI_HANDLE_UNSUPPORTED) {
         dmi_error_raise_ex(context, DMI_ERROR_INVALID_ARGUMENT, "handle: 0x%04x", handle);
@@ -382,7 +380,7 @@ bool dmi_registry_iter_init(
 
 bool dmi_registry_iter_has_next(dmi_registry_iter_t *iter)
 {
-    dmi_registry_entry_t *next;
+    const dmi_registry_entry_t *next;
 
     if ((iter == nullptr) or iter->is_done)
         return false;

@@ -283,16 +283,15 @@ static off_t dmi_log_file_lock(void)
 
 static void dmi_log_file_unlock(off_t start)
 {
-    int fd = fileno(log_file);
-    off_t end;
-
     if (not(log_lock) or (start < 0))
         return;
 
     log_lock = false;
 
     do {
-        end = dmi_file_tell(fd);
+        int fd = fileno(log_file);
+
+        off_t end = dmi_file_tell(fd);
         if (end < 0) {
             dmi_command_message("Unable to get log position: %s", strerror(errno));
             break;

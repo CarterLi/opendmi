@@ -17,7 +17,7 @@
 /**
  * @internal
  */
-static bool dmi_entity_decode_length(dmi_entity_t *entity);
+static void dmi_entity_decode_length(dmi_entity_t *entity);
 
 /**
  * @internal
@@ -77,8 +77,7 @@ dmi_entity_t *dmi_entity_create(dmi_context_t *context, const void *data)
     bool success = false;
     do {
         // Decode strings
-        if (not dmi_entity_decode_length(entity))
-            break;
+        dmi_entity_decode_length(entity);
         if (not dmi_entity_decode_strings(entity))
             break;
 
@@ -165,9 +164,8 @@ bool dmi_entity_link(dmi_entity_t *entity)
     if (entity->state & DMI_ENTITY_STATE_LINKED)
         return true;
 
-    dmi_context_t *context = entity->context;
-
     if (not entity->spec->handlers.link(entity)) {
+        dmi_context_t *context = entity->context;
         dmi_error_raise_ex(context, DMI_ERROR_ENTITY_LINK,
                            "0x%04x (%s)", entity->handle, entity->spec->name);
         return false;
@@ -271,7 +269,7 @@ void dmi_entity_destroy(dmi_entity_t *entity)
     dmi_free(entity);
 }
 
-static bool dmi_entity_decode_length(dmi_entity_t *entity)
+static void dmi_entity_decode_length(dmi_entity_t *entity)
 {
     assert(entity != nullptr);
     assert(entity->data != nullptr);
@@ -302,8 +300,6 @@ static bool dmi_entity_decode_length(dmi_entity_t *entity)
     entity->extra_length = ptr - start;
     entity->total_length = entity->body_length + entity->extra_length;
     entity->string_count = count;
-
-    return true;
 }
 
 static bool dmi_entity_decode_strings(dmi_entity_t *entity)

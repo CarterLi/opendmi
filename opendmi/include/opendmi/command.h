@@ -127,7 +127,7 @@ extern const dmi_option_set_t dmi_global_options;
 
 __BEGIN_DECLS
 
-void dmi_command_init(const char *proc);
+void dmi_command_init(const char *process);
 
 void dmi_command_list(void);
 

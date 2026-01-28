@@ -231,11 +231,6 @@ dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *pleng
 #if !defined(_WIN32)
 dmi_data_t *dmi_memory_get(dmi_context_t *context, const char *path, size_t base, size_t length)
 {
-    int         fd   = -1;
-    dmi_data_t *ptr  = MAP_FAILED;
-    dmi_data_t *data = nullptr;
-    stat_t      st;
-
     if (context == nullptr)
         return nullptr;
 
@@ -251,6 +246,11 @@ dmi_data_t *dmi_memory_get(dmi_context_t *context, const char *path, size_t base
     bool   success   = false;
     size_t page_size = sysconf(_SC_PAGE_SIZE);
     size_t offset    = base % page_size;
+    int    fd        = -1;
+
+    // cppcheck-suppress constVariablePointer
+    dmi_data_t *ptr  = MAP_FAILED;
+    dmi_data_t *data = nullptr;
 
     do {
         fd = open(path, O_RDONLY);
@@ -259,6 +259,7 @@ dmi_data_t *dmi_memory_get(dmi_context_t *context, const char *path, size_t base
             break;
         }
 
+        stat_t st;
         if (fstat(fd, &st) < 0) {
             dmi_error_raise_ex(context, DMI_ERROR_FILE_STAT, "%s: %s", path, strerror(errno));
             break;
@@ -286,13 +287,16 @@ dmi_data_t *dmi_memory_get(dmi_context_t *context, const char *path, size_t base
             break;
         }
 
+        // cppcheck-suppress nullPointerArithmeticOutOfMemory
         dmi_memory_get_data(data, ptr + offset, length);
 
         success = true;
     } while (false);
 
-    if (ptr != MAP_FAILED)
+    if (ptr != MAP_FAILED) {
+        // cppcheck-suppress nullPointerOutOfMemory
         munmap(ptr, offset + length);
+    }
     if (fd >= 0)
         close(fd);
 

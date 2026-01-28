@@ -11,10 +11,10 @@
 #include <opendmi/error.h>
 #include <opendmi/utils.h>
 
-static size_t dmi_error_slot_get(dmi_error_queue_t *state);
-static void dmi_error_slot_clear(dmi_error_queue_t *state, size_t idx);
+static size_t dmi_error_slot_get(dmi_error_queue_t *queue);
+static void dmi_error_slot_clear(dmi_error_queue_t *queue, size_t idx);
 
-static inline size_t dmi_error_queue_last_slot(dmi_error_queue_t *queue)
+static inline size_t dmi_error_queue_last_slot(const dmi_error_queue_t *queue)
 {
     return (queue->first + queue->count - 1) % DMI_ERROR_MAX_DEPTH;
 }
@@ -102,7 +102,6 @@ bool __dmi_error_vraise(
 {
     size_t slot;
     dmi_error_t *error;
-    int rv = -1;
 
     if (context == nullptr)
         return false;
@@ -116,7 +115,7 @@ bool __dmi_error_vraise(
     error->reason   = reason;
 
     if (message != nullptr) {
-        rv = vasprintf(&error->message, message, args);
+        int rv = vasprintf(&error->message, message, args);
 
         if ((rv < 0) or (error->message == nullptr)) {
             dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);

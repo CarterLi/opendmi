@@ -269,8 +269,6 @@ bool dmi_open(dmi_context_t *context, const char *device)
 
 bool dmi_add_extension(dmi_context_t *context, const dmi_extension_t *extension)
 {
-    const dmi_entity_spec_t **pspec;
-
     if (context == nullptr)
         return false;
 
@@ -282,6 +280,8 @@ bool dmi_add_extension(dmi_context_t *context, const dmi_extension_t *extension)
     dmi_log_info(context, "Enabling extension: %s", extension->name);
 
     if (extension->entities) {
+        const dmi_entity_spec_t **pspec;
+
         // Check type map for conflicts
         for (pspec = extension->entities; *pspec != nullptr; pspec++) {
             if (context->type_map[(*pspec)->type] != nullptr) {

@@ -17,20 +17,20 @@ dmi_date_t dmi_date_parse(const char *str)
     assert(str != nullptr);
 
     unsigned i = 0;
-    char *date;
-    char *token;
     char *ep;
-    unsigned long value;
     unsigned year, month, day;
-    size_t len;
 
-    len  = strlen(str) + 1;
-    date = alloca(len);
+    size_t len  = strlen(str) + 1;
 
+    char date[len];
     memcpy(date, str, len);
 
+    char *pos = date;
     while (true) {
-        token = strtok_r(date, "/", &date);
+        const char *token;
+        unsigned long value;
+        
+        token = strtok_r(pos, "/", &pos);
         if (token == nullptr)
             break;
 

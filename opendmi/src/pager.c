@@ -25,7 +25,6 @@ bool dmi_pager_start(dmi_context_t *context)
     wordexp_t we = {};
     int rv;
 	int fds[2];
-	pid_t pid;
 
     const char *pager = getenv("PAGER");
     if (pager == nullptr)
@@ -58,7 +57,7 @@ bool dmi_pager_start(dmi_context_t *context)
             break;
         }
 
-        pid = fork();
+        pid_t pid = fork();
         if (pid < 0) {
             dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Fork failed: %s", strerror(errno));
             break;

@@ -59,7 +59,7 @@ static bool dmi_memory_array_addr_validate(dmi_entity_t *entity)
     if ((entity == nullptr) or (entity->type != DMI_TYPE_MEMORY_ARRAY_ADDR))
         return false;
 
-    dmi_stream_t *stream = &entity->stream;
+    const dmi_stream_t *stream = &entity->stream;
 
     uint32_t start_addr = 0, end_addr = 0;
     uint64_t start_addr_ex = 0, end_addr_ex = 0;

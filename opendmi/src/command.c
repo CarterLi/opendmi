@@ -186,9 +186,6 @@ const dmi_command_t *dmi_command_find(const char *name)
 
 void dmi_command_usage(const dmi_command_t *command)
 {
-    const dmi_option_set_t **set;
-    const dmi_argument_t *arg;
-
     dmi_tty_header("Usage:");
 
     if (command == nullptr) {
@@ -199,7 +196,7 @@ void dmi_command_usage(const dmi_command_t *command)
 
         if (command->arguments != nullptr) {
             printf(" [--]");
-            for (arg = command->arguments; arg->name != nullptr; arg++) {
+            for (const dmi_argument_t *arg = command->arguments; arg->name != nullptr; arg++) {
                 printf(arg->required ? " <%s>" : " [<%s>]", arg->name);
             }
         }
@@ -212,7 +209,7 @@ void dmi_command_usage(const dmi_command_t *command)
 
     if (command != nullptr) {
         dmi_tty_header("Command options:");
-        for (set = command->options; *set != nullptr; set++)
+        for (const dmi_option_set_t **set = command->options; *set != nullptr; set++)
             dmi_option_list(*set);
     } else {
         printf("Use %s <command> --help for more information\n\n", dmi_process);

@@ -23,6 +23,7 @@ if(CPPCHECK_FOUND)
         --inconclusive
         --enable=all
         --disable=missingInclude,unusedFunction,information
+        --suppress=constParameterCallback
         --inline-suppr
     )
 

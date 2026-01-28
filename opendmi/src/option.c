@@ -24,12 +24,11 @@ static bool dmi_option_set(
 void dmi_option_list(const dmi_option_set_t *set)
 {
     const dmi_option_t *option;
-    const dmi_argument_t *arg;
-
+    
     assert(set != nullptr);
 
     for (option = set->options; option->short_names || option->long_names; option++) {
-        arg = &option->argument;
+        const dmi_argument_t *arg = &option->argument;
 
         if (option->flags & DMI_OPTION_FLAG_HIDDEN)
             continue;
@@ -94,13 +93,12 @@ const dmi_option_t *dmi_option_find_short(const dmi_option_set_t *set, char name
 
 const dmi_option_t *dmi_option_find_short_ex(const dmi_option_set_t **options, char name)
 {
-    const dmi_option_t *option;
-
     assert(options != nullptr);
     assert(name != 0);
 
     while (*options) {
-        option = dmi_option_find_short(*options, name);
+        const dmi_option_t *option = dmi_option_find_short(*options, name);
+
         if (option != nullptr)
             return option;
 
@@ -132,13 +130,12 @@ const dmi_option_t *dmi_option_find_long(const dmi_option_set_t *set, const char
 
 const dmi_option_t *dmi_option_find_long_ex(const dmi_option_set_t **options, const char *name)
 {
-    const dmi_option_t *option;
-
     assert(options != nullptr);
     assert(name != 0);
 
     while (*options) {
-        option = dmi_option_find_long(*options, name);
+        const dmi_option_t *option = dmi_option_find_long(*options, name);
+
         if (option != nullptr)
             return option;
 
@@ -254,6 +251,8 @@ int dmi_option_parse(
                     count++;
                     break;
                 } else {
+                    arg++;
+
                     if (*arg != 0) {
                         value = arg;
                     } else if ((argc > 0) and (*argv[0] != '-')) {

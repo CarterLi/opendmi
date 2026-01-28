@@ -25,8 +25,8 @@ __BEGIN_DECLS
 bool dmi_stream_initialize(dmi_stream_t *stream, const dmi_entity_t *entity);
 bool dmi_stream_seek(dmi_stream_t *stream, size_t position);
 bool dmi_stream_read_data(dmi_stream_t *stream, void *ptr, size_t length);
-bool dmi_stream_read_data_at(dmi_stream_t *stream, void *ptr, size_t offset, size_t length);
-bool dmi_stream_is_done(dmi_stream_t *stream);
+bool dmi_stream_read_data_at(const dmi_stream_t *stream, void *ptr, size_t offset, size_t length);
+bool dmi_stream_is_done(const dmi_stream_t *stream);
 void dmi_stream_reset(dmi_stream_t *stream);
 
 __END_DECLS

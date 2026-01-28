@@ -222,7 +222,7 @@ static bool dmi_ipmi_device_decode(dmi_entity_t *entity)
         return false;
     
     info->base_addr      = base_addr & 0x7FFFFFFFFFFFFFFFu;
-    info->base_addr_type = info->base_addr & 0x8000000000000000u
+    info->base_addr_type = (info->base_addr & 0x8000000000000000u)
                          ? DMI_IPMI_ADDR_TYPE_IO
                          : DMI_IPMI_ADDR_TYPE_MEMORY;
 

@@ -45,7 +45,7 @@ bool dmi_stream_read_data(dmi_stream_t *stream, void *ptr, size_t length)
     return true;
 }
 
-bool dmi_stream_read_data_at(dmi_stream_t *stream, void *ptr, size_t offset, size_t length)
+bool dmi_stream_read_data_at(const dmi_stream_t *stream, void *ptr, size_t offset, size_t length)
 {
     if ((stream == nullptr) or (ptr == nullptr))
         return false;
@@ -57,7 +57,7 @@ bool dmi_stream_read_data_at(dmi_stream_t *stream, void *ptr, size_t offset, siz
     return true;
 }
 
-bool dmi_stream_is_done(dmi_stream_t *stream)
+bool dmi_stream_is_done(const dmi_stream_t *stream)
 {
     return stream->position >= stream->entity->body_length;
 }

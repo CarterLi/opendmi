@@ -363,24 +363,21 @@ static bool dmi_firmware_decode(dmi_entity_t *entity)
     info->features.__value = dmi_decode(data->features);
 
     // SMBIOS 2.1: Extra feature bits
-    if (entity->body_length > 0x12) {
-        size_t extra = entity->body_length - 0x12;
+    if (entity->body_length > 0x12u) {
+        entity->level = dmi_version(2, 1, 0);
+    
+        size_t extra = entity->body_length - 0x12u;
 
-        if (extra != 0) {
-            entity->level = dmi_version(2, 1, 0);
-
-            dmi_firmware_features_ex_t features_ex = {
-                .__value = {
-                    extra > 0 ? data->features_ex[0] : 0,
-                    extra > 1 ? data->features_ex[1] : 0
-                }
-            };
-            info->features_ex = features_ex;
-        }
+        info->features_ex = (typeof(info->features_ex)){
+            .__value = {
+                extra > 0 ? data->features_ex[0] : 0,
+                extra > 1 ? data->features_ex[1] : 0
+            }
+        };
     }
 
     // SMBIOS 2.4 features
-    if (entity->body_length > 0x14) {
+    if (entity->body_length > 0x14u) {
         entity->level = dmi_version(2, 4, 0);
 
         if (data->platform_release_major != 0xFFU) {

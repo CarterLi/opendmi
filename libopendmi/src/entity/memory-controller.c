@@ -251,7 +251,6 @@ static bool dmi_memory_controller_decode(dmi_entity_t *entity)
 {
     dmi_memory_controller_t *info;
     const dmi_memory_controller_data_t *data;
-    const dmi_memory_controller_extra_t *extra;
 
     data = dmi_entity_data(entity, DMI_TYPE_MEMORY_CONTROLLER);
     if (data == nullptr)
@@ -291,7 +290,8 @@ static bool dmi_memory_controller_decode(dmi_entity_t *entity)
 
     if (entity->body_length > (size_t)(extra_start - entity->data)) {
         entity->level = dmi_version(2, 1, 0);
-        extra = dmi_cast(extra, extra_start);
+
+        const dmi_memory_controller_extra_t *extra = dmi_cast(extra, extra_start);
 
         info->enabled_error_correction = (dmi_error_correct_caps_t) {
             .__value = dmi_decode(extra->enabled_error_correction)

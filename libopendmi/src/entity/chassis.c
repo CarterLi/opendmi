@@ -393,7 +393,6 @@ static bool dmi_chassis_decode(dmi_entity_t *entity)
 {
     const dmi_chassis_data_t *data;
     dmi_chassis_t *info;
-    const dmi_data_t *element_ptr;
 
     data = dmi_entity_data(entity, DMI_TYPE_CHASSIS);
     if (data == nullptr)
@@ -451,7 +450,8 @@ static bool dmi_chassis_decode(dmi_entity_t *entity)
         if (info->elements == nullptr)
             return false;
 
-        element_ptr = entity->data + sizeof(dmi_chassis_data_t);
+        const dmi_data_t *element_ptr = entity->data + sizeof(dmi_chassis_data_t);
+
         for (size_t i = 0; i < info->element_count; i++) {
             dmi_chassis_element_t *element = &info->elements[i];
             const dmi_chassis_element_data_t *element_data = dmi_cast(element_data, element_ptr);

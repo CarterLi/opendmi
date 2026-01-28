@@ -330,10 +330,10 @@ static char *dmi_attribute_format_decimal(
     }
 
     if (attr->params.flags & DMI_ATTRIBUTE_FLAG_SIGNED) {
-        snprintf(fmt, sizeof(fmt), "%%lld.%%0%dllu", scale);
+        snprintf(fmt, sizeof(fmt), "%%lld.%%0%ullu", scale);
         rv = dmi_asprintf(&str, fmt, src / factor, llabs(src) % factor);
     } else {
-        snprintf(fmt, sizeof(fmt), "%%llu.%%0%dllu", scale);
+        snprintf(fmt, sizeof(fmt), "%%llu.%%0%ullu", scale);
         rv = dmi_asprintf(&str, fmt, (uint64_t)src / factor, (uint64_t)src % factor);
     }
 
@@ -348,20 +348,21 @@ static char *dmi_attribute_format_size(
         const void            *value,
         bool                   pretty)
 {
-    static const char *units[] = {
-        "bytes", "KiB", "MiB", "GiB", "TiB", "PiB", nullptr
-    };
-
+    
     assert(attr != nullptr);
     assert(value != nullptr);
-
+    
     int rv;
-    unsigned int i;
-
     char *str = nullptr;
     uintmax_t size = dmi_attribute_get_uint(attr, value);
-
+    
     if (pretty) {
+        unsigned int i;
+        
+        static const char *units[] = {
+            "bytes", "KiB", "MiB", "GiB", "TiB", "PiB", nullptr
+        };
+
         for (i = 0; units[i]; i++) {
             if ((size < 1024) or (size % 1024 != 0))
                 break;

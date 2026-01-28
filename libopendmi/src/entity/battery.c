@@ -189,7 +189,7 @@ static bool dmi_battery_decode(dmi_entity_t *entity)
         if (manufacture_date == nullptr) {
             uint16_t sbds_manufacture_date = dmi_decode(data->sbds_manufacture_date);
     
-            if (manufacture_date != 0) {
+            if (sbds_manufacture_date != 0) {
                 info->manufacture_date = dmi_date(
                     ((sbds_manufacture_date >> 9) & 0x7Fu) + 1980,
                     (sbds_manufacture_date >> 5) & 0x0Fu,

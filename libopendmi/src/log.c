@@ -37,11 +37,11 @@ void dmi_log(dmi_context_t *context, dmi_log_level_t level, const char *fmt, ...
     va_end(args);
 }
 
-const char *dmi_log_level_name(dmi_log_level_t level)
+const char *dmi_log_level_name(dmi_log_level_t value)
 {
     const char *name;
 
-    name = dmi_name_lookup(&dmi_log_level_names, level);
+    name = dmi_name_lookup(&dmi_log_level_names, value);
     if (name == nullptr)
         return "UNKNOWN";
 

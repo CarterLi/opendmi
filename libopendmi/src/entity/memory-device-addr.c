@@ -74,7 +74,7 @@ static bool dmi_memory_device_addr_validate(dmi_entity_t *entity)
     if ((entity == nullptr) or (entity->type != DMI_TYPE_MEMORY_DEVICE_ADDR))
         return false;
 
-    dmi_stream_t *stream = &entity->stream;
+    const dmi_stream_t *stream = &entity->stream;
 
     uint32_t start_addr = 0, end_addr = 0;
     uint64_t start_addr_ex = 0, end_addr_ex = 0;
@@ -144,8 +144,8 @@ static bool dmi_memory_device_addr_decode(dmi_entity_t *entity)
         if (not status)
             return false;
 
-        info->start_addr       = start_addr << 10;
-        info->end_addr         = end_addr << 10;
+        info->start_addr       = (uint64_t)start_addr << 10;
+        info->end_addr         = (uint64_t)end_addr << 10;
         info->partition_pos    = partition_pos != 0xFFu ? partition_pos : USHRT_MAX;
         info->interleave_pos   = interleave_pos != 0xFFu ? interleave_pos : USHRT_MAX;
         info->interleave_depth = interleave_depth != 0xFFu ? interleave_depth : USHRT_MAX;
