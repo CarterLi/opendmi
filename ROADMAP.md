@@ -9,14 +9,15 @@
 ## Release 0.2 (2026-02-28)
 
 * FreeBSD backend.
-* Decoders for OEM-specific structures.
+* Decoders for well-known OEM-specific structures.
 * Autoloading of OEM extensions.
+* Fully-featured command line interface.
 
 ## Release 0.3 (2026-03-31)
 
-* Complete implementation of `opendmi` command line tool.
 * JSON output support.
 * ICU4C support.
+* Packaging for major Linux distributions.
 
 ## Release 0.4 (2026-06-30)
 

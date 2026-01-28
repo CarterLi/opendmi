@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- All-new command line interface
 - Introduced reference manual
 - Introduced AMI extension
 - Introduced Intel extension
