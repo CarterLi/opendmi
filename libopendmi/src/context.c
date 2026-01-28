@@ -285,7 +285,7 @@ bool dmi_add_extension(dmi_context_t *context, const dmi_extension_t *extension)
         // Check type map for conflicts
         for (pspec = extension->entities; *pspec != nullptr; pspec++) {
             if (context->type_map[(*pspec)->type] != nullptr) {
-                dmi_error_raise_ex(context, DMI_ERROR_EXTENSION_CONFICT, "%s", extension->name);
+                dmi_error_raise_ex(context, DMI_ERROR_EXTENSION_CONFLICT, "%s", extension->name);
                 return false;
             }
         }
@@ -499,7 +499,7 @@ static bool dmi_open_ex(
 
         // Initialize backend
         if (not context->backend->open(context, device)) {
-            dmi_log_error(context, "Unable to open backend: %s", backend->name);
+            dmi_error_raise_ex(context, DMI_ERROR_BACKEND_OPEN, "%s", backend->name);
             break;
         }
 

@@ -257,7 +257,7 @@ void dmi_command_trace(dmi_context_t *context)
 
     assert(context != nullptr);
 
-    while ((error = dmi_error_get(context)) != nullptr) {
+    while ((error = dmi_error_get_first(context)) != nullptr) {
         const char *reason = dmi_error_message(error->reason);
 
         if (error->message != nullptr)

@@ -13,9 +13,6 @@
 
 #define DMI_ERROR_MAX_DEPTH 32
 
-typedef struct dmi_error       dmi_error_t;
-typedef struct dmi_error_state dmi_error_state_t;
-
 /**
  * @brief DMI error codes
  */
@@ -47,18 +44,19 @@ typedef enum dmi_error_code
     DMI_ERROR_DUPLICATE_HANDLE,      ///< Duplicate handle
     DMI_ERROR_NO_MORE_ENTRIES,       ///< No more entries
     DMI_ERROR_MISSING_FIRMWARE_INFO, ///< No platform firmware information structure is present
-    DMI_ERROR_EXTENSION_CONFICT,     ///< Extension has conflicts
+    DMI_ERROR_EXTENSION_CONFLICT,    ///< Extension has conflicts
     DMI_ERROR_OUT_OF_MEMORY,         ///< Out of memory
     DMI_ERROR_SERVICE_UNAVAILABLE,   ///< Service unavailable
     DMI_ERROR_SYSTEM,                ///< System error
     DMI_ERROR_INTERNAL,              ///< Internal error
+    DMI_ERROR_BACKEND_OPEN,          ///< Unable to open backend
     __DMI_ERROR_COUNT
 } dmi_error_code_t;
 
 /**
  * @brief Error descriptor.
  */
-struct dmi_error
+typedef struct dmi_error
 {
     /**
      * @brief Path to source file.
@@ -84,14 +82,17 @@ struct dmi_error
      * @brief Additional error message (optional).
      */
     char *message;
-};
+} dmi_error_t;
 
-struct dmi_error_state
+/**
+ * @brief Errors ring queue.
+ */
+typedef struct dmi_error_queue
 {
     dmi_error_t errors[DMI_ERROR_MAX_DEPTH];
     size_t first;
-    size_t last;
-};
+    size_t count;
+} dmi_error_queue_t;
 
 #define dmi_error_raise(context, reason) \
         __dmi_error_raise(context, __FILE__, __func__, __LINE__, reason, nullptr)
@@ -132,7 +133,7 @@ bool __dmi_error_vraise(
 /**
  * @brief This function returns the earliest error code from the error stack.
  */
-dmi_error_t *dmi_error_peek(dmi_context_t *context);
+dmi_error_t *dmi_error_peek_first(dmi_context_t *context);
 
 /**
  * @brief This function returns the latest error code from the error stack.
@@ -145,10 +146,10 @@ dmi_error_t *dmi_error_peek_last(dmi_context_t *context);
  * error codes to return.
  *
  * @note
- * The returned value is only valid until next call of `dmi_error_get()`,
+ * The returned value is only valid until next call of `dmi_error_get_first()`,
  * `dmi_error_get_last()` or `dmi_error_raise()`.
  */
-dmi_error_t *dmi_error_get(dmi_context_t *context);
+dmi_error_t *dmi_error_get_first(dmi_context_t *context);
 
 /**
  * @brief This function returns the latest error code from the error stack
@@ -156,7 +157,7 @@ dmi_error_t *dmi_error_get(dmi_context_t *context);
  * error codes to return.
  *
  * @note
- * The returned value is only valid until next call of `dmi_error_get()`,
+ * The returned value is only valid until next call of `dmi_error_get_first()`,
  * `dmi_error_get_last()` or `dmi_error_raise()`.
  */
 dmi_error_t *dmi_error_get_last(dmi_context_t *context);

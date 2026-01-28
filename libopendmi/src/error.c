@@ -11,8 +11,13 @@
 #include <opendmi/error.h>
 #include <opendmi/utils.h>
 
-static size_t dmi_error_slot_get(dmi_error_state_t *state);
-static void dmi_error_slot_clear(dmi_error_state_t *state, size_t idx);
+static size_t dmi_error_slot_get(dmi_error_queue_t *state);
+static void dmi_error_slot_clear(dmi_error_queue_t *state, size_t idx);
+
+static inline size_t dmi_error_queue_last_slot(dmi_error_queue_t *queue)
+{
+    return (queue->first + queue->count - 1) % DMI_ERROR_MAX_DEPTH;
+}
 
 static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
 {
@@ -42,11 +47,12 @@ static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
     [DMI_ERROR_DUPLICATE_HANDLE]      = "Duplicate handle",
     [DMI_ERROR_NO_MORE_ENTRIES]       = "No more entries",
     [DMI_ERROR_MISSING_FIRMWARE_INFO] = "No platform firmware information structure is present",
-    [DMI_ERROR_EXTENSION_CONFICT]     = "Extensions has conflics",
+    [DMI_ERROR_EXTENSION_CONFLICT]    = "Extensions has conflics",
     [DMI_ERROR_SERVICE_UNAVAILABLE]   = "Service unavailable",
     [DMI_ERROR_OUT_OF_MEMORY]         = "Out of memory",
     [DMI_ERROR_SYSTEM]                = "System error",
-    [DMI_ERROR_INTERNAL]              = "Internal error"
+    [DMI_ERROR_INTERNAL]              = "Internal error",
+    [DMI_ERROR_BACKEND_OPEN]          = "Unable to open backend"
 };
 
 static const dmi_error_t dmi_error_null =
@@ -101,8 +107,8 @@ bool __dmi_error_vraise(
     if (context == nullptr)
         return false;
 
-    slot = dmi_error_slot_get(&context->error_state);
-    error = &context->error_state.errors[slot];
+    slot = dmi_error_slot_get(&context->error_queue);
+    error = &context->error_queue.errors[slot];
 
     error->file     = file;
     error->function = function;
@@ -126,105 +132,103 @@ bool __dmi_error_vraise(
     return true;
 }
 
-dmi_error_t *dmi_error_peek(dmi_context_t *context)
+dmi_error_t *dmi_error_peek_first(dmi_context_t *context)
 {
-    dmi_error_state_t *state;
-
     if (context == nullptr)
         return nullptr;
 
-    state = &context->error_state;
-    if (state->first == state->last)
+    dmi_error_queue_t *queue = &context->error_queue;
+
+    if (queue->count == 0)
         return nullptr;
 
-    return &state->errors[state->first + 1];
+    return &queue->errors[queue->first];
 }
 
 dmi_error_t *dmi_error_peek_last(dmi_context_t *context)
 {
-    dmi_error_state_t *state;
-
     if (context == nullptr)
         return nullptr;
 
-    state = &context->error_state;
-    if (state->first == state->last)
+    dmi_error_queue_t *queue = &context->error_queue;
+
+    if (queue->count == 0)
         return nullptr;
 
-    return &state->errors[state->last];
+    size_t last = dmi_error_queue_last_slot(queue);
+    return &queue->errors[last];
 }
 
-dmi_error_t *dmi_error_get(dmi_context_t *context)
+dmi_error_t *dmi_error_get_first(dmi_context_t *context)
 {
-    dmi_error_state_t *state;
-    dmi_error_t *error;
-
     if (context == nullptr)
         return nullptr;
 
-    state = &context->error_state;
-    if (state->first == state->last)
+    dmi_error_queue_t *queue = &context->error_queue;
+
+    if (queue->count == 0)
         return nullptr;
 
-    error = &state->errors[state->first + 1];
-    state->first = (state->first + 1) % DMI_ERROR_MAX_DEPTH;
+    dmi_error_t *error = &queue->errors[queue->first];
+
+    queue->first = (queue->first + 1) % DMI_ERROR_MAX_DEPTH;
+    queue->count--;
 
     return error;
 }
 
 dmi_error_t *dmi_error_get_last(dmi_context_t *context)
 {
-    dmi_error_state_t *state;
-    dmi_error_t *error;
-
     if (context == nullptr)
         return nullptr;
 
-    state = &context->error_state;
-    if (state->first == state->last)
+    dmi_error_queue_t *queue = &context->error_queue;
+
+    if (queue->count == 0)
         return nullptr;
 
-    error = &state->errors[state->last];
+    size_t       last  = dmi_error_queue_last_slot(queue);
+    dmi_error_t *error = &queue->errors[last];
 
-    if (state->last > 0)
-        state->last--;
-    else
-        state->last = DMI_ERROR_MAX_DEPTH - 1;
+    queue->count--;
 
     return error;
 }
 
 void dmi_error_clear(dmi_context_t *context)
 {
-    dmi_error_state_t *state;
-
     if (context == nullptr)
         return;
 
-    state = &context->error_state;
+    dmi_error_queue_t *queue = &context->error_queue;
 
     for (size_t i = 0; i < DMI_ERROR_MAX_DEPTH; i++) {
-        dmi_error_slot_clear(state, i);
+        dmi_error_slot_clear(queue, i);
     }
 
-    state->first = 0;
-    state->last  = 0;
+    queue->first = 0;
+    queue->count = 0;
 }
 
-static size_t dmi_error_slot_get(dmi_error_state_t *state)
+static size_t dmi_error_slot_get(dmi_error_queue_t *queue)
 {
-    state->last = (state->last + 1) % DMI_ERROR_MAX_DEPTH;
+    size_t slot;
 
-    if (state->last == state->first)
-        state->first = (state->first + 1) % DMI_ERROR_MAX_DEPTH;
+    if (queue->count == DMI_ERROR_MAX_DEPTH - 1) {
+        slot = queue->first;
+        queue->first = (queue->first + 1) % DMI_ERROR_MAX_DEPTH;
+    } else {
+        queue->count++;
+        slot = dmi_error_queue_last_slot(queue);
+    }
 
-    dmi_error_slot_clear(state, state->last);
+    dmi_error_slot_clear(queue, slot);
 
-    return state->last;
+    return slot;
 }
 
-static void dmi_error_slot_clear(dmi_error_state_t *state, size_t idx)
+static void dmi_error_slot_clear(dmi_error_queue_t *queue, size_t idx)
 {
-    dmi_free(state->errors[idx].message);
-    state->errors[idx] = dmi_error_null;
+    dmi_free(queue->errors[idx].message);
+    queue->errors[idx] = dmi_error_null;
 }

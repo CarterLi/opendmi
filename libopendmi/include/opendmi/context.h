@@ -131,7 +131,7 @@ struct dmi_context
     /**
      * @brief Error state.
      */
-    dmi_error_state_t error_state;
+    dmi_error_queue_t error_queue;
 
     /**
      * @brief ICU4C resources.
