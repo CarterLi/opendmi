@@ -15,8 +15,11 @@ __BEGIN_DECLS
 
 off_t dmi_file_tell(int fd);
 off_t dmi_file_seek(int fd, off_t offset, int whence);
+
 bool  dmi_file_lock(int fd, off_t size);
 bool  dmi_file_unlock(int fd, off_t size);
+
+ssize_t dmi_file_read(int fd, dmi_data_t *data, size_t size);
 
 __END_DECLS
 

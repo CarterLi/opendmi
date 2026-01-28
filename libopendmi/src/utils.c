@@ -33,6 +33,7 @@
 
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
+#include <opendmi/utils/file.h>
 
 #if defined(_WIN32)
 typedef struct _stat stat_t;
@@ -44,8 +45,7 @@ typedef struct _stat stat_t;
 typedef struct stat stat_t;
 #endif // !defined(_WIN32)
 
-static ssize_t dmi_file_read_data(int fd, dmi_data_t *data, size_t avail);
-static void dmi_memory_read_data(dmi_data_t *dst, const dmi_data_t *src, size_t length);
+static void dmi_memory_get_data(dmi_data_t *dst, const dmi_data_t *src, size_t length);
 
 void *dmi_alloc(dmi_context_t *context, size_t size)
 {
@@ -164,7 +164,7 @@ int dmi_vasprintf(char **strp, const char *fmt, va_list ap)
     return rv;
 }
 
-dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plength)
+dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *plength)
 {
     if (context == nullptr)
         return nullptr;
@@ -203,12 +203,10 @@ dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plen
             break;
         }
 
-        if ((data = malloc(st.st_size)) == nullptr) {
-            dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);
+        if ((data = dmi_alloc(context, st.st_size)) == nullptr)
             break;
-        }
 
-        length = dmi_file_read_data(fd, data, st.st_size);
+        length = dmi_file_read(fd, data, st.st_size);
         if (length < 0) {
             dmi_error_raise_ex(context, DMI_ERROR_FILE_READ, "%s: %s", path, strerror(errno));
             break;
@@ -232,34 +230,8 @@ dmi_data_t *dmi_file_read(dmi_context_t *context, const char *path, size_t *plen
     return data;
 }
 
-static ssize_t dmi_file_read_data(int fd, dmi_data_t *data, size_t avail)
-{
-    assert(fd >= 0);
-    assert(data != nullptr);
-
-    size_t length = 0;
-
-    while (avail > 0) {
-        ssize_t nread = read(fd, data + length, avail);
-
-        if (nread < 0) {
-            if (errno == EINTR)
-                continue;
-            return -1;
-        }
-
-        if (nread == 0)
-            break;
-
-        length += nread;
-        avail  -= nread;
-    }
-
-    return length;
-}
-
 #if !defined(_WIN32)
-dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, size_t base, size_t length)
+dmi_data_t *dmi_memory_get(dmi_context_t *context, const char *path, size_t base, size_t length)
 {
     int         fd   = -1;
     dmi_data_t *ptr  = MAP_FAILED;
@@ -316,7 +288,7 @@ dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, size_t bas
             break;
         }
 
-        dmi_memory_read_data(data, ptr + offset, length);
+        dmi_memory_get_data(data, ptr + offset, length);
 
         success = true;
     } while (false);
@@ -334,7 +306,7 @@ dmi_data_t *dmi_memory_read(dmi_context_t *context, const char *path, size_t bas
     return data;
 }
 
-static void dmi_memory_read_data(dmi_data_t *dst, const dmi_data_t *src, size_t length)
+static void dmi_memory_get_data(dmi_data_t *dst, const dmi_data_t *src, size_t length)
 {
 #   if defined(__aarch64__)
         // Avoid unaligned memory access on memory device

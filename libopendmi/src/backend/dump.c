@@ -52,7 +52,7 @@ static bool dmi_dump_open(dmi_context_t *context, const char *path)
         return false;
 
     do {
-        session->data = dmi_file_read(context, (const char *)path, &session->data_size);
+        session->data = dmi_file_get(context, (const char *)path, &session->data_size);
         if (session->data == nullptr)
             break;
         if (session->data_size < DMI_ENTRY_MAX_SIZE + sizeof(dmi_header_t))

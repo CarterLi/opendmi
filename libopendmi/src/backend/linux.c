@@ -82,11 +82,11 @@ static bool dmi_linux_open(dmi_context_t *context, const char *path)
         if (asprintf(&table_path, "%s/%s", dmi_linux_sysfs_path, dmi_linux_table_file) < 0)
             break;
 
-        session->entry = dmi_file_read(context, entry_path, &session->entry_size);    
+        session->entry = dmi_file_get(context, entry_path, &session->entry_size);    
         if (session->entry == nullptr)
             break;
 
-        session->table = dmi_file_read(context, table_path, &session->table_size);
+        session->table = dmi_file_get(context, table_path, &session->table_size);
         if (session->table == nullptr)
             break;
 
