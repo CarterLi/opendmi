@@ -1,0 +1,7 @@
+= opendmi-modules(1)
+The OpenDMI contributors
+OpenDMI 0.2.0
+
+:doctype: manpage
+:manmanual: OPENDMI-MODULES
+:mansource: OPENDMI-MODULES

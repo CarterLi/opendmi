@@ -1,5 +1,5 @@
 = dmi_close(3)
-Dmitry Sednev
+The OpenDMI contributors
 OpenDMI 0.2.0
 
 :doctype: manpage
