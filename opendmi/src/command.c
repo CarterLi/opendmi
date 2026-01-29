@@ -119,7 +119,7 @@ const dmi_option_set_t dmi_global_options =
         {
             .short_names = "m",
             .long_names  = (const char *[]){ "module", nullptr },
-            .description = "Load specified module",
+            .description = "Enable specified module",
             .argument    = {
                 .name     = "module",
                 .type     = DMI_ARGUMENT_TYPE_STRING,
