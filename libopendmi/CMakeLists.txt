@@ -479,6 +479,9 @@ opendmi_test(battery-chemistry-name test/battery-chemistry-name.c)
 opendmi_test(slot-usage-name test/slot-usage-name.c)
 opendmi_test(slot-width-name test/slot-width-name.c)
 
+opendmi_test(pointing-device-type-name test/entity/pointing-device-type-name.c)
+opendmi_test(pointing-device-iface-name test/entity/pointing-device-iface-name.c)
+
 opendmi_test(version-build test/utils/version-build.c)
 opendmi_test(version-format test/utils/version-format.c)
 opendmi_test(version-format-ex test/utils/version-format-ex.c)

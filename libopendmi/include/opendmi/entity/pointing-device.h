@@ -45,6 +45,8 @@ typedef enum dmi_pointing_device_iface
     DMI_POINTING_DEVICE_IFACE_HP_HIL        = 0x06, ///< HP-HIL
     DMI_POINTING_DEVICE_IFACE_BUS_MOUSE     = 0x07, ///< Bus mouse
     DMI_POINTING_DEVICE_IFACE_ADB           = 0x08, ///< ADB (Apple Desktop Bus)
+    __DMI_POINTING_DEVICE_IFACE_UNASSIGNED_START = 0x09,
+    __DMI_POINTING_DEVICE_IFACE_UNASSIGNED_END   = 0x9F,
     DMI_POINTING_DEVICE_IFACE_BUS_MOUSE_DB9 = 0xA0, ///< Bus mouse DB-9
     DMI_POINTING_DEVICE_IFACE_BUS_MOUSE_DIN = 0xA1, ///< Bus mouse micro-DIN
     DMI_POINTING_DEVICE_IFACE_USB           = 0xA2, ///< USB
