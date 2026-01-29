@@ -4,17 +4,21 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 #include <opendmi/context.h>
 #include <opendmi/module.h>
+#include <opendmi/utils.h>
+#include <opendmi/utils/string.h>
 #include <opendmi/tty.h>
 
 #include <opendmi/command/modules.h>
 
 static void dmi_modules_usage(void);
 static int dmi_modules_main(dmi_context_t *context, int argc, char *argv[]);
+static int dmi_modules_comparator(const void *lhs, const void *rhs);
 
 static const dmi_option_set_t dmi_modules_options =
 {
@@ -49,20 +53,67 @@ static void dmi_modules_usage(void)
 
 static int dmi_modules_main(dmi_context_t *context, int argc, char *argv[])
 {
-    dmi_module_t *module;
-
-    dmi_unused(context);
     dmi_unused(argc);
     dmi_unused(argv);
 
     dmi_command_banner();
     dmi_tty_header("Available modules:");
 
-    for (module = dmi_modules; module != nullptr; module = module->next) {
-        dmi_tty_cprintf(DMI_TTY_COLOR_YELLOW, "%4s%-10s", "", module->code);
-        dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "%s\n", module->name);
-    }
-    printf("\n");
+    int rv = EXIT_FAILURE;
+    size_t width = 0;
+    size_t count = 0;
+    size_t index = 0;
+    char *format = nullptr;
+    const dmi_module_t **modules = nullptr;
 
-    return EXIT_FAILURE;
+    for (const dmi_module_t *module = dmi_modules; module != nullptr; module = module->next) {
+        size_t name_width = strlen(module->code);
+        if (width < name_width)
+            width = name_width;
+        count++;
+    }
+
+    do {
+        if (dmi_asprintf(&format, "%%4s%%-%us", width + 2) < 0) {
+            dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);
+            break;
+        }
+
+        modules = dmi_alloc_array(context, sizeof(dmi_module_t *), count);
+        if (modules == nullptr)
+            break;
+
+        for (const dmi_module_t *module = dmi_modules; module != nullptr; module = module->next, index++) {
+            modules[index] = module;
+        }
+
+        qsort(modules, count, sizeof(dmi_module_t *), dmi_modules_comparator);
+
+        for (index = 0; index < count; index++) {
+            const dmi_module_t *module = modules[index];
+
+            dmi_tty_cprintf(DMI_TTY_COLOR_YELLOW, format, "", module->code);
+            dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "%s\n", module->name);
+        }
+
+        printf("\n");
+
+        rv = EXIT_SUCCESS;
+    } while (false);
+
+    if (rv != EXIT_SUCCESS)
+        dmi_command_trace(context);
+
+    dmi_free(modules);
+    dmi_free(format);
+
+    return rv;
+}
+
+static int dmi_modules_comparator(const void *lhs, const void *rhs)
+{
+    const dmi_module_t *lhs_module = *(const dmi_module_t **)lhs;
+    const dmi_module_t *rhs_module = *(const dmi_module_t **)rhs;
+
+    return strcmp(lhs_module->code, rhs_module->code);
 }

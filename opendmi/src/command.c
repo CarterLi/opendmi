@@ -193,6 +193,11 @@ void dmi_command_banner(void)
 void dmi_command_usage(const dmi_command_t *command)
 {
     dmi_command_banner();
+
+    if (command != nullptr) {
+        dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "%s\n\n", command->description);
+    }
+
     dmi_tty_header("Usage:");
 
     if (command == nullptr) {
