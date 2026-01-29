@@ -10,6 +10,17 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "Coverage")
+    set(ENABLE_COVERAGE ON)
+
+    if("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang" OR
+       "${CMAKE_C_COMPILER_ID}" STREQUAL "AppleClang")
+        set(COVERAGE_OPTIONS -fprofile-instr-generate -fcoverage-mapping)
+    elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+        set(COVERAGE_OPTIONS --coverage)
+    endif()
+endif()
+
 add_library(opendmi-object OBJECT)
 
 if(ICU_FOUND)
@@ -359,6 +370,9 @@ endif()
 if(NOT MSVC)
     target_compile_options(opendmi-object PRIVATE -fPIC)
 endif()
+if(ENABLE_COVERAGE)
+    target_compile_options(opendmi-object PUBLIC ${COVERAGE_OPTIONS})
+endif()
 
 add_library(opendmi-static STATIC $<TARGET_OBJECTS:opendmi-object>)
 target_include_directories(opendmi-static INTERFACE include)
@@ -368,17 +382,39 @@ set_target_properties(opendmi-static PROPERTIES OUTPUT_NAME opendmi)
 add_library(opendmi-shared SHARED $<TARGET_OBJECTS:opendmi-object>)
 target_include_directories(opendmi-shared INTERFACE include)
 target_link_libraries(opendmi-shared PUBLIC ${LIBOPENDMI_LIBRARIES})
+if(ENABLE_COVERAGE)
+    target_link_options(opendmi-shared PUBLIC ${COVERAGE_OPTIONS})
+endif()
 set_target_properties(opendmi-shared PROPERTIES OUTPUT_NAME opendmi)
 
 install(TARGETS opendmi-object PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(TARGETS opendmi-static ARCHIVE DESTINATION lib)
 install(TARGETS opendmi-shared LIBRARY DESTINATION lib)
 
-macro(opendmi_test name sources)
-    add_executable(${name}-test ${sources})
-    target_link_libraries(${name}-test opendmi-shared)
-    add_test(NAME ${name} COMMAND ${name}-test)
-    set_property(TEST ${name} PROPERTY SKIP_RETURN_CODE 69)
+macro(opendmi_test TEST_NAME TEST_SOURCES)
+    set(TEST_TARGET ${TEST_NAME}-test)
+
+    add_executable(${TEST_TARGET} ${TEST_SOURCES})    
+    target_link_libraries(${TEST_TARGET} opendmi-shared)
+
+    if(ENABLE_COVERAGE)
+        target_compile_options(${TEST_TARGET} PUBLIC ${COVERAGE_OPTIONS})
+        target_link_options(${TEST_TARGET} PUBLIC ${COVERAGE_OPTIONS})
+    endif()    
+
+    add_test(
+        NAME ${TEST_NAME}
+        COMMAND ${TEST_TARGET}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+
+    set_tests_properties(${TEST_NAME} PROPERTIES SKIP_RETURN_CODE 69)
+
+    if(ENABLE_COVERAGE)
+        set_tests_properties(${TEST_NAME} ENVIRONMENT
+            "LLVM_PROFILE_FILE=${CMAKE_CURRENT_BINARY_DIR}/bin/${TEST_TARGET}.profraw"
+        )
+    endif()
 endmacro()
 
 opendmi_test(bswap16 test/bswap16.c)

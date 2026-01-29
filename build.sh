@@ -102,6 +102,7 @@ _usage() {
     echo "        --prefix <PATH>  Set installation prefix (default=${PREFIX})"
     echo "        --release        Release build"
     echo "        --debug          Debug build"
+    echo "        --coverage       Coverage build"
     echo "    Components:"
     echo "        --enable-all     Build all components"
     echo "        --enable-golang  Build with Go support (libopendmi-go, default=${ENABLE_GOLANG})"
@@ -142,11 +143,14 @@ _configure() {
                 PREFIX="$1"
                 shift
                 ;;
+            --release)
+                BUILD_TYPE=Release
+                ;;
             --debug)
                 BUILD_TYPE=Debug
                 ;;
-            --release)
-                BUILD_TYPE=Release
+            --coverage)
+                BUILD_TYPE=Coverage
                 ;;
             --enable-all)
                 ENABLE_GOLANG=ON
