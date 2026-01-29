@@ -102,6 +102,7 @@ target_sources(opendmi-object
         src/utils/endian.c
         src/utils/file.c
         src/utils/name.c
+        src/utils/string.c
         src/utils/uuid.c
         src/utils/vector.c
         src/utils/version.c
@@ -207,6 +208,7 @@ target_sources(opendmi-object
             include/opendmi/utils/endian.h
             include/opendmi/utils/file.h
             include/opendmi/utils/name.h
+            include/opendmi/utils/string.h
             include/opendmi/utils/uuid.h
             include/opendmi/utils/vector.h
             include/opendmi/utils/version.h

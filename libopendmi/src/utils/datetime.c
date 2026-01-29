@@ -9,7 +9,7 @@
 #include <errno.h>
 #include <assert.h>
 
-#include <opendmi/utils.h>
+#include <opendmi/utils/string.h>
 #include <opendmi/utils/datetime.h>
 
 dmi_date_t dmi_date_parse(const char *str)

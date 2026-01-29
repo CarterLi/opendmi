@@ -6,7 +6,7 @@
 //
 #include <stdio.h>
 
-#include <opendmi/utils.h>
+#include <opendmi/utils/string.h>
 #include <opendmi/utils/version.h>
 
 char *dmi_version_format(dmi_version_t version)

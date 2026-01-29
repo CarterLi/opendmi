@@ -13,6 +13,8 @@
 #include <opendmi/attribute.h>
 
 #include <opendmi/utils.h>
+#include <opendmi/utils/endian.h>
+#include <opendmi/utils/string.h>
 #include <opendmi/utils/datetime.h>
 #include <opendmi/utils/uuid.h>
 #include <opendmi/utils/version.h>
