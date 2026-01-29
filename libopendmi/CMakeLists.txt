@@ -411,8 +411,8 @@ macro(opendmi_test TEST_NAME TEST_SOURCES)
     set_tests_properties(${TEST_NAME} PROPERTIES SKIP_RETURN_CODE 69)
 
     if(ENABLE_COVERAGE)
-        set_tests_properties(${TEST_NAME} ENVIRONMENT
-            "LLVM_PROFILE_FILE=${CMAKE_CURRENT_BINARY_DIR}/bin/${TEST_TARGET}.profraw"
+        set_tests_properties(${TEST_NAME} PROPERTIES
+            ENVIRONMENT "LLVM_PROFILE_FILE=${CMAKE_CURRENT_BINARY_DIR}/bin/${TEST_TARGET}.profraw"
         )
     endif()
 endmacro()
@@ -478,6 +478,9 @@ opendmi_test(probe-location-name test/probe-location-name.c)
 opendmi_test(battery-chemistry-name test/battery-chemistry-name.c)
 opendmi_test(slot-usage-name test/slot-usage-name.c)
 opendmi_test(slot-width-name test/slot-width-name.c)
+
+opendmi_test(version-format test/utils/version-format.c)
+opendmi_test(version-format-ex test/utils/version-format-ex.c)
 
 if(ASCIIDOCTOR_FOUND)
     file(GLOB_RECURSE LIBOPENDMI_MANPAGE_SOURCES

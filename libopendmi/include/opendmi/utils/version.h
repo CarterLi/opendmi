@@ -16,6 +16,13 @@
  */
 typedef uint32_t dmi_version_t;
 
+typedef enum dmi_version_level
+{
+    DMI_VERSION_LEVEL_MAJOR,
+    DMI_VERSION_LEVEL_MINOR,
+    DMI_VERSION_LEVEL_REVISION
+} dmi_version_level_t;
+
 #define DMI_VERSION(major, minor, revision) \
     ((dmi_version_t)((((major) & 0xFFU) << 16) | (((minor) & 0xFFU) << 8) | ((revision) & 0xFFU)))
 
@@ -73,6 +80,7 @@ static inline unsigned int dmi_version_revision(dmi_version_t version)
 __BEGIN_DECLS
 
 char *dmi_version_format(dmi_version_t version);
+char *dmi_version_format_ex(dmi_version_t version, dmi_version_level_t level);
 
 __END_DECLS
 
