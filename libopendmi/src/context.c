@@ -26,6 +26,7 @@
 #include <opendmi/entity.h>
 #include <opendmi/vendor.h>
 #include <opendmi/utils.h>
+#include <opendmi/utils/file.h>
 
 #include <opendmi/entity/additional-info.h>
 #include <opendmi/entity/baseboard.h>
@@ -371,7 +372,7 @@ bool dmi_dump_save(dmi_context_t *context, const char *path, bool overwrite)
         success = true;
     } while (false);
 
-    close(fd);
+    dmi_file_close(fd);
 
     return success;
 }

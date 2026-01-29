@@ -15,6 +15,7 @@
 
 #include <opendmi/context.h>
 #include <opendmi/pager.h>
+#include <opendmi/utils.h>
 #include <opendmi/tty.h>
 
 #include <opendmi/command.h>
@@ -186,7 +187,19 @@ void dmi_command_usage(const dmi_command_t *command)
         printf("    %s [global options] <command> [command options] [--] [command args]\n\n", dmi_process);
         dmi_command_list();
     } else {
-        printf("    %s [global options] %s [command options]", dmi_process, command->name);
+        printf("    %s [global options] %s", dmi_process, command->name);
+
+        if (command->options != nullptr) {
+            for (const dmi_option_set_t **set = command->options; *set != nullptr; set++) {
+                size_t name_len = strlen((*set)->name) + 1;
+
+                char name[name_len];
+                memcpy(name, (*set)->name, name_len);
+                dmi_strlwr(name);
+
+                printf(" [%s]", name);
+            }
+        }
 
         if (command->arguments != nullptr) {
             printf(" [--]");
@@ -194,6 +207,7 @@ void dmi_command_usage(const dmi_command_t *command)
                 printf(arg->required ? " <%s>" : " [<%s>]", arg->name);
             }
         }
+
         printf("\n\n");
     }
 

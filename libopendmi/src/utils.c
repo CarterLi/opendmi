@@ -4,8 +4,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <sys/stat.h>
-
 #if __has_include(<sys/mman.h>)
 #   include <sys/mman.h>
 #endif
@@ -18,30 +16,17 @@
 #   include <share.h>
 #endif
 
-#if __has_include(<io.h>)
-#   include <io.h>
-#endif
-
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <ctype.h>
 #include <assert.h>
 
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
 #include <opendmi/utils/file.h>
-
-#if defined(_WIN32)
-typedef struct _stat stat_t;
-
-#define fstat(fd, buf)      _fstat(fd, buf)
-#define read(fd, buf, size) _read(fd, buf, size)
-#define close(fd)           _close(fd)
-#else // !defined(_WIN32)
-typedef struct stat stat_t;
-#endif // !defined(_WIN32)
 
 static void dmi_memory_get_data(dmi_data_t *dst, const dmi_data_t *src, size_t length);
 
@@ -162,6 +147,26 @@ int dmi_vasprintf(char **strp, const char *fmt, va_list ap)
     return rv;
 }
 
+void dmi_strlwr(char *str)
+{
+    assert(str != nullptr);
+
+    while (*str != 0) {
+        *str = tolower(*str);
+        str++;
+    }
+}
+
+void dmi_strupr(char *str)
+{
+    assert(str != nullptr);
+
+    while (*str != 0) {
+        *str = toupper(*str);
+        str++;
+    }
+}
+
 dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *plength)
 {
     if (context == nullptr)
@@ -182,7 +187,7 @@ dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *pleng
 
     bool success = false;
     do {
-        stat_t st;
+        dmi_file_stat_t st;
 
         dmi_log_debug(context, "Reading %s ...", path);
 
@@ -196,7 +201,7 @@ dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *pleng
         }
 #endif
 
-        if (fstat(fd, &st) < 0) {
+        if (dmi_file_stat(fd, &st) < 0) {
             dmi_error_raise_ex(context, DMI_ERROR_FILE_STAT, "%s: %s", path, strerror(errno));
             break;
         }
@@ -216,7 +221,7 @@ dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *pleng
     } while (false);
 
     if (fd >= 0)
-        close(fd);
+        dmi_file_close(fd);
 
     if (not success) {
         dmi_free(data);
@@ -259,8 +264,8 @@ dmi_data_t *dmi_memory_get(dmi_context_t *context, const char *path, size_t base
             break;
         }
 
-        stat_t st;
-        if (fstat(fd, &st) < 0) {
+        dmi_file_stat_t st;
+        if (dmi_file_stat(fd, &st) < 0) {
             dmi_error_raise_ex(context, DMI_ERROR_FILE_STAT, "%s: %s", path, strerror(errno));
             break;
         }
@@ -298,7 +303,7 @@ dmi_data_t *dmi_memory_get(dmi_context_t *context, const char *path, size_t base
         munmap(ptr, offset + length);
     }
     if (fd >= 0)
-        close(fd);
+        dmi_file_close(fd);
 
     if (not success) {
         dmi_free(data);

@@ -24,6 +24,9 @@ uint64_t dmi_ipow64(uint64_t value, unsigned int factor);
 int dmi_asprintf(char **strp, const char *fmt, ...);
 int dmi_vasprintf(char **strp, const char *fmt, va_list ap);
 
+void dmi_strlwr(char *str);
+void dmi_strupr(char *str);
+
 dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *plength);
 
 #if !defined(_WIN32)

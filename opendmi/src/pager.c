@@ -16,8 +16,8 @@
 #include <errno.h>
 
 #include <opendmi/context.h>
-#include <opendmi/error.h>
 #include <opendmi/pager.h>
+#include <opendmi/utils/file.h>
 
 bool dmi_pager_start(dmi_context_t *context)
 {
@@ -64,30 +64,30 @@ bool dmi_pager_start(dmi_context_t *context)
         }
 
         if (pid > 0) {
-            close(STDIN_FILENO);
+            dmi_file_close(STDIN_FILENO);
 
             if (dup2(fds[STDIN_FILENO], STDIN_FILENO) < 0) {
                 dmi_error_raise_ex(context, DMI_ERROR_FILE_DUP, "%s", strerror(errno));
                 break;
             }
 
-            close(fds[STDIN_FILENO]);
-            close(fds[STDOUT_FILENO]);
+            dmi_file_close(fds[STDIN_FILENO]);
+            dmi_file_close(fds[STDOUT_FILENO]);
 
             if (execvp(we.we_wordv[0], we.we_wordv) < 0) {
                 dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Unable to exec pager: %s", strerror(errno));
                 break;
             }
         } else {
-            close(STDOUT_FILENO);
+            dmi_file_close(STDOUT_FILENO);
 
             if (dup2(fds[STDOUT_FILENO], STDOUT_FILENO) < 0) {
                 dmi_error_raise_ex(context, DMI_ERROR_FILE_DUP, "%s", strerror(errno));
                 break;
             }
 
-            close(fds[STDIN_FILENO]);
-            close(fds[STDOUT_FILENO]);
+            dmi_file_close(fds[STDIN_FILENO]);
+            dmi_file_close(fds[STDOUT_FILENO]);
         }
 
         success = true;

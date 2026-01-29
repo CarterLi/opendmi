@@ -4,14 +4,42 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <sys/stat.h>
+
 #if __has_include(<unistd.h>)
 #   include <unistd.h>
+#endif
+
+#if __has_include(<io.h>)
+#   include <io.h>
 #endif
 
 #include <errno.h>
 #include <assert.h>
 
 #include <opendmi/utils/file.h>
+
+#if defined(_WIN32)
+#   define fstat(fd, buf)      _fstat(fd, buf)
+#   define read(fd, buf, size) _read(fd, buf, size)
+#   define close(fd)           _close(fd)
+#endif
+
+int dmi_file_stat(int fd, dmi_file_stat_t *st)
+{
+    int rv;
+
+    assert(fd >= 0);
+    assert(st != nullptr);
+
+    do {
+        rv = fstat(fd, st);
+        if ((rv < 0) and (errno == EINTR))
+            continue;
+    } while (false);
+
+    return rv;
+}
 
 off_t dmi_file_tell(int fd)
 {
@@ -88,4 +116,11 @@ ssize_t dmi_file_read(int fd, dmi_data_t *data, size_t size)
     }
 
     return nread;
+}
+
+int dmi_file_close(int fd)
+{
+    assert(fd >= 0);
+
+    return close(fd);
 }
