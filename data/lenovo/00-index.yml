@@ -1,11 +1,15 @@
 vendor: Lenovo
 files:
+  b50-70-20384.bin:
+    product: B50-70 20384
   b590.bin:
     product: B590
   ideapad-g580-20150.bin:
     product: IdeaPad G580 20150
   ideapad-slim-5-14irl8.bin:
     product: IdeaPad Slim 5 14IRL8
+  ideapad-z565-20066.bin:
+    product: IdeaPad Z565 20066
   thinkbook-15-g2-itl-20ve.bin:
     product: ThinkBook 15 G2 ITL 20VE
   thinkcentre-m70s-11db.bin:
