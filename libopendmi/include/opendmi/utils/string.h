@@ -17,8 +17,8 @@ __BEGIN_DECLS
 int dmi_asprintf(char **strp, const char *format, ...);
 int dmi_vasprintf(char **strp, const char *format, va_list args);
 
-void dmi_strlwr(char *str);
-void dmi_strupr(char *str);
+void dmi_string_tolower(char *str);
+void dmi_string_toupper(char *str);
 
 __END_DECLS
 

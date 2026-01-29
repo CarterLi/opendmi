@@ -212,7 +212,7 @@ void dmi_command_usage(const dmi_command_t *command)
 
                 char name[name_len];
                 memcpy(name, (*set)->name, name_len);
-                dmi_strlwr(name);
+                dmi_string_tolower(name);
 
                 printf(" [%s]", name);
             }
