@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <opendmi/utils/decode.h>
+#include <opendmi/utils/codec.h>
 
 typedef struct dmi_stream dmi_stream_t;
 

@@ -7,11 +7,9 @@
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
 #include <opendmi/utils/name.h>
-#include <opendmi/utils/decode.h>
+#include <opendmi/utils/codec.h>
 
 #include <opendmi/entity/pointing-device.h>
-
-static bool dmi_pointing_device_decode(dmi_entity_t *entity);
 
 static const dmi_name_set_t dmi_pointing_device_type_names =
 {
@@ -169,7 +167,7 @@ const char *dmi_pointing_device_iface_name(dmi_pointing_device_iface_t value)
     return dmi_name_lookup(&dmi_pointing_device_iface_names, value);
 }
 
-static bool dmi_pointing_device_decode(dmi_entity_t *entity)
+bool dmi_pointing_device_decode(dmi_entity_t *entity)
 {
     dmi_pointing_device_t *info;
 

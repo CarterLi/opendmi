@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <opendmi/utils/decode.h>
+#include <opendmi/utils/codec.h>
 
 struct test_vector
 {

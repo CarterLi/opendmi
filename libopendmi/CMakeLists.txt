@@ -110,8 +110,8 @@ target_sources(opendmi-object
         src/utils.c
         src/vendor.c
 
+        src/utils/codec.c
         src/utils/datetime.c
-        src/utils/decode.c
         src/utils/endian.c
         src/utils/file.c
         src/utils/name.c
@@ -225,8 +225,8 @@ target_sources(opendmi-object
             include/opendmi/value.h
             include/opendmi/vendor.h
 
+            include/opendmi/utils/codec.h
             include/opendmi/utils/datetime.h
-            include/opendmi/utils/decode.h
             include/opendmi/utils/endian.h
             include/opendmi/utils/file.h
             include/opendmi/utils/name.h
@@ -481,6 +481,7 @@ opendmi_test(slot-width-name test/slot-width-name.c)
 
 opendmi_test(pointing-device-type-name test/entity/pointing-device-type-name.c)
 opendmi_test(pointing-device-iface-name test/entity/pointing-device-iface-name.c)
+opendmi_test(pointing-device-decode test/entity/pointing-device-decode.c)
 
 opendmi_test(string-tolower test/utils/string-tolower.c)
 opendmi_test(string-toupper test/utils/string-toupper.c)

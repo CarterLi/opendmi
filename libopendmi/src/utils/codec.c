@@ -6,7 +6,7 @@
 //
 #include <assert.h>
 
-#include <opendmi/utils/decode.h>
+#include <opendmi/utils/codec.h>
 
 uintmax_t __dmi_decode_bcd(const dmi_byte_t *value, size_t length)
 {

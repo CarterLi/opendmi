@@ -88,6 +88,11 @@ __BEGIN_DECLS
 const char *dmi_pointing_device_type_name(dmi_pointing_device_type_t value);
 const char *dmi_pointing_device_iface_name(dmi_pointing_device_iface_t value);
 
+/**
+ * @internal
+ */
+bool dmi_pointing_device_decode(dmi_entity_t *entity);
+
 __END_DECLS
 
 #endif // !OPENDMI_ENTITY_POINTING_DEVICE_H

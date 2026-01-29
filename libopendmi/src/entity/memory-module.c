@@ -9,7 +9,7 @@
 #include <opendmi/context.h>
 #include <opendmi/value.h>
 #include <opendmi/utils.h>
-#include <opendmi/utils/decode.h>
+#include <opendmi/utils/codec.h>
 
 #include <opendmi/entity/memory-module.h>
 

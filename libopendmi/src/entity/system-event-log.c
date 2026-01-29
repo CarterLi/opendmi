@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <opendmi/utils.h>
-#include <opendmi/utils/decode.h>
+#include <opendmi/utils/codec.h>
 
 #include <opendmi/entity/system-event-log.h>
 

@@ -24,6 +24,7 @@
 
 #define DMI_HANDLE_INVALID     ((dmi_handle_t)0xFFFFu)
 #define DMI_HANDLE_UNSUPPORTED ((dmi_handle_t)0xFFFEu)
+#define DMI_HANDLE_TEST        ((dmi_handle_t)0x1234u)
 
 /**
  * @brief Byte type for raw data and pointer arithmetics.

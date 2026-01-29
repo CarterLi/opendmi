@@ -12,7 +12,7 @@
 #include <opendmi/context.h>
 #include <opendmi/entity.h>
 #include <opendmi/utils.h>
-#include <opendmi/utils/decode.h>
+#include <opendmi/utils/codec.h>
 
 /**
  * @internal

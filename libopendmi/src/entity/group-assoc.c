@@ -6,7 +6,7 @@
 //
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
-#include <opendmi/utils/decode.h>
+#include <opendmi/utils/codec.h>
 
 #include <opendmi/entity/group-assoc.h>
 
