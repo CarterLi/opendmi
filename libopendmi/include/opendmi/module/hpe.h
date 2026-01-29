@@ -11,6 +11,4 @@
 
 #include <opendmi/module.h>
 
-extern const dmi_module_t dmi_hpe_module;
-
 #endif // !OPENDMI_MODULE_HPE_H

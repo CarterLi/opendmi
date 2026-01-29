@@ -11,6 +11,4 @@
 
 #include <opendmi/module.h>
 
-extern const dmi_module_t dmi_lenovo_module;
-
 #endif // !OPENDMI_MODULE_LENOVO_H

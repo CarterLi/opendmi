@@ -6,11 +6,20 @@
 //
 #include <opendmi/module/hpe.h>
 
-const dmi_module_t dmi_hpe_module =
+/**
+ * @brief HPE module extension.
+ */
+static dmi_module_t dmi_hpe_module =
 {
     .code     = "hpe",
-    .name     = "HPE",
+    .name     = "HP/HPE extensions",
     .entities = (const dmi_entity_spec_t *[]){
         nullptr
     }
 };
+
+__attribute__((constructor))
+static void dmi_hpe_module_register(void)
+{
+    dmi_module_register(&dmi_hpe_module);
+}

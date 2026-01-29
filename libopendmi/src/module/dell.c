@@ -16,10 +16,13 @@
 #include <opendmi/entity/dell/protected-area-2.h>
 #include <opendmi/entity/dell/calling-iface.h>
 
-const dmi_module_t dmi_dell_module =
+/**
+ * @brief Dell extension module.
+ */
+static dmi_module_t dmi_dell_module =
 {
     .code     = "dell",
-    .name     = "Dell",
+    .name     = "Dell extensions",
     .entities = (const dmi_entity_spec_t *[]){
         &dmi_dell_bios_flags_spec,
         &dmi_dell_revisions_spec,
@@ -33,3 +36,9 @@ const dmi_module_t dmi_dell_module =
         nullptr
     }
 };
+
+__attribute__((constructor))
+static void dmi_dell_module_register(void)
+{
+    dmi_module_register(&dmi_dell_module);
+}

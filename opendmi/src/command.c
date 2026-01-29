@@ -4,6 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include "config.h"
+
 #if __has_include(<unistd.h>)
 #   include <unistd.h>
 #endif
@@ -179,8 +181,18 @@ const dmi_command_t *dmi_command_find(const char *name)
     return nullptr;
 }
 
+void dmi_command_banner(void)
+{
+    dmi_tty_header("OpenDMI Framework, version %s (%s)",
+                   OPENDMI_VERSION, OPENDMI_RELEASE_DATE);
+
+    dmi_tty_cprintf(DMI_TTY_COLOR_GREY, "Copyright (c) 2025-2026, The OpenDMI contributors\n");
+    dmi_tty_cprintf(DMI_TTY_COLOR_GREY, "Licensed under the BSD 3-Clause License\n\n");
+}
+
 void dmi_command_usage(const dmi_command_t *command)
 {
+    dmi_command_banner();
     dmi_tty_header("Usage:");
 
     if (command == nullptr) {

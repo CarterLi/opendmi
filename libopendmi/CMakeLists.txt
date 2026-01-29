@@ -86,17 +86,19 @@ configure_file(
 target_include_directories(opendmi-object PUBLIC include)
 target_sources(opendmi-object
     PRIVATE
-        src/error.c
-        src/log.c
-        src/context.c
-        src/entry.c
-        src/entity.c
-        src/filter.c
         src/attribute.c
+        src/context.c
+        src/entity.c
+        src/entry.c
+        src/error.c
+        src/filter.c
+        src/log.c
+        src/module.c
         src/registry.c
         src/stream.c
         src/utils.c
         src/vendor.c
+
         src/utils/datetime.c
         src/utils/decode.c
         src/utils/endian.c
@@ -106,6 +108,7 @@ target_sources(opendmi-object
         src/utils/uuid.c
         src/utils/vector.c
         src/utils/version.c
+
         src/entity/additional-info.c
         src/entity/baseboard.c
         src/entity/battery.c
@@ -156,10 +159,14 @@ target_sources(opendmi-object
         src/entity/temperature-probe.c
         src/entity/tpm-device.c
         src/entity/voltage-probe.c
+
         src/module/acer.c
+
         src/module/ami.c
         src/entity/ami/type-221.c
+
         src/module/apple.c
+
         src/module/dell.c
         src/entity/dell/common.c
         src/entity/dell/bios-flags.c
@@ -171,17 +178,20 @@ target_sources(opendmi-object
         src/entity/dell/protected-area-2.c
         src/entity/dell/revisions.c
         src/entity/dell/serial-port.c
-        src/module/hp.c
+
         src/module/hpe.c
-        src/module/ibm.c
+
         src/module/intel.c
+
         src/module/lenovo.c
+
         src/module/sun.c
         src/entity/sun/memory-array-ex.c
         src/entity/sun/memory-device-ex.c
         src/entity/sun/pcie-root-complex.c
         src/entity/sun/port-ex.c
         src/entity/sun/processor-ex.c
+
         src/backend/dump.c
     PUBLIC FILE_SET HEADERS
         BASE_DIRS include
@@ -203,6 +213,7 @@ target_sources(opendmi-object
             include/opendmi/utils.h
             include/opendmi/value.h
             include/opendmi/vendor.h
+
             include/opendmi/utils/datetime.h
             include/opendmi/utils/decode.h
             include/opendmi/utils/endian.h
@@ -212,7 +223,7 @@ target_sources(opendmi-object
             include/opendmi/utils/uuid.h
             include/opendmi/utils/vector.h
             include/opendmi/utils/version.h
-            include/opendmi/backend/dump.h
+
             include/opendmi/entity/additional-info.h
             include/opendmi/entity/baseboard.h
             include/opendmi/entity/battery.h
@@ -262,10 +273,14 @@ target_sources(opendmi-object
             include/opendmi/entity/temperature-probe.h
             include/opendmi/entity/tpm-device.h
             include/opendmi/entity/voltage-probe.h
+
             include/opendmi/module/acer.h
+
             include/opendmi/module/ami.h
             include/opendmi/entity/ami/type-221.h
+
             include/opendmi/module/apple.h
+
             include/opendmi/module/dell.h
             include/opendmi/entity/dell/common.h
             include/opendmi/entity/dell/bios-flags.h
@@ -277,9 +292,9 @@ target_sources(opendmi-object
             include/opendmi/entity/dell/protected-area-2.h
             include/opendmi/entity/dell/revisions.h
             include/opendmi/entity/dell/serial-port.h
-            include/opendmi/module/hp.h
+
             include/opendmi/module/hpe.h
-            include/opendmi/module/ibm.h
+
             include/opendmi/module/intel.h
             include/opendmi/entity/intel/rsd-cabled-pcie-port.h
             include/opendmi/entity/intel/rsd-fpga.h
@@ -290,13 +305,17 @@ target_sources(opendmi-object
             include/opendmi/entity/intel/rsd-storage-device.h
             include/opendmi/entity/intel/rsd-tpm.h
             include/opendmi/entity/intel/rsd-txt.h
+
             include/opendmi/module/lenovo.h
+
             include/opendmi/module/sun.h
             include/opendmi/entity/sun/memory-array-ex.h
             include/opendmi/entity/sun/memory-device-ex.h
             include/opendmi/entity/sun/pcie-root-complex.h
             include/opendmi/entity/sun/port-ex.h
             include/opendmi/entity/sun/processor-ex.h
+
+            include/opendmi/backend/dump.h
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")

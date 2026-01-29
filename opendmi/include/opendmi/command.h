@@ -133,6 +133,7 @@ void dmi_command_list(void);
 
 const dmi_command_t *dmi_command_find(const char *name);
 
+void dmi_command_banner(void);
 void dmi_command_usage(const dmi_command_t *command);
 
 void dmi_command_message(const char *format, ...);

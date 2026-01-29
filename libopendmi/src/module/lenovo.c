@@ -6,9 +6,18 @@
 //
 #include <opendmi/module/lenovo.h>
 
-const dmi_module_t dmi_lenovo_module =
+/**
+ * @brief Lenovo extension module.
+ */
+static dmi_module_t dmi_lenovo_module =
 {
     .code     = "lenovo",
-    .name     = "Lenovo",
+    .name     = "IBM/Lenovo extensions",
     .entities = nullptr
 };
+
+__attribute__((constructor))
+static void dmi_lenovo_module_register(void)
+{
+    dmi_module_register(&dmi_lenovo_module);
+}

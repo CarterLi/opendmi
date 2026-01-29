@@ -21,6 +21,15 @@ struct dmi_module
     const char *code;
     const char *name;
     const dmi_entity_spec_t **entities;
+    dmi_module_t *next;
 };
+
+extern dmi_module_t *dmi_modules;
+
+__BEGIN_DECLS
+
+void dmi_module_register(dmi_module_t *module);
+
+__END_DECLS
 
 #endif // !OPENDMI_MODULE_H

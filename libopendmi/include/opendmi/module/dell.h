@@ -27,9 +27,4 @@ typedef enum dmi_dell_type
 	DMI_TYPE_DELL_CALLING_IFACE     = 218  ///< Dell calling interface
 } dmi_dell_type_t;
 
-/**
- * @brief Dell extension module.
- */
-extern const dmi_module_t dmi_dell_module;
-
 #endif // !OPENDMI_MODULE_DELL_H

@@ -7,12 +7,21 @@
 #include <opendmi/module/ami.h>
 #include <opendmi/entity/ami/type-221.h>
 
-const dmi_module_t dmi_ami_module =
+/**
+ * @brief AMI extension module.
+ */
+static dmi_module_t dmi_ami_module =
 {
     .code     = "ami",
-    .name     = "AMI",
+    .name     = "AMI extensions",
     .entities = (const dmi_entity_spec_t *[]){
         &dmi_ami_type_221_spec,
         nullptr
     }
 };
+
+__attribute__((constructor))
+static void dmi_ami_module_register(void)
+{
+    dmi_module_register(&dmi_ami_module);
+}

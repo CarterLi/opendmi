@@ -24,9 +24,4 @@ enum dmi_apple_type
     DMI_TYPE_APPLE_SMC_VERSION         = 134  ///< Apple: SMC version information
 };
 
-/**
- * @brief Apple extension module.
- */
-extern const dmi_module_t dmi_apple_module;
-
 #endif // !OPENDMI_MODULE_APPLE_H

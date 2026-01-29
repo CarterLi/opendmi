@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented FreeBSD backend
 - Added SMBIOS data reindexing tool
 - Added logging to file
+- Added `modules` command implementation
 - Added autoloading of vendor-specific extensions
 - Added AMI type 221 structure decoding (partial)
 - Added Dell revisions and IDs structure decoding (type 208)

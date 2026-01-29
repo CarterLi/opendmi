@@ -123,16 +123,11 @@ int main(int argc, char *argv[])
 
 static void dmi_show_version(void)
 {
-    dmi_tty_header("OpenDMI Framework, version %s (%s)",
-                   OPENDMI_VERSION, OPENDMI_RELEASE_DATE);
-
-    dmi_tty_cprintf(DMI_TTY_COLOR_GREY, "Copyright (c) 2025-2026, The OpenDMI contributors\n");
-    dmi_tty_cprintf(DMI_TTY_COLOR_GREY, "Licensed under the BSD 3-Clause License\n\n");
+    dmi_command_banner();
 }
 
 static void dmi_show_usage(void)
 {
-    dmi_show_version();
     dmi_command_usage(nullptr);    
 }
 

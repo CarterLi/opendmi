@@ -5,8 +5,12 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <stdlib.h>
+#include <stdio.h>
 
 #include <opendmi/context.h>
+#include <opendmi/module.h>
+#include <opendmi/tty.h>
+
 #include <opendmi/command/modules.h>
 
 static void dmi_modules_usage(void);
@@ -45,11 +49,20 @@ static void dmi_modules_usage(void)
 
 static int dmi_modules_main(dmi_context_t *context, int argc, char *argv[])
 {
+    dmi_module_t *module;
+
     dmi_unused(context);
     dmi_unused(argc);
     dmi_unused(argv);
 
-    dmi_command_message_ex(&dmi_modules_command, "Not implemented yet");
+    dmi_command_banner();
+    dmi_tty_header("Available modules:");
+
+    for (module = dmi_modules; module != nullptr; module = module->next) {
+        dmi_tty_cprintf(DMI_TTY_COLOR_YELLOW, "%4s%-10s", "", module->code);
+        dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "%s\n", module->name);
+    }
+    printf("\n");
 
     return EXIT_FAILURE;
 }

@@ -592,10 +592,13 @@ static bool dmi_setup_extensions(dmi_context_t *context)
 
     dmi_log_info(context, "SMBIOS vendor: %s (%s)", dmi_vendor_name(context->vendor), firmware->vendor);
 
-    if ((vendor != nullptr) and (vendor->module != nullptr)) {
-        if (!dmi_add_extension(context, vendor->module))
-            return false;
-    }
+    //
+    // TODO: Implement fully-feature module probing
+    //
+    //if ((vendor != nullptr) and (vendor->module != nullptr)) {
+    //    if (!dmi_add_extension(context, vendor->module))
+    //        return false;
+    //}
 
     return true;
 }

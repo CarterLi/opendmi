@@ -19,6 +19,4 @@ typedef enum dmi_ami_type
     DMI_TYPE_AMI_221 = 221 ///< Type 221
 } dmi_ami_type_t;
 
-extern const dmi_module_t dmi_ami_module;
-
 #endif // !OPENDMI_MODULE_AMI_H

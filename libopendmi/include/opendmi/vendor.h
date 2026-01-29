@@ -51,11 +51,6 @@ struct dmi_vendor_spec
      * @brief Vendor names list, terminated by `nullptr`.
      */
     const char **names;
-
-    /**
-     * @brief Vendor-specific extension module.
-     */
-    const dmi_module_t *module;
 };
 
 #define DMI_VENDOR_NULL { .id = DMI_VENDOR_INVALID, .names = nullptr }

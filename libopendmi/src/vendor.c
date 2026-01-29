@@ -9,16 +9,6 @@
 #include <opendmi/vendor.h>
 #include <opendmi/utils/name.h>
 
-#include <opendmi/module/acer.h>
-#include <opendmi/module/ami.h>
-#include <opendmi/module/apple.h>
-#include <opendmi/module/dell.h>
-#include <opendmi/module/hp.h>
-#include <opendmi/module/hpe.h>
-#include <opendmi/module/ibm.h>
-#include <opendmi/module/intel.h>
-#include <opendmi/module/lenovo.h>
-
 static const dmi_name_set_t dmi_vendor_names =
 {
     .code = "vendors",
@@ -81,8 +71,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
         .names = (const char *[]){
             "Acer",
             nullptr
-        },
-        .module = &dmi_acer_module
+        }
     },
     {
         .id    = DMI_VENDOR_AMI,
@@ -93,8 +82,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "HUAWEI",
             "HONOR",
             nullptr
-        },
-        .module = &dmi_ami_module
+        }
     },
     {
         .id    = DMI_VENDOR_DELL,
@@ -103,8 +91,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "Dell Inc.",
             "Dell Computer Corporation",
             nullptr
-        },
-        .module = &dmi_dell_module
+        }
     },
     {
         .id    = DMI_VENDOR_HP,
@@ -113,8 +100,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "HP",
             "Hewlett-Packard",
             nullptr
-        },
-        .module = &dmi_hp_module
+        }
     },
     {
         .id    = DMI_VENDOR_HPE,
@@ -123,8 +109,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "HPE",
             "Hewlett-Packard Enterprise",
             nullptr
-        },
-        .module = &dmi_hpe_module
+        }
     },
     {
         .id    = DMI_VENDOR_IBM,
@@ -132,8 +117,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
         .names = (const char *[]){
             "IBM",
             nullptr
-        },
-        .module = &dmi_ibm_module
+        }
     },
     {
         .id    = DMI_VENDOR_INTEL,
@@ -141,8 +125,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
         .names = (const char *[]){
             "Intel",
             nullptr
-        },
-        .module = &dmi_intel_module
+        }
     },
     {
         .id    = DMI_VENDOR_LENOVO,
@@ -150,8 +133,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
         .names = (const char *[]){
             "LENOVO",
             nullptr
-        },
-        .module = &dmi_lenovo_module
+        }
     },
     DMI_VENDOR_NULL
 };

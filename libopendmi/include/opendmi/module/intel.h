@@ -28,9 +28,4 @@ enum dmi_intel_type
     DMI_TYPE_INTEL_RSD_PHYS_DEVICE_MAPPING = 200  ///< Intel: RSD SMBIOS physical device mapping
 };
 
-/**
- * @brief Intel extension module.
- */
-extern const dmi_module_t dmi_intel_module;
-
 #endif // !OPENDMI_MODULE_INTEL_H

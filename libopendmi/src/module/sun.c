@@ -12,10 +12,13 @@
 #include <opendmi/entity/sun/port-ex.h>
 #include <opendmi/entity/sun/pcie-root-complex.h>
 
-const dmi_module_t dmi_sun_module =
+/**
+ * @brief Sun extension module.
+ */
+static dmi_module_t dmi_sun_module =
 {
     .code     = "sun",
-    .name     = "Sun",
+    .name     = "Sun extensions",
     .entities = (const dmi_entity_spec_t *[]){
         &dmi_sun_processor_ex_spec,
         &dmi_sun_memory_array_ex_spec,
@@ -25,3 +28,9 @@ const dmi_module_t dmi_sun_module =
         nullptr
     }
 };
+
+__attribute__((constructor))
+static void dmi_sun_module_register(void)
+{
+    dmi_module_register(&dmi_sun_module);
+}
