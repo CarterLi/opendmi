@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Introduced Intel extension
 - Introduced Sun extension
 - Implemented FreeBSD backend
+- Added test coverage build
 - Added SMBIOS data reindexing tool
 - Added logging to file
 - Added `modules` command implementation
