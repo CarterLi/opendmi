@@ -268,31 +268,31 @@ bool dmi_open(dmi_context_t *context, const char *device)
     return dmi_open_ex(context, dmi_backend, device);
 }
 
-bool dmi_add_extension(dmi_context_t *context, const dmi_extension_t *extension)
+bool dmi_add_extension(dmi_context_t *context, const dmi_module_t *module)
 {
     if (context == nullptr)
         return false;
 
-    if (extension == nullptr) {
-        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "extension");
+    if (module == nullptr) {
+        dmi_error_raise_ex(context, DMI_ERROR_NULL_ARGUMENT, "module");
         return false;
     }
 
-    dmi_log_info(context, "Enabling extension: %s", extension->name);
+    dmi_log_info(context, "Enabling extension: %s", module->name);
 
-    if (extension->entities) {
+    if (module->entities) {
         const dmi_entity_spec_t **pspec;
 
         // Check type map for conflicts
-        for (pspec = extension->entities; *pspec != nullptr; pspec++) {
+        for (pspec = module->entities; *pspec != nullptr; pspec++) {
             if (context->type_map[(*pspec)->type] != nullptr) {
-                dmi_error_raise_ex(context, DMI_ERROR_EXTENSION_CONFLICT, "%s", extension->name);
+                dmi_error_raise_ex(context, DMI_ERROR_MODULE_CONFLICT, "%s", module->name);
                 return false;
             }
         }
 
         // Update type map
-        for (pspec = extension->entities; *pspec != nullptr; pspec++) {
+        for (pspec = module->entities; *pspec != nullptr; pspec++) {
             context->type_map[(*pspec)->type] = *pspec;
         }
     }
@@ -592,8 +592,8 @@ static bool dmi_setup_extensions(dmi_context_t *context)
 
     dmi_log_info(context, "SMBIOS vendor: %s (%s)", dmi_vendor_name(context->vendor), firmware->vendor);
 
-    if ((vendor != nullptr) and (vendor->extension != nullptr)) {
-        if (!dmi_add_extension(context, vendor->extension))
+    if ((vendor != nullptr) and (vendor->module != nullptr)) {
+        if (!dmi_add_extension(context, vendor->module))
             return false;
     }
 

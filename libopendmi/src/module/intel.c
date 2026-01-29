@@ -4,11 +4,11 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/apple.h>
+#include <opendmi/module/intel.h>
 
-const dmi_extension_t dmi_apple_ext =
+const dmi_module_t dmi_intel_module =
 {
-    .code     = "apple",
-    .name     = "Apple DMI extension",
+    .code     = "intel",
+    .name     = "Intel DMI extension",
     .entities = nullptr
 };

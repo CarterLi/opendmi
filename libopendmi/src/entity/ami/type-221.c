@@ -6,7 +6,7 @@
 //
 #include <opendmi/utils.h>
 
-#include <opendmi/extension/ami.h>
+#include <opendmi/module/ami.h>
 #include <opendmi/entity/ami/type-221.h>
 
 static bool dmi_ami_type_221_decode(dmi_entity_t *entity);

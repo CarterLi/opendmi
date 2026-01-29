@@ -4,12 +4,12 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_EXTENSION_DELL_H
-#define OPENDMI_EXTENSION_DELL_H
+#ifndef OPENDMI_MODULE_DELL_H
+#define OPENDMI_MODULE_DELL_H
 
 #pragma once
 
-#include <opendmi/extension.h>
+#include <opendmi/module.h>
 
 /**
  * @brief Dell structure type identifiers.
@@ -28,8 +28,8 @@ typedef enum dmi_dell_type
 } dmi_dell_type_t;
 
 /**
- * @brief Dell DMI extension.
+ * @brief Dell extension module.
  */
-extern const dmi_extension_t dmi_dell_ext;
+extern const dmi_module_t dmi_dell_module;
 
-#endif // !OPENDMI_EXTENSION_DELL_H
+#endif // !OPENDMI_MODULE_DELL_H

@@ -4,12 +4,12 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/hp.h>
+#include <opendmi/module/hpe.h>
 
-const dmi_extension_t dmi_hp_ext =
+const dmi_module_t dmi_hpe_module =
 {
-    .code     = "hp",
-    .name     = "HP",
+    .code     = "hpe",
+    .name     = "HPE",
     .entities = (const dmi_entity_spec_t *[]){
         nullptr
     }

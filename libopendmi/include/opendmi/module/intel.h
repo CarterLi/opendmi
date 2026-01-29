@@ -4,12 +4,12 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_EXTENSION_INTEL_H
-#define OPENDMI_EXTENSION_INTEL_H
+#ifndef OPENDMI_MODULE_INTEL_H
+#define OPENDMI_MODULE_INTEL_H
 
 #pragma once
 
-#include <opendmi/extension.h>
+#include <opendmi/module.h>
 
 /**
  * @brief Intel structure type identifiers.
@@ -29,8 +29,8 @@ enum dmi_intel_type
 };
 
 /**
- * @brief Intel DMI extension.
+ * @brief Intel extension module.
  */
-extern const dmi_extension_t dmi_intel_ext;
+extern const dmi_module_t dmi_intel_module;
 
-#endif // !OPENDMI_EXTENSION_INTEL_H
+#endif // !OPENDMI_MODULE_INTEL_H

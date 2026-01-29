@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/sun.h>
+#include <opendmi/module/sun.h>
 
 #include <opendmi/entity/sun/processor-ex.h>
 #include <opendmi/entity/sun/memory-array-ex.h>
@@ -12,7 +12,7 @@
 #include <opendmi/entity/sun/port-ex.h>
 #include <opendmi/entity/sun/pcie-root-complex.h>
 
-const dmi_extension_t dmi_sun_ext =
+const dmi_module_t dmi_sun_module =
 {
     .code     = "sun",
     .name     = "Sun",

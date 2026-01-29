@@ -4,23 +4,23 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_EXTENSION_H
-#define OPENDMI_EXTENSION_H
+#ifndef OPENDMI_MODULE_H
+#define OPENDMI_MODULE_H
 
 #pragma once
 
 #include <opendmi/entity.h>
 
-typedef struct dmi_extension dmi_extension_t;
+typedef struct dmi_module dmi_module_t;
 
 /**
- * @brief DMI extension.
+ * @brief DMI extension module.
  */
-struct dmi_extension
+struct dmi_module
 {
     const char *code;
     const char *name;
     const dmi_entity_spec_t **entities;
 };
 
-#endif // !OPENDMI_EXTENSION_H
+#endif // !OPENDMI_MODULE_H

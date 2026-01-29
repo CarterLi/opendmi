@@ -4,13 +4,13 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_EXTENSION_HP_H
-#define OPENDMI_EXTENSION_HP_H
+#ifndef OPENDMI_MODULE_IBM_H
+#define OPENDMI_MODULE_IBM_H
 
 #pragma once
 
-#include <opendmi/extension.h>
+#include <opendmi/module.h>
 
-extern const dmi_extension_t dmi_hp_ext;
+extern const dmi_module_t dmi_ibm_module;
 
-#endif // !OPENDMI_EXTENSION_HP_H
+#endif // !OPENDMI_MODULE_IBM_H

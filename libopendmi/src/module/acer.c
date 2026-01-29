@@ -4,11 +4,11 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/lenovo.h>
+#include <opendmi/module/acer.h>
 
-const dmi_extension_t dmi_lenovo_ext =
+const dmi_module_t dmi_acer_module =
 {
-    .code     = "lenovo",
-    .name     = "Lenovo",
+    .code     = "acer",
+    .name     = "Acer",
     .entities = nullptr
 };

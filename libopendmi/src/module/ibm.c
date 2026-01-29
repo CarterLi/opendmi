@@ -4,9 +4,9 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/ibm.h>
+#include <opendmi/module/ibm.h>
 
-const dmi_extension_t dmi_ibm_ext =
+const dmi_module_t dmi_ibm_module =
 {
     .code     = "ibm",
     .name     = "IBM",

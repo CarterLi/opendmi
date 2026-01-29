@@ -44,7 +44,7 @@ typedef enum dmi_error_code
     DMI_ERROR_DUPLICATE_HANDLE,      ///< Duplicate handle
     DMI_ERROR_NO_MORE_ENTRIES,       ///< No more entries
     DMI_ERROR_MISSING_FIRMWARE_INFO, ///< No platform firmware information structure is present
-    DMI_ERROR_EXTENSION_CONFLICT,    ///< Extension has conflicts
+    DMI_ERROR_MODULE_CONFLICT,    ///< Extension has conflicts
     DMI_ERROR_OUT_OF_MEMORY,         ///< Out of memory
     DMI_ERROR_SERVICE_UNAVAILABLE,   ///< Service unavailable
     DMI_ERROR_SYSTEM,                ///< System error

@@ -9,15 +9,15 @@
 #include <opendmi/vendor.h>
 #include <opendmi/utils/name.h>
 
-#include <opendmi/extension/acer.h>
-#include <opendmi/extension/ami.h>
-#include <opendmi/extension/apple.h>
-#include <opendmi/extension/dell.h>
-#include <opendmi/extension/hp.h>
-#include <opendmi/extension/hpe.h>
-#include <opendmi/extension/ibm.h>
-#include <opendmi/extension/intel.h>
-#include <opendmi/extension/lenovo.h>
+#include <opendmi/module/acer.h>
+#include <opendmi/module/ami.h>
+#include <opendmi/module/apple.h>
+#include <opendmi/module/dell.h>
+#include <opendmi/module/hp.h>
+#include <opendmi/module/hpe.h>
+#include <opendmi/module/ibm.h>
+#include <opendmi/module/intel.h>
+#include <opendmi/module/lenovo.h>
 
 static const dmi_name_set_t dmi_vendor_names =
 {
@@ -82,7 +82,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "Acer",
             nullptr
         },
-        .extension = &dmi_acer_ext
+        .module = &dmi_acer_module
     },
     {
         .id    = DMI_VENDOR_AMI,
@@ -91,9 +91,10 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "American Megatrends Inc.",
             "American Megatrends International, LLC.",
             "HUAWEI",
+            "HONOR",
             nullptr
         },
-        .extension = &dmi_ami_ext
+        .module = &dmi_ami_module
     },
     {
         .id    = DMI_VENDOR_DELL,
@@ -103,7 +104,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "Dell Computer Corporation",
             nullptr
         },
-        .extension = &dmi_dell_ext
+        .module = &dmi_dell_module
     },
     {
         .id    = DMI_VENDOR_HP,
@@ -113,7 +114,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "Hewlett-Packard",
             nullptr
         },
-        .extension = &dmi_hp_ext
+        .module = &dmi_hp_module
     },
     {
         .id    = DMI_VENDOR_HPE,
@@ -123,7 +124,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "Hewlett-Packard Enterprise",
             nullptr
         },
-        .extension = &dmi_hpe_ext
+        .module = &dmi_hpe_module
     },
     {
         .id    = DMI_VENDOR_IBM,
@@ -132,7 +133,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "IBM",
             nullptr
         },
-        .extension = &dmi_ibm_ext,
+        .module = &dmi_ibm_module
     },
     {
         .id    = DMI_VENDOR_INTEL,
@@ -141,7 +142,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "Intel",
             nullptr
         },
-        .extension = &dmi_intel_ext,
+        .module = &dmi_intel_module
     },
     {
         .id    = DMI_VENDOR_LENOVO,
@@ -150,7 +151,7 @@ static const dmi_vendor_spec_t dmi_vendor_specs[] =
             "LENOVO",
             nullptr
         },
-        .extension = &dmi_lenovo_ext,
+        .module = &dmi_lenovo_module
     },
     DMI_VENDOR_NULL
 };

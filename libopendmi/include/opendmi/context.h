@@ -14,7 +14,7 @@
 #include <opendmi/log.h>
 #include <opendmi/backend.h>
 #include <opendmi/vendor.h>
-#include <opendmi/extension.h>
+#include <opendmi/module.h>
 #include <opendmi/registry.h>
 #include <opendmi/utils/version.h>
 
@@ -172,7 +172,7 @@ bool dmi_open(dmi_context_t *context, const char *device);
 /**
  * @brief Add DMI extension.
  */
-bool dmi_add_extension(dmi_context_t *context, const dmi_extension_t *extension);
+bool dmi_add_extension(dmi_context_t *context, const dmi_module_t *module);
 
 /**
  * @brief Load dump file into DMI context.

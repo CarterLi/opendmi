@@ -4,11 +4,11 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/intel.h>
+#include <opendmi/module/lenovo.h>
 
-const dmi_extension_t dmi_intel_ext =
+const dmi_module_t dmi_lenovo_module =
 {
-    .code     = "intel",
-    .name     = "Intel DMI extension",
+    .code     = "lenovo",
+    .name     = "Lenovo",
     .entities = nullptr
 };

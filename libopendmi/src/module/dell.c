@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/dell.h>
+#include <opendmi/module/dell.h>
 
 #include <opendmi/entity/dell/bios-flags.h>
 #include <opendmi/entity/dell/revisions.h>
@@ -16,7 +16,7 @@
 #include <opendmi/entity/dell/protected-area-2.h>
 #include <opendmi/entity/dell/calling-iface.h>
 
-const dmi_extension_t dmi_dell_ext =
+const dmi_module_t dmi_dell_module =
 {
     .code     = "dell",
     .name     = "Dell",

@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/dell.h>
+#include <opendmi/module/dell.h>
 #include <opendmi/entity/dell/infrared-port.h>
 
 static bool dmi_dell_infrared_port_decode(dmi_entity_t *entity);

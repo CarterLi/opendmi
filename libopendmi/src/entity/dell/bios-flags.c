@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/dell.h>
+#include <opendmi/module/dell.h>
 #include <opendmi/entity/dell/bios-flags.h>
 
 const dmi_entity_spec_t dmi_dell_bios_flags_spec =

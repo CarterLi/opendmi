@@ -4,15 +4,13 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/ami.h>
-#include <opendmi/entity/ami/type-221.h>
+#include <opendmi/module/hp.h>
 
-const dmi_extension_t dmi_ami_ext =
+const dmi_module_t dmi_hp_module =
 {
-    .code     = "ami",
-    .name     = "AMI",
+    .code     = "hp",
+    .name     = "HP",
     .entities = (const dmi_entity_spec_t *[]){
-        &dmi_ami_type_221_spec,
         nullptr
     }
 };

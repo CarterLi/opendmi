@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/sun.h>
+#include <opendmi/module/sun.h>
 #include <opendmi/entity/sun/memory-device-ex.h>
 
 const dmi_entity_spec_t dmi_sun_memory_device_ex_spec =

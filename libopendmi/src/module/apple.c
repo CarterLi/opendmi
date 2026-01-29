@@ -4,11 +4,11 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <opendmi/extension/acer.h>
+#include <opendmi/module/apple.h>
 
-const dmi_extension_t dmi_acer_ext =
+const dmi_module_t dmi_apple_module =
 {
-    .code     = "acer",
-    .name     = "Acer",
+    .code     = "apple",
+    .name     = "Apple DMI extension",
     .entities = nullptr
 };

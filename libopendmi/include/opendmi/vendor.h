@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <opendmi/extension.h>
+#include <opendmi/module.h>
 
 typedef struct dmi_vendor_spec dmi_vendor_spec_t;
 
@@ -53,9 +53,9 @@ struct dmi_vendor_spec
     const char **names;
 
     /**
-     * @brief Vendor-specific extension specification.
+     * @brief Vendor-specific extension module.
      */
-    const dmi_extension_t *extension;
+    const dmi_module_t *module;
 };
 
 #define DMI_VENDOR_NULL { .id = DMI_VENDOR_INVALID, .names = nullptr }

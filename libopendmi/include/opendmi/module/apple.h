@@ -4,12 +4,12 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_EXTENSION_APPLE_H
-#define OPENDMI_EXTENSION_APPLE_H
+#ifndef OPENDMI_MODULE_APPLE_H
+#define OPENDMI_MODULE_APPLE_H
 
 #pragma once
 
-#include <opendmi/extension.h>
+#include <opendmi/module.h>
 
 /**
  * @brief Apple SMBIOS structure type identifiers.
@@ -25,8 +25,8 @@ enum dmi_apple_type
 };
 
 /**
- * @brief Apple DMI extension.
+ * @brief Apple extension module.
  */
-extern const dmi_extension_t dmi_apple_ext;
+extern const dmi_module_t dmi_apple_module;
 
-#endif // !OPENDMI_EXTENSION_APPLE_H
+#endif // !OPENDMI_MODULE_APPLE_H

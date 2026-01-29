@@ -29,7 +29,7 @@ static const dmi_option_set_t dmi_modules_options =
 const dmi_command_t dmi_modules_command =
 {
     .name        = "modules",
-    .description = "List available extensions",
+    .description = "List available modules",
     .options     = dmi_options(&dmi_modules_options),
     .flags       = DMI_COMMAND_FLAG_DETACHED,
     .handlers    = {

@@ -4,12 +4,12 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_EXTENSION_SUN_H
-#define OPENDMI_EXTENSION_SUN_H
+#ifndef OPENDMI_MODULE_SUN_H
+#define OPENDMI_MODULE_SUN_H
 
 #pragma once
 
-#include <opendmi/extension.h>
+#include <opendmi/module.h>
 
 /**
  * @brief Sun structure type identifiers.
@@ -24,8 +24,8 @@ typedef enum dmi_sun_type
 } dmi_sun_type_t;
 
 /**
- * @brief Sun DMI extension.
+ * @brief Sun extension module.
  */
-extern const dmi_extension_t dmi_sun_ext;
+extern const dmi_module_t dmi_sun_module;
 
-#endif // !OPENDMI_EXTENSION_SUN_H
+#endif // !OPENDMI_MODULE_SUN_H
