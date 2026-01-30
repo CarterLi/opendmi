@@ -93,6 +93,8 @@ _usage() {
     echo "Commands:"
     echo "    configure  Configure build settings"
     echo "    build      Build the entire project"
+    echo "    install    Install the project to the configured prefix"
+    echo "    package    Build distributable packages using CPack"
     echo "    test       Perform unit tests"
     echo "    clean      Delete all files that are created by building the program"
     echo "    distclean  Delete all files that are created by configuring or building the program"
@@ -207,7 +209,7 @@ _configure() {
     if [ "${ENABLE_YAML}" != "AUTO" ]; then
         FEATURES="${FEATURES} -DENABLE_YAML=${ENABLE_YAML}"
     fi
-    if [ "${VERBOSE}" == "ON" ]; then
+    if [ "${VERBOSE}" = "ON" ]; then
         FEATURES="${FEATURES} -DCMAKE_VERBOSE_MAKEFILE=TRUE"
     fi
 
@@ -263,6 +265,14 @@ _install() {
 
 _clean() {
     ${CMAKE} --build ${BUILD_DIR} --target clean
+}
+
+_package() {
+    if [ ! -f "${BUILD_DIR}/CPackConfig.cmake" ]; then
+        echo "Project is not configured. Run './${SCRIPT_NAME} configure' first." 1>&2
+        exit 1
+    fi
+    (cd "${BUILD_DIR}" && cpack)
 }
 
 _distclean()
@@ -324,6 +334,9 @@ case "${COMMAND}" in
         ;;
     clean)
         _clean "$@"
+        ;;
+    package)
+        _package "$@"
         ;;
     distclean)
         _distclean "$@"
