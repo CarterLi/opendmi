@@ -93,10 +93,11 @@ $ dmidecode --dump-bin <filename>
 
 See [CONTRIBUTING](CONTRIBUTING.md) for more details.
 
-## Authors
+## Contributors
 
 * [Dmitry Sednev](https://github.com/sdnvx)
 * [Dmitry Kuzmenko](https://github.com/xerrial)
+* [Ritesh Kudkelwar](https://github.com/ritesh006)
 * [Jorn](https://github.com/jornissimo)
 
 ## Licensing
