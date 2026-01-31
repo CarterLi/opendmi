@@ -15,6 +15,19 @@ static bool dmi_vector_resize(dmi_vector_t *vector, size_t capacity);
 
 const size_t dmi_vector_delta_capacity = 16;
 
+bool dmi_vector_get(const dmi_vector_t *vector, size_t index, uintptr_t *value)
+{
+    assert(vector != nullptr);
+    assert(value != nullptr);
+
+    if (index >= vector->length)
+        return false;
+
+    *value = vector->data[index];
+
+    return true;
+}
+
 bool dmi_vector_push(dmi_vector_t *vector, uintptr_t value)
 {
     assert(vector != nullptr);

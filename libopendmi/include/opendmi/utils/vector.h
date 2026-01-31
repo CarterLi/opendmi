@@ -22,10 +22,21 @@ struct dmi_vector
 
 __BEGIN_DECLS
 
+bool dmi_vector_get(const dmi_vector_t *vector, size_t index, uintptr_t *value);
 bool dmi_vector_push(dmi_vector_t *vector, uintptr_t value);
 bool dmi_vector_pop(dmi_vector_t *vector, uintptr_t *value);
 void dmi_vector_clear(dmi_vector_t *vector);
 
 __END_DECLS
+
+static inline size_t dmi_vector_length(const dmi_vector_t *vector)
+{
+    return vector->length;
+}
+
+static inline bool dmi_vector_is_empty(const dmi_vector_t *vector)
+{
+    return vector->length > 0;
+}
 
 #endif // !OPENDMI_UTILS_VECTOR_H
