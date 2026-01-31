@@ -20,10 +20,10 @@
 #include <errno.h>
 #include <assert.h>
 
-#include <opendmi/context.h>
 #include <opendmi/command.h>
-#include <opendmi/tty.h>
+#include <opendmi/context.h>
 #include <opendmi/utils/file.h>
+#include <opendmi/utils/tty.h>
 
 static void dmi_show_version(void);
 static void dmi_show_usage(void);

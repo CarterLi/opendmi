@@ -8,9 +8,9 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include <opendmi/option.h>
 #include <opendmi/command.h>
-#include <opendmi/tty.h>
+#include <opendmi/option.h>
+#include <opendmi/utils/tty.h>
 
 static bool dmi_option_toggle(
         dmi_context_t      *context,

@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include "config.h"
+#include "../config.h"
 
 #if __has_include(<unistd.h>)
 #   include <unistd.h>
@@ -25,7 +25,7 @@
 #   include <term.h>
 #endif // ENABLE_CURSES
 
-#include <opendmi/tty.h>
+#include <opendmi/utils/tty.h>
 
 static bool dmi_tty = false;
 static int  dmi_tty_bg_color = DMI_TTY_COLOR_BLACK;

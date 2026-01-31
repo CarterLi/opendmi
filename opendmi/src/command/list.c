@@ -9,6 +9,7 @@
 #include <assert.h>
 
 #include <opendmi/context.h>
+
 #include <opendmi/command/common.h>
 #include <opendmi/command/list.h>
 

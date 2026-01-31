@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#ifndef OPENDMI_TTY_H
-#define OPENDMI_TTY_H
+#ifndef OPENDMI_UTILS_TTY_H
+#define OPENDMI_UTILS_TTY_H
 
 #pragma once
 
@@ -60,4 +60,4 @@ void dmi_tty_header(const char *format, ...);
 
 __END_DECLS
 
-#endif // !OPENDMI_TTY_H
+#endif // !OPENDMI_UTILS_TTY_H

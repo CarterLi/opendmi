@@ -7,9 +7,10 @@
 #include <stdlib.h>
 
 #include <opendmi/context.h>
+#include <opendmi/format/text.h>
+
 #include <opendmi/command/common.h>
 #include <opendmi/command/show.h>
-#include <opendmi/format/text.h>
 
 typedef struct dmi_show_config
 {

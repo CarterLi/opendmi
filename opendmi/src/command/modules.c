@@ -8,11 +8,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <opendmi/context.h>
 #include <opendmi/module.h>
+#include <opendmi/context.h>
 #include <opendmi/utils.h>
 #include <opendmi/utils/string.h>
-#include <opendmi/tty.h>
+#include <opendmi/utils/tty.h>
 
 #include <opendmi/command/modules.h>
 

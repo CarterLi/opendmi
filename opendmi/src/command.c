@@ -18,7 +18,7 @@
 #include <opendmi/context.h>
 #include <opendmi/pager.h>
 #include <opendmi/utils/string.h>
-#include <opendmi/tty.h>
+#include <opendmi/utils/tty.h>
 
 #include <opendmi/command.h>
 #include <opendmi/command/dump.h>

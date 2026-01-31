@@ -25,7 +25,6 @@ configure_file(
 
 add_executable(opendmi
     src/main.c
-    src/tty.c
     src/pager.c
     src/option.c
     src/command.c
@@ -44,6 +43,7 @@ add_executable(opendmi
     src/format/text.c
     src/format/text/handlers.c
     src/format/text/helpers.c
+    src/utils/tty.c
 )
 
 if(ENABLE_JSON)
