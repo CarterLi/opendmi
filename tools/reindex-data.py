@@ -23,6 +23,11 @@ num_skipped = 0
 num_orphans = 0
 num_errors  = 0
 
+yaml.SafeLoader.yaml_implicit_resolvers = {
+    k: [r for r in v if r[0] != 'tag:yaml.org,2002:timestamp'] for
+    k, v in yaml.SafeLoader.yaml_implicit_resolvers.items()
+}
+
 def vendor_dirs():
     for entry in os.scandir(data_dir):
         if not entry.is_dir():
@@ -77,7 +82,7 @@ def get_type_map(data: dict) -> dict:
 def read_file_data(file_path: str) -> dict:
     try:
         process = subprocess.Popen(
-            [f"{build_dir}/bin/opendmi", "--from-dump", file_path, "--format=yaml", "--quiet"],
+            [f"{build_dir}/bin/opendmi", "--file", file_path, "export", "--format=yaml"],
             stdout = subprocess.PIPE,
             stderr = subprocess.PIPE
         )
