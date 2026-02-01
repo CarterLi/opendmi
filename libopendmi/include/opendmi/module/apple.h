@@ -14,7 +14,7 @@
 /**
  * @brief Apple SMBIOS structure type identifiers.
  */
-enum dmi_apple_type
+typedef enum dmi_apple_type
 {
     DMI_TYPE_APPLE_FIRMWARE_VOLUME     = 128, ///< Apple: Firmware volume information
     DMI_TYPE_APPLE_MEMORY_SPD_DATA     = 130, ///< Apple: Memory SPD data
@@ -22,6 +22,6 @@ enum dmi_apple_type
     DMI_TYPE_APPLE_PROCESSOR_BUS_SPEED = 132, ///< Apple: Processor and bus speed information
     DMI_TYPE_APPLE_PLATFORM_FEATURE    = 133, ///< Apple: Platform feature information
     DMI_TYPE_APPLE_SMC_VERSION         = 134  ///< Apple: SMC version information
-};
+} dmi_apple_type_t;
 
 #endif // !OPENDMI_MODULE_APPLE_H
