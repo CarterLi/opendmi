@@ -29,6 +29,7 @@ extern dmi_module_t *dmi_modules;
 __BEGIN_DECLS
 
 void dmi_module_register(dmi_module_t *module);
+const dmi_module_t *dmi_module_find(const char *code);
 
 __END_DECLS
 

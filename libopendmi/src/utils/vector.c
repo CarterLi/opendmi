@@ -28,6 +28,21 @@ bool dmi_vector_get(const dmi_vector_t *vector, size_t index, uintptr_t *value)
     return true;
 }
 
+bool dmi_vector_exists(const dmi_vector_t *vector, uintptr_t key)
+{
+    assert(vector != nullptr);
+
+    if (vector->matcher == nullptr)
+        return false;
+
+    for (size_t index = 0; index < vector->length; index++) {
+        if (vector->matcher(vector->data[index], key))
+            return true;
+    }
+
+    return false;
+}
+
 bool dmi_vector_push(dmi_vector_t *vector, uintptr_t value)
 {
     assert(vector != nullptr);

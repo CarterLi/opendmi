@@ -10,24 +10,48 @@
 #   include <unistd.h>
 #endif
 
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <errno.h>
 #include <assert.h>
 
 #include <opendmi/context.h>
+#include <opendmi/utils/tty.h>
+#include <opendmi/utils/vector.h>
+
 #include <opendmi/command/types.h>
 
 typedef struct dmi_types_config
 {
+    bool show_core;
     bool show_all;
+    dmi_vector_t show_modules;
+    bool show_raw;
 } dmi_types_config_t;
 
 static void dmi_types_usage(void);
+
+static bool dmi_types_add_module(dmi_context_t *context, const char *value);
+static bool dmi_types_match_module(uintptr_t entry, uintptr_t key);
 static int dmi_types_main(dmi_context_t *context, int argc, char *argv[]);
+
+static void dmi_types_show_core(dmi_context_t *context);
+static void dmi_types_show_module(dmi_context_t *context, const dmi_module_t *module);
+static void dmi_types_show_type(
+        dmi_context_t           *context,
+        const dmi_module_t      *module,
+        const dmi_entity_spec_t *spec);
+
+static void dmi_types_cleanup(dmi_context_t *context);
 
 static dmi_types_config_t dmi_types_config =
 {
-    .show_all = false
+    .show_core = true,
+    .show_all  = false,
+    .show_modules = {
+        .matcher = dmi_types_match_module
+    }
 };
 
 static const dmi_option_set_t dmi_types_options =
@@ -39,6 +63,17 @@ static const dmi_option_set_t dmi_types_options =
             .long_names  = (const char *[]){ "help", nullptr },
             .description = "Print this help and exit",
             .value       = &dmi_command_config.show_usage
+        },
+        {
+            .short_names = "m",
+            .long_names  = (const char *[]){ "module", nullptr },
+            .description = "List types provided by module(s)",
+            .handler     = dmi_types_add_module,
+            .argument    = {
+                .name     = "module",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = false
+            }
         },
         {
             .short_names = "a",
@@ -57,8 +92,9 @@ const dmi_command_t dmi_types_command =
     .options     = dmi_options(&dmi_types_options),
     .flags       = DMI_COMMAND_FLAG_DETACHED | DMI_COMMAND_FLAG_PAGER,
     .handlers    = {
-        .usage = dmi_types_usage,
-        .main  = dmi_types_main
+        .usage   = dmi_types_usage,
+        .main    = dmi_types_main,
+        .cleanup = dmi_types_cleanup
     }
 };
 
@@ -67,27 +103,152 @@ static void dmi_types_usage(void)
     dmi_command_usage(&dmi_types_command);
 }
 
+static bool dmi_types_add_module(dmi_context_t *context, const char *value)
+{
+    const dmi_module_t *module;
+
+    dmi_unused(context);
+
+    if (value != nullptr) {
+        module = dmi_module_find(value);
+        if (module == nullptr) {
+            dmi_command_message_ex(&dmi_types_command, "Unknown module name: %s", value);
+            return false;
+        }
+
+        if (dmi_vector_exists(&dmi_types_config.show_modules, (uintptr_t)value))
+            return true;
+
+        if (not dmi_vector_push(&dmi_types_config.show_modules, (uintptr_t)module)) {
+            dmi_command_message_ex(&dmi_types_command, "Internal error: %s", strerror(errno));
+            return false;
+        }
+    } else {
+        for (module = dmi_modules; module != nullptr; module = module->next) {
+            if (dmi_vector_exists(&dmi_types_config.show_modules, (uintptr_t)module->code))
+                continue;
+
+            if (not dmi_vector_push(&dmi_types_config.show_modules, (uintptr_t)module)) {
+                dmi_command_message_ex(&dmi_types_command, "Internal error: %s", strerror(errno));
+                return false;
+            }  
+        }
+    }
+
+    dmi_types_config.show_core = false;
+
+    return true;
+}
+
+static bool dmi_types_match_module(uintptr_t entry, uintptr_t key)
+{
+    dmi_module_t *module = dmi_cast(module, entry);
+    const char   *code   = dmi_cast(code, key);
+
+    return strcmp(module->code, code) == 0;
+}
+
 static int dmi_types_main(dmi_context_t *context, int argc, char *argv[])
 {
-    const char *format;
+    dmi_module_t *module = nullptr;
 
     assert(context != nullptr);
     dmi_unused(argc);
     dmi_unused(argv);
 
-    if (isatty(STDIN_FILENO))
-        format = "%3d %-24s %s\n";
+    if (isatty(STDOUT_FILENO))
+        dmi_command_banner();
     else
-        format = "%d\t%s\t%s\n";
+        dmi_types_config.show_raw = true;
 
-    for (size_t type = 0; type < 0x100; type++) {
+    if (dmi_types_config.show_core)
+        dmi_types_show_core(context);
+
+    if (dmi_types_config.show_all) {
+        for (module = dmi_modules; module != nullptr; module = module->next) {
+            dmi_types_show_module(context, module);
+        }
+    } else if (not dmi_vector_is_empty(&dmi_types_config.show_modules)) {
+        size_t nmodules = dmi_vector_length(&dmi_types_config.show_modules);
+
+        for (size_t i = 0; i < nmodules; i++) {
+            if (not dmi_vector_get(&dmi_types_config.show_modules, i, (uintptr_t *)&module))
+                break;
+
+            dmi_types_show_module(context, module);
+        }
+    }
+
+    return EXIT_SUCCESS;
+}
+
+static void dmi_types_show_core(dmi_context_t *context)
+{
+    dmi_unused(context);
+
+    if (not dmi_types_config.show_raw)
+        dmi_tty_header("Core types:");
+
+    for (int type = 0; type < __DMI_TYPE_OEM_START; type++) {
         const dmi_entity_spec_t *spec = dmi_type_spec(context, (dmi_type_t)type);
 
         if (spec == nullptr)
             continue;
 
-        printf(format, (int)spec->type, spec->code, spec->name);
+        dmi_types_show_type(context, nullptr, spec);
     }
 
-    return EXIT_SUCCESS;
+    if (not dmi_types_config.show_raw)
+        printf("\n");
+}
+
+static void dmi_types_show_module(dmi_context_t *context, const dmi_module_t *module)
+{
+    const dmi_entity_spec_t **pspec = nullptr;
+
+    dmi_unused(context);
+    assert(module != nullptr);
+
+    if ((module->entities == nullptr) || (*module->entities == nullptr))
+        return;
+
+    if (not dmi_types_config.show_raw)
+        dmi_tty_header("%s:", module->name);
+
+    for (pspec = module->entities; *pspec != nullptr; pspec++) {
+        dmi_types_show_type(context, module, *pspec);
+    }
+
+    if (not dmi_types_config.show_raw)
+        printf("\n");
+}
+
+static void dmi_types_show_type(
+        dmi_context_t           *context,
+        const dmi_module_t      *module,
+        const dmi_entity_spec_t *spec)
+{
+    dmi_unused(context);
+    assert(spec != nullptr);
+
+    if (dmi_types_config.show_raw) {
+        const char *module_name;
+
+        if (module != nullptr)
+            module_name = module->code;
+        else
+            module_name = "core";
+
+        printf("%d\t%s\t%s\t%s\n", spec->type, module_name, spec->code, spec->name);
+    } else {
+        dmi_tty_cprintf(DMI_TTY_COLOR_NAVY, "%4s%-3d", "", spec->type);
+        dmi_tty_cprintf(DMI_TTY_COLOR_YELLOW, "  %-24s", spec->code);
+        dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "  %s\n", spec->name);
+    }
+}
+
+static void dmi_types_cleanup(dmi_context_t *context)
+{
+    dmi_unused(context);
+    dmi_vector_clear(&dmi_types_config.show_modules);
 }
