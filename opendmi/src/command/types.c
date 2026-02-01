@@ -26,8 +26,8 @@ typedef struct dmi_types_config
 {
     bool show_core;
     bool show_all;
-    dmi_vector_t show_modules;
     bool show_raw;
+    dmi_vector_t show_modules;
 } dmi_types_config_t;
 
 static void dmi_types_usage(void);
@@ -49,6 +49,7 @@ static dmi_types_config_t dmi_types_config =
 {
     .show_core = true,
     .show_all  = false,
+    .show_raw  = false,
     .show_modules = {
         .matcher = dmi_types_match_module
     }

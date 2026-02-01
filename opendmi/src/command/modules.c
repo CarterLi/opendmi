@@ -4,6 +4,10 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#if __has_include(<unistd.h>)
+#   include <unistd.h>
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -16,9 +20,19 @@
 
 #include <opendmi/command/modules.h>
 
+typedef struct dmi_modules_config
+{
+    bool show_raw;
+} dmi_modules_config_t;
+
 static void dmi_modules_usage(void);
 static int dmi_modules_main(dmi_context_t *context, int argc, char *argv[]);
 static int dmi_modules_comparator(const void *lhs, const void *rhs);
+
+static dmi_modules_config_t dmi_modules_config =
+{
+    .show_raw = false
+};
 
 static const dmi_option_set_t dmi_modules_options =
 {
@@ -56,8 +70,12 @@ static int dmi_modules_main(dmi_context_t *context, int argc, char *argv[])
     dmi_unused(argc);
     dmi_unused(argv);
 
-    dmi_command_banner();
-    dmi_tty_header("Available modules:");
+    if (isatty(STDOUT_FILENO)) {
+        dmi_command_banner();
+        dmi_tty_header("Available modules:");
+    } else {
+        dmi_modules_config.show_raw = true;
+    }
 
     int rv = EXIT_FAILURE;
     size_t width = 0;
@@ -92,11 +110,16 @@ static int dmi_modules_main(dmi_context_t *context, int argc, char *argv[])
         for (index = 0; index < count; index++) {
             const dmi_module_t *module = modules[index];
 
-            dmi_tty_cprintf(DMI_TTY_COLOR_YELLOW, format, "", module->code);
-            dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "%s\n", module->name);
+            if (dmi_modules_config.show_raw) {
+                printf("%s\t%s\n", module->code, module->name);
+            } else {
+                dmi_tty_cprintf(DMI_TTY_COLOR_YELLOW, format, "", module->code);
+                dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "%s\n", module->name);
+            }
         }
 
-        printf("\n");
+        if (not dmi_modules_config.show_raw)
+            printf("\n");
 
         rv = EXIT_SUCCESS;
     } while (false);
