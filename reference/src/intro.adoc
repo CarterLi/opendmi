@@ -47,6 +47,7 @@ LSB:: Least-Significant Bit.
 MCA:: Micro Channel Architecture.
 MOF:: Managed Object Format.
 MSB:: Most Significant Bit.
+NIC:: Network Interface Card.
 NMI:: Non-Maskable Interrupt.
 NV:: Non-Volatile.
 NVRAM:: Non-Volatile RAM.
@@ -74,7 +75,8 @@ SIMM:: Single In-line Memory Module.
 SKU:: Stock-Keeping Unit.
 SMBus:: System Management Bus.
 SMM:: System Management Module.
-SRAM:: Static RAM
+SRAM:: Static RAM.
+TPM:: Trusted Platform Module.
 UEFI:: Unified Extensible Firmware Interface.
 UPS:: Uninterruptible Power Supply.
 USB:: Universal Serial Bus.

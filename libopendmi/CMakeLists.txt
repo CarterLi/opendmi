@@ -193,6 +193,15 @@ target_sources(opendmi-object
         src/module/hpe.c
 
         src/module/intel.c
+        src/entity/intel/rsd-cabled-pcie-port.c
+        src/entity/intel/rsd-fpga.c
+        src/entity/intel/rsd-memory-device-ex.c
+        src/entity/intel/rsd-network-card.c
+        src/entity/intel/rsd-phys-device-mapping.c
+        src/entity/intel/rsd-processor-cpuid.c
+        src/entity/intel/rsd-storage-device.c
+        src/entity/intel/rsd-tpm.c
+        src/entity/intel/rsd-txt.c
 
         src/module/lenovo.c
 
@@ -311,7 +320,7 @@ target_sources(opendmi-object
             include/opendmi/entity/intel/rsd-fpga.h
             include/opendmi/entity/intel/rsd-memory-device-ex.h
             include/opendmi/entity/intel/rsd-network-card.h
-            include/opendmi/entity/intel/rsd-physical-device-mapping.h
+            include/opendmi/entity/intel/rsd-phys-device-mapping.h
             include/opendmi/entity/intel/rsd-processor-cpuid.h
             include/opendmi/entity/intel/rsd-storage-device.h
             include/opendmi/entity/intel/rsd-tpm.h

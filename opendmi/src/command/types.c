@@ -243,7 +243,7 @@ static void dmi_types_show_type(
         printf("%d\t%s\t%s\t%s\n", spec->type, module_name, spec->code, spec->name);
     } else {
         dmi_tty_cprintf(DMI_TTY_COLOR_NAVY, "%4s%-3d", "", spec->type);
-        dmi_tty_cprintf(DMI_TTY_COLOR_YELLOW, "  %-24s", spec->code);
+        dmi_tty_cprintf(DMI_TTY_COLOR_YELLOW, "  %-30s", spec->code);
         dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, "  %s\n", spec->name);
     }
 }

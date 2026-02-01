@@ -16,11 +16,11 @@
  */
 enum dmi_intel_type
 {
-    DMI_TYPE_INTEL_RSD_NIC                 = 190, ///< Intel: RSD NIC information
+    DMI_TYPE_INTEL_RSD_NETWORK_CARD        = 190, ///< Intel: RSD Network card information
     DMI_TYPE_INTEL_RSD_PCIE                = 192, ///< Intel: RSD PCIe information
     DMI_TYPE_INTEL_RSD_PROCESSOR_CPUID     = 193, ///< Intel: RSD Processor CPUID information
     DMI_TYPE_INTEL_RSD_STORAGE_DEVICE      = 194, ///< Intel: RSD Storage device information
-    DMI_TYPE_INTRL_RSD_TPM                 = 195, ///< Intel: RSD TPM information
+    DMI_TYPE_INTEL_RSD_TPM                 = 195, ///< Intel: RSD TPM information
     DMI_TYPE_INTEL_RSD_TXT                 = 196, ///< Intel: RSD Trusted Execution Technology (TXT) information
     DMI_TYPE_INTEL_RSD_MEMORY_DEVICE_EX    = 197, ///< Intel: RSD Memory device extended information
     DMI_TYPE_INTEL_RSD_FPGA                = 198, ///< Intel: RSD Field-Programmable Gate Array (FPGA) information
