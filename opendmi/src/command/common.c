@@ -158,13 +158,17 @@ dmi_type_t dmi_parse_type(dmi_context_t *context, const char *str)
     return (dmi_type_t)value;
 }
 
-void dmi_print_all(dmi_context_t *context, const dmi_format_t *format)
+void dmi_print_all(dmi_context_t *context, FILE *stream, const dmi_format_t *format)
 {
     void *session;
     dmi_registry_iter_t iter;
     dmi_entity_t *entity;
 
-    session = format->handlers.initialize(context, stdout);
+    assert(context != nullptr);
+    assert(stream != nullptr);
+    assert(format != nullptr);
+
+    session = format->handlers.initialize(context, stream);
     if (not session)
         return;
 

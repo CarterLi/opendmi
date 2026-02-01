@@ -44,6 +44,12 @@ static const dmi_option_set_t dmi_modules_options =
             .description = "Print this help and exit",
             .value       = &dmi_command_config.show_usage
         },
+        {
+            .short_names = "r",
+            .long_names  = (const char *[]){ "raw", nullptr },
+            .description = "Raw output (default if stdout is a pipe)",
+            .value       = &dmi_modules_config.show_raw
+        },
         {}
     }
 };

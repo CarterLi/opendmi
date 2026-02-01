@@ -82,6 +82,12 @@ static const dmi_option_set_t dmi_types_options =
             .description = "List all available types",
             .value       = &dmi_types_config.show_all
         },
+        {
+            .short_names = "r",
+            .long_names  = (const char *[]){ "raw", nullptr },
+            .description = "Raw output (default if stdout is a pipe)",
+            .value       = &dmi_types_config.show_raw
+        },
         {}
     }
 };

@@ -75,7 +75,7 @@ static int dmi_show_main(dmi_context_t *context, int argc, char *argv[])
     dmi_unused(argc);
     dmi_unused(argv);
 
-    dmi_print_all(context, &dmi_text_format);
+    dmi_print_all(context, stdout, &dmi_text_format);
 
     return EXIT_FAILURE;
 }

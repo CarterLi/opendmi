@@ -4,13 +4,16 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
+#include <string.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <assert.h>
 
 #include <opendmi/context.h>
 #include <opendmi/format.h>
 #include <opendmi/format/yaml.h>
 
+#include <opendmi/command/common.h>
 #include <opendmi/command/export.h>
 
 typedef struct dmi_export_config
@@ -127,11 +130,34 @@ static bool dmi_export_set_format(dmi_context_t *context, const char *value)
 
 static int dmi_export_main(dmi_context_t *context, int argc, char *argv[])
 {
+    const char *mode;
+    FILE *out;
+
     dmi_unused(context);
     dmi_unused(argc);
     dmi_unused(argv);
 
-    dmi_command_message_ex(&dmi_export_command, "Not implemented yet");
+    if (dmi_export_config.output_path != nullptr) {
+        if (dmi_export_config.force)
+            mode = "w";
+        else
+            mode = "wx";
+
+        out = fopen(dmi_export_config.output_path, mode);
+        if (out == nullptr) {
+            dmi_command_message_ex(
+                    &dmi_export_command, "Unable to open output file: %s: %s",
+                    dmi_export_config.output_path, strerror(errno));
+            return EXIT_FAILURE;
+        }
+    } else {
+        out = stdout;
+    }
+
+    dmi_print_all(context, out, dmi_export_config.output_format);
+
+    if (dmi_export_config.output_path != nullptr)
+        fclose(out);
 
     return EXIT_FAILURE;
 }
