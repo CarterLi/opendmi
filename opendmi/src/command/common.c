@@ -19,10 +19,20 @@
 static bool dmi_filter_config_add_handle(dmi_context_t *context, const char *value);
 static bool dmi_filter_config_add_type(dmi_context_t *context, const char *value);
 
+static bool dmi_filter_config_enable_std(dmi_context_t *context, const char *value);
+static bool dmi_filter_config_disable_std(dmi_context_t *context, const char *value);
+static bool dmi_filter_config_enable_oem(dmi_context_t *context, const char *value);
+static bool dmi_filter_config_disable_oem(dmi_context_t *context, const char *value);
+static bool dmi_filter_config_enable_inactive(dmi_context_t *context, const char *value);
+static bool dmi_filter_config_disable_inactive(dmi_context_t *context, const char *value);
+static bool dmi_filter_config_enable_unknown(dmi_context_t *context, const char *value);
+static bool dmi_filter_config_disable_unknown(dmi_context_t *context, const char *value);
+static bool dmi_filter_config_enable_all(dmi_context_t *context, const char *value);
+
 dmi_filter_config_t dmi_filter_config =
 {
     .filter = {
-        .mask = DMI_FILTER_MASK_ALL
+        .mask = DMI_FILTER_MASK_DEFAULT
     }
 };
 
@@ -55,47 +65,66 @@ const dmi_option_set_t dmi_filter_options =
         {
             .short_names = "s",
             .long_names  = (const char *[]){ "standard", nullptr },
-            .description = "Show standard entries"
+            .description = "Show standard entries",
+            .handler     = dmi_filter_config_enable_std
         },
         {
             .short_names = "S",
             .long_names  = (const char *[]){ "no-standard", nullptr },
-            .description = "Don't show standard entries"
+            .description = "Don't show standard entries",
+            .handler     = dmi_filter_config_disable_std
         },
         {
             .short_names = "e",
             .long_names  = (const char *[]){ "oem", nullptr },
-            .description = "Show OEM-specific entries"
+            .description = "Show OEM-specific entries",
+            .handler     = dmi_filter_config_enable_oem
         },
         {
             .short_names = "E",
             .long_names  = (const char *[]){ "no-oem", nullptr },
-            .description = "Don't show OEM-specific entries"
+            .description = "Don't show OEM-specific entries",
+            .handler     = dmi_filter_config_disable_oem
         },
         {
             .short_names = "i",
             .long_names  = (const char *[]){ "inactive", nullptr },
-            .description = "Show inactive entries"
+            .description = "Show inactive entries",
+            .handler     = dmi_filter_config_enable_inactive
         },
         {
             .short_names = "I",
             .long_names  = (const char *[]){ "no-inactive", nullptr },
-            .description = "Don't show inactive entries"
+            .description = "Don't show inactive entries",
+            .handler     = dmi_filter_config_disable_inactive
         },
         {
             .short_names = "u",
             .long_names  = (const char *[]){ "unknown", nullptr },
-            .description = "Show unknown entries"
+            .description = "Show unknown entries",
+            .handler     = dmi_filter_config_enable_unknown
         },
         {
             .short_names = "U",
             .long_names  = (const char *[]){ "no-unknown", nullptr },
-            .description = "Don't show unknown entries"
+            .description = "Don't show unknown entries",
+            .handler     = dmi_filter_config_disable_unknown
+        },
+        {
+            .short_names = "m",
+            .long_names  = (const char *[]){ "module", nullptr },
+            .description = "Show entries provided by module(s)",
+            .argument = {
+                .name     = "module",
+                .type     = DMI_ARGUMENT_TYPE_STRING,
+                .required = false
+            }
         },
         {
             .short_names = "a",
             .long_names  = (const char *[]){ "all", nullptr },
-            .description = "Show all entries"
+            .description = "Show all entries",
+            .handler     = dmi_filter_config_enable_all
         },
         {}
     }
@@ -263,6 +292,96 @@ static bool dmi_filter_config_add_type(dmi_context_t *context, const char *value
 
     if (not dmi_filter_add_type(&dmi_filter_config.filter, type))
         return false;
+
+    return true;
+}
+
+static bool dmi_filter_config_enable_std(dmi_context_t *context, const char *value)
+{
+    dmi_unused(context);
+    dmi_unused(value);
+
+    dmi_filter_config.filter.mask |= DMI_FILTER_MASK_COMMON;
+
+    return true;
+}
+
+static bool dmi_filter_config_disable_std(dmi_context_t *context, const char *value)
+{
+    dmi_unused(context);
+    dmi_unused(value);
+
+    dmi_filter_config.filter.mask &= ~DMI_FILTER_MASK_COMMON;
+
+    return true;
+}
+
+static bool dmi_filter_config_enable_oem(dmi_context_t *context, const char *value)
+{
+    dmi_unused(context);
+    dmi_unused(value);
+
+    dmi_filter_config.filter.mask |= DMI_FILTER_MASK_OEM;
+
+    return true;
+}
+
+static bool dmi_filter_config_disable_oem(dmi_context_t *context, const char *value)
+{
+    dmi_unused(context);
+    dmi_unused(value);
+
+    dmi_filter_config.filter.mask &= ~DMI_FILTER_MASK_OEM;
+
+    return true;
+}
+
+static bool dmi_filter_config_enable_inactive(dmi_context_t *context, const char *value)
+{
+    dmi_unused(context);
+    dmi_unused(value);
+
+    dmi_filter_config.filter.mask |= DMI_FILTER_MASK_INACTIVE;
+
+    return true;
+}
+
+static bool dmi_filter_config_disable_inactive(dmi_context_t *context, const char *value)
+{
+    dmi_unused(context);
+    dmi_unused(value);
+
+    dmi_filter_config.filter.mask &= ~DMI_FILTER_MASK_INACTIVE;
+
+    return true;
+}
+
+static bool dmi_filter_config_enable_unknown(dmi_context_t *context, const char *value)
+{
+    dmi_unused(context);
+    dmi_unused(value);
+
+    dmi_filter_config.filter.mask |= DMI_FILTER_MASK_UNKNOWN;
+
+    return true;
+}
+
+static bool dmi_filter_config_disable_unknown(dmi_context_t *context, const char *value)
+{
+    dmi_unused(context);
+    dmi_unused(value);
+
+    dmi_filter_config.filter.mask &= ~DMI_FILTER_MASK_UNKNOWN;
+
+    return true;
+}
+
+static bool dmi_filter_config_enable_all(dmi_context_t *context, const char *value)
+{
+    dmi_unused(context);
+    dmi_unused(value);
+
+    dmi_filter_config.filter.mask = DMI_FILTER_MASK_ALL;
 
     return true;
 }

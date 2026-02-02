@@ -45,17 +45,13 @@ bool dmi_filter_is_empty(const dmi_filter_t *filter)
 
     return
         (filter->handles.length == 0) and
-        (filter->types.length == 0) and
-        (filter->mask == DMI_FILTER_MASK_ALL);
+        (filter->types.length == 0);
 }
 
 bool dmi_filter_match(const dmi_filter_t *filter, const dmi_entity_t *entity)
 {
     if ((filter == nullptr) or (entity == nullptr))
         return false;
-
-    if (dmi_filter_is_empty(filter))
-        return true;
 
     // Filter entities by category
     if (entity->type < __DMI_TYPE_OEM_START) {
@@ -77,6 +73,9 @@ bool dmi_filter_match(const dmi_filter_t *filter, const dmi_entity_t *entity)
         if ((filter->mask & DMI_FILTER_MASK_UNKNOWN) == 0)
             return false;
     }
+
+    if (dmi_filter_is_empty(filter))
+        return true;
 
     // Filter specific handles
     if (filter->handles.length > 0) {
