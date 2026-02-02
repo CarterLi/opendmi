@@ -159,5 +159,5 @@ static int dmi_export_main(dmi_context_t *context, int argc, char *argv[])
     if (dmi_export_config.output_path != nullptr)
         fclose(out);
 
-    return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }

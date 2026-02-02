@@ -77,5 +77,5 @@ static int dmi_show_main(dmi_context_t *context, int argc, char *argv[])
 
     dmi_print_all(context, stdout, &dmi_text_format);
 
-    return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }
