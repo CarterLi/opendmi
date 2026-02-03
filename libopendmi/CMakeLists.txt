@@ -445,12 +445,10 @@ opendmi_test(ntoh64 test/ntoh64.c)
 opendmi_test(ipow32 test/ipow32.c)
 opendmi_test(ipow64 test/ipow64.c)
 
-opendmi_test(decode-word test/decode-word.c)
-opendmi_test(decode-dword test/decode-dword.c)
-opendmi_test(decode-qword test/decode-qword.c)
-opendmi_test(decode-bcd test/decode-bcd.c)
 opendmi_test(uuid-decode test/uuid-decode.c)
 opendmi_test(uuid-encode test/uuid-encode.c)
+
+opendmi_test(utils-codec test/utils/codec.c)
 
 opendmi_test(date-parse test/date-parse.c)
 
