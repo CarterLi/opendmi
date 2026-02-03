@@ -4,26 +4,31 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 //
-#include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <cmocka.h>
 
 #include <opendmi/utils/uuid.h>
 
+typedef struct test_vector test_vector_t;
+
 struct test_vector
 {
-    uint8_t    value[16];
-    dmi_uuid_t result;
+    uint8_t    encoded[16];
+    dmi_uuid_t decoded;
 };
 
-struct test_vector test_data[] =
+static void test_uuid_encode(void **state);
+static void test_uuid_decode(void **state);
+
+static const test_vector_t test_data[] =
 {
     {
-        .value = {
+        .encoded = {
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         },
-        .result = {
+        .decoded = {
             .time_low                  = 0x00000000U,
             .time_mid                  = 0x0000U,
             .time_hi_and_version       = 0x0000U,
@@ -33,11 +38,11 @@ struct test_vector test_data[] =
         }
     },
     {
-        .value = {
+        .encoded = {
             0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
             0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
         },
-        .result = {
+        .decoded = {
             .time_low                  = 0xFFFFFFFFU,
             .time_mid                  = 0xFFFFU,
             .time_hi_and_version       = 0xFFFFU,
@@ -47,11 +52,11 @@ struct test_vector test_data[] =
         }
     },
     {
-        .value = {
+        .encoded = {
             0x33, 0x22, 0x11, 0x00, 0x55, 0x44, 0x77, 0x66,
             0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF
         },
-        .result = {
+        .decoded = {
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
             .time_low                  = 0x33221100U,
             .time_mid                  = 0x5544U,
@@ -72,11 +77,34 @@ struct test_vector test_data[] =
 
 int main(void)
 {
-    for (size_t i = 0; i < countof(test_data); i++) {
-        dmi_uuid_t uuid = dmi_uuid_decode(test_data[i].value);
-        if (memcmp(uuid.__value, test_data[i].result.__value, sizeof(uuid)) != 0)
-            return EXIT_FAILURE;
-    }
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(test_uuid_encode),
+        cmocka_unit_test(test_uuid_decode)
+    };
 
-    return EXIT_SUCCESS;
+    return cmocka_run_group_tests(tests, nullptr, nullptr);
+}
+
+static void test_uuid_encode(void **state)
+{
+    dmi_unused(state);
+
+    for (size_t i = 0; i < countof(test_data); i++) {
+        uint8_t result[16];
+
+        dmi_uuid_encode(test_data[i].decoded, result);
+
+        assert_memory_equal(result, test_data[i].encoded, sizeof(result));
+    }
+}
+
+static void test_uuid_decode(void **state)
+{
+    dmi_unused(state);
+
+    for (size_t i = 0; i < countof(test_data); i++) {
+        dmi_uuid_t result = dmi_uuid_decode(test_data[i].encoded);
+
+        assert_memory_equal(result.__value, test_data[i].decoded.__value, sizeof(result));
+    }
 }
