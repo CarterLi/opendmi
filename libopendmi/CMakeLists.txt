@@ -430,18 +430,7 @@ macro(opendmi_test TEST_NAME TEST_SOURCES)
     endif()
 endmacro()
 
-opendmi_test(bswap16 test/bswap16.c)
-opendmi_test(bswap32 test/bswap32.c)
-opendmi_test(bswap64 test/bswap64.c)
-
-opendmi_test(hton16 test/hton16.c)
-opendmi_test(hton32 test/hton32.c)
-opendmi_test(hton64 test/hton64.c)
-
-opendmi_test(ntoh16 test/ntoh16.c)
-opendmi_test(ntoh32 test/ntoh32.c)
-opendmi_test(ntoh64 test/ntoh64.c)
-
+opendmi_test(utils-endian test/utils/endian.c)
 opendmi_test(utils-codec test/utils/codec.c)
 opendmi_test(utils-string test/utils/string.c)
 opendmi_test(utils-uuid test/utils/uuid.c)

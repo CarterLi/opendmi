@@ -256,7 +256,7 @@ _test() {
         esac
     done
 
-    ${CTEST} --test-dir ${BUILD_DIR} --parallel ${NPROC} ${CTEST_ARGS}
+    ${CTEST} --test-dir ${BUILD_DIR} --parallel ${NPROC} --output-on-failure ${CTEST_ARGS}
 }
 
 _install() {
