@@ -24,6 +24,7 @@ if(CPPCHECK_FOUND)
         --enable=all
         --disable=missingInclude,unusedFunction,information
         --suppress=constParameterCallback
+        --suppress=*:*_deps/*
         --inline-suppr
     )
 

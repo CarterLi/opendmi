@@ -338,6 +338,10 @@ target_sources(opendmi-object
             include/opendmi/backend/dump.h
 )
 
+if(UNIX)
+    target_compile_definitions(opendmi-object PRIVATE _XOPEN_SOURCE _GNU_SOURCE)
+endif()
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_sources(opendmi-object
         PRIVATE
@@ -404,7 +408,7 @@ macro(opendmi_test TEST_NAME TEST_SOURCES)
     set(TEST_TARGET ${TEST_NAME}-test)
 
     add_executable(${TEST_TARGET} ${TEST_SOURCES})    
-    target_link_libraries(${TEST_TARGET} opendmi-shared)
+    target_link_libraries(${TEST_TARGET} opendmi-shared cmocka-static)
 
     if(ENABLE_COVERAGE)
         target_compile_options(${TEST_TARGET} PUBLIC ${COVERAGE_OPTIONS})

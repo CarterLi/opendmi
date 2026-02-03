@@ -46,6 +46,10 @@ add_executable(opendmi
     src/utils/tty.c
 )
 
+if(UNIX)
+    target_compile_definitions(opendmi PRIVATE _XOPEN_SOURCE _GNU_SOURCE)
+endif()
+
 if(ENABLE_JSON)
     target_sources(opendmi PRIVATE src/format/json.c)
 endif()

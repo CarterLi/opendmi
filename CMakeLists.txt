@@ -48,12 +48,16 @@ else()
 
     if("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang" OR
        "${CMAKE_C_COMPILER_ID}" STREQUAL "AppleClang")
-        add_compile_options(-Wno-gnu-zero-variadic-macro-arguments -Wno-keyword-macro)
+        add_compile_options(
+            -Wno-unused-command-line-argument
+            -Wno-gnu-zero-variadic-macro-arguments
+            -Wno-keyword-macro
+        )
+    elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+        add_compile_options(
+            -Wno-error=clobbered
+        )
     endif()
-endif()
-
-if(UNIX)
-    add_compile_definitions(_XOPEN_SOURCE _GNU_SOURCE)
 endif()
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -83,6 +87,7 @@ find_package_ex(Curses ENABLE_CURSES)
 find_package_ex(LibXml2 ENABLE_XML)
 find_package_ex(LibYaml ENABLE_YAML)
 
+include(FetchCMocka)
 enable_testing()
 
 add_subdirectory(libopendmi)
