@@ -449,6 +449,7 @@ opendmi_test(uuid-decode test/uuid-decode.c)
 opendmi_test(uuid-encode test/uuid-encode.c)
 
 opendmi_test(utils-codec test/utils/codec.c)
+opendmi_test(utils-string test/utils/string.c)
 
 opendmi_test(date-parse test/date-parse.c)
 
@@ -494,8 +495,6 @@ opendmi_test(pointing-device-type-name test/entity/pointing-device-type-name.c)
 opendmi_test(pointing-device-iface-name test/entity/pointing-device-iface-name.c)
 opendmi_test(pointing-device-decode test/entity/pointing-device-decode.c)
 
-opendmi_test(string-tolower test/utils/string-tolower.c)
-opendmi_test(string-toupper test/utils/string-toupper.c)
 opendmi_test(version-build test/utils/version-build.c)
 opendmi_test(version-format test/utils/version-format.c)
 opendmi_test(version-format-ex test/utils/version-format-ex.c)
