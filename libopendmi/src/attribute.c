@@ -223,13 +223,15 @@ static char *dmi_attribute_format_bool(
     const char *str = nullptr;
 
     if (pretty) {
-        if (attr->params.values) {
-            str = dmi_name_lookup(attr->params.values, *(bool *)value ? 1 : 0);
-        } else {
+        if (attr->params.values)
+            str = dmi_name_lookup(attr->params.values, *(bool *)value ? true : false);
+        else
             str = *(bool *)value ? "yes" : "no";
-        }
     } else {
-        str = *(bool *)value ? "true" : "false";
+        if (attr->params.values)
+            str = dmi_code_lookup(attr->params.values, *(bool *)value ? true : false);
+        else
+            str = *(bool *)value ? "true" : "false";
     }
 
     return strdup(str);

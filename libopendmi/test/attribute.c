@@ -14,6 +14,7 @@
 
 static void test_attribute_format_address(void **state);
 static void test_attribute_format_bool(void **state);
+static void test_attribute_format_bool_ex(void **state);
 static void test_attribute_format_decimal(void **state);
 static void test_attribute_format_enum(void **state);
 static void test_attribute_format_handle(void **state);
@@ -30,6 +31,7 @@ int main(void)
     const struct CMUnitTest tests[] = {
         cmocka_unit_test_teardown(test_attribute_format_address, free_attribute_value),
         cmocka_unit_test_teardown(test_attribute_format_bool, free_attribute_value),
+        cmocka_unit_test_teardown(test_attribute_format_bool_ex, free_attribute_value),
         cmocka_unit_test_teardown(test_attribute_format_decimal, free_attribute_value),
         cmocka_unit_test_teardown(test_attribute_format_enum, free_attribute_value),
         cmocka_unit_test_teardown(test_attribute_format_handle, free_attribute_value),
@@ -53,7 +55,108 @@ static void test_attribute_format_address(void **state)
 static void test_attribute_format_bool(void **state)
 {
     dmi_unused(state);
-    skip();
+
+    static const dmi_attribute_t attr = {
+        .value   = {
+            .size   = sizeof(dmi_handle_t),
+            .offset = 0
+        },
+        .counter = DMI_MEMBER_NULL,
+        .type    = DMI_ATTRIBUTE_TYPE_BOOL,
+        .params  = {}
+    };
+
+    const struct {
+        const void *value;
+        bool pretty;
+        const char *expected;
+    } test_data[] = {
+        { dmi_value_ptr((bool)0),  true,  "no"    },
+        { dmi_value_ptr((bool)0),  false, "false" },
+        { dmi_value_ptr((bool)1),  true,  "yes"   },
+        { dmi_value_ptr((bool)1),  false, "true"  },
+        { dmi_value_ptr((bool)-1), true,  "yes"   },
+        { dmi_value_ptr((bool)-1), false, "true"  },
+        { dmi_value_ptr((bool)2),  true,  "yes"   },
+        { dmi_value_ptr((bool)2),  false, "true"  }
+    };
+
+    *state = nullptr;
+
+    for (size_t i = 0; i < countof(test_data); i++) {
+        const void *value    = test_data[i].value;
+        bool        pretty   = test_data[i].pretty;
+        const char *expected = test_data[i].expected;
+        char       *result   = nullptr;
+
+        result = dmi_attribute_format(&attr, value, pretty);
+        *state = result;
+
+        assert_non_null(result);
+        assert_string_equal(result, expected);
+
+        free(result);
+    }
+
+    *state = nullptr;
+}
+
+static void test_attribute_format_bool_ex(void **state)
+{
+    dmi_unused(state);
+
+    const dmi_name_set_t test_values = {
+        .names = (const dmi_name_t[]) {
+            { .id = false, .code = "off", .name = "OFF" },
+            { .id = true,  .code = "on",  .name = "ON"  }
+        }
+    };
+
+    const dmi_attribute_t attr = {
+        .value   = {
+            .size   = sizeof(dmi_handle_t),
+            .offset = 0
+        },
+        .counter = DMI_MEMBER_NULL,
+        .type    = DMI_ATTRIBUTE_TYPE_BOOL,
+        .params  = {
+            .values = &test_values
+        }
+    };
+
+    const struct {
+        const void *value;
+        bool pretty;
+        const char *expected;
+    } test_data[] = {
+        { dmi_value_ptr((bool)0),  true,  "OFF" },
+        { dmi_value_ptr((bool)0),  false, "off" },
+        { dmi_value_ptr((bool)1),  true,  "ON"  },
+        { dmi_value_ptr((bool)1),  false, "on"  },
+        { dmi_value_ptr((bool)-1), true,  "ON"  },
+        { dmi_value_ptr((bool)-1), false, "on"  },
+        { dmi_value_ptr((bool)2),  true,  "ON"  },
+        { dmi_value_ptr((bool)2),  false, "on"  }
+    };
+
+    *state = nullptr;
+
+    for (size_t i = 0; i < countof(test_data); i++) {
+        const void *value    = test_data[i].value;
+        bool        pretty   = test_data[i].pretty;
+        const char *expected = test_data[i].expected;
+        char       *result   = nullptr;
+
+        result = dmi_attribute_format(&attr, value, pretty);
+        *state = result;
+
+        assert_non_null(result);
+        assert_string_equal(result, expected);
+
+        free(result);
+    }
+
+    *state = nullptr;
 }
 
 static void test_attribute_format_decimal(void **state)
