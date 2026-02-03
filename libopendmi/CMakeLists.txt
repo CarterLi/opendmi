@@ -434,10 +434,9 @@ opendmi_test(utils-endian test/utils/endian.c)
 opendmi_test(utils-codec test/utils/codec.c)
 opendmi_test(utils-string test/utils/string.c)
 opendmi_test(utils-version test/utils/version.c)
+opendmi_test(utils-datetime test/utils/datetime.c)
 opendmi_test(utils-uuid test/utils/uuid.c)
 opendmi_test(utils-misc test/utils/misc.c)
-
-opendmi_test(date-parse test/date-parse.c)
 
 opendmi_test(attribute-format-handle test/attribute-format-handle.c)
 opendmi_test(attribute-format-string test/attribute-format-string.c)
