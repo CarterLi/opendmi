@@ -442,12 +442,10 @@ opendmi_test(ntoh16 test/ntoh16.c)
 opendmi_test(ntoh32 test/ntoh32.c)
 opendmi_test(ntoh64 test/ntoh64.c)
 
-opendmi_test(ipow32 test/ipow32.c)
-opendmi_test(ipow64 test/ipow64.c)
-
 opendmi_test(utils-codec test/utils/codec.c)
 opendmi_test(utils-string test/utils/string.c)
 opendmi_test(utils-uuid test/utils/uuid.c)
+opendmi_test(utils-misc test/utils/misc.c)
 
 opendmi_test(date-parse test/date-parse.c)
 
