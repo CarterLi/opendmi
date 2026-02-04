@@ -10,12 +10,12 @@
 
 #include <opendmi/entity/cache.h>
 
-static void test_cache_type_name(void **state);
-static void test_cache_assoc_name(void **state);
-static void test_cache_location_name(void **state);
-static void test_cache_mode_name(void **state);
-static void test_cache_size(void **state);
-static void test_cache_size_ex(void **state);
+static void test_cache_type_name(void **pstate);
+static void test_cache_assoc_name(void **pstate);
+static void test_cache_location_name(void **pstate);
+static void test_cache_mode_name(void **pstate);
+static void test_cache_size(void **pstate);
+static void test_cache_size_ex(void **pstate);
 
 int main(void)
 {
@@ -31,9 +31,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_cache_type_name(void **state)
+static void test_cache_type_name(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     assert_null(dmi_cache_type_name(__DMI_CACHE_TYPE_COUNT));
 
@@ -42,9 +42,9 @@ static void test_cache_type_name(void **state)
     }
 }
 
-static void test_cache_assoc_name(void **state)
+static void test_cache_assoc_name(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     assert_null(dmi_cache_assoc_name(__DMI_CACHE_ASSOC_COUNT));
 
@@ -53,9 +53,9 @@ static void test_cache_assoc_name(void **state)
     }
 }
 
-static void test_cache_location_name(void **state)
+static void test_cache_location_name(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     assert_null(dmi_cache_location_name(__DMI_CACHE_LOCATION_COUNT));
 
@@ -64,9 +64,9 @@ static void test_cache_location_name(void **state)
     }
 }
 
-static void test_cache_mode_name(void **state)
+static void test_cache_mode_name(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     assert_null(dmi_cache_mode_name(__DMI_CACHE_MODE_COUNT));
 
@@ -75,9 +75,9 @@ static void test_cache_mode_name(void **state)
     }
 }
 
-static void test_cache_size(void **state)
+static void test_cache_size(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < 15; i++) {
         dmi_size_t base_size = (dmi_size_t)1u << i;
@@ -87,9 +87,9 @@ static void test_cache_size(void **state)
     }
 }
 
-static void test_cache_size_ex(void **state)
+static void test_cache_size_ex(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < 31; i++) {
         size_t base_size = (dmi_size_t)1u << i;

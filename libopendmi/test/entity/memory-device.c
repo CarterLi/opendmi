@@ -10,11 +10,11 @@
 
 #include <opendmi/entity/memory-device.h>
 
-static void test_memory_device_type_name(void **state);
-static void test_memory_device_form_factor_name(void **state);
-static void test_memory_device_tech_name(void **state);
-static void test_memory_device_size(void **state);
-static void test_memory_device_size_ex(void **state);
+static void test_memory_device_type_name(void **pstate);
+static void test_memory_device_form_factor_name(void **pstate);
+static void test_memory_device_tech_name(void **pstate);
+static void test_memory_device_size(void **pstate);
+static void test_memory_device_size_ex(void **pstate);
 
 int main(void)
 {
@@ -29,9 +29,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_memory_device_type_name(void **state)
+static void test_memory_device_type_name(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     assert_null(dmi_memory_device_type_name(__DMI_MEMORY_DEVICE_TYPE_COUNT));
 
@@ -44,9 +44,9 @@ static void test_memory_device_type_name(void **state)
     }
 }
 
-static void test_memory_device_form_factor_name(void **state)
+static void test_memory_device_form_factor_name(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     assert_null(dmi_memory_device_form_factor_name(__DMI_MEMORY_DEVICE_FORM_FACTOR_COUNT));
 
@@ -55,9 +55,9 @@ static void test_memory_device_form_factor_name(void **state)
     }
 }
 
-static void test_memory_device_tech_name(void **state)
+static void test_memory_device_tech_name(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     assert_null(dmi_memory_device_tech_name(__DMI_MEMORY_DEVICE_TECH_COUNT));
 
@@ -66,9 +66,9 @@ static void test_memory_device_tech_name(void **state)
     }
 }
 
-static void test_memory_device_size(void **state)
+static void test_memory_device_size(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < 15; i++) {
         dmi_size_t base_size = (dmi_size_t)1u << i;
@@ -78,9 +78,9 @@ static void test_memory_device_size(void **state)
     }
 }
 
-static void test_memory_device_size_ex(void **state)
+static void test_memory_device_size_ex(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < 31; i++) {
         size_t base_size = (dmi_size_t)1u << i;

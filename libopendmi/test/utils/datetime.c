@@ -10,7 +10,7 @@
 
 #include <opendmi/utils/datetime.h>
 
-static void test_date_parse(void **state);
+static void test_date_parse(void **pstate);
 
 int main(void)
 {
@@ -21,9 +21,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_date_parse(void **state)
+static void test_date_parse(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static const struct {
         const char *value;

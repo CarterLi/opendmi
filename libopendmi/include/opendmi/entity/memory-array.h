@@ -27,8 +27,10 @@ typedef enum dmi_memory_array_location
     DMI_MEMORY_ARRAY_LOCATION_MCA             = 0x07, ///< MCA add-on card
     DMI_MEMORY_ARRAY_LOCATION_PCMCIA          = 0x08, ///< PCMCIA add-on card
     DMI_MEMORY_ARRAY_LOCATION_PROPRIETARY     = 0x09, ///< Proprietary add-on card
-    // Unassigned: 0x0A .. 0x9F
     DMI_MEMORY_ARRAY_LOCATION_NUBUS           = 0x0A, ///< NuBus
+    __DMI_MEMORY_ARRAY_LOCATION_UNASSIGNED_START = 0x0B,
+    // Unassigned: 0x0B .. 0x9F
+    __DMI_MEMORY_ARRAY_LOCATION_UNASSIGNED_END = 0x9F,
     DMI_MEMORY_ARRAY_LOCATION_PC_98_C20       = 0xA0, ///< PC-98/C20 add-on card
     DMI_MEMORY_ARRAY_LOCATION_PC_98_C24       = 0xA1, ///< PC-98/C24 add-on card
     DMI_MEMORY_ARRAY_LOCATION_PC_98_E         = 0xA2, ///< PC-98/E add-on card

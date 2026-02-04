@@ -12,19 +12,19 @@
 #include <opendmi/utils/uuid.h>
 #include <opendmi/utils/version.h>
 
-static void test_attribute_format_address(void **state);
-static void test_attribute_format_bool(void **state);
-static void test_attribute_format_bool_ex(void **state);
-static void test_attribute_format_decimal(void **state);
-static void test_attribute_format_enum(void **state);
-static void test_attribute_format_handle(void **state);
-static void test_attribute_format_integer(void **state);
-static void test_attribute_format_set(void **state);
-static void test_attribute_format_size(void **state);
-static void test_attribute_format_string(void **state);
-static void test_attribute_format_uuid(void **state);
-static void test_attribute_format_version(void **state);
-static int free_attribute_value(void **state);
+static void test_attribute_format_address(void **pstate);
+static void test_attribute_format_bool(void **pstate);
+static void test_attribute_format_bool_ex(void **pstate);
+static void test_attribute_format_decimal(void **pstate);
+static void test_attribute_format_enum(void **pstate);
+static void test_attribute_format_handle(void **pstate);
+static void test_attribute_format_integer(void **pstate);
+static void test_attribute_format_set(void **pstate);
+static void test_attribute_format_size(void **pstate);
+static void test_attribute_format_string(void **pstate);
+static void test_attribute_format_uuid(void **pstate);
+static void test_attribute_format_version(void **pstate);
+static int free_attribute_value(void **pstate);
 
 int main(void)
 {
@@ -46,15 +46,15 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_attribute_format_address(void **state)
+static void test_attribute_format_address(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
     skip();
 }
 
-static void test_attribute_format_bool(void **state)
+static void test_attribute_format_bool(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static const dmi_attribute_t attr = {
         .value   = {
@@ -81,7 +81,7 @@ static void test_attribute_format_bool(void **state)
         { dmi_value_ptr((bool)2),  false, "true"  }
     };
 
-    *state = nullptr;
+    *pstate = nullptr;
 
     for (size_t i = 0; i < countof(test_data); i++) {
         const void *value    = test_data[i].value;
@@ -90,20 +90,19 @@ static void test_attribute_format_bool(void **state)
         char       *result   = nullptr;
 
         result = dmi_attribute_format(&attr, value, pretty);
-        *state = result;
+        *pstate = result;
 
         assert_non_null(result);
         assert_string_equal(result, expected);
 
         free(result);
+        *pstate = nullptr;
     }
-
-    *state = nullptr;
 }
 
-static void test_attribute_format_bool_ex(void **state)
+static void test_attribute_format_bool_ex(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     const dmi_name_set_t test_values = {
         .names = (const dmi_name_t[]) {
@@ -139,7 +138,7 @@ static void test_attribute_format_bool_ex(void **state)
         { dmi_value_ptr((bool)2),  false, "on"  }
     };
 
-    *state = nullptr;
+    *pstate = nullptr;
 
     for (size_t i = 0; i < countof(test_data); i++) {
         const void *value    = test_data[i].value;
@@ -148,32 +147,31 @@ static void test_attribute_format_bool_ex(void **state)
         char       *result   = nullptr;
 
         result = dmi_attribute_format(&attr, value, pretty);
-        *state = result;
+        *pstate = result;
 
         assert_non_null(result);
         assert_string_equal(result, expected);
 
         free(result);
+        *pstate = nullptr;
     }
-
-    *state = nullptr;
 }
 
-static void test_attribute_format_decimal(void **state)
+static void test_attribute_format_decimal(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
     skip();
 }
 
-static void test_attribute_format_enum(void **state)
+static void test_attribute_format_enum(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
     skip();
 }
 
-static void test_attribute_format_handle(void **state)
+static void test_attribute_format_handle(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     const struct {
         const void *value;
@@ -200,7 +198,7 @@ static void test_attribute_format_handle(void **state)
         .params  = {}
     };
 
-    *state = nullptr;
+    *pstate = nullptr;
 
     for (size_t i = 0; i < countof(test_data); i++) {
         const void *value    = test_data[i].value;
@@ -209,44 +207,44 @@ static void test_attribute_format_handle(void **state)
         char       *result   = nullptr;
 
         result = dmi_attribute_format(&attr, value, pretty);
-        *state = result;
+        *pstate = result;
 
         assert_non_null(result);
         assert_string_equal(result, expected);
 
         free(result);
+        *pstate = nullptr;
     }
 
-    *state = nullptr;
 }
 
-static void test_attribute_format_integer(void **state)
+static void test_attribute_format_integer(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
     skip();
 }
 
-static void test_attribute_format_set(void **state)
+static void test_attribute_format_set(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
     skip();
 }
 
-static void test_attribute_format_size(void **state)
+static void test_attribute_format_size(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
     skip();
 }
 
-static void test_attribute_format_string(void **state)
+static void test_attribute_format_string(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
     skip();
 }
 
-static void test_attribute_format_uuid(void **state)
+static void test_attribute_format_uuid(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     const struct {
         uint8_t value[16];
@@ -313,7 +311,7 @@ static void test_attribute_format_uuid(void **state)
         .params  = {}
     };
 
-    *state = nullptr;
+    *pstate = nullptr;
 
     for (size_t i = 0; i < countof(test_data); i++) {
         const void *value    = test_data[i].value;
@@ -322,20 +320,19 @@ static void test_attribute_format_uuid(void **state)
         char       *result   = nullptr;
 
         result = dmi_attribute_format(&attr, value, pretty);
-        *state = result;
+        *pstate = result;
 
         assert_non_null(result);
         assert_string_equal(result, expected);
 
         free(result);
+        *pstate = nullptr;
     }
-
-    *state = nullptr;
 }
 
-static void test_attribute_format_version(void **state)
+static void test_attribute_format_version(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     const struct {
         const void *value;
@@ -355,7 +352,7 @@ static void test_attribute_format_version(void **state)
         { dmi_value_ptr(dmi_version(1, 2, 3)), 4, true,  "1.2.3" }
     };
 
-    *state = nullptr;
+    *pstate = nullptr;
 
     for (size_t i = 0; i < countof(test_data); i++) {
         const void *value    = test_data[i].value;
@@ -377,21 +374,23 @@ static void test_attribute_format_version(void **state)
         };
 
         result = dmi_attribute_format(&attr, value, pretty);
-        *state = result;
+        *pstate = result;
 
         assert_non_null(result);
         assert_string_equal(result, expected);
 
         free(result);
+        *pstate = nullptr;
     }
-
-    *state = nullptr;
 }
 
-static int free_attribute_value(void **state)
+static int free_attribute_value(void **pstate)
 {
-    if (*state != nullptr)
-        free(*state);
+    if (*pstate == nullptr)
+        return 0;
+
+    free(*pstate);
+    *pstate = nullptr;
 
     return 0;
 }

@@ -10,8 +10,8 @@
 
 #include <opendmi/entity/chassis.h>
 
-void test_chassis_type_name(void **state);
-void test_chassis_security_status_name(void **state);
+void test_chassis_type_name(void **pstate);
+void test_chassis_security_status_name(void **pstate);
 
 int main(void)
 {
@@ -23,9 +23,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-void test_chassis_type_name(void **state)
+void test_chassis_type_name(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     assert_null(dmi_chassis_type_name(__DMI_CHASSIS_TYPE_COUNT));
 
@@ -34,9 +34,9 @@ void test_chassis_type_name(void **state)
     }
 }
 
-void test_chassis_security_status_name(void **state)
+void test_chassis_security_status_name(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     assert_null(dmi_chassis_security_status_name(__DMI_CHASSIS_SECURITY_STATUS_COUNT));
 

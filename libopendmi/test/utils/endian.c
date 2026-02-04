@@ -42,17 +42,17 @@ struct test_vector_cvt_64
     } net;
 };
 
-static void test_bswap16(void **state);
-static void test_bswap32(void **state);
-static void test_bswap64(void **state);
+static void test_bswap16(void **pstate);
+static void test_bswap32(void **pstate);
+static void test_bswap64(void **pstate);
 
-static void test_hton16(void **state);
-static void test_hton32(void **state);
-static void test_hton64(void **state);
+static void test_hton16(void **pstate);
+static void test_hton32(void **pstate);
+static void test_hton64(void **pstate);
 
-static void test_ntoh16(void **state);
-static void test_ntoh32(void **state);
-static void test_ntoh64(void **state);
+static void test_ntoh16(void **pstate);
+static void test_ntoh32(void **pstate);
+static void test_ntoh64(void **pstate);
 
 static const test_vector_cvt_16_t test_data_cvt_16[] =
 {
@@ -119,9 +119,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_bswap16(void **state)
+static void test_bswap16(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static const struct {
         uint16_t value;
@@ -142,9 +142,9 @@ static void test_bswap16(void **state)
     }
 }
 
-static void test_bswap32(void **state)
+static void test_bswap32(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static const struct {
         uint32_t value;
@@ -165,9 +165,9 @@ static void test_bswap32(void **state)
     }
 }
 
-static void test_bswap64(void **state)
+static void test_bswap64(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static const struct {
         uint64_t value;
@@ -188,9 +188,9 @@ static void test_bswap64(void **state)
     }
 }
 
-static void test_hton16(void **state)
+static void test_hton16(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_cvt_16); i++) {
         uint16_t host = test_data_cvt_16[i].host;
@@ -201,9 +201,9 @@ static void test_hton16(void **state)
     }
 }
 
-static void test_hton32(void **state)
+static void test_hton32(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_cvt_32); i++) {
         uint32_t host = test_data_cvt_32[i].host;
@@ -214,9 +214,9 @@ static void test_hton32(void **state)
     }
 }
 
-static void test_hton64(void **state)
+static void test_hton64(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_cvt_64); i++) {
         uint64_t host = test_data_cvt_64[i].host;
@@ -227,9 +227,9 @@ static void test_hton64(void **state)
     }
 }
 
-static void test_ntoh16(void **state)
+static void test_ntoh16(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_cvt_16); i++) {
         uint16_t net  = test_data_cvt_16[i].net.value;
@@ -240,9 +240,9 @@ static void test_ntoh16(void **state)
     }
 }
 
-static void test_ntoh32(void **state)
+static void test_ntoh32(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_cvt_32); i++) {
         uint32_t net  = test_data_cvt_32[i].net.value;
@@ -253,9 +253,9 @@ static void test_ntoh32(void **state)
     }
 }
 
-static void test_ntoh64(void **state)
+static void test_ntoh64(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_cvt_64); i++) {
         uint64_t net  = test_data_cvt_64[i].net.value;

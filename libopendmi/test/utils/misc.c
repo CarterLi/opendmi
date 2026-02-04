@@ -27,8 +27,8 @@ struct test_vector_64
     uint64_t result;
 };
 
-static void test_ipow32(void **state);
-static void test_ipow64(void **state);
+static void test_ipow32(void **pstate);
+static void test_ipow64(void **pstate);
 
 static const test_vector_32_t test_data_32[] =
 {
@@ -118,9 +118,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_ipow32(void **state)
+static void test_ipow32(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_32); i++) {
         uint32_t     value  = test_data_32[i].value;
@@ -131,9 +131,9 @@ static void test_ipow32(void **state)
     }
 }
 
-static void test_ipow64(void **state)
+static void test_ipow64(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_64); i++) {
         uint32_t     value  = test_data_64[i].value;

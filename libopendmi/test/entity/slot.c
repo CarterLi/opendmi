@@ -10,8 +10,8 @@
 
 #include <opendmi/entity/slot.h>
 
-static void test_slot_usage_name(void **state);
-static void test_slot_width_name(void **state);
+static void test_slot_usage_name(void **pstate);
+static void test_slot_width_name(void **pstate);
 
 int main(void)
 {
@@ -23,9 +23,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_slot_usage_name(void **state)
+static void test_slot_usage_name(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     assert_null(dmi_slot_usage_name(__DMI_SLOT_USAGE_COUNT));
 
@@ -34,9 +34,9 @@ static void test_slot_usage_name(void **state)
     }
 }
 
-static void test_slot_width_name(void **state)
+static void test_slot_width_name(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     assert_null(dmi_slot_width_name(__DMI_SLOT_WIDTH_COUNT));
 

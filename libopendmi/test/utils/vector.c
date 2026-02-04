@@ -11,38 +11,38 @@
 
 #include <opendmi/utils/vector.h>
 
-static void test_vector_init_args(void **state);
-static void test_vector_init(void **state);
-static void test_vector_init_matcher(void **state);
+static void test_vector_init_args(void **pstate);
+static void test_vector_init(void **pstate);
+static void test_vector_init_matcher(void **pstate);
 
-static void test_vector_push_args(void **state);
-static void test_vector_push(void **state);
+static void test_vector_push_args(void **pstate);
+static void test_vector_push(void **pstate);
 
-static void test_vector_get_ags(void **state);
-static void test_vector_get_empty(void **state);
-static void test_vector_get_existing(void **state);
-static void test_vector_get_missing(void **state);
+static void test_vector_get_ags(void **pstate);
+static void test_vector_get_empty(void **pstate);
+static void test_vector_get_existing(void **pstate);
+static void test_vector_get_missing(void **pstate);
 
-static void test_vector_find_ags(void **state);
-static void test_vector_find_empty(void **state);
-static void test_vector_find_existing(void **state);
-static void test_vector_find_missing(void **state);
+static void test_vector_find_ags(void **pstate);
+static void test_vector_find_empty(void **pstate);
+static void test_vector_find_existing(void **pstate);
+static void test_vector_find_missing(void **pstate);
 
-static void test_vector_exists_args(void **state);
-static void test_vector_exists_empty(void **state);
-static void test_vector_exists_existing(void **state);
-static void test_vector_exists_missing(void **state);
+static void test_vector_exists_args(void **pstate);
+static void test_vector_exists_empty(void **pstate);
+static void test_vector_exists_existing(void **pstate);
+static void test_vector_exists_missing(void **pstate);
 
-static void test_vector_pop_args(void **state);
-static void test_vector_pop_empty(void **state);
-static void test_vector_pop(void **state);
+static void test_vector_pop_args(void **pstate);
+static void test_vector_pop_empty(void **pstate);
+static void test_vector_pop(void **pstate);
 
-static void test_vector_clear_args(void **state);
-static void test_vector_clear_empty(void **state);
-static void test_vector_clear_full(void **state);
+static void test_vector_clear_args(void **pstate);
+static void test_vector_clear_empty(void **pstate);
+static void test_vector_clear_full(void **pstate);
 
 static bool test_vector_matcher(uintptr_t entry, uintptr_t key);
-static int test_vector_teardown(void **state);
+static int test_vector_teardown(void **pstate);
 
 static const size_t test_vector_size = 100;
 
@@ -83,9 +83,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_vector_init_args(void **state)
+static void test_vector_init_args(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     errno = 0;
     assert_false(dmi_vector_init(nullptr, nullptr));
@@ -96,9 +96,9 @@ static void test_vector_init_args(void **state)
     assert_int_equal(errno, EINVAL);
 }
 
-static void test_vector_init(void **state)
+static void test_vector_init(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     dmi_vector_t vector = {};
 
@@ -112,9 +112,9 @@ static void test_vector_init(void **state)
     assert_null(vector.matcher);
 }
 
-static void test_vector_init_matcher(void **state)
+static void test_vector_init_matcher(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     dmi_vector_t vector = {};
 
@@ -128,22 +128,22 @@ static void test_vector_init_matcher(void **state)
     assert_ptr_equal(vector.matcher, test_vector_matcher);
 }
 
-static void test_vector_push_args(void **state)
+static void test_vector_push_args(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     errno = 0;
     assert_false(dmi_vector_push(nullptr, 0));
     assert_int_equal(errno, EINVAL);
 }
 
-static void test_vector_push(void **state)
+static void test_vector_push(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static dmi_vector_t vector = {};
 
-    *state = &vector;
+    *pstate = &vector;
 
     for (size_t i = 0; i < test_vector_size; i++) {
         uintptr_t value;
@@ -158,9 +158,9 @@ static void test_vector_push(void **state)
     }
 }
 
-static void test_vector_get_ags(void **state)
+static void test_vector_get_ags(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     dmi_vector_t vector = {};
     uintptr_t    value  = 0;
@@ -174,9 +174,9 @@ static void test_vector_get_ags(void **state)
     assert_int_equal(errno, EINVAL);
 }
 
-static void test_vector_get_empty(void **state)
+static void test_vector_get_empty(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     dmi_vector_t vector = {};
     uintptr_t    value  = 0;
@@ -186,13 +186,13 @@ static void test_vector_get_empty(void **state)
     assert_int_equal(errno, ENOENT);
 }
 
-static void test_vector_get_existing(void **state)
+static void test_vector_get_existing(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static dmi_vector_t vector = {};
 
-    *state = &vector;
+    *pstate = &vector;
 
     for (size_t i = 0; i < test_vector_size; i++) {
         assert_true(dmi_vector_push(&vector, i));
@@ -206,13 +206,13 @@ static void test_vector_get_existing(void **state)
     }
 }
 
-static void test_vector_get_missing(void **state)
+static void test_vector_get_missing(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static dmi_vector_t vector = {};
 
-    *state = &vector;
+    *pstate = &vector;
 
     for (size_t i = 0; i < test_vector_size; i++) {
         uintptr_t value = 0;
@@ -224,9 +224,9 @@ static void test_vector_get_missing(void **state)
     }
 }
 
-static void test_vector_find_ags(void **state)
+static void test_vector_find_ags(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     dmi_vector_t vector = { };
     uintptr_t    value  = 0;
@@ -240,9 +240,9 @@ static void test_vector_find_ags(void **state)
     assert_int_equal(errno, ENOTSUP);
 }
 
-static void test_vector_find_empty(void **state)
+static void test_vector_find_empty(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     dmi_vector_t vector = {
         .matcher = test_vector_matcher
@@ -255,15 +255,15 @@ static void test_vector_find_empty(void **state)
     assert_int_equal(errno, ENOENT);
 }
 
-static void test_vector_find_existing(void **state)
+static void test_vector_find_existing(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static dmi_vector_t vector = {
         .matcher = test_vector_matcher
     };
 
-    *state = &vector;
+    *pstate = &vector;
 
     for (size_t i = 0; i < test_vector_size; i++) {
         assert_true(dmi_vector_push(&vector, i));
@@ -277,15 +277,15 @@ static void test_vector_find_existing(void **state)
     }
 }
 
-static void test_vector_find_missing(void **state)
+static void test_vector_find_missing(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static dmi_vector_t vector = {
         .matcher = test_vector_matcher
     };
 
-    *state = &vector;
+    *pstate = &vector;
 
     for (size_t i = 0; i < test_vector_size; i++) {
         uintptr_t value  = 0;
@@ -298,18 +298,18 @@ static void test_vector_find_missing(void **state)
     }
 }
 
-static void test_vector_exists_args(void **state)
+static void test_vector_exists_args(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     errno = 0;
     assert_false(dmi_vector_exists(nullptr, 0));
     assert_int_equal(errno, EINVAL);
 }
 
-static void test_vector_exists_empty(void **state)
+static void test_vector_exists_empty(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     dmi_vector_t vector = {
         .matcher = test_vector_matcher
@@ -320,13 +320,13 @@ static void test_vector_exists_empty(void **state)
     assert_int_equal(errno, ENOENT);
 }
 
-static void test_vector_exists_existing(void **state)
+static void test_vector_exists_existing(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static dmi_vector_t vector = {};
 
-    *state = &vector;
+    *pstate = &vector;
 
     dmi_vector_init(&vector, test_vector_matcher);
 
@@ -339,15 +339,15 @@ static void test_vector_exists_existing(void **state)
     }
 }
 
-static void test_vector_exists_missing(void **state)
+static void test_vector_exists_missing(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static dmi_vector_t vector = {
         .matcher = test_vector_matcher
     };
 
-    *state = &vector;
+    *pstate = &vector;
 
     for (size_t i = 0; i < test_vector_size; i++) {
         assert_true(dmi_vector_push(&vector, i));
@@ -358,9 +358,9 @@ static void test_vector_exists_missing(void **state)
     }
 }
 
-static void test_vector_pop_args(void **state)
+static void test_vector_pop_args(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     uintptr_t value = 0;
 
@@ -369,9 +369,9 @@ static void test_vector_pop_args(void **state)
     assert_int_equal(errno, EINVAL);
 }
 
-static void test_vector_pop_empty(void **state)
+static void test_vector_pop_empty(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     dmi_vector_t vector = {};
     uintptr_t    value  = 0;
@@ -387,13 +387,13 @@ static void test_vector_pop_empty(void **state)
     assert_uint_equal(vector.length, 0);
 }
 
-static void test_vector_pop(void **state)
+static void test_vector_pop(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static dmi_vector_t vector = {};
 
-    *state = &vector;
+    *pstate = &vector;
 
     for (size_t i = 0; i < test_vector_size; i++) {
         assert_true(dmi_vector_push(&vector, i));
@@ -416,18 +416,18 @@ static void test_vector_pop(void **state)
     }
 }
 
-static void test_vector_clear_args(void **state)
+static void test_vector_clear_args(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     errno = 0;
     assert_false(dmi_vector_clear(nullptr));
     assert_int_equal(errno, EINVAL);
 }
 
-static void test_vector_clear_empty(void **state)
+static void test_vector_clear_empty(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static dmi_vector_t vector = {
         .matcher = test_vector_matcher
@@ -441,15 +441,15 @@ static void test_vector_clear_empty(void **state)
     assert_ptr_equal(vector.matcher, test_vector_matcher);
 }
 
-static void test_vector_clear_full(void **state)
+static void test_vector_clear_full(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static dmi_vector_t vector = {
         .matcher = test_vector_matcher
     };
 
-    *state = &vector;
+    *pstate = &vector;
 
     for (size_t i = 0; i < test_vector_size; i++) {
         assert_true(dmi_vector_push(&vector, i));
@@ -468,10 +468,13 @@ static bool test_vector_matcher(uintptr_t entry, uintptr_t key)
     return (intptr_t)entry == -(intptr_t)key;
 }
 
-static int test_vector_teardown(void **state)
+static int test_vector_teardown(void **pstate)
 {
-    if (*state != nullptr)
-        dmi_vector_clear((dmi_vector_t *)*state);
+    if (*pstate == nullptr)
+        return 0;
+
+    dmi_vector_clear((dmi_vector_t *)*pstate);
+    *pstate = nullptr;
 
     return 0;
 }

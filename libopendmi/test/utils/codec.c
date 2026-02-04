@@ -39,17 +39,17 @@ struct test_vector_bcd {
     uintmax_t decoded;
 };
 
-static void test_encode_byte(void **state);
-static void test_encode_word(void **state);
-static void test_encode_dword(void **state);
-static void test_encode_qword(void **state);
+static void test_encode_byte(void **pstate);
+static void test_encode_word(void **pstate);
+static void test_encode_dword(void **pstate);
+static void test_encode_qword(void **pstate);
 
-static void test_decode_byte(void **state);
-static void test_decode_word(void **state);
-static void test_decode_dword(void **state);
-static void test_decode_qword(void **state);
+static void test_decode_byte(void **pstate);
+static void test_decode_word(void **pstate);
+static void test_decode_dword(void **pstate);
+static void test_decode_qword(void **pstate);
 
-static void test_decode_bcd(void **state);
+static void test_decode_bcd(void **pstate);
 
 static const test_vector_16_t test_data_16[] =
 {
@@ -139,9 +139,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_encode_byte(void **state)
+static void test_encode_byte(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i <= UINT8_MAX; i++) {
         uint8_t    value  = dmi_cast(value, i);
@@ -152,9 +152,9 @@ static void test_encode_byte(void **state)
     }
 }
 
-static void test_encode_word(void **state)
+static void test_encode_word(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_16); i++) {
         uint16_t   value  = test_data_16[i].decoded;
@@ -165,9 +165,9 @@ static void test_encode_word(void **state)
     }
 }
 
-static void test_encode_dword(void **state)
+static void test_encode_dword(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_32); i++) {
         uint32_t    value  = test_data_32[i].decoded;
@@ -178,9 +178,9 @@ static void test_encode_dword(void **state)
     }
 }
 
-static void test_encode_qword(void **state)
+static void test_encode_qword(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_64); i++) {
         uint64_t    value  = test_data_64[i].decoded;
@@ -191,9 +191,9 @@ static void test_encode_qword(void **state)
     }
 }
 
-static void test_decode_byte(void **state)
+static void test_decode_byte(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i <= UINT8_MAX; i++) {
         dmi_byte_t value  = dmi_cast(value, i);
@@ -204,9 +204,9 @@ static void test_decode_byte(void **state)
     }
 }
 
-static void test_decode_word(void **state)
+static void test_decode_word(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_16); i++) {
         dmi_word_t value  = *(dmi_word_t *)test_data_16[i].encoded;
@@ -217,9 +217,9 @@ static void test_decode_word(void **state)
     }
 }
 
-static void test_decode_dword(void **state)
+static void test_decode_dword(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_32); i++) {
         dmi_dword_t value  = *(dmi_dword_t *)test_data_32[i].encoded;
@@ -230,9 +230,9 @@ static void test_decode_dword(void **state)
     }
 }
 
-static void test_decode_qword(void **state)
+static void test_decode_qword(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_64); i++) {
         dmi_qword_t value  = *(dmi_qword_t *)test_data_64[i].encoded;
@@ -243,9 +243,9 @@ static void test_decode_qword(void **state)
     }
 }
 
-static void test_decode_bcd(void **state)
+static void test_decode_bcd(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data_bcd); i++) {
         const uint8_t *value  = test_data_bcd[i].encoded;

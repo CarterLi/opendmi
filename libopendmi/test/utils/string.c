@@ -10,8 +10,8 @@
 
 #include <opendmi/utils/string.h>
 
-static void test_string_tolower(void **state);
-static void test_string_toupper(void **state);
+static void test_string_tolower(void **pstate);
+static void test_string_toupper(void **pstate);
 
 int main(void)
 {
@@ -23,9 +23,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_string_tolower(void **state)
+static void test_string_tolower(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     char string[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const char *result = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz0123456789";
@@ -35,9 +35,9 @@ static void test_string_tolower(void **state)
     assert_string_equal(string, result);
 }
 
-static void test_string_toupper(void **state)
+static void test_string_toupper(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     char string[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const char *result = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

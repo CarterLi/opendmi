@@ -18,8 +18,8 @@ struct test_vector
     dmi_uuid_t decoded;
 };
 
-static void test_uuid_encode(void **state);
-static void test_uuid_decode(void **state);
+static void test_uuid_encode(void **pstate);
+static void test_uuid_decode(void **pstate);
 
 static const test_vector_t test_data[] =
 {
@@ -85,9 +85,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_uuid_encode(void **state)
+static void test_uuid_encode(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data); i++) {
         uint8_t result[16];
@@ -98,9 +98,9 @@ static void test_uuid_encode(void **state)
     }
 }
 
-static void test_uuid_decode(void **state)
+static void test_uuid_decode(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     for (size_t i = 0; i < countof(test_data); i++) {
         dmi_uuid_t result = dmi_uuid_decode(test_data[i].encoded);

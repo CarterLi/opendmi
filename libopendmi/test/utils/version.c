@@ -10,10 +10,10 @@
 
 #include <opendmi/utils/version.h>
 
-static void test_version_build(void **state);
-static void test_version_format(void **state);
-static void test_version_format_ex(void **state);
-static int  free_version_format(void **state);
+static void test_version_build(void **pstate);
+static void test_version_format(void **pstate);
+static void test_version_format_ex(void **pstate);
+static int  free_version_format(void **pstate);
 
 int main(void)
 {
@@ -26,9 +26,9 @@ int main(void)
     return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
-static void test_version_build(void **state)
+static void test_version_build(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static const struct {
         unsigned int major;
@@ -56,9 +56,9 @@ static void test_version_build(void **state)
     }
 }
 
-static void test_version_format(void **state)
+static void test_version_format(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static const struct {
         dmi_version_t value;
@@ -71,7 +71,7 @@ static void test_version_format(void **state)
         { DMI_VERSION(1, 2, 3), "1.2.3" }
     };
 
-    *state = nullptr;
+    *pstate = nullptr;
 
     for (size_t i = 0; i < countof(test_data); i++) {
         dmi_version_t  value    = test_data[i].value;
@@ -79,20 +79,19 @@ static void test_version_format(void **state)
         char          *result   = nullptr;
 
         result = dmi_version_format(value);
-        *state = result;
+        *pstate = result;
 
         assert_non_null(result);
         assert_string_equal(result, expected);
 
         free(result);
+        *pstate = nullptr;
     }
-
-    *state = nullptr;
 }
 
-static void test_version_format_ex(void **state)
+static void test_version_format_ex(void **pstate)
 {
-    dmi_unused(state);
+    dmi_unused(pstate);
 
     static const struct {
         dmi_version_t value;
@@ -130,7 +129,7 @@ static void test_version_format_ex(void **state)
         { DMI_VERSION(1, 2, 3), INT_MAX, nullptr },
     };
 
-    *state = nullptr;
+    *pstate = nullptr;
 
     for (size_t i = 0; i < countof(test_data); i++) {
         dmi_version_t  value    = test_data[i].value;
@@ -139,7 +138,7 @@ static void test_version_format_ex(void **state)
         char          *result   = nullptr;
 
         result = dmi_version_format_ex(value, level);
-        *state = result;
+        *pstate = result;
 
         if (expected == nullptr) {
             assert_null(result);
@@ -150,15 +149,17 @@ static void test_version_format_ex(void **state)
         assert_string_equal(result, expected);
 
         free(result);
+        *pstate = nullptr;
     }
-
-    *state = nullptr;
 }
 
-static int free_version_format(void **state)
+static int free_version_format(void **pstate)
 {
-    if (*state != nullptr)
-        free(*state);
+    if (*pstate == nullptr)
+        return 0;
+
+    free(*pstate);
+    *pstate = nullptr;
 
     return 0;
 }
