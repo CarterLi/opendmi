@@ -41,7 +41,9 @@ typedef enum dmi_memory_device_type
     DMI_MEMORY_DEVICE_TYPE_DDR         = 0x12, ///< DDR
     DMI_MEMORY_DEVICE_TYPE_DDR2        = 0x13, ///< DDR2
     DMI_MEMORY_DEVICE_TYPE_DDR2_FBDIMM = 0x14, ///< DDR2 FB-DIMM
+    __DMI_MEMORY_DEVICE_TYPE_UNASSIGNED_START = 0x15,
     // Unassigned: 0x15 .. 0x17
+    __DMI_MEMORY_DEVICE_TYPE_UNASSIGNED_END   = 0x17,
     DMI_MEMORY_DEVICE_TYPE_DDR3        = 0x18, ///< DDR3
     DMI_MEMORY_DEVICE_TYPE_FBD2        = 0x19, ///< FBD2
     DMI_MEMORY_DEVICE_TYPE_DDR4        = 0x1A, ///< DDR4
@@ -56,6 +58,7 @@ typedef enum dmi_memory_device_type
     DMI_MEMORY_DEVICE_TYPE_LPDDR5      = 0x23, ///< LPDDR5
     DMI_MEMORY_DEVICE_TYPE_HBM3        = 0x24, ///< HBM3 (High Bandwidth Memory Generation 3)
     DMI_MEMORY_DEVICE_TYPE_MRDIMM      = 0x25, ///< MDRIMM
+    __DMI_MEMORY_DEVICE_TYPE_COUNT
 } dmi_memory_device_type_t;
 
 /**
@@ -83,6 +86,7 @@ typedef enum dmi_memory_device_form_factor
     DMI_MEMORY_DEVICE_FORM_FACTOR_CAMM     = 0x11, ///< CAMM
     DMI_MEMORY_DEVICE_FORM_FACTOR_CUDIMM   = 0x12, ///< CUDIMM
     DMI_MEMORY_DEVICE_FORM_FACTOR_CSODIMM  = 0x13, ///< CSODIMM
+    __DMI_MEMORY_DEVICE_FORM_FACTOR_COUNT
 } dmi_memory_device_form_factor_t;
 
 /**
@@ -99,6 +103,7 @@ typedef enum dmi_memory_device_tech
     DMI_MEMORY_DEVICE_TECH_NVDIMM_P = 0x06, ///< NVDIMM-P
     DMI_MEMORY_DEVICE_TECH_OPTANE   = 0x07, ///< Intel Optane persistent memory
     DMI_MEMORY_DEVICE_TECH_MRDIMM   = 0x08, ///< MRDIMM (deprecated)
+    __DMI_MEMORY_DEVICE_TECH_COUNT
 } dmi_memory_device_tech_t;
 
 /**

@@ -646,7 +646,7 @@ const char *dmi_memory_device_form_factor_name(dmi_memory_device_form_factor_t v
     return dmi_name_lookup(&dmi_memory_device_form_factor_names, value);
 }
 
-const char *dmi_memory_device_technology_name(dmi_memory_device_tech_t value)
+const char *dmi_memory_device_tech_name(dmi_memory_device_tech_t value)
 {
     return dmi_name_lookup(&dmi_memory_device_tech_names, value);
 }
