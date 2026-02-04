@@ -442,6 +442,7 @@ opendmi_test(utils/misc test/utils/misc.c)
 
 opendmi_test(attribute test/attribute.c)
 
+opendmi_test(entity/baseboard test/entity/baseboard.c)
 opendmi_test(entity/chassis test/entity/chassis.c)
 opendmi_test(entity/cache test/entity/cache.c)
 opendmi_test(entity/slot test/entity/slot.c)
@@ -449,7 +450,6 @@ opendmi_test(entity/memory-device test/entity/memory-device.c)
 
 opendmi_test(status-name test/status-name.c)
 opendmi_test(error-correct-type-name test/error-correct-type-name.c)
-opendmi_test(baseboard-type-name test/baseboard-type-name.c)
 opendmi_test(onboard-device-type-name test/onboard-device-type-name.c)
 opendmi_test(memory-array-location-name test/memory-array-location-name.c)
 opendmi_test(memory-array-usage-name test/memory-array-usage-name.c)
