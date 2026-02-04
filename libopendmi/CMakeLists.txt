@@ -444,6 +444,7 @@ opendmi_test(attribute test/attribute.c)
 
 opendmi_test(entity/chassis test/entity/chassis.c)
 opendmi_test(entity/cache test/entity/cache.c)
+opendmi_test(entity/slot test/entity/slot.c)
 
 opendmi_test(status-name test/status-name.c)
 opendmi_test(error-correct-type-name test/error-correct-type-name.c)
@@ -460,8 +461,6 @@ opendmi_test(memory-error-granularity-name test/memory-error-granularity-name.c)
 opendmi_test(memory-error-operation-name test/memory-error-operation-name.c)
 opendmi_test(probe-location-name test/probe-location-name.c)
 opendmi_test(battery-chemistry-name test/battery-chemistry-name.c)
-opendmi_test(slot-usage-name test/slot-usage-name.c)
-opendmi_test(slot-width-name test/slot-width-name.c)
 
 opendmi_test(pointing-device-type-name test/entity/pointing-device-type-name.c)
 opendmi_test(pointing-device-iface-name test/entity/pointing-device-iface-name.c)
