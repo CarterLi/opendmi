@@ -158,7 +158,7 @@ static void test_pointing_device_decode_min_length(void **pstate)
 {
     test_state_t *state = dmi_cast(state, *pstate);
 
-    struct {
+    dmi_packed_struct() {
         test_pointing_device_t data;
         dmi_word_t terminator;
     } envelope = {
@@ -181,7 +181,7 @@ static void test_pointing_device_decode_empty(void **pstate)
 {
     test_state_t *state = dmi_cast(state, *pstate);
 
-    struct {
+    dmi_packed_struct() {
         test_pointing_device_t data;
         dmi_word_t terminator;
     } envelope = {
@@ -219,7 +219,7 @@ static void test_pointing_device_decode_type(void **pstate)
     test_state_t *state = dmi_cast(state, *pstate);
 
     for (int type = 0; type < __DMI_POINTING_DEVICE_TYPE_COUNT; type++) {
-        struct {
+        dmi_packed_struct() {
             test_pointing_device_t data;
             dmi_word_t terminator;
         } envelope = {
@@ -254,7 +254,7 @@ static void test_pointing_device_decode_interface(void **pstate)
             (iface <= __DMI_POINTING_DEVICE_IFACE_UNASSIGNED_END))
             continue;
 
-        struct {
+        dmi_packed_struct() {
             test_pointing_device_t data;
             dmi_word_t terminator;
         } envelope = {
@@ -285,7 +285,7 @@ static void test_pointing_device_decode_button_count(void **pstate)
     test_state_t *state = dmi_cast(state, *pstate);
 
     for (int buttons = 0; buttons < 16; buttons++) {
-        struct {
+        dmi_packed_struct() {
             test_pointing_device_t data;
             dmi_word_t terminator;
         } envelope = {
