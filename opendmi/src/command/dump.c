@@ -77,8 +77,10 @@ static int dmi_dump_main(dmi_context_t *context, int argc, char *argv[])
     dmi_unused(argc);
     dmi_unused(argv);
 
-    if (not dmi_dump_save(context, dmi_dump_config.output_path, false))
+    if (not dmi_dump_save(context, dmi_dump_config.output_path, dmi_dump_config.force)) {
+        dmi_command_trace(context);
         return EXIT_FAILURE;
+    }
 
     return EXIT_SUCCESS;
 }
