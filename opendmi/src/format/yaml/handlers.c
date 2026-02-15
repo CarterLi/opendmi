@@ -123,6 +123,7 @@ bool dmi_yaml_entity_start(dmi_yaml_session_t *session, const dmi_entity_t *enti
     bool result;
     char entity_handle[8];
     char entity_type[8];
+    char *entity_level;
     const char *entity_description;
     char entity_length[8];
 
@@ -133,6 +134,10 @@ bool dmi_yaml_entity_start(dmi_yaml_session_t *session, const dmi_entity_t *enti
     snprintf(entity_type, sizeof(entity_type), "%d", entity->type);
     snprintf(entity_length, sizeof(entity_length), "%zu", entity->total_length);
 
+    entity_level = dmi_version_format(entity->level);
+    if (entity_level == nullptr)
+        return false;
+
     entity_description = dmi_type_name(session->context, entity->type);
 
     result =
@@ -141,10 +146,14 @@ bool dmi_yaml_entity_start(dmi_yaml_session_t *session, const dmi_entity_t *enti
         dmi_yaml_scalar(session, entity_handle, YAML_PLAIN_SCALAR_STYLE) and
         dmi_yaml_label(session, "type") and
         dmi_yaml_scalar(session, entity_type, YAML_PLAIN_SCALAR_STYLE) and
-        dmi_yaml_label(session, "description") and
-        dmi_yaml_scalar(session, entity_description, YAML_PLAIN_SCALAR_STYLE) and
         dmi_yaml_label(session, "length") and
-        dmi_yaml_scalar(session, entity_length, YAML_PLAIN_SCALAR_STYLE);
+        dmi_yaml_scalar(session, entity_length, YAML_PLAIN_SCALAR_STYLE) and
+        dmi_yaml_label(session, "level") and
+        dmi_yaml_scalar(session, entity_level, YAML_SINGLE_QUOTED_SCALAR_STYLE) and
+        dmi_yaml_label(session, "description") and
+        dmi_yaml_scalar(session, entity_description, YAML_PLAIN_SCALAR_STYLE);
+
+    dmi_free(entity_level);
 
     return result;
 }

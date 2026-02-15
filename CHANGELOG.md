@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added SMBIOS data reindexing tool
 - Added logging to file
 - Added `modules` command implementation
+- Added structure levels output to YAML dumps
 - Added autoloading of vendor-specific extensions
 - Added AMI type 221 structure decoding (partial)
 - Added Dell revisions and IDs structure decoding (type 208)
