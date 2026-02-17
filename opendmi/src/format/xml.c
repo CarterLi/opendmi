@@ -10,7 +10,7 @@
 const dmi_format_t dmi_xml_format =
 {
     .code     = "xml",
-    .name     = "XML",
+    .name     = "XML (Extended Markup Language)",
     .handlers = {
         .initialize         = (dmi_format_initialize_fn *)dmi_xml_initialize,
         .dump_start         = (dmi_format_dump_start_fn *)dmi_xml_dump_start,

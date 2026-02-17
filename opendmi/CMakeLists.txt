@@ -76,6 +76,17 @@ if(ENABLE_YAML)
     target_link_libraries(opendmi PRIVATE ${LIBYAML_LIBRARIES})
 endif()
 
+if(ENABLE_JSON)
+    target_include_directories(opendmi PRIVATE ${LIBYAJL_INCLUDE_DIRS})
+    target_sources(opendmi
+        PRIVATE
+            src/format/json.c
+            src/format/json/handlers.c
+            src/format/json/helpers.c
+    )
+    target_link_libraries(opendmi PRIVATE ${LIBYAJL_LIBRARIES})
+endif()
+
 target_include_directories(opendmi PRIVATE include)
 target_link_libraries(opendmi PRIVATE opendmi-shared Curses::Curses)
 

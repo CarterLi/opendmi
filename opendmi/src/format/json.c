@@ -8,6 +8,8 @@
 
 const dmi_format_t dmi_json_format =
 {
-    .code = "json",
-    .name = "JSON"
+    .code     = "json",
+    .name     = "JSON (JavaScript Object Notation)",
+    .handlers = {
+    }
 };

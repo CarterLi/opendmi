@@ -114,9 +114,9 @@ _usage() {
     echo "    Features:"
     echo "        --with-icu       Build with ICU4C support (default=${ENABLE_ICU})"
     echo "        --with-curses    Build with Curses support (default=${ENABLE_CURSES})"
-    echo "        --with-json      Build with JSON support (default=${ENABLE_JSON})"
     echo "        --with-xml       Build with XML support (default=${ENABLE_XML})"
     echo "        --with-yaml      Build with YAML support (default=${ENABLE_YAML})"
+    echo "        --with-json      Build with JSON support (default=${ENABLE_JSON})"
     echo "    Miscellaneous:"
     echo "        --verbose        Generate verbose Makefiles"
     echo
@@ -178,14 +178,14 @@ _configure() {
             --with-curses)
                 ENABLE_CURSES=ON
                 ;;
-            --with-json)
-                ENABLE_JSON=ON
-                ;;
             --with-xml)
                 ENABLE_XML=ON
                 ;;
             --with-yaml)
                 ENABLE_YAML=ON
+                ;;
+            --with-json)
+                ENABLE_JSON=ON
                 ;;
             --verbose)
                 VERBOSE=ON
@@ -208,6 +208,9 @@ _configure() {
     fi
     if [ "${ENABLE_YAML}" != "AUTO" ]; then
         FEATURES="${FEATURES} -DENABLE_YAML=${ENABLE_YAML}"
+    fi
+    if [ "${ENABLE_JSON}" != "AUTO" ]; then
+        FEATURES="${FEATURES} -DENABLE_JSON=${ENABLE_JSON}"
     fi
     if [ "${VERBOSE}" = "ON" ]; then
         FEATURES="${FEATURES} -DCMAKE_VERBOSE_MAKEFILE=TRUE"

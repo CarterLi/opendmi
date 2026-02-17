@@ -10,7 +10,7 @@
 const dmi_format_t dmi_yaml_format =
 {
     .code     = "yaml",
-    .name     = "YAML",
+    .name     = "YAML (Yet Another Markup Language)",
     .handlers = {
         .initialize         = (dmi_format_initialize_fn *)dmi_yaml_initialize,
         .dump_start         = (dmi_format_dump_start_fn *)dmi_yaml_dump_start,

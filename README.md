@@ -38,6 +38,7 @@ The project is under active development, see [ROADMAP](ROADMAP.md) and [CHANGELO
 
 * `libxml2` — optional, only when XML support is enabled
 * `libyaml` — optional, only when YAML support is enabled
+* `libyajl` — optional, only when JSON support is enabled
 
 #### libopendmi
 

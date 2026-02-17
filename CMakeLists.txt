@@ -28,10 +28,10 @@ set(ENABLE_RUST OFF CACHE BOOL "Enable Rust support (libopendmi-rust)")
 set(ENABLE_DBUS OFF CACHE BOOL "Enable D-bus support (opendmi-dbus)")
 
 set(ENABLE_ICU OFF CACHE BOOL "Build ICU4C support")
-set(ENABLE_CURSES ON CACHE BOOL "Build with Curses support")
-set(ENABLE_JSON ON CACHE BOOL "Build with JSON support")
-set(ENABLE_XML ON CACHE BOOL "Build with XML support (libxml)")
-set(ENABLE_YAML ON CACHE BOOL "Build with YAML support (libyaml)")
+set(ENABLE_CURSES AUTO CACHE BOOL "Build with Curses support")
+set(ENABLE_XML AUTO CACHE BOOL "Build with XML support (libxml)")
+set(ENABLE_YAML AUTO CACHE BOOL "Build with YAML support (libyaml)")
+set(ENABLE_JSON AUTO CACHE BOOL "Build with JSON support (libyajl)")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
@@ -87,6 +87,7 @@ find_package_ex(ICU ENABLE_ICU COMPONENTS data uc)
 find_package_ex(Curses ENABLE_CURSES)
 find_package_ex(LibXml2 ENABLE_XML)
 find_package_ex(LibYaml ENABLE_YAML)
+find_package_ex(LibYajl ENABLE_JSON)
 
 include(FetchCMocka)
 enable_testing()
