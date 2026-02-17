@@ -96,7 +96,7 @@ const dmi_command_t dmi_export_command =
 {
     .name        = "export",
     .description = "Export SMBIOS data to external format",
-    .options     = dmi_options(&dmi_export_options),
+    .options     = dmi_options(&dmi_export_options, &dmi_filter_options),
     .handlers    = {
         .usage = dmi_export_usage,
         .main  = dmi_export_main
