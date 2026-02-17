@@ -10,6 +10,7 @@
 #pragma once
 
 #include <opendmi/attribute.h>
+#include <opendmi/stream.h>
 #include <opendmi/utils/name.h>
 
 typedef struct dmi_pci_addr      dmi_pci_addr_t;
@@ -105,7 +106,7 @@ const char *dmi_error_correct_type_name(dmi_error_correct_type_t value);
 /**
  * @internal
  */
-void dmi_pci_addr_decode(dmi_pci_addr_t *addr, const dmi_pci_addr_data_t *data);
+bool dmi_pci_addr_decode(dmi_stream_t *stream, dmi_pci_addr_t *addr);
 
 __END_DECLS
 

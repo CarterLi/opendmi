@@ -55,27 +55,26 @@ const dmi_entity_spec_t dmi_onboard_device_ex_spec =
 static bool dmi_onboard_device_ex_decode(dmi_entity_t *entity)
 {
     dmi_onboard_device_ex_t *info;
-    const dmi_onboard_device_ex_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_ONBOARD_DEVICE_EX);
-    if (data == nullptr)
-        return false;
+    dmi_onboard_device_instance_details_t details;
 
     info = dmi_entity_info(entity, DMI_TYPE_ONBOARD_DEVICE_EX);
     if (info == nullptr)
         return false;
 
-    info->designator = dmi_entity_string(entity, data->designator);
+    dmi_stream_t *stream = &entity->stream;
 
-    dmi_onboard_device_instance_details_t details = {
-        .__value = dmi_decode(data->details)
-    };
+
+    bool status =
+        dmi_stream_decode_str(stream, &info->designator) and
+        dmi_stream_decode(stream, dmi_byte_t, &details.__value) and
+        dmi_stream_decode(stream, dmi_byte_t, &info->instance) and
+        dmi_pci_addr_decode(stream, &info->address);
+
+    if (not status)
+        return false;
 
     info->type       = details.type;
     info->is_enabled = details.is_enabled;
-    info->instance   = dmi_decode(data->instance);
-
-    dmi_pci_addr_decode(&info->address, &data->address);
 
     return true;
 }

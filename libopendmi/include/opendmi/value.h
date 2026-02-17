@@ -34,4 +34,6 @@
 #define DMI_UNIT_RACK          "U"
 #define DMI_UNIT_MHZ           "MHz"
 
+#define DMI_UNIT_MILLIMETER    "mm"
+
 #endif // !OPENDMI_VALUE_H

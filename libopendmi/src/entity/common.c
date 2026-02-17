@@ -113,18 +113,32 @@ const char *dmi_error_correct_type_name(dmi_error_correct_type_t value)
     return dmi_name_lookup(&dmi_error_correct_type_names, value);
 }
 
-void dmi_pci_addr_decode(dmi_pci_addr_t *addr, const dmi_pci_addr_data_t *data)
+bool dmi_pci_addr_decode(dmi_stream_t *stream, dmi_pci_addr_t *addr)
 {
+    assert(stream != nullptr);
     assert(addr != nullptr);
-    assert(data != nullptr);
 
-    addr->segment_group   = dmi_decode(data->segment_group);
-    addr->bus_number      = dmi_decode(data->bus_number);
-    addr->device_number   = dmi_decode((dmi_byte_t)data->device_number);
-    addr->function_number = dmi_decode((dmi_byte_t)data->function_number);
+    uint16_t segment_group;
+    uint8_t bus_number, device_and_func_number;
 
-    if (addr->bus_number == UINT8_MAX) {
-        addr->device_number = UINT8_MAX;
+    bool status =
+        dmi_stream_decode(stream, dmi_word_t, &segment_group) &&
+        dmi_stream_decode(stream, dmi_byte_t, &bus_number) &&
+        dmi_stream_decode(stream, dmi_byte_t, &device_and_func_number);
+
+    if (not status)
+        return false;
+
+    addr->segment_group = segment_group;
+    addr->bus_number    = bus_number;
+
+    if (bus_number != UINT8_MAX) {
+        addr->device_number   = (device_and_func_number >> 3) & 0x1Fu;
+        addr->function_number = device_and_func_number & 0x07u;
+    } else {
+        addr->device_number   = UINT8_MAX;
         addr->function_number = UINT8_MAX;
     }
+
+    return true;
 }

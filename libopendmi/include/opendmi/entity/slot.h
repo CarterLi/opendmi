@@ -10,8 +10,11 @@
 #include <opendmi/entity.h>
 #include <opendmi/entity/common.h>
 
-typedef struct dmi_slot      dmi_slot_t;
-typedef struct dmi_slot_data dmi_slot_data_t;
+typedef struct dmi_slot dmi_slot_t;
+
+typedef union dmi_slot_features dmi_slot_features_t;
+typedef union dmi_slot_features_ex dmi_slot_features_ex_t;
+typedef struct dmi_slot_peer_group dmi_slot_peer_group_t;
 
 /**
  * @brief Slot type identifiers.
@@ -156,85 +159,140 @@ typedef enum dmi_slot_length
 } dmi_slot_length_t;
 
 /**
+ * @brief Slot height values.
+ */
+typedef enum dmi_slot_height
+{
+    DMI_SLOT_HEIGHT_UNSPEC      = 0x00, ///< Unspecified or not applicable
+    DMI_SLOT_HEIGHT_OTHER       = 0x01, ///< Other
+    DMI_SLOT_HEIGHT_UNKNOWN     = 0x02, ///< Unknown
+    DMI_SLOT_HEIGHT_FULL        = 0x03, ///< Full height
+    DMI_SLOT_HEIGHT_LOW_PROFILE = 0x04, ///< Low-profile
+    __DMI_SLOT_HEIGHT_COUNT
+} dmi_slot_height_t;
+
+/**
+ * @brief System slot characteristics.
+ */
+dmi_packed_union(dmi_slot_features)
+{
+    /**
+     * @brief Raw value.
+     */
+    dmi_byte_t __value;
+
+    dmi_packed_struct()
+    {
+        /**
+         * @brief Characteristics unknown.
+         */
+        bool is_unknown : 1;
+
+        /**
+         * @brief Provides 5.0 volts.
+         */
+        bool has_5v0_support : 1;
+
+        /**
+         * @brief Provides 3.3 volts.
+         */
+        bool has_3v3_support : 1;
+
+        /**
+         * @brief Slot’s opening is shared with another slot (e.g., PCI/EISA
+         * shared slot).
+         */
+        bool has_shared_opening : 1;
+
+        /**
+         * @brief PC Card slot supports PC Card-16.
+         */
+        bool has_pccard_16_support : 1;
+
+        /**
+         * @brief PC Card slot supports CardBus.
+         */
+        bool has_cardbus_support : 1;
+
+        /**
+         * @brief PC Card slot supports Zoom Video.
+         */
+        bool has_zoom_video_supoort : 1;
+
+        /**
+         * @brief PC Card slot supports Modem Ring Resume.
+         */
+        bool has_modem_ring_resume_support : 1;
+    };
+};
+
+/**
+ * @brief System slot extended characteristics.
+ */
+dmi_packed_union(dmi_slot_features_ex)
+{
+    /**
+     * @brief Raw value.
+     */
+    dmi_byte_t __value;
+
+    dmi_packed_struct()
+    {
+        /**
+         * @brief PCI slot supports Power Management Event (PME#) signal.
+         */
+        bool has_pme_support : 1;
+
+        /**
+         * @brief Slot supports hot-plug devices.
+         */
+        bool has_hotplug_support : 1;
+
+        /**
+         * @brief PCI slot supports SMBus signal.
+         */
+        bool has_smbus_support : 1;
+
+        /**
+         * @brief PCIe slot supports bifurcation. This slot can partition its
+         * lanes into two or more PCIe devices plugged into the slot.
+         *
+         * @note This field does not indicate complete details on what levels
+         * of bifurcation are supported by the slot, but only that the slot
+         * supports some level of bifurcation.
+         */
+        bool has_bifurcation_support : 1;
+
+        /**
+         * @brief Slot supports async/surprise removal, such as removal without
+         * prior notification to the operating system, device driver, or
+         * applications.
+         */
+        bool has_async_removal_support : 1;
+
+        /**
+         * @brief Flexbus slot, CXL 1.0 capable.
+         */
+        bool is_cxl_10_capable : 1;
+
+        /**
+         * @brief Flexbus slot, CXL 2.0 capable.
+         */
+        bool is_cxl_20_capable : 1;
+
+        /**
+         * @brief Flexbus slot, CXL 3.0 capable.
+         */
+        bool is_cxl_30_capable : 1;
+    };
+};
+
+/**
  * @brief System slots structure (type 9).
  *
  * The information in this structure defines the attributes of a system slot.
  * One structure is provided for each slot in the system.
  */
-dmi_packed_struct(dmi_slot_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief String number for reference designation. Example: "PCI-1".
-     * @since SMBIOS 2.0
-     */
-    dmi_string_t designator;
-
-    /**
-     * @brief Slot type.
-     * @since SMBIOS 2.0
-     */
-    dmi_byte_t type;
-
-    /**
-     * @brief Data bus width.
-     * @since SMBIOS 2.0
-     */
-    dmi_byte_t width;
-
-    /**
-     * @brief Current usage.
-     * @since SMBIOS 2.0
-     */
-    dmi_byte_t usage;
-
-    /**
-     * @brief Slot length.
-     * @since SMBIOS 2.0
-     */
-    dmi_byte_t length;
-
-    /**
-     * @brief Slot identifier.
-     * @since SMBIOS 2.0
-     */
-    dmi_word_t ident;
-
-    /**
-     * @since SMBIOS 2.0
-     */
-    dmi_byte_t features;
-
-    /**
-     * @since SMBIOS 2.1
-     */
-    dmi_byte_t features_ex;
-
-    /**
-     * @brief Device address.
-     * @since SMBIOS 2.6
-     */
-    dmi_pci_addr_t address;
-
-    dmi_byte_t data_bus_width;
-
-    dmi_byte_t peer_group_count;
-
-    dmi_byte_t peer_groups[];
-};
-
-struct dmi_slot_extra
-{
-    dmi_byte_t information;
-    dmi_byte_t physical_width;
-    dmi_byte_t pitch;
-    dmi_byte_t height;
-};
-
 struct dmi_slot
 {
     /**
@@ -250,7 +308,7 @@ struct dmi_slot
     /**
      * @brief Data bus width.
      */
-    dmi_slot_width_t width;
+    dmi_slot_width_t bus_width;
 
     /**
      * @brief Current usage.
@@ -267,6 +325,98 @@ struct dmi_slot
      * @todo Implement bus-specific identifier decoding (PCI, MCA, etc).
      */
     uint16_t ident;
+
+    /**
+     * @brief Slot characteristics.
+     */
+    dmi_slot_features_t features;
+
+    /**
+     * @brief Extended slot characteristics.
+     */
+    dmi_slot_features_ex_t features_ex;
+
+    /**
+     * @brief Base device address.
+     */
+    dmi_pci_addr_t base_address;
+
+    /**
+     * @brief Indicate electrical bus width of base Segment/Bus/Device/Function.
+     */
+    dmi_slot_width_t base_bus_width;
+
+    /**
+     * @brief Number of peer Segment/Bus/Device/Function/Width groups that
+     * follow. Zero if no peer groups.
+     */
+    size_t peer_group_count;
+
+    /**
+     * @brief Peer Segment/Bus/Device/Function/Width present in the slot. This
+     * field is `NULL` if there are no peer groups (`peer_group_count` == 0).
+     */
+    dmi_slot_peer_group_t *peer_groups;
+
+    /**
+     * @brief Slot informatiom.
+     *
+     * The contents of this field depend on what is contained in the Slot Type
+     * field. For Slot Type of `0xC4` this field must contain the numeric value
+     * of the PCI Express Generation, such as Gen6 would be `0x06`. For other
+     * PCI Express slot types, this field may be used but it is not required.
+     * If not used, it should be set to `0x00`.
+     *
+     * For all other Slot Types, this field should be set to `0x00`.
+     */
+    uint8_t information;
+
+    /**
+     * @brief Slot physical width.
+     *
+     * This field indicates the physical width of the slot whereas Slot Data Bus
+     * Width (offset 06h) indicates the electrical width of the slot.
+     */
+    dmi_slot_width_t physical_width;
+
+    /**
+     * @brief Slot pitch.
+     *
+     * This  field contains a numeric value that indicates the pitch of the slot
+     * in 1/100 millimeter units. The pitch is defined by each slot/card
+     * specification, but typically describes add-in card to add-in card pitch.
+     * For example, if the pitch for the slot is 12.5 mm, the value 1250 would
+     * be used.
+     *
+     * For EDSFF slots, the pitch is defined in SFF-TA-1006 table 7.1, SFF-TA-1007
+     * table 7.1 (add-in card to add-in card pitch), and SFF-TA-1008 table 6-1
+     * (SSD to SSD pitch).
+     *
+     * A value of 0 implies that the slot pitch is not given or is unknown.
+     */
+    uint16_t pitch;
+
+    /**
+     * @brief Slot height. This field indicates the maximum supported card height
+     * for the slot.
+     */
+    dmi_slot_height_t height;
+};
+
+/**
+ * @brief Slot peer group.
+ */
+struct dmi_slot_peer_group
+{
+    /**
+     * @brief Address.
+     */
+    dmi_pci_addr_t address;
+
+    /**
+     * @brief Data bus width.
+     */
+    dmi_slot_width_t bus_width;
 };
 
 /**
@@ -280,6 +430,7 @@ const char *dmi_slot_type_name(dmi_slot_type_t value);
 const char *dmi_slot_width_name(dmi_slot_width_t value);
 const char *dmi_slot_usage_name(dmi_slot_usage_t value);
 const char *dmi_slot_length_name(dmi_slot_length_t value);
+const char *dmi_slot_height_name(dmi_slot_height_t value);
 
 __END_DECLS
 

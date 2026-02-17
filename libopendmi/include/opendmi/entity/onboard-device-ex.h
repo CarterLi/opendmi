@@ -12,49 +12,10 @@
 #include <opendmi/entity/common.h>
 #include <opendmi/entity/onboard-device.h>
 
-typedef struct dmi_onboard_device_ex      dmi_onboard_device_ex_t;
-typedef struct dmi_onboard_device_ex_data dmi_onboard_device_ex_data_t;
+typedef struct dmi_onboard_device_ex dmi_onboard_device_ex_t;
 
 /**
  * @brief Onboard devices extended information structure (type 41).
- */
-dmi_packed_struct(dmi_onboard_device_ex_data)
-{
-    /**
-     * @brief SMBIOS structure header.
-     */
-    dmi_header_t header;
-
-    /**
-     * @brief String number of the onboard device reference designation.
-     */
-    dmi_string_t designator;
-
-    /**
-     * @brief Device type and status;
-     */
-    dmi_byte_t details;
-
-    /**
-     * @brief Device type instance. An unique value (within a given onboard
-     * device type) used to indicate the order the device is designated by the
-     * system.
-     *
-     * For example, a system with two identical ethernet NICs may designate one
-     * NIC (with higher Bus/Device/Function=15/0/0) as the first onboard NIC
-     * (instance 1) and the other NIC (with lower Bus/Device/Function = 3/0/0)
-     * as the second onboard NIC (instance 2).
-     */
-    dmi_byte_t instance;
-
-    /**
-     * @brief Device address.
-     */
-    dmi_pci_addr_data_t address;
-};
-
-/**
- * @brief Onboard devices extended information.
  */
 struct dmi_onboard_device_ex
 {

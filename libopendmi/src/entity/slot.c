@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <opendmi/context.h>
+#include <opendmi/value.h>
 #include <opendmi/utils.h>
 #include <opendmi/utils/name.h>
 #include <opendmi/utils/codec.h>
@@ -12,6 +13,7 @@
 #include <opendmi/entity/slot.h>
 
 static bool dmi_slot_decode(dmi_entity_t *entity);
+static void dmi_slot_cleanup(dmi_entity_t *entity);
 
 static const dmi_name_set_t dmi_slot_type_names =
 {
@@ -511,6 +513,119 @@ static const dmi_name_set_t dmi_slot_length_names =
     }
 };
 
+static const dmi_name_set_t dmi_slot_feature_names =
+{
+    .code  = "slot-features",
+    .names = (dmi_name_t[]){
+        DMI_NAME_UNKNOWN(0),
+        {
+            .id   = 1,
+            .code = "has-5v0-support",
+            .name = "Provides 5.0 volts"
+        },
+        {
+            .id   = 2,
+            .code = "has-3v3-support",
+            .name = "Provides 3.3 volts"
+        },
+        {
+            .id   = 3,
+            .code = "has-shared-opening",
+            .name = "Slot’s opening is shared with another slot"
+        },
+        {
+            .id   = 4,
+            .code = "has-pccard-16-support",
+            .name = "PC Card slot supports PC Card-16"
+        },
+        {
+            .id   = 5,
+            .code = "has-cardbus-support",
+            .name = "PC Card slot supports CardBus"
+        },
+        {
+            .id   = 6,
+            .code = "has-zoom-video-support",
+            .name = "PC Card slot supports Zoom Video"
+        },
+        {
+            .id   = 7,
+            .code = "has-modem-ring-resume-support",
+            .name = "PC Card slot supports Modem Ring Resume"
+        },
+        DMI_NAME_NULL
+    }
+};
+
+static const dmi_name_set_t dmi_slot_feature_ex_names =
+{
+    .code  = "slot-features-ex",
+    .names = (dmi_name_t[]){
+        {
+            .id   = 0,
+            .code = "has-pme-support",
+            .name = "PCI slot supports PME# signal"
+        },
+        {
+            .id   = 1,
+            .code = "has-hotplug-support",
+            .name = "Slot supports hot-plug devices"
+        },
+        {
+            .id   = 2,
+            .code = "has-smbus-support",
+            .name = "PCI slot supports SMBus signal"
+        },
+        {
+            .id   = 3,
+            .code = "has-bifurcation-support",
+            .name = "PCIe slot supports bifurcation"
+        },
+        {
+            .id = 4,
+            .code = "has-async-removal-support",
+            .name = "Slot supports async/surprise removal"
+        },
+        {
+            .id   = 5,
+            .code = "is-cxl-10-capable",
+            .name = "Flexbus slot, CXL 1.0 capable"
+        },
+        {
+            .id   = 6,
+            .code = "is-cxl-20-capable",
+            .name = "Flexbus slot, CXL 2.0 capable"
+        },
+        {
+            .id   = 7,
+            .code = "is-cxl-30-capable",
+            .name = "Flexbus slot, CXL 3.0 capable"
+        },
+        DMI_NAME_NULL
+    }
+};
+
+static const dmi_name_set_t dmi_slot_height_names =
+{
+    .code  = "slot-heights",
+    .names = (dmi_name_t[]){
+        DMI_NAME_UNSPEC(DMI_SLOT_HEIGHT_UNSPEC),
+        DMI_NAME_OTHER(DMI_SLOT_HEIGHT_OTHER),
+        DMI_NAME_UNKNOWN(DMI_SLOT_HEIGHT_UNKNOWN),
+        {
+            .id   = DMI_SLOT_HEIGHT_FULL,
+            .code = "full",
+            .name = "Full height"
+        },
+        {
+            .id   = DMI_SLOT_HEIGHT_LOW_PROFILE,
+            .code = "low-profile",
+            .name = "Low-profile"
+        },
+        DMI_NAME_NULL
+    }
+};
+
 static const dmi_name_set_t dmi_slot_usage_names =
 {
     .code  = "slot-usages",
@@ -557,8 +672,8 @@ const dmi_entity_spec_t dmi_slot_spec =
             .unknown = dmi_value_ptr(DMI_SLOT_TYPE_UNKNOWN),
             .values  = &dmi_slot_type_names
         }),
-        DMI_ATTRIBUTE(dmi_slot_t, width, ENUM, {
-            .code    = "width",
+        DMI_ATTRIBUTE(dmi_slot_t, bus_width, ENUM, {
+            .code    = "bus-width",
             .name    = "Data bus width",
             .unspec  = dmi_value_ptr(DMI_SLOT_WIDTH_UNSPEC),
             .unknown = dmi_value_ptr(DMI_SLOT_WIDTH_UNKNOWN),
@@ -583,10 +698,71 @@ const dmi_entity_spec_t dmi_slot_spec =
             .name    = "Identifier",
             .flags   = DMI_ATTRIBUTE_FLAG_HEX
         }),
+        DMI_ATTRIBUTE(dmi_slot_t, features, SET, {
+            .code    = "features",
+            .name    = "Characteristics",
+            .values  = &dmi_slot_feature_names
+        }),
+        DMI_ATTRIBUTE(dmi_slot_t, features_ex, SET, {
+            .code    = "features-ex",
+            .name    = "Extended characteristics",
+            .values  = &dmi_slot_feature_ex_names
+        }),
+        DMI_ATTRIBUTE(dmi_slot_t, base_address, STRUCT, {
+            .code    = "base-address",
+            .name    = "Base device address",
+            .attrs   = dmi_pci_addr_attrs
+        }),
+        DMI_ATTRIBUTE_ARRAY(dmi_slot_t, peer_groups, peer_group_count, STRUCT, {
+            .code = "peer-groups",
+            .name = "Peer groups",
+            .attrs = (dmi_attribute_t[]){
+                DMI_ATTRIBUTE(dmi_slot_peer_group_t, address, STRUCT, {
+                    .code  = "address",
+                    .name  = "Peer address",
+                    .attrs = dmi_pci_addr_attrs
+                }),
+                DMI_ATTRIBUTE(dmi_slot_peer_group_t, bus_width, ENUM, {
+                    .code    = "bus-width",
+                    .name    = "Data bus width",
+                    .unspec  = dmi_value_ptr(DMI_SLOT_WIDTH_UNSPEC),
+                    .unknown = dmi_value_ptr(DMI_SLOT_WIDTH_UNKNOWN),
+                    .values  = &dmi_slot_width_names
+                }),
+                DMI_ATTRIBUTE_NULL
+            }
+        }),
+        DMI_ATTRIBUTE(dmi_slot_t, information, INTEGER, {
+            .code    = "information",
+            .name    = "Information",
+            .unspec  = dmi_value_ptr((uint8_t)0)
+        }),
+        DMI_ATTRIBUTE(dmi_slot_t, physical_width, ENUM, {
+            .code    = "physical-width",
+            .name    = "Physical width",
+            .unspec  = dmi_value_ptr(DMI_SLOT_WIDTH_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_SLOT_WIDTH_UNKNOWN),
+            .values  = &dmi_slot_width_names
+        }),
+        DMI_ATTRIBUTE(dmi_slot_t, pitch, DECIMAL, {
+            .code    = "pitch",
+            .name    = "Pitch",
+            .scale   = 2,
+            .unit    = DMI_UNIT_MILLIMETER,
+            .unspec  = dmi_value_ptr((uint16_t)0)
+        }),
+        DMI_ATTRIBUTE(dmi_slot_t, height, ENUM, {
+            .code    = "height",
+            .name    = "Height",
+            .unspec  = dmi_value_ptr(DMI_SLOT_HEIGHT_UNSPEC),
+            .unknown = dmi_value_ptr(DMI_SLOT_HEIGHT_UNKNOWN),
+            .values  = &dmi_slot_height_names
+        }),
         DMI_ATTRIBUTE_NULL
     },
     .handlers = {
-        .decode = dmi_slot_decode
+        .decode  = dmi_slot_decode,
+        .cleanup = dmi_slot_cleanup
     }
 };
 
@@ -610,26 +786,123 @@ const char *dmi_slot_length_name(dmi_slot_length_t value)
     return dmi_name_lookup(&dmi_slot_length_names, value);
 }
 
+const char *dmi_slot_height_name(dmi_slot_height_t value)
+{
+    return dmi_name_lookup(&dmi_slot_height_names, value);
+}
+
 static bool dmi_slot_decode(dmi_entity_t *entity)
 {
+    bool status;
     dmi_slot_t *info;
-    const dmi_slot_data_t *data;
-
-    data = dmi_entity_data(entity, DMI_TYPE_SYSTEM_SLOTS);
-    if (data == nullptr)
-        return false;
 
     info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_SLOTS);
     if (info == nullptr)
         return false;
 
-    info->designator = dmi_entity_string(entity, data->designator);
+    dmi_stream_t *stream = &entity->stream;
 
-    info->type   = dmi_decode(data->type);
-    info->width  = dmi_decode(data->width);
-    info->usage  = dmi_decode(data->usage);
-    info->length = dmi_decode(data->length);
-    info->ident  = dmi_decode(data->ident);
+    status =
+        dmi_stream_decode_str(stream, &info->designator) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->type) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->bus_width) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->usage) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->length) &&
+        dmi_stream_decode(stream, dmi_word_t, &info->ident) &&
+        dmi_stream_decode(stream, dmi_byte_t, &info->features);
+    if (not status)
+        return false;
+
+    //
+    // SMBIOS 2.1+ features
+    //
+    if (not dmi_stream_is_done(stream)) {
+        entity->level = dmi_version(2, 1, 0);
+
+        status = dmi_stream_decode(stream, dmi_byte_t, &info->features_ex);
+        if (not status)
+            return false;
+    }
+
+    //
+    // SMBIOS 2.6+ features
+    //
+    if (not dmi_stream_is_done(stream)) {
+        entity->level = dmi_version(2, 6, 0);
+
+        status = dmi_pci_addr_decode(stream, &info->base_address);
+        if (not status)
+            return false;
+    }
+
+    //
+    // SMBIOS 3.2+ features
+    //
+    if (not dmi_stream_is_done(stream)) {
+        entity->level = dmi_version(3, 2, 0);
+
+        status = dmi_stream_decode(stream, dmi_byte_t, &info->base_bus_width);
+        if (not status)
+            return false;
+
+        if (dmi_stream_is_done(stream))
+            return true;
+
+        if (not dmi_stream_decode(stream, dmi_byte_t, &info->peer_group_count))
+            return false;
+
+        if (info->peer_group_count > 0) {
+            info->peer_groups = dmi_alloc_array(entity->context, sizeof(dmi_slot_peer_group_t), info->peer_group_count);
+            if (info->peer_groups == nullptr)
+                return false;
+
+            for (size_t i = 0; i < info->peer_group_count; i++) {
+                dmi_slot_peer_group_t *peer_group = &info->peer_groups[i];
+
+                status =
+                    dmi_pci_addr_decode(stream, &peer_group->address) &&
+                    dmi_stream_decode(stream, dmi_byte_t, &peer_group->bus_width);
+                if (not status)
+                    return false;
+            }
+        }
+    }
+
+    //
+    // SMBIOS 3.4+ features
+    //
+    if (not dmi_stream_is_done(stream)) {
+        entity->level = dmi_version(3, 4, 0);
+
+        status =
+            dmi_stream_decode(stream, dmi_byte_t, &info->information) &&
+            dmi_stream_decode(stream, dmi_byte_t, &info->physical_width) &&
+            dmi_stream_decode(stream, dmi_word_t, &info->pitch);
+        if (not status)
+            return true;
+    }
+
+    //
+    // SMBIOS 3.5+ features
+    //
+    if (not dmi_stream_is_done(stream)) {
+        entity->level = dmi_version(3, 5, 0);
+
+        status = dmi_stream_decode(stream, dmi_byte_t, &info->height);
+        if (not status)
+            return true;
+    }
 
     return true;
+}
+
+static void dmi_slot_cleanup(dmi_entity_t *entity)
+{
+    dmi_slot_t *info;
+
+    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_SLOTS);
+    if (info == nullptr)
+        return;
+
+    dmi_free(info->peer_groups);
 }
