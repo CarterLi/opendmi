@@ -18,7 +18,6 @@
 
 typedef struct dmi_export_config
 {
-    bool show_usage;
     char *output_path;
     const dmi_format_t *output_format;
     bool export_dump;
@@ -32,7 +31,6 @@ static int dmi_export_main(dmi_context_t *context, int argc, char *argv[]);
 
 static dmi_export_config_t dmi_export_config =
 {
-    .show_usage    = false,
     .output_path   = nullptr,
     .output_format = &dmi_yaml_format,
     .export_dump   = false,
@@ -48,7 +46,7 @@ static const dmi_option_set_t dmi_export_options =
             .short_names = "?h",
             .long_names  = (const char *[]){ "help", nullptr },
             .description = "Print this help and exit",
-            .value       = &dmi_export_config.show_usage,
+            .value       = &dmi_command_config.show_usage,
         },
         {
             .short_names = "o",
@@ -133,7 +131,7 @@ static int dmi_export_main(dmi_context_t *context, int argc, char *argv[])
     const char *mode;
     FILE *out;
 
-    dmi_unused(context);
+    assert(context != nullptr);
     dmi_unused(argc);
     dmi_unused(argv);
 
