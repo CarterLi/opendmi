@@ -17,5 +17,6 @@
 #cmakedefine ENABLE_CURSES
 #cmakedefine ENABLE_XML
 #cmakedefine ENABLE_YAML
+#cmakedefine ENABLE_JSON
 
 #endif // !OPENDMI_CONFIG_H

@@ -17,15 +17,15 @@
 const dmi_format_t *dmi_formats[] =
 {
     &dmi_text_format,
-#   ifdef ENABLE_JSON
-        &dmi_json_format,
-#   endif // ENABLE_JSON
 #   ifdef ENABLE_XML
         &dmi_xml_format,
 #   endif // ENABLE_XML
 #   ifdef ENABLE_YAML
         &dmi_yaml_format,
 #   endif
+#   ifdef ENABLE_JSON
+        &dmi_json_format,
+#   endif // ENABLE_JSON
     nullptr
 };
 

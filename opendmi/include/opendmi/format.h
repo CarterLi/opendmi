@@ -79,6 +79,8 @@ struct dmi_format
     const dmi_format_ops_t handlers;
 };
 
+extern const dmi_format_t *dmi_formats[];
+
 __BEGIN_DECLS
 
 const dmi_format_t *dmi_format_get(const char *code);

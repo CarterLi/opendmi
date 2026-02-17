@@ -12,6 +12,7 @@
 #include <opendmi/context.h>
 #include <opendmi/format.h>
 #include <opendmi/format/yaml.h>
+#include <opendmi/utils/tty.h>
 
 #include <opendmi/command/common.h>
 #include <opendmi/command/export.h>
@@ -106,6 +107,14 @@ const dmi_command_t dmi_export_command =
 static void dmi_export_usage(void)
 {
     dmi_command_usage(&dmi_export_command);
+
+    dmi_tty_header("Supported output formats:");
+
+    for (const dmi_format_t **pformat = dmi_formats; *pformat != nullptr; pformat++) {
+        dmi_tty_cprintf(DMI_TTY_COLOR_YELLOW, "%4s%-5s", "", (*pformat)->code);
+        dmi_tty_cprintf(DMI_TTY_COLOR_WHITE, " %s\n", (*pformat)->name);
+    }
+    printf("\n");
 }
 
 static bool dmi_export_set_format(dmi_context_t *context, const char *value)
