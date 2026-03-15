@@ -9,7 +9,11 @@
 
 #pragma once
 
+#include <stdio.h>
+#include <yajl/yajl_gen.h>
+
 #include <opendmi/types.h>
+#include <opendmi/attribute.h>
 
 typedef struct dmi_json_session
 {
@@ -17,6 +21,16 @@ typedef struct dmi_json_session
      * @brief Context handle.
      */
     dmi_context_t *context;
+
+    /**
+     * @brief Output stream handle.
+     */
+    FILE *stream;
+
+    /**
+     * @brief YAJL generator handle.
+     */
+    struct yajl_gen_t *generator;
 } dmi_json_session_t;
 
 #endif // !OPENDMI_FORMAT_JSON_TYPES_H

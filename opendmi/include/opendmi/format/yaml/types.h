@@ -17,8 +17,19 @@
 
 typedef struct dmi_yaml_session
 {
+    /**
+     * @brief Context handle.
+     */
     dmi_context_t *context;
+
+    /**
+     * @brief Output stream handle.
+     */
     FILE *stream;
+
+    /**
+     * @brief YAML emitter handle.
+     */
     yaml_emitter_t *emitter;
 } dmi_yaml_session_t;
 

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented FreeBSD backend
 - Migrated to using CMocka for testing
 - Added test coverage build
+- Added JSON output support
 - Added SMBIOS data reindexing tool
 - Added logging to file
 - Added `modules` command implementation

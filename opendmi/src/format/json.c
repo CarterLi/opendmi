@@ -5,11 +5,26 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <opendmi/format/json.h>
+#include <opendmi/format/json/handlers.h>
 
 const dmi_format_t dmi_json_format =
 {
     .code     = "json",
     .name     = "JSON (JavaScript Object Notation)",
     .handlers = {
+        .initialize         = (dmi_format_initialize_fn *)dmi_json_initialize,
+        .dump_start         = (dmi_format_dump_start_fn *)dmi_json_dump_start,
+        .entry              = (dmi_format_entry_fn *)dmi_json_entry,
+        .table_start        = (dmi_format_table_start_fn *)dmi_json_table_start,
+        .entity_start       = (dmi_format_entity_start_fn *)dmi_json_entity_start,
+        .entity_attrs_start = (dmi_format_entity_attrs_start_fn *)dmi_json_entity_attrs_start,
+        .entity_attr        = (dmi_format_entity_attr_fn *)dmi_json_entity_attr,
+        .entity_attrs_end   = (dmi_format_entity_attrs_end_fn *)dmi_json_entity_attrs_end,
+        .entity_data        = (dmi_format_entity_data_fn *)dmi_json_entity_data,
+        .entity_strings     = (dmi_format_entity_strings_fn *)dmi_json_entity_strings,
+        .entity_end         = (dmi_format_entity_end_fn *)dmi_json_entity_end,
+        .table_end          = (dmi_format_table_end_fn *)dmi_json_table_end,
+        .dump_end           = (dmi_format_dump_end_fn *)dmi_json_dump_end,
+        .finalize           = (dmi_format_finalize_fn *)dmi_json_finalize
     }
 };

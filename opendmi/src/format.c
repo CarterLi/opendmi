@@ -34,7 +34,7 @@ const dmi_format_t *dmi_format_get(const char *code)
     if (code == nullptr)
         return nullptr;
 
-    for (size_t i = 0; dmi_formats[i]->code != nullptr; i++) {
+    for (size_t i = 0; dmi_formats[i] != nullptr; i++) {
         if (strcmp(dmi_formats[i]->code, code) == 0)
             return dmi_formats[i];
     }

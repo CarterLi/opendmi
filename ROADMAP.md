@@ -12,17 +12,20 @@
 * Decoders for well-known OEM-specific structures.
 * Autoloading of OEM extensions.
 * Fully-featured command line interface.
+* JSON output support.
 
 ## Release 0.3 (2026-03-31)
 
-* JSON output support.
 * ICU4C support.
-* Packaging for major Linux distributions.
+* Additional OEM-specific structured decoders.
+* Unified data serialization API.
+* Better test coverage.
 
 ## Release 0.4 (2026-06-30)
 
 * Bindings for Python and Go languages.
 * Complete implementation of `opendmi-dbus` service.
+* Packaging for major Linux distributions.
 
 ## Release 0.5 (2026-09-30)
 

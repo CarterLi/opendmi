@@ -373,6 +373,8 @@ bool dmi_yaml_entity_data(dmi_yaml_session_t *session, const dmi_entity_t *entit
     dmi_unused(session);
     dmi_unused(entity);
 
+    // TODO: Implement data output
+
     return true;
 }
 
@@ -380,6 +382,8 @@ bool dmi_yaml_entity_strings(dmi_yaml_session_t *session, const dmi_entity_t *en
 {
     dmi_unused(session);
     dmi_unused(entity);
+
+    // TODO: Implement strings output
 
     return true;
 }
