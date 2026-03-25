@@ -507,6 +507,8 @@ static bool dmi_open_ex(
         // Read entry point
         dmi_log_info(context, "Reading DMI entry point...");
         context->entry_data = context->backend->read_entry(context, &context->entry_size);
+
+        #ifndef _WIN32 // Windows backend does not provide entry point data, skip that
         if (context->entry_data == nullptr)
             break;
 
@@ -514,6 +516,7 @@ static bool dmi_open_ex(
         dmi_log_info(context, "Decoding DMI entry point...");
         if (not dmi_entry_decode(context, context->entry_data, context->entry_size))
             break;
+        #endif
 
         // Fixup SMBIOS version number
         dmi_version_fixup(context);
