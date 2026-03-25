@@ -84,26 +84,23 @@ $ ./build.sh test
 
 ## Contributing
 
-Please feel free to test it and create bug reports or feature requests
-on GitHub. You can also help the project by sending SMBIOS dumps to the
-authors. To get the dump you can use the following command:
+The project is open to contributions. Please feel free to test it and create bug
+reports, feature requests or pull requests on GitHub. You can also help the
+project by sending SMBIOS dumps to the authors. To get the dump you can use the
+following command:
 
 ```sh
 $ dmidecode --dump-bin <filename>
 ```
 
-See [CONTRIBUTING](CONTRIBUTING.md) for more details.
-
-## Contributors
-
-* [Dmitry Sednev](https://github.com/sdnvx)
-* [Dmitry Kuzmenko](https://github.com/xerrial)
-* [Ritesh Kudkelwar](https://github.com/ritesh006)
-* [Jorn](https://github.com/jornissimo)
+See [CONTRIBUTING](CONTRIBUTING.md) for more details. A full list of contributors
+who helped the project so far can be found in the [CONTRIBUTORS](CONTRIBUTORS.md).
 
 ## Licensing
 
-OpenDMI is licensed under BSD 3-clause license. See `LICENSE` for details.
+OpenDMI is licensed under BSD 3-clause license. See [LICENSE](LICENSE.md) for details. It
+uses parts of some third-party libraries that are distributed under their own
+terms (see [LICENSE-3RD-PARTY](LICENSE-3RD-PARTY.md)).
 
 ## Links
 
