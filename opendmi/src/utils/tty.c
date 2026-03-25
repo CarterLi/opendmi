@@ -11,9 +11,13 @@
 #endif
 
 #include <stdio.h>
+#include <stdarg.h>
 
 #ifdef ENABLE_CURSES
 #   if __has_include(<ncurses/ncurses.h>)
+#       ifdef _WIN32
+#           define NCURSES_STATIC 1 // Required to avoid linking errors on Windows
+#       endif
 #       include <ncurses/ncurses.h>
 #   elif __has_include(<ncurses/curses.h>)
 #       include <ncurses/curses.h>
@@ -22,7 +26,11 @@
 #   elif __has_include(<curses.h>)
 #       include <curses.h>
 #   endif
-#   include <term.h>
+#   if __has_include(<term.h>)
+#       include <term.h>
+#   elif __has_include(<ncurses/term.h>)
+#       include <ncurses/term.h>
+#   endif
 #endif // ENABLE_CURSES
 
 #include <opendmi/utils/tty.h>

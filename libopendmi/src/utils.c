@@ -27,7 +27,9 @@
 #include <opendmi/utils.h>
 #include <opendmi/utils/file.h>
 
+#ifndef _WIN32
 static void dmi_memory_get_data(dmi_data_t *dst, const dmi_data_t *src, size_t length);
+#endif
 
 void *dmi_alloc(dmi_context_t *context, size_t size)
 {

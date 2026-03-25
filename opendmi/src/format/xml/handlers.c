@@ -15,6 +15,16 @@
 #include <opendmi/format/xml/handlers.h>
 #include <opendmi/format/xml/helpers.h>
 
+#ifdef _WIN32
+static inline struct tm *gmtime_r(const time_t *timep, struct tm *result)
+{
+    errno_t err = gmtime_s(result, timep);
+    if (err != 0)
+        return nullptr;
+    return result;
+}
+#endif
+
 void *dmi_xml_initialize(dmi_context_t *context, FILE *stream)
 {
     assert(context != nullptr);

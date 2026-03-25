@@ -20,9 +20,13 @@
 #include <opendmi/utils/file.h>
 
 #if defined(_WIN32)
-#   define fstat(fd, buf)      _fstat(fd, buf)
-#   define read(fd, buf, size) _read(fd, buf, size)
-#   define close(fd)           _close(fd)
+#   include <sys/locking.h>
+#   define fstat(fd, buf)          _fstat(fd, buf)
+#   define read(fd, buf, size)     _read(fd, buf, size)
+#   define close(fd)               _close(fd)
+#   define lockf(fd, cmd, size)    _locking(fd, cmd, size)
+#   define F_LOCK                  _LK_LOCK
+#   define F_ULOCK                 _LK_UNLCK
 #endif
 
 int dmi_file_stat(int fd, dmi_file_stat_t *st)

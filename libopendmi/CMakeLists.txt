@@ -372,6 +372,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
             FILES include/opendmi/backend/freebsd.h
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    list(APPEND LIBOPENDMI_LIBRARIES ntdll)
+
     target_sources(opendmi-object
         PRIVATE
             src/backend/windows.c
@@ -409,13 +411,13 @@ macro(opendmi_test TEST_NAME TEST_SOURCES)
     string(REPLACE "/" "-" TEST_TARGET "${TEST_NAME}")
     string(APPEND TEST_TARGET "-test")
 
-    add_executable(${TEST_TARGET} ${TEST_SOURCES})    
+    add_executable(${TEST_TARGET} ${TEST_SOURCES})
     target_link_libraries(${TEST_TARGET} opendmi-shared cmocka-static)
 
     if(ENABLE_COVERAGE)
         target_compile_options(${TEST_TARGET} PUBLIC ${COVERAGE_OPTIONS})
         target_link_options(${TEST_TARGET} PUBLIC ${COVERAGE_OPTIONS})
-    endif()    
+    endif()
 
     add_test(
         NAME ${TEST_NAME}
