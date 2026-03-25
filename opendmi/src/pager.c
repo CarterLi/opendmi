@@ -10,6 +10,7 @@
 #   include <unistd.h>
 #endif
 
+#ifndef _WIN32 // No wordexp(3), pipe(2), fork(2), etc.
 #include <wordexp.h>
 #include <string.h>
 #include <stdlib.h>
@@ -97,3 +98,22 @@ bool dmi_pager_start(dmi_context_t *context)
 
 	return success;
 }
+
+#else // _WIN32
+
+#include <stdlib.h>
+
+#include <opendmi/context.h>
+
+bool dmi_pager_start(dmi_context_t *context)
+{
+    dmi_unused(context);
+
+    const char *pager = getenv("PAGER");
+    if (pager == nullptr)
+        return true;
+
+    return false;
+}
+
+#endif // _WIN32

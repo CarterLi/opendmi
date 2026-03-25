@@ -88,6 +88,10 @@ if(ENABLE_JSON)
 endif()
 
 target_include_directories(opendmi PRIVATE include)
-target_link_libraries(opendmi PRIVATE opendmi-shared Curses::Curses)
+target_link_libraries(opendmi PRIVATE opendmi-shared)
+
+if(ENABLE_CURSES)
+    target_link_libraries(opendmi PRIVATE Curses::Curses)
+endif()
 
 install(TARGETS opendmi RUNTIME DESTINATION bin)

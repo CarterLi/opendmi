@@ -12,6 +12,9 @@
 
 #ifdef ENABLE_CURSES
 #   if __has_include(<ncurses/ncurses.h>)
+#       ifdef _WIN32
+#           define NCURSES_STATIC 1 // Required to avoid linking errors on Windows
+#       endif
 #       include <ncurses/ncurses.h>
 #   elif __has_include(<ncurses/curses.h>)
 #       include <ncurses/curses.h>
@@ -20,7 +23,11 @@
 #   elif __has_include(<curses.h>)
 #       include <curses.h>
 #   endif
-#   include <term.h>
+#   if __has_include(<term.h>)
+#       include <term.h>
+#   elif __has_include(<ncurses/term.h>)
+#       include <ncurses/term.h>
+#   endif
 #endif // ENABLE_CURSES
 
 #include <opendmi/utils/tty.h>
@@ -37,6 +44,8 @@ void dmi_text_printf(
 #ifdef ENABLE_CURSES
     if (session->is_tty and (color != DMI_TTY_COLOR_NONE))
         tputs(tparm(tigetstr("setaf"), color), 1, putchar);
+#else
+    dmi_unused(color);
 #endif // ENABLE_CURSES
 
     va_start(args, format);

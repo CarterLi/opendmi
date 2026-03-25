@@ -25,6 +25,16 @@
 #include <opendmi/utils/file.h>
 #include <opendmi/utils/tty.h>
 
+#ifdef _WIN32
+static inline struct tm *localtime_r(const time_t *timep, struct tm *result)
+{
+    errno_t err = localtime_s(result, timep);
+    if (err != 0)
+        return nullptr;
+    return result;
+}
+#endif
+
 static void dmi_show_version(void);
 static void dmi_show_usage(void);
 
@@ -128,7 +138,7 @@ static void dmi_show_version(void)
 
 static void dmi_show_usage(void)
 {
-    dmi_command_usage(nullptr);    
+    dmi_command_usage(nullptr);
 }
 
 static bool dmi_log_init(dmi_context_t *context)

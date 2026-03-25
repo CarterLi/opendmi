@@ -10,6 +10,7 @@
 #include <opendmi/context.h>
 #include <opendmi/error.h>
 #include <opendmi/utils.h>
+#include <opendmi/utils/string.h>
 
 static size_t dmi_error_slot_get(dmi_error_queue_t *queue);
 static void dmi_error_slot_clear(dmi_error_queue_t *queue, size_t idx);
@@ -116,7 +117,7 @@ bool __dmi_error_vraise(
     error->reason   = reason;
 
     if (message != nullptr) {
-        int rv = vasprintf(&error->message, message, args);
+        int rv = dmi_vasprintf(&error->message, message, args);
 
         if ((rv < 0) or (error->message == nullptr)) {
             dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);

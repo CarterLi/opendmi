@@ -33,7 +33,10 @@ int dmi_vasprintf(char **strp, const char *format, va_list args)
 
 #if defined(_WIN32)
     // _vscprintf tells you how big the buffer needs to be
-    int len = _vscprintf(format, args);
+    va_list args_copy;
+    va_copy(args_copy, args);
+    int len = _vscprintf(format, args_copy);
+    va_end(args_copy);
     if (len < 0)
         return -1;
 
