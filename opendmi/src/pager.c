@@ -7,22 +7,36 @@
 #include "config.h"
 
 #ifndef _WIN32
+#include <spawn.h>
+#include <sys/wait.h>
+#include <signal.h>
 #include <unistd.h>
 #include <wordexp.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <errno.h>
 
 #include <opendmi/context.h>
 #include <opendmi/pager.h>
 #include <opendmi/utils/file.h>
 
+static pid_t pid = -1;
+void wait_pager_exit(void)
+{
+    fclose(stdout); // Ensure the pager process receives EOF
+    if (pid > 0) {
+        waitpid(pid, NULL, 0);
+        pid = -1;
+    }
+}
+
 bool dmi_pager_start(dmi_context_t *context)
 {
     bool success = false;
     wordexp_t we = {};
     int rv;
-	int fds[2];
+    int fds[2];
 
     const char *pager = getenv("PAGER");
     if (pager == nullptr)
@@ -48,8 +62,10 @@ bool dmi_pager_start(dmi_context_t *context)
 
         return false;
     }
+
     if (we.we_wordc == 0) {
         dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Empty $PAGER value");
+        wordfree(&we);
         return false;
     }
 
@@ -59,48 +75,62 @@ bool dmi_pager_start(dmi_context_t *context)
             break;
         }
 
-        pid_t pid = fork();
-        if (pid < 0) {
-            dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Fork failed: %s", strerror(errno));
+        posix_spawn_file_actions_t actions;
+        if (posix_spawn_file_actions_init(&actions) != 0) {
+            dmi_error_raise(context, DMI_ERROR_OUT_OF_MEMORY);
             dmi_file_close(fds[STDIN_FILENO]);
             dmi_file_close(fds[STDOUT_FILENO]);
             break;
         }
 
-        if (pid > 0) {
-            dmi_file_close(STDIN_FILENO);
+        int fa_rv = 0;
+        fa_rv = posix_spawn_file_actions_adddup2(&actions, fds[STDIN_FILENO], STDIN_FILENO);
+        if (fa_rv == 0) fa_rv = posix_spawn_file_actions_addclose(&actions, fds[STDIN_FILENO]);
+        if (fa_rv == 0) fa_rv = posix_spawn_file_actions_addclose(&actions, fds[STDOUT_FILENO]);
 
-            if (dup2(fds[STDIN_FILENO], STDIN_FILENO) < 0) {
-                dmi_error_raise_ex(context, DMI_ERROR_FILE_DUP, "%s", strerror(errno));
-                break;
-            }
-
+        if (fa_rv != 0) {
+            dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Failed to configure pager stdio: %s", strerror(fa_rv));
+            posix_spawn_file_actions_destroy(&actions);
             dmi_file_close(fds[STDIN_FILENO]);
             dmi_file_close(fds[STDOUT_FILENO]);
-
-            if (execvp(we.we_wordv[0], we.we_wordv) < 0) {
-                dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Unable to exec pager: %s", strerror(errno));
-                // FIXME: We have 2 instances of opendmi here
-                break;
-            }
-        } else {
-            dmi_file_close(STDOUT_FILENO);
-
-            if (dup2(fds[STDOUT_FILENO], STDOUT_FILENO) < 0) {
-                dmi_error_raise_ex(context, DMI_ERROR_FILE_DUP, "%s", strerror(errno));
-                break;
-            }
-
-            dmi_file_close(fds[STDIN_FILENO]);
-            dmi_file_close(fds[STDOUT_FILENO]);
+            break;
         }
+
+        int spawn_rv = posix_spawnp(&pid, we.we_wordv[0], &actions, NULL, we.we_wordv, environ);
+        posix_spawn_file_actions_destroy(&actions);
+
+        if (spawn_rv != 0) {
+            if (spawn_rv == ENOENT) {
+                dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Pager executable not found: '%s'", we.we_wordv[0]);
+            } else {
+                dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Unable to exec pager: %s", strerror(spawn_rv));
+            }
+            dmi_file_close(fds[STDIN_FILENO]);
+            dmi_file_close(fds[STDOUT_FILENO]);
+            break;
+        }
+
+        dmi_file_close(STDOUT_FILENO);
+
+        if (dup2(fds[STDOUT_FILENO], STDOUT_FILENO) < 0) {
+            dmi_error_raise_ex(context, DMI_ERROR_FILE_DUP, "%s", strerror(errno));
+            dmi_file_close(fds[STDIN_FILENO]);
+            dmi_file_close(fds[STDOUT_FILENO]);
+            kill(pid, SIGKILL);
+            break;
+        }
+
+        dmi_file_close(fds[STDIN_FILENO]);
+        dmi_file_close(fds[STDOUT_FILENO]);
+
+        atexit(wait_pager_exit);
 
         success = true;
     } while (false);
 
     wordfree(&we);
 
-	return success;
+    return success;
 }
 
 #else // _WIN32
