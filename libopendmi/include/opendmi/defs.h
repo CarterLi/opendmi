@@ -13,7 +13,7 @@
 #   include <sys/cdefs.h>
 #endif
 
-#ifdef _WIN32
+#ifndef __BEGIN_DECLS
 #   if defined(__cplusplus)
 #       define __BEGIN_DECLS extern "C" {
 #       define __END_DECLS   }
@@ -21,7 +21,7 @@
 #       define __BEGIN_DECLS
 #       define __END_DECLS
 #   endif
-#endif // _WIN32
+#endif // __BEGIN_DECLS
 
 #include <stddef.h>
 #include <iso646.h>
