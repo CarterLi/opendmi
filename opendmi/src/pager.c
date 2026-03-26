@@ -6,11 +6,8 @@
 //
 #include "config.h"
 
-#if __has_include(<unistd.h>)
-#   include <unistd.h>
-#endif
-
-#ifndef _WIN32 // No wordexp(3), pipe(2), fork(2), etc.
+#ifndef _WIN32
+#include <unistd.h>
 #include <wordexp.h>
 #include <string.h>
 #include <stdlib.h>
@@ -31,7 +28,7 @@ bool dmi_pager_start(dmi_context_t *context)
     if (pager == nullptr)
         return true;
 
-    rv = wordexp("${PAGER}", &we, WRDE_NOCMD);
+    rv = wordexp(pager, &we, WRDE_NOCMD);
     if (rv != 0) {
         switch (rv) {
         case WRDE_BADCHAR:
@@ -51,6 +48,10 @@ bool dmi_pager_start(dmi_context_t *context)
 
         return false;
     }
+    if (we.we_wordc == 0) {
+        dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Empty $PAGER value");
+        return false;
+    }
 
     do {
         if (pipe(fds) < 0) {
@@ -61,6 +62,8 @@ bool dmi_pager_start(dmi_context_t *context)
         pid_t pid = fork();
         if (pid < 0) {
             dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Fork failed: %s", strerror(errno));
+            dmi_file_close(fds[STDIN_FILENO]);
+            dmi_file_close(fds[STDOUT_FILENO]);
             break;
         }
 
@@ -77,6 +80,7 @@ bool dmi_pager_start(dmi_context_t *context)
 
             if (execvp(we.we_wordv[0], we.we_wordv) < 0) {
                 dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Unable to exec pager: %s", strerror(errno));
+                // FIXME: We have 2 instances of opendmi here
                 break;
             }
         } else {
