@@ -21,25 +21,35 @@
 #include <opendmi/pager.h>
 #include <opendmi/utils/file.h>
 
+#ifndef environ
+extern char** environ;
+#endif
+
 static pid_t pid = -1;
-void wait_pager_exit(void)
+static void wait_pager_exit(void)
 {
     fclose(stdout); // Ensure the pager process receives EOF
     if (pid > 0) {
-        waitpid(pid, NULL, 0);
+        int ret;
+        do {
+            ret = waitpid(pid, NULL, 0);
+        } while (ret == -1 && errno == EINTR);
         pid = -1;
     }
 }
 
 bool dmi_pager_start(dmi_context_t *context)
 {
+    if (pid > 0)
+        return true;
+
     bool success = false;
     wordexp_t we = {};
     int rv;
     int fds[2];
 
     const char *pager = getenv("PAGER");
-    if (pager == nullptr)
+    if (pager == nullptr || pager[0] == '\0')
         return true;
 
     rv = wordexp(pager, &we, WRDE_NOCMD);
@@ -110,13 +120,13 @@ bool dmi_pager_start(dmi_context_t *context)
             break;
         }
 
-        dmi_file_close(STDOUT_FILENO);
-
         if (dup2(fds[STDOUT_FILENO], STDOUT_FILENO) < 0) {
             dmi_error_raise_ex(context, DMI_ERROR_FILE_DUP, "%s", strerror(errno));
             dmi_file_close(fds[STDIN_FILENO]);
             dmi_file_close(fds[STDOUT_FILENO]);
             kill(pid, SIGKILL);
+            waitpid(pid, NULL, 0);
+            pid = -1;
             break;
         }
 
@@ -143,34 +153,10 @@ bool dmi_pager_start(dmi_context_t *context)
 
 #include <opendmi/context.h>
 #include <opendmi/utils.h>
-
-static const char* win32err_to_string(DWORD error_code)
-{
-    static char buffer[256];
-
-    DWORD len = FormatMessageA(
-        FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL,
-        error_code,
-        MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
-        buffer,
-        sizeof(buffer),
-        NULL);
-
-    if (len == 0) {
-        snprintf(buffer, sizeof(buffer), "Unknown error code (%lu)", error_code);
-    } else {
-        // Remove trailing newline
-        if (buffer[len - 1] == '\n') buffer[len - 1] = '\0';
-        if (buffer[len - 2] == '\r') buffer[len - 2] = '\0';
-        snprintf(buffer + len - 2, sizeof(buffer) - len + 2, " (%lu)", error_code);
-    }
-
-    return buffer;
-}
+#include <opendmi/utils/win32.h>
 
 static HANDLE child_process_handle = NULL;
-void wait_pager_exit(void)
+static void wait_pager_exit(void)
 {
     fclose(stdout); // Ensure the pager process receives EOF
     if (child_process_handle) {
@@ -182,15 +168,12 @@ void wait_pager_exit(void)
 
 bool dmi_pager_start(dmi_context_t *context)
 {
-    DWORD pagerLen = GetEnvironmentVariableW(L"PAGER", NULL, 0);
-    if (pagerLen == 0)
+    if (child_process_handle != NULL)
         return true;
 
-    wchar_t *pager = dmi_alloc(context, pagerLen * sizeof(wchar_t));
-    if (!pager) {
-        return false;
-    }
-    GetEnvironmentVariableW(L"PAGER", pager, pagerLen);
+    wchar_t *pager = _wgetenv(L"PAGER");
+    if (pager == nullptr || pager[0] == L'\0')
+        return true;
 
     wchar_t pipeName[64];
     static unsigned pidCounter = 0;
@@ -208,8 +191,7 @@ bool dmi_pager_start(dmi_context_t *context)
     );
     if (hChildPipeWrite == INVALID_HANDLE_VALUE)
     {
-        dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "CreateNamedPipeW failed: %s", win32err_to_string(GetLastError()));
-        dmi_free(pager);
+        dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "CreateNamedPipeW failed: %s", dmi_win32err_to_string(GetLastError()));
         return false;
     }
 
@@ -228,9 +210,8 @@ bool dmi_pager_start(dmi_context_t *context)
     );
     if (hChildPipeRead == INVALID_HANDLE_VALUE)
     {
-        dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "CreateFileW failed: %s", win32err_to_string(GetLastError()));
+        dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "CreateFileW failed: %s", dmi_win32err_to_string(GetLastError()));
         CloseHandle(hChildPipeWrite);
-        dmi_free(pager);
         return false;
     }
 
@@ -258,42 +239,36 @@ bool dmi_pager_start(dmi_context_t *context)
 
     if (!success)
     {
-        dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "CreateProcessW failed: %s", win32err_to_string(GetLastError()));
+        dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "CreateProcessW failed: %s", dmi_win32err_to_string(GetLastError()));
         CloseHandle(hChildPipeWrite);
         CloseHandle(hChildPipeRead);
-        dmi_free(pager);
         return false;
     }
 
     CloseHandle(piProcInfo.hThread);
     CloseHandle(hChildPipeRead);
-    dmi_free(pager);
 
-    int newStdout = _open_osfhandle((intptr_t)hChildPipeWrite, 0);
-    if (newStdout < 0) {
-        dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Unable to open pipe handle: %s", strerror(errno));
-        CloseHandle(hChildPipeWrite);
-        return false;
-    }
-    _close(STDOUT_FILENO);
-    if (_dup2(newStdout, STDOUT_FILENO) < 0) {
-        dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Unable to dup pipe handle: %s", strerror(errno));
+    do {
+        int newStdout = _open_osfhandle((intptr_t)hChildPipeWrite, 0);
+        if (newStdout < 0) {
+            dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Unable to open pipe handle: %s", strerror(errno));
+            break;
+        }
+        if (_dup2(newStdout, STDOUT_FILENO) < 0) {
+            dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "Unable to dup pipe handle: %s", strerror(errno));
+            _close(newStdout);
+            break;
+        }
         _close(newStdout);
-        CloseHandle(hChildPipeWrite);
-        return false;
-    }
-    _close(newStdout);
-    if (!SetStdHandle(STD_OUTPUT_HANDLE, hChildPipeWrite))
-    {
-        dmi_error_raise_ex(context, DMI_ERROR_SYSTEM, "SetStdHandle failed: %s", win32err_to_string(GetLastError()));
-        CloseHandle(hChildPipeWrite);
-        return false;
-    }
+        child_process_handle = piProcInfo.hProcess;
+        atexit(wait_pager_exit);
 
-    child_process_handle = piProcInfo.hProcess;
-    atexit(wait_pager_exit);
+        return true;
+    } while (false);
 
-    return true;
+    CloseHandle(hChildPipeWrite);
+    CloseHandle(piProcInfo.hProcess);
+    return false;
 }
 
 #endif // _WIN32
