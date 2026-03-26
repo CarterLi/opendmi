@@ -21,10 +21,11 @@
 
 #if defined(_WIN32)
 #   include <sys/locking.h>
+#   include <limits.h>
 #   define fstat(fd, buf)          _fstat(fd, buf)
 #   define read(fd, buf, size)     _read(fd, buf, size)
 #   define close(fd)               _close(fd)
-#   define lockf(fd, cmd, size)    _locking(fd, cmd, size)
+#   define lockf(fd, cmd, size)    _locking(fd, cmd, size == 0 ? LONG_MAX : size)
 #   define F_LOCK                  _LK_LOCK
 #   define F_ULOCK                 _LK_UNLCK
 #endif
