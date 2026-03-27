@@ -377,6 +377,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     target_sources(opendmi-object
         PRIVATE
             src/backend/windows.c
+            src/utils/win32.c
         PUBLIC FILE_SET HEADERS
             BASE_DIRS include
             FILES include/opendmi/backend/windows.h
