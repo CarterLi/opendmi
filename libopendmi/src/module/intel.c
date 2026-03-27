@@ -10,6 +10,7 @@
 #include <opendmi/entity/intel/rsd-fpga.h>
 #include <opendmi/entity/intel/rsd-memory-device-ex.h>
 #include <opendmi/entity/intel/rsd-network-card.h>
+#include <opendmi/entity/intel/rsd-pcie.h>
 #include <opendmi/entity/intel/rsd-phys-device-mapping.h>
 #include <opendmi/entity/intel/rsd-processor-cpuid.h>
 #include <opendmi/entity/intel/rsd-storage-device.h>
@@ -28,6 +29,7 @@ static dmi_module_t dmi_intel_module =
         &dmi_intel_rsd_fpga_spec,
         &dmi_intel_rsd_memory_device_ex_spec,
         &dmi_intel_rsd_network_card_spec,
+        &dmi_intel_rsd_pcie_spec,
         &dmi_intel_rsd_phys_device_mapping_spec,
         &dmi_intel_rsd_processor_cpuid_spec,
         &dmi_intel_rsd_storage_device_spec,

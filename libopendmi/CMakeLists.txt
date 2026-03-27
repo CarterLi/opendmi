@@ -198,6 +198,7 @@ target_sources(opendmi-object
         src/entity/intel/rsd-fpga.c
         src/entity/intel/rsd-memory-device-ex.c
         src/entity/intel/rsd-network-card.c
+        src/entity/intel/rsd-pcie.c
         src/entity/intel/rsd-phys-device-mapping.c
         src/entity/intel/rsd-processor-cpuid.c
         src/entity/intel/rsd-storage-device.c
@@ -321,6 +322,7 @@ target_sources(opendmi-object
             include/opendmi/entity/intel/rsd-fpga.h
             include/opendmi/entity/intel/rsd-memory-device-ex.h
             include/opendmi/entity/intel/rsd-network-card.h
+            include/opendmi/entity/intel/rsd-pcie.h
             include/opendmi/entity/intel/rsd-phys-device-mapping.h
             include/opendmi/entity/intel/rsd-processor-cpuid.h
             include/opendmi/entity/intel/rsd-storage-device.h

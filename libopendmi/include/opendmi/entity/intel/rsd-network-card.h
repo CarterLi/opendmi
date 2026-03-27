@@ -13,6 +13,9 @@
 
 typedef struct dmi_intel_rsd_network_card dmi_intel_rsd_network_card_t;
 
+/**
+ * @brief Intel RSD Network card information (type 190).
+ */
 struct dmi_intel_rsd_network_card
 {
     /**
@@ -79,7 +82,7 @@ struct dmi_intel_rsd_network_card
 };
 
 /**
- * @brief Intel RSD network interface card information entity specification.
+ * @brief Intel RSD Network card information entity specification.
  */
 extern const dmi_entity_spec_t dmi_intel_rsd_network_card_spec;
 
