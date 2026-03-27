@@ -6,7 +6,7 @@
 #include <windows.h>
 #include <winternl.h>
 
-const char* dmi_win32err_to_string(DWORD error_code)
+const char *dmi_win32err_to_string(DWORD error_code)
 {
     static char buffer[256];
 
@@ -32,7 +32,7 @@ const char* dmi_win32err_to_string(DWORD error_code)
     return buffer;
 }
 
-const char* dmi_ntstatus_to_string(NTSTATUS status)
+const char *dmi_ntstatus_to_string(NTSTATUS status)
 {
     return dmi_win32err_to_string(RtlNtStatusToDosError(status));
 }

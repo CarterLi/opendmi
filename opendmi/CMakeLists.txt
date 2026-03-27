@@ -25,7 +25,6 @@ configure_file(
 
 add_executable(opendmi
     src/main.c
-    src/pager.c
     src/option.c
     src/command.c
     src/command/common.c
@@ -46,8 +45,11 @@ add_executable(opendmi
     src/utils/tty.c
 )
 
-if(UNIX)
+if(WIN32)
+    target_sources(opendmi PRIVATE src/pager/win32.c)
+else()
     target_compile_definitions(opendmi PRIVATE _XOPEN_SOURCE _GNU_SOURCE)
+    target_sources(opendmi PRIVATE src/pager/posix.c)
 endif()
 
 if(ENABLE_JSON)

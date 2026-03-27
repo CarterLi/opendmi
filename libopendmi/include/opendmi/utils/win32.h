@@ -16,8 +16,8 @@
 
 __BEGIN_DECLS
 
-const char* dmi_win32err_to_string(DWORD error_code);
-const char* dmi_ntstatus_to_string(NTSTATUS status);
+const char *dmi_win32err_to_string(DWORD error_code);
+const char *dmi_ntstatus_to_string(NTSTATUS status);
 
 __END_DECLS
 
