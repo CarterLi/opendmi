@@ -75,7 +75,7 @@ static int dmi_list_main(dmi_context_t *context, int argc, char *argv[])
 
     while ((entity = dmi_registry_iter_next(&iter)) != nullptr) {
         if (dmi_list_config.show_raw) {
-            printf("0x%04hX\t%u\t%s\n", entity->handle, entity->type, dmi_entity_name(entity));
+            printf("0x%04hX\t%d\t%s\n", entity->handle, (int)entity->type, dmi_entity_name(entity));
         } else {
             dmi_tty_cprintf(DMI_TTY_COLOR_NAVY, "0x%04hX", entity->handle);
             dmi_tty_cprintf(DMI_TTY_COLOR_YELLOW, "  %-3u", entity->type);

@@ -123,8 +123,8 @@ static bool dmi_memory_array_addr_decode(dmi_entity_t *entity)
         if (!status)
             return false;
 
-        info->start_addr = start_addr << 10;
-        info->end_addr   = end_addr << 10;
+        info->start_addr = (uint64_t)start_addr << 10u;
+        info->end_addr   = (uint64_t)end_addr << 10u;
 
         if (dmi_stream_is_done(stream))
             break;

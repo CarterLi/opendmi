@@ -206,7 +206,7 @@ static void test_pointing_device_decode_empty(void **pstate)
     assert_uint_equal(state->entity->string_count, 0);
     assert_uint_equal(state->entity->level, DMI_VERSION(2, 1, 0));
 
-    dmi_pointing_device_t *info = dmi_entity_info(state->entity, DMI_TYPE_POINTING_DEVICE);
+    const dmi_pointing_device_t *info = dmi_entity_info(state->entity, DMI_TYPE_POINTING_DEVICE);
 
     assert_non_null(info);
     assert_int_equal(info->type, DMI_POINTING_DEVICE_TYPE_UNSPEC);
@@ -235,7 +235,7 @@ static void test_pointing_device_decode_type(void **pstate)
         assert_non_null(state->entity);
         assert_true(dmi_entity_decode(state->entity));
 
-        dmi_pointing_device_t *info = dmi_entity_info(state->entity, DMI_TYPE_POINTING_DEVICE);
+        const dmi_pointing_device_t *info = dmi_entity_info(state->entity, DMI_TYPE_POINTING_DEVICE);
 
         assert_non_null(info);
         assert_int_equal(info->type, type);
@@ -270,7 +270,7 @@ static void test_pointing_device_decode_interface(void **pstate)
         assert_non_null(state->entity);
         assert_true(dmi_entity_decode(state->entity));
 
-        dmi_pointing_device_t *info = dmi_entity_info(state->entity, DMI_TYPE_POINTING_DEVICE);
+        const dmi_pointing_device_t *info = dmi_entity_info(state->entity, DMI_TYPE_POINTING_DEVICE);
 
         assert_non_null(info);
         assert_int_equal(info->interface, iface);
@@ -301,7 +301,7 @@ static void test_pointing_device_decode_button_count(void **pstate)
         assert_non_null(state->entity);
         assert_true(dmi_entity_decode(state->entity));
 
-        dmi_pointing_device_t *info = dmi_entity_info(state->entity, DMI_TYPE_POINTING_DEVICE);
+        const dmi_pointing_device_t *info = dmi_entity_info(state->entity, DMI_TYPE_POINTING_DEVICE);
 
         assert_non_null(info);
         assert_uint_equal(info->button_count, buttons);

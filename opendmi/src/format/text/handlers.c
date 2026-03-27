@@ -140,7 +140,7 @@ void dmi_text_entity_attr_array(
 
             if (attr->type == DMI_ATTRIBUTE_TYPE_HANDLE) {
                 dmi_handle_t  handle = *(dmi_handle_t *)ptr;
-                dmi_entity_t *entity = dmi_registry_get(session->context->registry, handle, DMI_TYPE_INVALID, true);
+                const dmi_entity_t *entity = dmi_registry_get(session->context->registry, handle, DMI_TYPE_INVALID, true);
 
                 descr = dmi_entity_name(entity);
             }

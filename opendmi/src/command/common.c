@@ -191,7 +191,7 @@ void dmi_print_all(dmi_context_t *context, FILE *stream, const dmi_format_t *for
 {
     void *session;
     dmi_registry_iter_t iter;
-    dmi_entity_t *entity;
+    const dmi_entity_t *entity;
 
     assert(context != nullptr);
     assert(stream != nullptr);
