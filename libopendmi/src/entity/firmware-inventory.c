@@ -128,7 +128,7 @@ const dmi_entity_spec_t dmi_firmware_inventory_spec =
     .minimum_version = DMI_VERSION(3, 5, 0),
     .minimum_length  = 0x17,
     .decoded_length  = sizeof(dmi_firmware_inventory_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_firmware_inventory_t, name, STRING, {
             .code    = "name",
             .name    = "Name"
@@ -188,7 +188,7 @@ const dmi_entity_spec_t dmi_firmware_inventory_spec =
             .code    = "component-handles",
             .name    = "Associated component handles"
         }),
-        DMI_ATTRIBUTE_NULL
+        {}
     },
     .handlers = {
         .decode  = dmi_firmware_inventory_decode,
