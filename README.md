@@ -93,6 +93,12 @@ following command:
 $ dmidecode --dump-bin <filename>
 ```
 
+Or, using OpenDMI itself:
+
+```sh
+$ opendmi dump -o <filename>
+```
+
 See [CONTRIBUTING](CONTRIBUTING.md) for more details. A full list of contributors
 who helped the project so far can be found in the [CONTRIBUTORS](CONTRIBUTORS.md).
 
