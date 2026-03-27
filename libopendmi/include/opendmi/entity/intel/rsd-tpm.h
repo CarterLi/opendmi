@@ -11,9 +11,49 @@
 
 #include <opendmi/entity.h>
 
+typedef struct dmi_intel_rsd_tpm dmi_intel_rsd_tpm_t;
+
+/**
+ * @brief Intel RSD TPM status values.
+ */
+typedef enum dmi_intel_rsd_tpm_status
+{
+    DMI_INTEL_RSD_TPM_STATUS_DISABLED = 0x00, ///< Disabled
+    DMI_INTEL_RSD_TPM_STATUS_ENABLED  = 0x02, ///< Enabled
+} dmi_intel_rsd_tpm_status_t;
+
+/**
+ * @brief Intel RSD TPM information (type 195).
+ */
+struct dmi_intel_rsd_tpm
+{
+    /**
+     * @brief 1-based index to be used by PSME to select the desired
+     * configuration in the `Set TPM Configuration` IPMI command.
+     */
+    uint8_t config_index;
+
+    /**
+     * @brief The string that identifies the version of the TPM present on
+     * the system.
+     */
+    const char *version;
+
+    /**
+     * @brief Current status of this specific TPM in the platform.
+     */
+    dmi_intel_rsd_tpm_status_t status;
+};
+
 /**
  * @brief Intel RSD TPM information entity specification.
  */
 extern const dmi_entity_spec_t dmi_intel_rsd_tpm_spec;
+
+__BEGIN_DECLS
+
+const char *dmi_intel_rsd_tpm_status_name(dmi_intel_rsd_tpm_status_t value);
+
+__END_DECLS
 
 #endif // !DMI_ENTITY_INTEL_RSD_TPM_H
