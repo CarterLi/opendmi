@@ -255,7 +255,7 @@ void dmi_print_entity(
 
         if (format->handlers.entity_attrs_end != nullptr)
             format->handlers.entity_attrs_end(session, entity);
-    } else if (entity->type != DMI_TYPE_END_OF_TABLE) {
+    } else if (entity->type != DMI_TYPE(END_OF_TABLE)) {
         format->handlers.entity_data(session, entity);
         format->handlers.entity_strings(session, entity);
     }

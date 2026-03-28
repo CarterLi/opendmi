@@ -11,11 +11,18 @@ const dmi_entity_spec_t dmi_current_probe_spec =
 {
     .code            = "current-probe",
     .name            = "Electrical current probe",
+    .description     = (const char *[]){
+        "This structure describes the attributes for an electrical current "
+        "probe in the system. Each structure describes a single electrical "
+        "current probe.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(CURRENT_PROBE),
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x14,
     .decoded_length  = sizeof(dmi_current_probe_t),
-    .attributes      = (dmi_attribute_t[]) {
+    .attributes      = (const dmi_attribute_t[]) {
         DMI_ATTRIBUTE(dmi_current_probe_t, description, STRING, {
             .code    = "description",
             .name    = "Description"

@@ -1762,13 +1762,30 @@ const dmi_entity_spec_t dmi_processor_spec =
 {
     .code            = "processor",
     .name            = "Processor information",
+    .description     = (const char *[]){
+        "The information in this structure defines the attributes of a single "
+        "processor; a separate structure instance is provided for each system "
+        "processor socket/slot. For example, a system with an Intel DX2 "
+        "processor would have a single structure instance while a system with "
+        "an Intel SX2 processor would have a structure to describe the main "
+        "CPU and a second structure to describe the 80487 co-processor.",
+        //
+        "Note: One structure is provided for each processor instance in a "
+        "system. For example, a system that supports up to two processors "
+        "includes two Processor Information structures - even if only one "
+        "processor is currently installed. Software that interprets the SMBIOS "
+        "information can count the Processor Information structures to "
+        "determine the maximum possible configuration of the system.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(PROCESSOR),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .required_from   = DMI_VERSION(2, 3, 0),
     .required_till   = DMI_VERSION_NONE,
     .minimum_length  = 0x1A,
     .decoded_length  = sizeof(dmi_processor_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_processor_t, socket_designation, STRING, {
             .code    = "socket-designation",
             .name    = "Socket Designation"
@@ -1913,11 +1930,11 @@ static bool dmi_processor_decode(dmi_entity_t *entity)
     dmi_processor_t *info;
     const dmi_processor_data_t *data;
 
-    data = dmi_entity_data(entity, DMI_TYPE_PROCESSOR);
+    data = dmi_entity_data(entity, DMI_TYPE(PROCESSOR));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_PROCESSOR);
+    info = dmi_entity_info(entity, DMI_TYPE(PROCESSOR));
     if (info == nullptr)
         return false;
 
@@ -2039,20 +2056,20 @@ static bool dmi_processor_link(dmi_entity_t *entity)
 {
     dmi_processor_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_PROCESSOR);
+    info = dmi_entity_info(entity, DMI_TYPE(PROCESSOR));
     if (info == nullptr)
         return false;
 
     dmi_registry_t *registry = entity->context->registry;
 
     if (info->l1_cache_handle != DMI_HANDLE_INVALID)
-        info->l1_cache = dmi_registry_get(registry, info->l1_cache_handle, DMI_TYPE_CACHE, false);
+        info->l1_cache = dmi_registry_get(registry, info->l1_cache_handle, DMI_TYPE(CACHE), false);
 
     if (info->l2_cache_handle != DMI_HANDLE_INVALID)
-        info->l2_cache = dmi_registry_get(registry, info->l2_cache_handle, DMI_TYPE_CACHE, false);
+        info->l2_cache = dmi_registry_get(registry, info->l2_cache_handle, DMI_TYPE(CACHE), false);
 
     if (info->l3_cache_handle != DMI_HANDLE_INVALID)
-        info->l3_cache = dmi_registry_get(registry, info->l3_cache_handle, DMI_TYPE_CACHE, false);
+        info->l3_cache = dmi_registry_get(registry, info->l3_cache_handle, DMI_TYPE(CACHE), false);
 
     return true;
 }

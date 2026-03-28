@@ -73,6 +73,11 @@ struct dmi_entity_spec
     const char *name;
 
     /**
+     * @brief Short description.
+     */
+    const char **description;
+
+    /**
      * @brief SMBIOS type.
      */
     dmi_type_t type;

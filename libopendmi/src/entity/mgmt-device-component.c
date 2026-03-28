@@ -17,11 +17,18 @@ const dmi_entity_spec_t dmi_mgmt_device_component_spec =
 {
     .code            = "mgmt-device-component",
     .name            = "Management device component",
+    .description     = (const char *[]){
+        "This structure associates a cooling device or environmental probe "
+        "with structures that define the controlling hardware device and "
+        "(optionally) the component’s thresholds.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(MGMT_DEVICE_COMPONENT),
     .minimum_version = DMI_VERSION(2, 3, 0),
     .minimum_length  = 0x0B,
     .decoded_length  = sizeof(dmi_mgmt_device_component_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_mgmt_device_component_t, description, STRING, {
             .code = "description",
             .name = "Description"
@@ -50,7 +57,7 @@ static bool dmi_mgmt_device_component_decode(dmi_entity_t *entity)
 {
     dmi_mgmt_device_component_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE_COMPONENT);
+    info = dmi_entity_info(entity, DMI_TYPE(MGMT_DEVICE_COMPONENT));
     if (info == nullptr)
         return false;
 
@@ -66,23 +73,23 @@ static bool dmi_mgmt_device_component_decode(dmi_entity_t *entity)
 static bool dmi_mgmt_device_component_link(dmi_entity_t *entity)
 {
     static const dmi_type_t dmi_component_types[] = {
-        DMI_TYPE_COOLING_DEVICE,
-        DMI_TYPE_TEMPERATURE_PROBE,
-        DMI_TYPE_VOLTAGE_PROBE,
-        DMI_TYPE_CURRENT_PROBE,
+        DMI_TYPE(COOLING_DEVICE),
+        DMI_TYPE(TEMPERATURE_PROBE),
+        DMI_TYPE(VOLTAGE_PROBE),
+        DMI_TYPE(CURRENT_PROBE),
         DMI_TYPE_INVALID
     };
 
     dmi_mgmt_device_component_t *info;
     dmi_registry_t *registry;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE_COMPONENT);
+    info = dmi_entity_info(entity, DMI_TYPE(MGMT_DEVICE_COMPONENT));
     if (info == nullptr)
         return false;
 
     registry = entity->context->registry;
 
-    info->device = dmi_registry_get(registry, info->device_handle, DMI_TYPE_MGMT_DEVICE, false);
+    info->device = dmi_registry_get(registry, info->device_handle, DMI_TYPE(MGMT_DEVICE), false);
     if (info->device == nullptr)
         return false;
 
@@ -91,7 +98,7 @@ static bool dmi_mgmt_device_component_link(dmi_entity_t *entity)
         return false;
 
     if (info->threshold_handle != DMI_HANDLE_INVALID) {
-        info->threshold = dmi_registry_get(registry, info->threshold_handle, DMI_TYPE_MGMT_DEVICE_THRESHOLD, false);
+        info->threshold = dmi_registry_get(registry, info->threshold_handle, DMI_TYPE(MGMT_DEVICE_THRESHOLD), false);
     }
 
     return true;

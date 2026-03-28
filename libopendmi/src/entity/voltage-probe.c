@@ -11,11 +11,17 @@ const dmi_entity_spec_t dmi_voltage_probe_spec =
 {
     .code            = "voltage-probe",
     .name            = "Voltage probe",
+    .description     = (const char *[]){
+        "This describes the attributes for a voltage probe in the system. "
+        "Each structure describes a single voltage probe.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(VOLTAGE_PROBE),
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x14,
     .decoded_length  = sizeof(dmi_voltage_probe_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_voltage_probe_t, description, STRING, {
             .code    = "description",
             .name    = "Description"

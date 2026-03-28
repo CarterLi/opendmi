@@ -16,11 +16,17 @@ const dmi_entity_spec_t dmi_memory_error_32_spec =
 {
     .code            = "memory-error-32",
     .name            = "32-bit memory error information",
+    .description     = (const char *[]){
+        "This structure identifies the specifics of an error that might be "
+        "detected within a Physical Memory Array.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(MEMORY_ERROR_32),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x17,
     .decoded_length  = sizeof(dmi_memory_error_32_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_memory_error_32_t, type, ENUM, {
             .code    = "type",
             .name    = "Type",
@@ -72,7 +78,7 @@ static bool dmi_memory_error_32_decode(dmi_entity_t *entity)
 {
     dmi_memory_error_32_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ERROR_32);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_ERROR_32));
     if (info == nullptr)
         return false;
 

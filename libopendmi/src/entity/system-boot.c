@@ -82,7 +82,7 @@ static const dmi_name_set_t dmi_system_boot_status_names =
             .start_id = __DMI_BOOT_STATUS_PRODUCT_SPECIFIC_START,
             .end_id   = __DMI_BOOT_STATUS_PRODUCT_SPECIFIC_END,
             .code     = "product-specific",
-            .name     = "Product-specific"  
+            .name     = "Product-specific"
         },
         DMI_NAME_RANGE_NULL
     }
@@ -92,12 +92,27 @@ const dmi_entity_spec_t dmi_system_boot_spec =
 {
     .code           = "system-boot",
     .name           = "System boot information",
+    .description    = (const char *[]){
+        "The client system firmware (for example, BIOS) communicates the "
+        "System Boot Status to the client’s Pre-boot Execution Environment "
+        "(PXE) boot image or OS-present management application through this "
+        "structure.",
+        //
+        "When used in the PXE environment, for example, this code identifies "
+        "the reason the PXE was initiated and can be used by boot-image "
+        "software to further automate an enterprise’s PXE sessions. For "
+        "example, an enterprise could choose to automatically download a "
+        "hardware-diagnostic image to a client whose reason code indicated "
+        "either a firmware- or an operating system-detected hardware failure.",
+        //
+        nullptr
+    },
     .type           = DMI_TYPE(SYSTEM_BOOT),
     .required_from  = DMI_VERSION(2, 3, 0),
     .required_till  = DMI_VERSION_NONE,
     .minimum_length = 0x0B,
     .decoded_length = sizeof(dmi_system_boot_t),
-    .attributes     = (dmi_attribute_t[]){
+    .attributes     = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_system_boot_t, status, ENUM, {
             .code   = "status",
             .name   = "Boot status",
@@ -115,11 +130,11 @@ static bool dmi_system_boot_decode(dmi_entity_t *entity)
     dmi_system_boot_t *info;
     const dmi_system_boot_data_t *data;
 
-    data = dmi_entity_data(entity, DMI_TYPE_SYSTEM_BOOT);
+    data = dmi_entity_data(entity, DMI_TYPE(SYSTEM_BOOT));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_BOOT);
+    info = dmi_entity_info(entity, DMI_TYPE(SYSTEM_BOOT));
     if (info == nullptr)
         return false;
 

@@ -119,16 +119,50 @@ static dmi_backend_t *dmi_backend = &DMI_BACKEND;
 
 static const dmi_entity_spec_t dmi_inactive_spec =
 {
-    .code = "inactive",
-    .name = "Inactive",
-    .type = DMI_TYPE_INACTIVE
+    .code        = "inactive",
+    .name        = "Inactive",
+    .description = (const char *[]){
+        "This structure definition supports a system implementation where "
+        "the SMBIOS structure-table is a superset of all supported system "
+        "attributes and provides a standard mechanism for the platform "
+        "firmware to signal that a structure is currently inactive and "
+        "should not be interpreted by the upper-level software.",
+        //
+        "For example, a portable system might include System Slot "
+        "structures that are reported only when the portable is docked. An "
+        "undocked system would report those structures as Inactive. When "
+        "the system is docked, the system-specific software would change "
+        "the Type structure from Inactive to the System Slot equivalent.",
+        //
+        "Upper-level software that interprets the SMBIOS structure-table "
+        "should bypass an Inactive structure just as it would for a "
+        "structure type that the software does not recognize.",
+        //
+        nullptr
+    },
+    .type        = DMI_TYPE(INACTIVE)
 };
 
 static const dmi_entity_spec_t dmi_end_of_table_spec =
 {
-    .code = "end-of-table",
-    .name = "End of table",
-    .type = DMI_TYPE_END_OF_TABLE
+    .code        = "end-of-table",
+    .name        = "End of table",
+    .description = (const char *[]){
+        "This structure type identifies the end of the structure table that "
+        "might be earlier than the last byte within the buffer specified by "
+        "the structure.",
+        //
+        "To ensure backward compatibility with management software written "
+        "to previous versions of SMBIOS specification, a system implementation "
+        "should use the end-of-table indicator in a manner similar to the "
+        "Inactive (Type 126) structure type; the structure table is still "
+        "reported as a fixed-length, and the entire length of the table is "
+        "still indexable. If the end-of-table indicator is used in the last "
+        "physical structure in a table, the field’s length is encoded as 4.",
+        //
+        nullptr
+    },
+    .type        = DMI_TYPE(END_OF_TABLE)
 };
 
 /**
@@ -572,7 +606,7 @@ static bool dmi_setup_extensions(dmi_context_t *context)
 
     dmi_log_debug(context, "Detecting SMBIOS vendor...");
 
-    entity = dmi_registry_get(context->registry, DMI_HANDLE_INVALID, DMI_TYPE_FIRMWARE, true);
+    entity = dmi_registry_get(context->registry, DMI_HANDLE_INVALID, DMI_TYPE(FIRMWARE), true);
     if (entity == nullptr) {
         if ((context->flags & DMI_CONTEXT_FLAG_STRICT) == 0) {
             dmi_log_notice(context, dmi_error_message(DMI_ERROR_MISSING_FIRMWARE_INFO));

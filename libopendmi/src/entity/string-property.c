@@ -17,11 +17,20 @@ const dmi_entity_spec_t dmi_string_property_spec =
 {
     .code            = "string-property",
     .name            = "String property",
+    .description     = (const char *[]){
+        "This structure defines a string property for another structure. This "
+        "allows adding string properties that are common to several "
+        "structures without having to modify the definitions of these "
+        "structures. Multiple type 46 structures can add string properties "
+        "to the same parent structure.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(STRING_PROPERTY),
     .minimum_version = DMI_VERSION(3, 5, 0),
     .minimum_length  = 0x09,
     .decoded_length  = sizeof(dmi_string_property_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_string_property_t, ident, INTEGER, {
             .code = "ident",
             .name = "Identifier"
@@ -47,11 +56,11 @@ static bool dmi_string_property_decode(dmi_entity_t *entity)
     dmi_string_property_t *info;
     const dmi_string_property_data_t *data;
 
-    data = dmi_entity_data(entity, DMI_TYPE_STRING_PROPERTY);
+    data = dmi_entity_data(entity, DMI_TYPE(STRING_PROPERTY));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_STRING_PROPERTY);
+    info = dmi_entity_info(entity, DMI_TYPE(STRING_PROPERTY));
     if (info == nullptr)
         return false;
 
@@ -66,7 +75,7 @@ static bool dmi_string_property_link(dmi_entity_t *entity)
 {
     dmi_string_property_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_STRING_PROPERTY);
+    info = dmi_entity_info(entity, DMI_TYPE(STRING_PROPERTY));
     if (info == nullptr)
         return false;
 

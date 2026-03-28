@@ -403,11 +403,21 @@ const dmi_entity_spec_t dmi_memory_device_spec =
 {
     .code            = "memory-device",
     .name            = "Memory device",
+    .description     = (const char *[]){
+        "This structure describes a single memory device that is part of a "
+        "larger Physical Memory Array (Type 16) structure.",
+        //
+        "Note: If a system includes memory-device sockets, the SMBIOS "
+        "implementation includes a Memory Device structure instance for each "
+        "slot, whether the socket is currently populated.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(MEMORY_DEVICE),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x15,
     .decoded_length  = sizeof(dmi_memory_device_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_memory_device_t, array_handle, HANDLE, {
             .code    = "array-handle",
             .name    = "Memory array handle",
@@ -676,11 +686,11 @@ static bool dmi_memory_device_decode(dmi_entity_t *entity)
     dmi_memory_device_t *info;
     const dmi_memory_device_data_t *data;
 
-    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_DEVICE);
+    data = dmi_entity_data(entity, DMI_TYPE(MEMORY_DEVICE));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_DEVICE);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_DEVICE));
     if (info == nullptr)
         return false;
 
@@ -836,22 +846,22 @@ static bool dmi_memory_device_decode(dmi_entity_t *entity)
 static bool dmi_memory_device_link(dmi_entity_t *entity)
 {
     static const dmi_type_t error_types[] = {
-        DMI_TYPE_MEMORY_ERROR_32,
-        DMI_TYPE_MEMORY_ERROR_64,
+        DMI_TYPE(MEMORY_ERROR_32),
+        DMI_TYPE(MEMORY_ERROR_64),
         DMI_TYPE_INVALID
     };
 
     dmi_memory_device_t *info;
     dmi_registry_t *registry;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_DEVICE);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_DEVICE));
     if (info == nullptr)
         return false;
 
     registry = entity->context->registry;
 
     if (info->array_handle != DMI_HANDLE_INVALID) {
-        info->array = dmi_registry_get(registry, info->array_handle, DMI_TYPE_MEMORY_ARRAY, false);
+        info->array = dmi_registry_get(registry, info->array_handle, DMI_TYPE(MEMORY_ARRAY), false);
         if (info->array == nullptr) {
             dmi_error_raise_ex(entity->context, DMI_ERROR_ENTITY_NOT_FOUND,
                                "Memory array: 0x%04x", info->array_handle);

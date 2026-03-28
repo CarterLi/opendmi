@@ -134,11 +134,39 @@ const dmi_entity_spec_t dmi_mgmt_controller_host_if_spec =
 {
     .code            = "mgmt-controller-host-if",
     .name            = "Management controller host interface",
+    .description     = (const char *[]){
+        "The information in this structure defines the attributes of a "
+        "Management Controller Host Interface that is not discoverable by "
+        "\"Plug and Play\" mechanisms. The Type 42 structure can be used to "
+        "describe a physical management controller host interface and one or "
+        "more protocols that share that interface.",
+        //
+        "Type 42 should be used for management controller host interfaces "
+        "that use protocols other than IPMI or that use multiple protocols on "
+        "a single host interface type.",
+        //
+        "This structure should also be provided if IPMI is shared with other "
+        "protocols over the same interface hardware. If IPMI is not shared "
+        "with other protocols, either the Type 38 or the Type 42 structures "
+        "can be used.",
+        //
+        "Providing Type 38 is recommended for backward compatibility. The "
+        "structures are not required to be mutually exclusive. Type 38 and "
+        "Type 42 structures may be implemented simultaneously to provide "
+        "backward compatibility with IPMI applications or drivers that do not "
+        "yet recognize the Type 42 structure.",
+        //
+        "See the Intelligent Platform Management Interface (IPMI) Interface "
+        "Specification for full documentation of IPMI and additional "
+        "information on the use of this structure with IPMI.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(MGMT_CONTROLLER_HOST_IF),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x06,
     .decoded_length  = sizeof(dmi_mgmt_controller_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_mgmt_controller_t, if_type, ENUM, {
             .code    = "if-type",
             .name    = "Interface Type",
@@ -158,11 +186,11 @@ static bool dmi_mgmt_controller_decode(dmi_entity_t *entity)
     const dmi_mgmt_controller_data_t *data;
     const dmi_mgmt_controller_extra_t *extra;
 
-    data = dmi_entity_data(entity, DMI_TYPE_MGMT_CONTROLLER_HOST_IF);
+    data = dmi_entity_data(entity, DMI_TYPE(MGMT_CONTROLLER_HOST_IF));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MGMT_CONTROLLER_HOST_IF);
+    info = dmi_entity_info(entity, DMI_TYPE(MGMT_CONTROLLER_HOST_IF));
     if (info == nullptr)
         return false;
 
@@ -216,7 +244,7 @@ static void dmi_mgmt_controller_cleanup(dmi_entity_t *entity)
 {
     dmi_mgmt_controller_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MGMT_CONTROLLER_HOST_IF);
+    info = dmi_entity_info(entity, DMI_TYPE(MGMT_CONTROLLER_HOST_IF));
     if (info == nullptr)
         return;
 

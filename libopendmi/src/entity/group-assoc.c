@@ -18,11 +18,20 @@ const dmi_entity_spec_t dmi_group_assoc_spec =
 {
     .code            = "group-associations",
     .name            = "Group associations",
+    .description     = (const char *[]){
+        "The Group Associations structure is provided for OEMs who want to "
+        "specify the arrangement or hierarchy of certain components (including "
+        "other Group Associations) within the system. For example, you can use "
+        " the Group Associations structure to indicate that two CPUs share a "
+        "common external cache system.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(GROUP_ASSOC),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_group_assoc_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_group_assoc_t, group_name, STRING, {
             .code  = "group-name",
             .name  = "Group name"
@@ -30,7 +39,7 @@ const dmi_entity_spec_t dmi_group_assoc_spec =
         DMI_ATTRIBUTE_ARRAY(dmi_group_assoc_t, items, item_count, STRUCT, {
             .code  = "items",
             .name  = "Items",
-            .attrs = (dmi_attribute_t[]){
+            .attrs = (const dmi_attribute_t[]){
                 DMI_ATTRIBUTE(dmi_group_assoc_item_t, type, INTEGER, {
                     .code  = "type",
                     .name  = "Type",
@@ -56,7 +65,7 @@ static bool dmi_group_assoc_decode(dmi_entity_t *entity)
 {
     dmi_group_assoc_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_GROUP_ASSOC);
+    info = dmi_entity_info(entity, DMI_TYPE(GROUP_ASSOC));
     if (info == nullptr)
         return false;
 
@@ -90,7 +99,7 @@ static bool dmi_group_assoc_link(dmi_entity_t *entity)
 {
     dmi_group_assoc_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_GROUP_ASSOC);
+    info = dmi_entity_info(entity, DMI_TYPE(GROUP_ASSOC));
     if (info == nullptr)
         return false;
 
@@ -108,7 +117,7 @@ static void dmi_group_assoc_cleanup(dmi_entity_t *entity)
 {
     dmi_group_assoc_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_GROUP_ASSOC);
+    info = dmi_entity_info(entity, DMI_TYPE(GROUP_ASSOC));
     if (info == nullptr)
         return;
 

@@ -36,11 +36,19 @@ const dmi_entity_spec_t dmi_oob_remote_access_spec =
 {
     .code            = "oob-remote-access",
     .name            = "Out-of-band remote access",
+    .description     = (const char *[]){
+        "This structure describes the attributes and policy settings of a "
+        "hardware facility that may be used to gain remote access to a "
+        "hardware system when the operating system is not available due to "
+        "power-down status, hardware failures, or boot failures.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(OOB_REMOTE_ACCESS),
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x06,
     .decoded_length  = sizeof(dmi_oob_remote_access_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_oob_remote_access_t, vendor, STRING, {
             .code = "vendor",
             .name = "Vendor"
@@ -61,7 +69,7 @@ static bool dmi_oob_remote_access_decode(dmi_entity_t *entity)
 {
     dmi_oob_remote_access_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_OOB_REMOTE_ACCESS);
+    info = dmi_entity_info(entity, DMI_TYPE(OOB_REMOTE_ACCESS));
     if (info == nullptr)
         return false;
 

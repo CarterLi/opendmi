@@ -18,11 +18,17 @@ const dmi_entity_spec_t dmi_system_config_opts_spec =
 {
     .code            = "system-config-options",
     .name            = "System configuration options",
+    .description     = (const char *[]){
+        "This structure contains information required to configure the "
+        "baseboard\'s jumpers and switches.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(SYSTEM_CONFIG_OPTIONS),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_system_config_opts_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE_ARRAY(dmi_system_config_opts_t, options, option_count, STRING, {
             .code = "options",
             .name = "Options"
@@ -39,7 +45,7 @@ static bool dmi_system_config_opts_decode(dmi_entity_t *entity)
 {
     dmi_system_config_opts_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_CONFIG_OPTIONS);
+    info = dmi_entity_info(entity, DMI_TYPE(SYSTEM_CONFIG_OPTIONS));
     if (info == nullptr)
         return false;
 
@@ -63,7 +69,7 @@ static void dmi_system_config_opts_cleanup(dmi_entity_t *entity)
 {
     dmi_system_config_opts_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_CONFIG_OPTIONS);
+    info = dmi_entity_info(entity, DMI_TYPE(SYSTEM_CONFIG_OPTIONS));
     if (info == nullptr)
         return;
 

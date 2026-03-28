@@ -109,11 +109,19 @@ const dmi_entity_spec_t dmi_mgmt_device_spec =
 {
     .code            = "mgmt-device",
     .name            = "Management device",
+    .description     = (const char *[]){
+        "The information in this structure defines the attributes of a "
+        "Management Device. A Management Device might control one or more "
+        "fans or voltage, current, or temperature probes as defined by one "
+        "or more Management Device Component structures.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(MGMT_DEVICE),
     .minimum_version = DMI_VERSION(2, 3, 0),
     .minimum_length  = 0x0B,
     .decoded_length  = sizeof(dmi_mgmt_device_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_mgmt_device_t, description, STRING, {
             .code    = "description",
             .name    = "Description"
@@ -158,7 +166,7 @@ static bool dmi_mgmt_device_decode(dmi_entity_t *entity)
 {
     dmi_mgmt_device_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE);
+    info = dmi_entity_info(entity, DMI_TYPE(MGMT_DEVICE));
     if (info == nullptr)
         return false;
 

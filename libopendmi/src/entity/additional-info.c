@@ -13,7 +13,7 @@ const dmi_entity_spec_t dmi_additional_info_spec =
     .type            = DMI_TYPE(ADDITIONAL_INFO),
     .minimum_version = DMI_VERSION(2, 6, 0),
     .minimum_length  = 0x05,
-    .attributes      = (dmi_attribute_t[]) {
+    .attributes      = (const dmi_attribute_t[]) {
         DMI_ATTRIBUTE_NULL
     }
 };

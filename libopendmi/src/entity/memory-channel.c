@@ -42,10 +42,18 @@ const dmi_entity_spec_t dmi_memory_channel_spec =
     .code            = "memory-channel",
     .name            = "Memory channel",
     .type            = DMI_TYPE(MEMORY_CHANNEL),
+    .description     = (const char *[]){
+        "The information in this structure provides the correlation between "
+        "a Memory Channel and its associated Memory Devices. Each device "
+        "presents one or more loads to the channel; the sum of all device "
+        "loads cannot exceed the channel\'s defined maximum.",
+        //
+        nullptr
+    },
     .minimum_version = DMI_VERSION(2, 3, 0),
     .minimum_length  = 0x0A,
     .decoded_length  = sizeof(dmi_memory_channel_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_memory_channel_t, type, ENUM, {
             .code    = "type",
             .name    = "Type",
@@ -64,7 +72,7 @@ const dmi_entity_spec_t dmi_memory_channel_spec =
         DMI_ATTRIBUTE_ARRAY(dmi_memory_channel_t, devices, device_count, STRUCT, {
             .code    = "devices",
             .name    = "Devices",
-            .attrs   = (dmi_attribute_t[]){
+            .attrs   = (const dmi_attribute_t[]){
                 DMI_ATTRIBUTE(dmi_memory_channel_device_t, load, INTEGER, {
                     .code = "load",
                     .name = "Load"
@@ -95,11 +103,11 @@ static bool dmi_memory_channel_decode(dmi_entity_t *entity)
     dmi_memory_channel_t *info;
     const dmi_memory_channel_data_t *data;
 
-    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_CHANNEL);
+    data = dmi_entity_data(entity, DMI_TYPE(MEMORY_CHANNEL));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CHANNEL);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_CHANNEL));
     if (info == nullptr)
         return false;
 
@@ -129,14 +137,14 @@ static bool dmi_memory_channel_link(dmi_entity_t *entity)
     dmi_registry_t *registry;
     dmi_entity_t *device;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CHANNEL);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_CHANNEL));
     if (info == nullptr)
         return false;
 
     registry = entity->context->registry;
 
     for (size_t i = 0; i < info->device_count; i++) {
-        device = dmi_registry_get(registry, info->devices[i].handle, DMI_TYPE_MEMORY_DEVICE, false);
+        device = dmi_registry_get(registry, info->devices[i].handle, DMI_TYPE(MEMORY_DEVICE), false);
         if (device == nullptr)
             continue;
 
@@ -153,7 +161,7 @@ static void dmi_memory_channel_cleanup(dmi_entity_t *entity)
 {
     dmi_memory_channel_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CHANNEL);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_CHANNEL));
     if (info == nullptr)
         return;
 

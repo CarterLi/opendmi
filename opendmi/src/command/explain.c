@@ -5,12 +5,16 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 #include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
 
 #include <opendmi/context.h>
+#include <opendmi/utils/tty.h>
 #include <opendmi/command/explain.h>
 
 static void dmi_explain_usage(void);
 static int dmi_explain_main(dmi_context_t *context, int argc, char *argv[]);
+static const dmi_entity_spec_t *dmi_explain_find_entity(dmi_context_t *context, const char *code);
 
 static const dmi_option_set_t dmi_explain_options =
 {
@@ -31,6 +35,14 @@ const dmi_command_t dmi_explain_command =
     .name        = "explain",
     .description = "Explain SMBIOS structure or type",
     .options     = dmi_options(&dmi_explain_options),
+    .arguments   = (const dmi_argument_t[]){
+        {
+            .name     = "type",
+            .type     = DMI_ARGUMENT_TYPE_STRING,
+            .required = true
+        },
+        {}
+    },
     .handlers    = {
         .usage = dmi_explain_usage,
         .main  = dmi_explain_main
@@ -44,11 +56,47 @@ static void dmi_explain_usage(void)
 
 static int dmi_explain_main(dmi_context_t *context, int argc, char *argv[])
 {
-    dmi_unused(context);
-    dmi_unused(argc);
-    dmi_unused(argv);
+    assert(context != nullptr);
+    assert(argc >= 0);
+    assert(argv != nullptr);
 
-    dmi_command_message_ex(&dmi_explain_command, "Not implemented yet");
+    if (argc < 1) {
+        dmi_command_message_ex(&dmi_explain_command, "No type specified");
+        return EXIT_USAGE;
+    }
 
-    return EXIT_FAILURE;
+    if (argc > 1) {
+        dmi_command_message_ex(&dmi_explain_command, "Too many arguments");
+        return EXIT_USAGE;
+    }
+
+    const dmi_entity_spec_t *spec = dmi_explain_find_entity(context, *argv);
+    if (spec == nullptr) {
+        dmi_command_message_ex(&dmi_explain_command, "Unknown type specified: %s", *argv);
+        return EXIT_FAILURE;
+    }
+
+    dmi_tty_header("%s, type %d\n%s", spec->code, (int)spec->type, spec->name);
+
+    if (spec->description != nullptr) {
+        const char **para;
+
+        for (para = spec->description; *para != nullptr; para++) {
+            printf("%s\n\n", *para);
+        }
+    }
+
+    return EXIT_SUCCESS;
+}
+
+static const dmi_entity_spec_t *dmi_explain_find_entity(dmi_context_t *context, const char *code)
+{
+    assert(context != nullptr);
+    assert(code != nullptr);
+
+    dmi_type_t type = dmi_type_find(context, code);
+    if (type == DMI_TYPE_INVALID)
+        return nullptr;
+
+    return dmi_type_spec(context, type);
 }

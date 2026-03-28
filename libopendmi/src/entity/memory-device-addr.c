@@ -18,11 +18,22 @@ const dmi_entity_spec_t dmi_memory_device_addr_spec =
 {
     .code            = "memory-device-address",
     .name            = "Memory device mapped address",
+    .description     = (const char *[]){
+        "This structure maps memory address space usually to a device-level "
+        "granularity. One structure is present for each contiguous address "
+        "range described.",
+        //
+        "Note: A Memory Device Mapped Address structure is provided only if "
+        "a Memory Device has a mapped address; there is no provision within "
+        "this structure to map a zero-length address space.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(MEMORY_DEVICE_ADDR),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x13,
     .decoded_length  = sizeof(dmi_memory_device_addr_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_memory_device_addr_t, start_addr, ADDRESS, {
             .code    = "start-addr",
             .name    = "Starting address",
@@ -71,7 +82,7 @@ const dmi_entity_spec_t dmi_memory_device_addr_spec =
 
 static bool dmi_memory_device_addr_validate(dmi_entity_t *entity)
 {
-    if ((entity == nullptr) or (entity->type != DMI_TYPE_MEMORY_DEVICE_ADDR))
+    if ((entity == nullptr) or (entity->type != DMI_TYPE(MEMORY_DEVICE_ADDR)))
         return false;
 
     const dmi_stream_t *stream = &entity->stream;
@@ -117,7 +128,7 @@ static bool dmi_memory_device_addr_decode(dmi_entity_t *entity)
 {
     dmi_memory_device_addr_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_DEVICE_ADDR);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_DEVICE_ADDR));
     if (info == nullptr)
         return false;
 
@@ -178,14 +189,14 @@ static bool dmi_memory_device_addr_link(dmi_entity_t *entity)
     dmi_registry_t *registry;
     dmi_memory_device_addr_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_DEVICE_ADDR);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_DEVICE_ADDR));
     if (info == nullptr)
         return false;
 
     registry = entity->context->registry;
 
-    info->device = dmi_registry_get(registry, info->device_handle, DMI_TYPE_MEMORY_DEVICE, false);
-    info->array_addr = dmi_registry_get(registry, info->array_addr_handle, DMI_TYPE_MEMORY_ARRAY_ADDR, false);
+    info->device = dmi_registry_get(registry, info->device_handle, DMI_TYPE(MEMORY_DEVICE), false);
+    info->array_addr = dmi_registry_get(registry, info->array_addr_handle, DMI_TYPE(MEMORY_ARRAY_ADDR), false);
 
     return true;
 }

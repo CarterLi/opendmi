@@ -40,11 +40,16 @@ const dmi_entity_spec_t dmi_hardware_security_spec =
 {
     .code            = "hardware-security",
     .name            = "Hardware security",
+    .description     = (const char *[]){
+        "This structure describes the system-wide hardware security settings.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(HARDWARE_SECURITY),
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_hardware_security_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_hardware_security_t, front_panel_reset, ENUM, {
             .code    = "front-panel-reset",
             .name    = "Front panel reset status",
@@ -86,7 +91,7 @@ static bool dmi_hardware_security_decode(dmi_entity_t *entity)
     dmi_hardware_security_t *info;
     dmi_hardware_security_settings_t settings;
 
-    info = dmi_entity_info(entity, DMI_TYPE_HARDWARE_SECURITY);
+    info = dmi_entity_info(entity, DMI_TYPE(HARDWARE_SECURITY));
     if (info == nullptr)
         return false;
 

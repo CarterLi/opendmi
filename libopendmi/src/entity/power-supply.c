@@ -91,11 +91,18 @@ const dmi_entity_spec_t dmi_power_supply_spec =
 {
     .code            = "power-supply",
     .name            = "System power supply",
+    .description     = (const char *[]){
+        "This structure identifies attributes of a system power supply. One "
+        "instance of this structure is present for each possible power supply "
+        "in a system.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(POWER_SUPPLY),
     .minimum_version = DMI_VERSION(2, 3, 1),
     .minimum_length  = 0x10,
     .decoded_length  = sizeof(dmi_power_supply_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_power_supply_t, group, INTEGER, {
             .code    = "group",
             .name    = "Power unit group"
@@ -197,7 +204,7 @@ static bool dmi_power_supply_decode(dmi_entity_t *entity)
     dmi_power_supply_t *info;
     dmi_power_supply_details_t details;
 
-    info = dmi_entity_info(entity, DMI_TYPE_POWER_SUPPLY);
+    info = dmi_entity_info(entity, DMI_TYPE(POWER_SUPPLY));
     if (info == nullptr)
         return false;
 
@@ -243,7 +250,7 @@ static bool dmi_power_supply_link(dmi_entity_t *entity)
 {
     dmi_power_supply_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_POWER_SUPPLY);
+    info = dmi_entity_info(entity, DMI_TYPE(POWER_SUPPLY));
     if (info == nullptr)
         return false;
 
@@ -251,17 +258,17 @@ static bool dmi_power_supply_link(dmi_entity_t *entity)
 
     if (info->voltage_probe_handle != DMI_HANDLE_INVALID) {
         info->voltage_probe = dmi_registry_get(registry, info->voltage_probe_handle,
-                                               DMI_TYPE_VOLTAGE_PROBE, false);
+                                               DMI_TYPE(VOLTAGE_PROBE), false);
     }
 
     if (info->cooling_device_handle != DMI_HANDLE_INVALID) {
         info->cooling_device = dmi_registry_get(registry, info->cooling_device_handle,
-                                                DMI_TYPE_COOLING_DEVICE, false);
+                                                DMI_TYPE(COOLING_DEVICE), false);
     }
 
     if (info->current_probe_handle != DMI_HANDLE_INVALID) {
         info->current_probe = dmi_registry_get(registry, info->current_probe_handle,
-                                               DMI_TYPE_CURRENT_PROBE, false);
+                                               DMI_TYPE(CURRENT_PROBE), false);
     }
 
     return true;

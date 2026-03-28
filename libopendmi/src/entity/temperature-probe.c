@@ -13,11 +13,17 @@ const dmi_entity_spec_t dmi_temperature_probe_spec =
 {
     .code            = "temperature-probe",
     .name            = "Temperature probe",
+    .description     = (const char *[]){
+        "This structure describes the attributes for a temperature probe in "
+        "the system. Each structure describes a single temperature probe. ",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(TEMPERATURE_PROBE),
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x14,
     .decoded_length  = sizeof(dmi_probe_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_temperature_probe_t, description, STRING, {
             .code    = "description",
             .name    = "Description"

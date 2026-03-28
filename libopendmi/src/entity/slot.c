@@ -656,11 +656,17 @@ const dmi_entity_spec_t dmi_slot_spec =
 {
     .code            = "slot",
     .name            = "System slots",
+    .description     = (const char *[]){
+        "The information in this structure defines the attributes of a system "
+        "slot. One structure is provided for each slot in the system.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(SYSTEM_SLOTS),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x0C,
     .decoded_length  = sizeof(dmi_slot_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_slot_t, designator, STRING, {
             .code = "designator",
             .name = "Designator"
@@ -716,7 +722,7 @@ const dmi_entity_spec_t dmi_slot_spec =
         DMI_ATTRIBUTE_ARRAY(dmi_slot_t, peer_groups, peer_group_count, STRUCT, {
             .code = "peer-groups",
             .name = "Peer groups",
-            .attrs = (dmi_attribute_t[]){
+            .attrs = (const dmi_attribute_t[]){
                 DMI_ATTRIBUTE(dmi_slot_peer_group_t, address, STRUCT, {
                     .code  = "address",
                     .name  = "Peer address",
@@ -796,7 +802,7 @@ static bool dmi_slot_decode(dmi_entity_t *entity)
     bool status;
     dmi_slot_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_SLOTS);
+    info = dmi_entity_info(entity, DMI_TYPE(SYSTEM_SLOTS));
     if (info == nullptr)
         return false;
 
@@ -900,7 +906,7 @@ static void dmi_slot_cleanup(dmi_entity_t *entity)
 {
     dmi_slot_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_SLOTS);
+    info = dmi_entity_info(entity, DMI_TYPE(SYSTEM_SLOTS));
     if (info == nullptr)
         return;
 

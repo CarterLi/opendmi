@@ -52,7 +52,7 @@ dmi_entity_t *dmi_entity_create(dmi_context_t *context, const void *data)
 
     // Check structure length
     if (length == 0) {
-        type   = DMI_TYPE_END_OF_TABLE;
+        type   = DMI_TYPE(END_OF_TABLE);
         length = sizeof(dmi_header_t);
     } else if (length < sizeof(dmi_header_t)) {
         dmi_error_raise_ex(context, DMI_ERROR_INVALID_ENTITY_LENGTH,

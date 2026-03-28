@@ -118,11 +118,27 @@ const dmi_entity_spec_t dmi_baseboard_spec =
 {
     .code            = "baseboard",
     .name            = "Baseboard or module information",
+    .description     = (const char *[]){
+        "The information in this structure defines attributes of a system "
+        "baseboard (for example, a motherboard, planar, server blade, or other "
+        "standard system module).",
+        //
+        "Note: If more than one Type 2 structure is provided by an SMBIOS "
+        "implementation, each structure shall include the Number of Contained "
+        "Object Handles and Contained Object Handles fields to specify which "
+        "system elements are contained on which boards. If a single Type 2 "
+        "structure is provided and the contained object information is not "
+        "present, or if no Type 2 structure is provided, all system elements "
+        "identified by the SMBIOS implementation are associated with a single "
+        "motherboard.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(BASEBOARD),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x08,
     .decoded_length  = sizeof(dmi_baseboard_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_baseboard_t, vendor, STRING, {
             .code    = "vendor",
             .name    = "Vendor"
@@ -187,11 +203,11 @@ static bool dmi_baseboard_decode(dmi_entity_t *entity)
     const dmi_baseboard_data_t *data;
     dmi_baseboard_t *info;
 
-    data = dmi_entity_data(entity, DMI_TYPE_BASEBOARD);
+    data = dmi_entity_data(entity, DMI_TYPE(BASEBOARD));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_BASEBOARD);
+    info = dmi_entity_info(entity, DMI_TYPE(BASEBOARD));
     if (info == nullptr)
         return false;
 
@@ -238,7 +254,7 @@ static bool dmi_baseboard_link(dmi_entity_t *entity)
 {
     dmi_baseboard_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_BASEBOARD);
+    info = dmi_entity_info(entity, DMI_TYPE(BASEBOARD));
     if (info == nullptr)
         return false;
 
@@ -247,7 +263,7 @@ static bool dmi_baseboard_link(dmi_entity_t *entity)
 
     if (info->chassis_handle != DMI_HANDLE_INVALID) {
         info->chassis = dmi_registry_get(registry, info->chassis_handle,
-                                         DMI_TYPE_CHASSIS, false);
+                                         DMI_TYPE(CHASSIS), false);
     }
 
     if (info->object_count > 0) {
@@ -275,7 +291,7 @@ static void dmi_baseboard_cleanup(dmi_entity_t *entity)
 {
     dmi_baseboard_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_BASEBOARD);
+    info = dmi_entity_info(entity, DMI_TYPE(BASEBOARD));
     if (info == nullptr)
         return;
 

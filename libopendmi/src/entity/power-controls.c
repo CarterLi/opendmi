@@ -16,11 +16,22 @@ const dmi_entity_spec_t dmi_power_controls_spec =
 {
     .code            = "power-controls",
     .name            = "System power controls",
+    .description     = (const char *[]){
+        "This structure describes the attributes for controlling the main "
+        "power supply to the system.",
+        //
+        "Software that interprets this structure uses the month, day, hour, "
+        "minute, and second values to determine the number of seconds until "
+        "the next power-on of the system. The presence of this structure "
+        "implies that a timed power-on facility is available for the system.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(POWER_CONTROLS),
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x09,
     .decoded_length  = sizeof(dmi_power_controls_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_power_controls_t, poweron_month, INTEGER, {
             .code = "poweron-month",
             .name = "Next power-on month"
@@ -52,7 +63,7 @@ static bool dmi_power_controls_decode(dmi_entity_t *entity)
 {
     dmi_power_controls_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_POWER_CONTROLS);
+    info = dmi_entity_info(entity, DMI_TYPE(POWER_CONTROLS));
     if (info == nullptr)
         return false;
 

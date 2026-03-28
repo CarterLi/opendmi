@@ -17,11 +17,18 @@ const dmi_entity_spec_t dmi_oem_strings_spec =
 {
     .code            = "oem-strings",
     .name            = "OEM strings",
+    .description     = (const char *[]){
+        "This structure contains free-form strings defined by the OEM. "
+        "Examples are part numbers for system reference documents, contact "
+        "information for the manufacturer, and so on.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(OEM_STRINGS),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_oem_strings_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_oem_strings_t, string_count, INTEGER, {
             .code = "string-count",
             .name = "String count"
@@ -42,7 +49,7 @@ static bool dmi_oem_strings_decode(dmi_entity_t *entity)
 {
     dmi_oem_strings_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_OEM_STRINGS);
+    info = dmi_entity_info(entity, DMI_TYPE(OEM_STRINGS));
     if (info == nullptr)
         return false;
 
@@ -66,7 +73,7 @@ static void dmi_oem_strings_cleanup(dmi_entity_t *entity)
 {
     dmi_oem_strings_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_OEM_STRINGS);
+    info = dmi_entity_info(entity, DMI_TYPE(OEM_STRINGS));
     if (info == nullptr)
         return;
 

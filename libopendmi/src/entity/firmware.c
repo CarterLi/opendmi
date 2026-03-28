@@ -257,7 +257,7 @@ const dmi_entity_spec_t dmi_firmware_spec =
     .unique          = true,
     .minimum_length  = 0x12,
     .decoded_length  = sizeof(dmi_firmware_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_firmware_t, vendor, STRING, {
             .code   = "vendor",
             .name   = "Vendor"
@@ -338,11 +338,11 @@ static bool dmi_firmware_decode(dmi_entity_t *entity)
     const dmi_firmware_data_t *data;
     dmi_firmware_t *info;
 
-    data = dmi_entity_data(entity, DMI_TYPE_FIRMWARE);
+    data = dmi_entity_data(entity, DMI_TYPE(FIRMWARE));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_FIRMWARE);
+    info = dmi_entity_info(entity, DMI_TYPE(FIRMWARE));
     if (info == nullptr)
         return false;
 
@@ -365,7 +365,7 @@ static bool dmi_firmware_decode(dmi_entity_t *entity)
     // SMBIOS 2.1: Extra feature bits
     if (entity->body_length > 0x12u) {
         entity->level = dmi_version(2, 1, 0);
-    
+
         size_t extra = entity->body_length - 0x12u;
 
         info->features_ex = (typeof(info->features_ex)){

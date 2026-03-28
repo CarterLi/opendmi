@@ -66,11 +66,28 @@ const dmi_entity_spec_t dmi_system_event_log_spec =
 {
     .code            = "system-event-log",
     .name            = "System event log",
+    .description     = (const char *[]){
+        "The presence of this structure within the SMBIOS data returned for a "
+        "system indicates that the system supports an event log. An event log "
+        "is a fixed-length area within a non-volatile storage element, "
+        "starting with a fixed-length (and vendor-specific) header record, "
+        "followed by one or more variable-length log records.",
+        //
+        "An application can implement event-log change notification by "
+        "periodically reading the System Event Log structure (by its assigned "
+        "handle) and looking for a change in the Log Change Token. This token "
+        "uniquely identifies the last time the event log was updated. When it "
+        "sees the token changed, the application can retrieve the entire "
+        "event log and determine the changes since the last time it read the "
+        "event log.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(SYSTEM_EVENT_LOG),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x14,
     .decoded_length  = sizeof(dmi_system_event_log_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_system_event_log_t, access_method, ENUM, {
             .code   = "access-method",
             .name   = "Access Method",
@@ -93,11 +110,11 @@ static bool dmi_system_event_log_decode(dmi_entity_t *entity)
     dmi_system_event_log_t *info;
     const dmi_system_event_log_data_t *data;
 
-    data = dmi_entity_data(entity, DMI_TYPE_SYSTEM_EVENT_LOG);
+    data = dmi_entity_data(entity, DMI_TYPE(SYSTEM_EVENT_LOG));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_EVENT_LOG);
+    info = dmi_entity_info(entity, DMI_TYPE(SYSTEM_EVENT_LOG));
     if (info == nullptr)
         return false;
 

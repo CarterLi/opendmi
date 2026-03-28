@@ -17,11 +17,17 @@ const dmi_entity_spec_t dmi_firmware_language_spec =
 {
     .code            = "firmware-language",
     .name            = "Firmware language information",
+    .description     = (const char *[]){
+        "The information in this structure defines the installable language "
+        "attributes of the platform firmware.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(FIRMWARE_LANGUAGE),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_firmware_language_t),
-    .attributes      = (dmi_attribute_t[]) {
+    .attributes      = (const dmi_attribute_t[]) {
         DMI_ATTRIBUTE(dmi_firmware_language_t, language_count, INTEGER, {
             .code = "language-count",
             .name = "Language count"
@@ -51,11 +57,11 @@ static bool dmi_firmware_language_decode(dmi_entity_t *entity)
     dmi_firmware_language_t *info;
     const dmi_firmware_language_data_t *data;
 
-    data = dmi_entity_data(entity, DMI_TYPE_FIRMWARE_LANGUAGE);
+    data = dmi_entity_data(entity, DMI_TYPE(FIRMWARE_LANGUAGE));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_FIRMWARE_LANGUAGE);
+    info = dmi_entity_info(entity, DMI_TYPE(FIRMWARE_LANGUAGE));
     if (info == nullptr)
         return false;
 
@@ -83,7 +89,7 @@ static void dmi_firmware_language_cleanup(dmi_entity_t *entity)
 {
     dmi_firmware_language_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_FIRMWARE_LANGUAGE);
+    info = dmi_entity_info(entity, DMI_TYPE(FIRMWARE_LANGUAGE));
     if (info == nullptr)
         return;
 

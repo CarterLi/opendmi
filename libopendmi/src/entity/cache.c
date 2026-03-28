@@ -194,11 +194,20 @@ const dmi_entity_spec_t dmi_cache_spec =
 {
     .code            = "cache",
     .name            = "Cache information",
+    .description     = (const char *[]){
+        "The information in this structure defines the attributes of CPU cache "
+        "device in the system. One structure is specified for each such "
+        "device, whether the device is internal to or external to the CPU "
+        "module. Cache modules can be associated with a processor structure in "
+        "one or two ways depending on the SMBIOS version.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(CACHE),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x0F,
     .decoded_length  = sizeof(dmi_cache_t),
-    .attributes      = (dmi_attribute_t[]) {
+    .attributes      = (const dmi_attribute_t[]) {
         DMI_ATTRIBUTE(dmi_cache_t, socket_designator, STRING, {
             .code    = "socket-designator",
             .name    = "Socket designator"
@@ -331,11 +340,11 @@ static bool dmi_cache_decode(dmi_entity_t *entity)
     dmi_cache_t *info;
     const dmi_cache_data_t *data;
 
-    data = dmi_entity_data(entity, DMI_TYPE_CACHE);
+    data = dmi_entity_data(entity, DMI_TYPE(CACHE));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_CACHE);
+    info = dmi_entity_info(entity, DMI_TYPE(CACHE));
     if (info == nullptr)
         return false;
 

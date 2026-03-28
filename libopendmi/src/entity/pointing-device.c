@@ -127,11 +127,18 @@ const dmi_entity_spec_t dmi_pointing_device_spec =
 {
     .code            = "pointing-device",
     .name            = "Built-in pointing device",
+    .description     = (const char *[]){
+        "This structure describes the attributes of the built-in pointing "
+        "device for the system. The presence of this structure does not imply "
+        "that the built-in pointing device is active for the system\'s use.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(POINTING_DEVICE),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x07,
     .decoded_length  = sizeof(dmi_pointing_device_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_pointing_device_t, type, ENUM, {
             .code    = "type",
             .name    = "Type",
@@ -171,7 +178,7 @@ bool dmi_pointing_device_decode(dmi_entity_t *entity)
 {
     dmi_pointing_device_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_POINTING_DEVICE);
+    info = dmi_entity_info(entity, DMI_TYPE(POINTING_DEVICE));
     if (info == nullptr)
         return false;
 

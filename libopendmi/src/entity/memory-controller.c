@@ -170,7 +170,7 @@ const dmi_entity_spec_t dmi_memory_controller_spec =
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x08,
     .decoded_length  = sizeof(dmi_memory_controller_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_memory_controller_t, error_detection, ENUM, {
             .code   = "error-detection",
             .name   = "Error detecting method",
@@ -252,11 +252,11 @@ static bool dmi_memory_controller_decode(dmi_entity_t *entity)
     dmi_memory_controller_t *info;
     const dmi_memory_controller_data_t *data;
 
-    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_CONTROLLER);
+    data = dmi_entity_data(entity, DMI_TYPE(MEMORY_CONTROLLER));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CONTROLLER);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_CONTROLLER));
     if (info == nullptr)
         return false;
 
@@ -306,7 +306,7 @@ static bool dmi_memory_controller_link(dmi_entity_t *entity)
     dmi_registry_t *registry;
     dmi_memory_controller_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CONTROLLER);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_CONTROLLER));
     if (info == nullptr)
         return false;
 
@@ -317,7 +317,7 @@ static bool dmi_memory_controller_link(dmi_entity_t *entity)
     registry = entity->context->registry;
 
     for (size_t i = 0; i < info->slot_count; i++) {
-        info->modules[i] = dmi_registry_get(registry, info->module_handles[i], DMI_TYPE_MEMORY_MODULE, false);
+        info->modules[i] = dmi_registry_get(registry, info->module_handles[i], DMI_TYPE(MEMORY_MODULE), false);
     }
 
     return true;
@@ -327,7 +327,7 @@ static void dmi_memory_controller_cleanup(dmi_entity_t *entity)
 {
     dmi_memory_controller_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_CONTROLLER);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_CONTROLLER));
     if (info == nullptr)
         return;
 

@@ -97,11 +97,27 @@ const dmi_entity_spec_t dmi_memory_module_spec =
 {
     .code            = "memory-module",
     .name            = "Memory module information",
+    .description     = (const char *[]){
+        "One Memory Module Information structure is included for each "
+        "memory-module socket in the system. The structure describes the "
+        "speed, type, size, and error status of each system memory module. "
+        "The supported attributes of each module are described by the "
+        "\"owning\" Memory Controller Information structure.",
+        //
+        "Note: This structure and its companion Memory Controller Information "
+        "(Type 5) are obsolete starting with version 2.1 of this "
+        "specification; the Physical Memory Array (Type 16) and Memory Device "
+        "(Type 17) structures should be used instead. BIOS providers might "
+        "choose to implement both memory description types to allow existing "
+        "DMI browsers to properly display the system’s memory attributes.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(MEMORY_MODULE),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x08,
     .decoded_length  = sizeof(dmi_memory_module_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_memory_module_t, socket, STRING, {
             .code   = "socket",
             .name   = "Socket designator"
@@ -154,11 +170,11 @@ static bool dmi_memory_module_decode(dmi_entity_t *entity)
     dmi_memory_module_t *info;
     const dmi_memory_module_data_t *data;
 
-    data = dmi_entity_data(entity, DMI_TYPE_MEMORY_MODULE);
+    data = dmi_entity_data(entity, DMI_TYPE(MEMORY_MODULE));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_MODULE);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_MODULE));
     if (info == nullptr)
         return false;
 

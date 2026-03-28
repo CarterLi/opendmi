@@ -125,6 +125,22 @@ const dmi_entity_spec_t dmi_firmware_inventory_spec =
     .code            = "firmware-inventory",
     .name            = "Firmware inventory information",
     .type            = DMI_TYPE(FIRMWARE_INVENTORY),
+    .description     = (const char *[]){
+        "The information in this structure defines an inventory of firmware "
+        "components in the system. This can include firmware components such "
+        "as platform firmware, BMC, as well as firmware for other devices in "
+        "the system.",
+        //
+        "The information can be used by software to display the firmware "
+        "inventory in a uniform manner. It can also be used by a management "
+        "controller, such as a BMC, for remote system management. This "
+        "structure is not intended to replace other standard programmatic "
+        "interfaces for firmware updates.",
+        //
+        "One Type 45 structure is provided for each firmware component.",
+        //
+        nullptr
+    },
     .minimum_version = DMI_VERSION(3, 5, 0),
     .minimum_length  = 0x17,
     .decoded_length  = sizeof(dmi_firmware_inventory_t),
@@ -216,11 +232,11 @@ static bool dmi_firmware_inventory_decode(dmi_entity_t *entity)
     dmi_firmware_inventory_t *info;
     const dmi_firmware_inventory_data_t *data;
 
-    data = dmi_entity_data(entity, DMI_TYPE_FIRMWARE_INVENTORY);
+    data = dmi_entity_data(entity, DMI_TYPE(FIRMWARE_INVENTORY));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_FIRMWARE_INVENTORY);
+    info = dmi_entity_info(entity, DMI_TYPE(FIRMWARE_INVENTORY));
     if (info == nullptr)
         return false;
 
@@ -255,7 +271,7 @@ static void dmi_firmware_inventory_cleanup(dmi_entity_t *entity)
 {
     dmi_firmware_inventory_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_FIRMWARE_INVENTORY);
+    info = dmi_entity_info(entity, DMI_TYPE(FIRMWARE_INVENTORY));
     if (info == nullptr)
         return;
 

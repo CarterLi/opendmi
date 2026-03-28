@@ -32,7 +32,21 @@ struct dmi_name_range
 
 struct dmi_name_set
 {
+    /**
+     * @brief Code name, used to identify the enumeration during serialization.
+     */
     const char *code;
+
+    /**
+     * @brief Printable name, used to identify enumeration when printing.
+     */
+    const char *name;
+
+    /**
+     * @brief Short description.
+     */
+    const char **description;
+
     const dmi_name_t *names;
     const dmi_name_range_t *ranges;
 };

@@ -16,11 +16,18 @@ const dmi_entity_spec_t dmi_mgmt_device_threshold_spec =
 {
     .code            = "mgmt-device-threshold",
     .name            = "Management device threshold data",
+    .description     = (const char *[]){
+        "The information in this structure defines threshold information for "
+        "a component (probe or cooling-unit) contained within a Management "
+        "Device.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(MGMT_DEVICE_THRESHOLD),
     .minimum_version = DMI_VERSION(2, 3, 0),
     .minimum_length  = 0x10,
     .decoded_length  = sizeof(dmi_mgmt_device_threshold_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_mgmt_device_threshold_t, lower_non_critical, INTEGER, {
             .code    = "lower-non-critical",
             .name    = "Lower non-critical",
@@ -62,7 +69,7 @@ static bool dmi_mgmt_device_threshold_decode(dmi_entity_t *entity)
 {
     dmi_mgmt_device_threshold_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MGMT_DEVICE_THRESHOLD);
+    info = dmi_entity_info(entity, DMI_TYPE(MGMT_DEVICE_THRESHOLD));
     if (info == nullptr)
         return false;
 

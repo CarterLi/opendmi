@@ -237,13 +237,24 @@ const dmi_entity_spec_t dmi_chassis_spec =
     .code            = "chassis",
     .name            = "System enclosure or chassis",
     .type            = DMI_TYPE(CHASSIS),
+    .description     = (const char *[]){
+        "The information in this structure defines attributes of the system’s "
+        "mechanical enclosure(s). For example, if a system included a separate "
+        "enclosure for its peripheral devices, two structures would be "
+        "returned: one for the main system enclosure and the second for the "
+        "peripheral device enclosure. The additions to this structure in "
+        "version 2.1 of this specification support the population of the "
+        "CIM_Chassis class.",
+        //
+        nullptr
+    },
     .minimum_version = DMI_VERSION(2, 0, 0),
     .required_from   = DMI_VERSION(2, 3, 0),
     .required_till   = DMI_VERSION_NONE,
     .unique          = false,
     .minimum_length  = 0x09,
     .decoded_length  = sizeof(dmi_chassis_t),
-    .attributes      = (dmi_attribute_t[]) {
+    .attributes      = (const dmi_attribute_t[]) {
         DMI_ATTRIBUTE(dmi_chassis_t, vendor, STRING, {
             .code    = "vendor",
             .name    = "Vendor"
@@ -336,7 +347,7 @@ const dmi_entity_spec_t dmi_chassis_spec =
             .code    = "elements",
             .name    = "Contained elements",
             .level   = DMI_VERSION(2, 3, 0),
-            .attrs   = (dmi_attribute_t[]){
+            .attrs   = (const dmi_attribute_t[]){
                 // TODO: Add support for type attribute
                 DMI_ATTRIBUTE(dmi_chassis_element_t, board_type, ENUM, {
                     .code   = "board-type",
@@ -394,11 +405,11 @@ static bool dmi_chassis_decode(dmi_entity_t *entity)
     const dmi_chassis_data_t *data;
     dmi_chassis_t *info;
 
-    data = dmi_entity_data(entity, DMI_TYPE_CHASSIS);
+    data = dmi_entity_data(entity, DMI_TYPE(CHASSIS));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_CHASSIS);
+    info = dmi_entity_info(entity, DMI_TYPE(CHASSIS));
     if (info == nullptr)
         return false;
 
@@ -475,7 +486,7 @@ static bool dmi_chassis_decode(dmi_entity_t *entity)
         //
         // SMBIOS 2.7 features
         //
-    
+
         if (entity->body_length > base_len) {
             entity->level = dmi_version(2, 7, 0);
 
@@ -504,7 +515,7 @@ static void dmi_chassis_cleanup(dmi_entity_t *entity)
 {
     dmi_chassis_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_CHASSIS);
+    info = dmi_entity_info(entity, DMI_TYPE(CHASSIS));
     if (info == nullptr)
         return;
 

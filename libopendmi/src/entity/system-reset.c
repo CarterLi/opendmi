@@ -43,11 +43,23 @@ const dmi_entity_spec_t dmi_system_reset_spec =
 {
     .code            = "system-reset",
     .name            = "System reset",
+    .description     = (const char *[]){
+        "This structure describes whether Automatic System Reset functions "
+        "are enabled (Status).",
+        //
+        "If the system has a watchdog timer and the timer is not reset (Timer "
+        "Reset) before the Interval elapses, an automatic system reset occurs. "
+        "The system re-boots according to the Boot Option. This function may "
+        "repeat until the Limit is reached, at which time the system re-boots "
+        "according to the Boot Option at Limit.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(SYSTEM_RESET),
     .minimum_version = DMI_VERSION(2, 2, 0),
     .minimum_length  = 0x0D,
     .decoded_length  = sizeof(dmi_system_reset_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_system_reset_t, is_enabled, BOOL, {
             .code    = "is-enabled",
             .name    = "Reset enabled"
@@ -104,7 +116,7 @@ static bool dmi_system_reset_decode(dmi_entity_t *entity)
 {
     dmi_system_reset_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM_RESET);
+    info = dmi_entity_info(entity, DMI_TYPE(SYSTEM_RESET));
     if (info == nullptr)
         return false;
 

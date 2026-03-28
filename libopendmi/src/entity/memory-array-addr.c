@@ -22,7 +22,7 @@ const dmi_entity_spec_t dmi_memory_array_addr_spec =
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x0F,
     .decoded_length  = sizeof(dmi_memory_array_addr_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_memory_array_addr_t, start_addr, ADDRESS, {
             .code   = "start-addr",
             .name   = "Starting address",
@@ -56,7 +56,7 @@ const dmi_entity_spec_t dmi_memory_array_addr_spec =
 
 static bool dmi_memory_array_addr_validate(dmi_entity_t *entity)
 {
-    if ((entity == nullptr) or (entity->type != DMI_TYPE_MEMORY_ARRAY_ADDR))
+    if ((entity == nullptr) or (entity->type != DMI_TYPE(MEMORY_ARRAY_ADDR)))
         return false;
 
     const dmi_stream_t *stream = &entity->stream;
@@ -102,7 +102,7 @@ static bool dmi_memory_array_addr_decode(dmi_entity_t *entity)
 {
     dmi_memory_array_addr_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY_ADDR);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_ARRAY_ADDR));
     if (info == nullptr)
         return false;
 
@@ -154,12 +154,12 @@ static bool dmi_memory_array_addr_link(dmi_entity_t *entity)
     dmi_registry_t *registry;
     dmi_memory_array_addr_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY_ADDR);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_ARRAY_ADDR));
     if (info == nullptr)
         return false;
 
     registry = entity->context->registry;
-    info->array = dmi_registry_get(registry, info->array_handle, DMI_TYPE_MEMORY_ARRAY, false);
+    info->array = dmi_registry_get(registry, info->array_handle, DMI_TYPE(MEMORY_ARRAY), false);
 
     return true;
 }

@@ -103,11 +103,20 @@ const dmi_entity_spec_t dmi_ipmi_device_spec =
 {
     .code            = "ipmi-device",
     .name            = "IPMI device information",
+    .description     = (const char *[]){
+        "The information in this structure defines the attributes of an "
+        "Intelligent Platform Management Interface (IPMI) Baseboard "
+        "Management Controller (BMC). See the Intelligent Platform Management "
+        "Interface (IPMI) Interface Specification for full documentation of "
+        "IPMI and additional information on the use of this structure.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(IPMI_DEVICE),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x12,
     .decoded_length  = sizeof(dmi_ipmi_device_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_ipmi_device_t, interface_type, ENUM, {
             .code   = "interface-type",
             .name   = "Interface type",
@@ -196,7 +205,7 @@ static bool dmi_ipmi_device_decode(dmi_entity_t *entity)
 {
     dmi_ipmi_device_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_IPMI_DEVICE);
+    info = dmi_entity_info(entity, DMI_TYPE(IPMI_DEVICE));
     if (info == nullptr)
         return false;
 
@@ -204,11 +213,11 @@ static bool dmi_ipmi_device_decode(dmi_entity_t *entity)
 
     if (not dmi_stream_decode(stream, dmi_byte_t, &info->interface_type))
         return false;
-    
+
     dmi_byte_t spec_version = 0;
     if (not dmi_stream_decode(stream, dmi_byte_t, &spec_version))
         return false;
-    
+
     info->spec_version = dmi_version((spec_version & 0xF0) >> 4, spec_version & 0x0F, 0);
 
     bool status =
@@ -220,7 +229,7 @@ static bool dmi_ipmi_device_decode(dmi_entity_t *entity)
     dmi_qword_t base_addr = 0;
     if (not dmi_stream_decode(stream, dmi_qword_t, &base_addr))
         return false;
-    
+
     info->base_addr      = base_addr & 0x7FFFFFFFFFFFFFFFu;
     info->base_addr_type = (info->base_addr & 0x8000000000000000u)
                          ? DMI_IPMI_ADDR_TYPE_IO

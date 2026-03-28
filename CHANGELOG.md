@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add Windows backend #99
 - Add pager support on Windows
+- Add `explain` command implementation
 - Add Intel RSD Network card information decoder #81
 - Add Intel RSD PCIe information decoder #82
 - Add Intel RSD TPM information decoder #85

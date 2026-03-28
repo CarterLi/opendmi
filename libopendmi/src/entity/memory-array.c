@@ -130,11 +130,17 @@ const dmi_entity_spec_t dmi_memory_array_spec =
 {
     .code            = "memory-array",
     .name            = "Physical memory array",
+    .description     = (const char *[]){
+        "This structure describes a collection of memory devices that operate "
+        "together to form a memory address space.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(MEMORY_ARRAY),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x0F,
     .decoded_length  = sizeof(dmi_memory_array_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_memory_array_t, location, ENUM, {
             .code    = "location",
             .name    = "Location",
@@ -191,7 +197,7 @@ static bool dmi_memory_array_decode(dmi_entity_t *entity)
     bool status;
     dmi_memory_array_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_ARRAY));
     if (info == nullptr)
         return false;
 
@@ -237,12 +243,12 @@ static bool dmi_memory_array_link(dmi_entity_t *entity)
     dmi_memory_array_t *info;
 
     static const dmi_type_t error_types[] = {
-        DMI_TYPE_MEMORY_ERROR_32,
-        DMI_TYPE_MEMORY_ERROR_64,
+        DMI_TYPE(MEMORY_ERROR_32),
+        DMI_TYPE(MEMORY_ERROR_64),
         DMI_TYPE_INVALID
     };
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ARRAY);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_ARRAY));
     if (info == nullptr)
         return false;
 

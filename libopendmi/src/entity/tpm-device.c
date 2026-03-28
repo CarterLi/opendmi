@@ -50,7 +50,7 @@ const dmi_entity_spec_t dmi_tpm_device_spec =
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x1F,
     .decoded_length  = sizeof(dmi_tpm_device_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_tpm_device_t, spec_version, VERSION, {
             .code   = "specification-version",
             .name   = "Specification version",
@@ -86,7 +86,7 @@ static bool dmi_tpm_device_decode(dmi_entity_t *entity)
 {
     dmi_tpm_device_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_TPM_DEVICE);
+    info = dmi_entity_info(entity, DMI_TYPE(TPM_DEVICE));
     if (info == nullptr)
         return false;
 

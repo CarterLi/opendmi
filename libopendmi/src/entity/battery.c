@@ -59,11 +59,19 @@ const dmi_entity_spec_t dmi_battery_spec =
 {
     .code            = "portable-battery",
     .name            = "Portable battery",
+    .description     = (const char *[]){
+        "This structure describes the attributes of the portable battery or "
+        "batteries for the system. The structure contains the static "
+        "attributes for the group. Each structure describes attributes for a "
+        "single battery pack.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(PORTABLE_BATTERY),
     .minimum_version = DMI_VERSION(2, 1, 0),
     .minimum_length  = 0x05,
     .decoded_length  = sizeof(dmi_battery_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_battery_t, location, STRING, {
             .code    = "location",
             .name    = "Location"
@@ -149,11 +157,11 @@ static bool dmi_battery_decode(dmi_entity_t *entity)
     const dmi_battery_data_t *data;
     dmi_battery_t *info;
 
-    data = dmi_entity_data(entity, DMI_TYPE_PORTABLE_BATTERY);
+    data = dmi_entity_data(entity, DMI_TYPE(PORTABLE_BATTERY));
     if (data == nullptr)
         return false;
 
-    info = dmi_entity_info(entity, DMI_TYPE_PORTABLE_BATTERY);
+    info = dmi_entity_info(entity, DMI_TYPE(PORTABLE_BATTERY));
     if (info == nullptr)
         return false;
 
@@ -188,7 +196,7 @@ static bool dmi_battery_decode(dmi_entity_t *entity)
 
         if (manufacture_date == nullptr) {
             uint16_t sbds_manufacture_date = dmi_decode(data->sbds_manufacture_date);
-    
+
             if (sbds_manufacture_date != 0) {
                 info->manufacture_date = dmi_date(
                     ((sbds_manufacture_date >> 9) & 0x7Fu) + 1980,

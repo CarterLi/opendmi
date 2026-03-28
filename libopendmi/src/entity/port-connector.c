@@ -422,11 +422,19 @@ const dmi_entity_spec_t dmi_port_connector_spec =
 {
     .code            = "port-connector",
     .name            = "Port connector information",
+    .description     = (const char *[]){
+        "The information in this structure defines the attributes of a system "
+        "port connector (for example, parallel, serial, keyboard, or mouse "
+        "ports). The port’s type and connector information are provided. One "
+        "structure is present for each port provided by the system.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(PORT_CONNECTOR),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .minimum_length  = 0x09,
     .decoded_length  = sizeof(dmi_port_connector_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_port_connector_t, internal_designator, STRING, {
             .code   = "internal-designator",
             .name   = "Internal reference designator"
@@ -471,7 +479,7 @@ static bool dmi_port_connector_decode(dmi_entity_t *entity)
 {
     dmi_port_connector_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_PORT_CONNECTOR);
+    info = dmi_entity_info(entity, DMI_TYPE(PORT_CONNECTOR));
     if (info == nullptr)
         return false;
 

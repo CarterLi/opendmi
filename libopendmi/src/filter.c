@@ -63,7 +63,7 @@ bool dmi_filter_match(const dmi_filter_t *filter, const dmi_entity_t *entity)
     }
 
     // Filter inactive entities
-    if (entity->type == DMI_TYPE_INACTIVE) {
+    if (entity->type == DMI_TYPE(INACTIVE)) {
         if ((filter->mask & DMI_FILTER_MASK_INACTIVE) == 0)
             return false;
     }

@@ -16,11 +16,26 @@ const dmi_entity_spec_t dmi_onboard_device_ex_spec =
 {
     .code            = "onboard-device-ex",
     .name            = "Onboard devices extended information",
+    .description     = (const char *[]){
+        "The information in this structure defines the attributes of devices "
+        "that are onboard (soldered onto) a system element, usually the "
+        "baseboard.",
+        //
+        "In general, an entry in this table implies that the firmware has "
+        "some level of control over the enablement of the associated device "
+        "for use by the system.",
+        //
+        "To describe multi-function devices, use one type 41 structure per "
+        "function, and one type 14 (Group Association) structure referencing "
+        "all the function handles.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(ONBOARD_DEVICE_EX),
     .minimum_version = DMI_VERSION(2, 6, 0),
     .minimum_length  = 0x0B,
     .decoded_length  = sizeof(dmi_onboard_device_ex_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_onboard_device_ex_t, designator, STRING, {
             .code    = "designator",
             .name    = "Designator"
@@ -57,7 +72,7 @@ static bool dmi_onboard_device_ex_decode(dmi_entity_t *entity)
     dmi_onboard_device_ex_t *info;
     dmi_onboard_device_instance_details_t details;
 
-    info = dmi_entity_info(entity, DMI_TYPE_ONBOARD_DEVICE_EX);
+    info = dmi_entity_info(entity, DMI_TYPE(ONBOARD_DEVICE_EX));
     if (info == nullptr)
         return false;
 

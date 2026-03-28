@@ -58,6 +58,15 @@ const dmi_entity_spec_t dmi_system_spec =
 {
     .code            = "system",
     .name            = "System information",
+    .description     = (const char *[]){
+        "The information in this structure defines attributes of the overall "
+        "system and is intended to be associated with the Component ID group "
+        "of the system\'s MIF. An SMBIOS implementation is associated with a "
+        "single system instance and contains one and only one System "
+        "Information (Type 1) structure.",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(SYSTEM),
     .minimum_version = DMI_VERSION(2, 0, 0),
     .required_from   = DMI_VERSION(2, 3, 0),
@@ -65,7 +74,7 @@ const dmi_entity_spec_t dmi_system_spec =
     .unique          = true,
     .minimum_length  = 0x8,
     .decoded_length  = sizeof(dmi_system_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_system_t, vendor, STRING, {
             .code    = "vendor",
             .name    = "Manufacturer"
@@ -120,7 +129,7 @@ static bool dmi_system_decode(dmi_entity_t *entity)
 {
     dmi_system_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_SYSTEM);
+    info = dmi_entity_info(entity, DMI_TYPE(SYSTEM));
     if (info == nullptr)
         return false;
 

@@ -16,11 +16,17 @@ const dmi_entity_spec_t dmi_memory_error_64_spec =
 {
     .code            = "memory-error-64",
     .name            = "64-bit memory error information",
+    .description     = (const char *[]){
+        "This structure describes an error within a Physical Memory Array "
+        "when the error address is above 4GiB (0xFFFFFFFF).",
+        //
+        nullptr
+    },
     .type            = DMI_TYPE(MEMORY_ERROR_64),
     .minimum_version = DMI_VERSION(2, 3, 0),
     .minimum_length  = 0x1F,
     .decoded_length  = sizeof(dmi_memory_error_64_t),
-    .attributes      = (dmi_attribute_t[]){
+    .attributes      = (const dmi_attribute_t[]){
         DMI_ATTRIBUTE(dmi_memory_error_64_t, type, ENUM, {
             .code    = "type",
             .name    = "Type",
@@ -72,7 +78,7 @@ static bool dmi_memory_error_64_decode(dmi_entity_t *entity)
 {
     dmi_memory_error_64_t *info;
 
-    info = dmi_entity_info(entity, DMI_TYPE_MEMORY_ERROR_64);
+    info = dmi_entity_info(entity, DMI_TYPE(MEMORY_ERROR_64));
     if (info == nullptr)
         return false;
 

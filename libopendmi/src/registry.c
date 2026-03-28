@@ -234,7 +234,7 @@ bool dmi_registry_scan(dmi_registry_t *registry)
         }
 
         // Stop at the end of table
-        if (entity->type == DMI_TYPE_END_OF_TABLE)
+        if (entity->type == DMI_TYPE(END_OF_TABLE))
             break;
 
         // Update structure pointer and index
