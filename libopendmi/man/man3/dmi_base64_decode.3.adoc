@@ -1,0 +1,77 @@
+= dmi_base64_decode(3)
+The OpenDMI contributors
+OpenDMI 0.3.0
+
+:doctype: manpage
+:release-version: 0.3.0
+:manmanual: OpenDMI Manual
+:mansource: OpenDMI {release-version}
+
+== Name
+
+dmi_base64_decode - decode a Base64 string into binary data.
+
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
+== Synopsis
+
+[source, c]
+----
+#include <opendmi/utils/base64.h>
+
+dmi_data_t *dmi_base64_decode(
+        const char *data,
+        size_t      data_length,
+        size_t     *poutput_length);
+----
+
+== Description
+
+The `dmi_base64_decode` function decodes a Base64-encoded string into binary
+data.
+
+The function allocates and returns a buffer containing the decoded binary data
+corresponding to the given Base64-encoded string. The caller is responsible for
+freeing the returned buffer.
+
+=== Parameters
+
+`data`::
+Pointer to the Base64-encoded string to decode.
+
+`data_length`::
+Length of `data` in bytes, excluding any null terminator.
+
+`poutput_length`::
+If non-`NULL`, receives the number of bytes in the returned buffer.
+
+== Return value
+
+On success, returns a newly allocated buffer containing the decoded binary
+data. On failure, returns `NULL` (e.g., allocation error, invalid Base64
+input, or invalid arguments).
+
+== Examples
+
+[source, c]
+```
+const char *input = "SGVsbG8=";
+size_t output_length;
+
+dmi_data_t *decoded = dmi_base64_decode(input, strlen(input), &output_length);
+if (decoded != NULL) {
+    printf("decoded %zu bytes\n", output_length);
+    free(decoded);
+}
+```
+
+== See also
+
+`dmi_base64_encode`(3)
+
+== Copying
+
+Copyright (c) 2025-2026, The OpenDMI contributors. Free use of this software
+is granted under the terms of the BSD 3-Clause License.

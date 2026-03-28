@@ -16,12 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Intel RSD PCIe information decoder #82
 - Add Intel RSD TPM information decoder #85
 - Add Intel RSD TXT information decoder #86
+- Add new manual pages:
+  - `dmi_base64_encode()`
+  - `dmi_base64_decode()`
 - Compress manual pages after creation
 
 ### Fixed
 
 - Fix minor CppCheck warnings
 - Fix minor AsciiDoctor warnings
+- Fix manual page name sections formatting
 
 ## [0.2.3] - March 25, 2026
 

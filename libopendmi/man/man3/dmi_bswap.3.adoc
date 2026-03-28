@@ -1,15 +1,15 @@
 = dmi_bswap(3)
 The OpenDMI contributors
-OpenDMI 0.2.0
+OpenDMI 0.3.0
 
 :doctype: manpage
-:release-version: 0.2.0
+:release-version: 0.3.0
 :manmanual: OpenDMI Manual
 :mansource: OpenDMI {release-version}
 
 == Name
 
-`dmi_bswap16`, `dmi_bswap32`, `dmi_bswap64` - reverse order of bytes.
+dmi_bswap16, dmi_bswap32, dmi_bswap64 - reverse order of bytes.
 
 == Library
 

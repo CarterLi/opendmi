@@ -1,14 +1,15 @@
 = dmi_memory_array_addr(3)
 The OpenDMI contributors
-OpenDMI 0.2.0
+OpenDMI 0.3.0
 
 :doctype: manpage
-:manmanual: DMI_MEMORY_ARRAY_ADDR
-:mansource: DMI_MEMORY_ARRAY_ADDR
+:release-version: 0.3.0
+:manmanual: OpenDMI Manual
+:mansource: OpenDMI {release-version}
 
 == Name
 
-`dmi_memory_array_addr` - provides the address mapping for a physical
+dmi_memory_array_addr - provides the address mapping for a physical
 memory array.
 
 == Library
