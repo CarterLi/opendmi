@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Intel RSD PCIe information decoder #82
 - Add Intel RSD TPM information decoder #85
 - Add Intel RSD TXT information decoder #86
+- Add Intel RSD Memory device information decoder #87
 - Add new manual pages:
   - `dmi_base64_decode()`
   - `dmi_base64_encode()`

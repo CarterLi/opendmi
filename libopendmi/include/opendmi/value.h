@@ -23,6 +23,7 @@
 #define DMI_UNIT_VOLT           "V"
 #define DMI_UNIT_MILLIVOLT      "mV"
 #define DMI_UNIT_WATT           "W"
+#define DMI_UNIT_MILLIWATT      "mW"
 #define DMI_UNIT_WATT_HOUR      "W*h"
 
 #define DMI_UNIT_CELSIUS        "°C"

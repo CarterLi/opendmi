@@ -8,7 +8,7 @@
 
 #include <opendmi/entity/intel/rsd-cabled-pcie-port.h>
 #include <opendmi/entity/intel/rsd-fpga.h>
-#include <opendmi/entity/intel/rsd-memory-device-ex.h>
+#include <opendmi/entity/intel/rsd-memory-device.h>
 #include <opendmi/entity/intel/rsd-network-card.h>
 #include <opendmi/entity/intel/rsd-pcie.h>
 #include <opendmi/entity/intel/rsd-phys-device-mapping.h>
@@ -27,7 +27,7 @@ static dmi_module_t dmi_intel_module =
     .entities = (const dmi_entity_spec_t *[]){
         &dmi_intel_rsd_cabled_pcie_port_spec,
         &dmi_intel_rsd_fpga_spec,
-        &dmi_intel_rsd_memory_device_ex_spec,
+        &dmi_intel_rsd_memory_device_spec,
         &dmi_intel_rsd_network_card_spec,
         &dmi_intel_rsd_pcie_spec,
         &dmi_intel_rsd_phys_device_mapping_spec,
