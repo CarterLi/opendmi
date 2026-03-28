@@ -17,8 +17,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Intel RSD TPM information decoder #85
 - Add Intel RSD TXT information decoder #86
 - Add new manual pages:
-  - `dmi_base64_encode()`
   - `dmi_base64_decode()`
+  - `dmi_base64_encode()`
+  - `dmi_entity_create()`
+  - `dmi_entity_data()`
+  - `dmi_entity_decode()`
+  - `dmi_entity_destroy()`
+  - `dmi_entity_handle()`
+  - `dmi_entity_info()`
+  - `dmi_entity_link()`
+  - `dmi_entity_name()`
+  - `dmi_entity_string()`
+  - `dmi_entity_string_ex()`
+  - `dmi_entity_type()`
 - Compress manual pages after creation
 
 ### Fixed

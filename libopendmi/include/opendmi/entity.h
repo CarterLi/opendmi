@@ -273,20 +273,48 @@ __BEGIN_DECLS
  * @internal
  * @brief Create SMBIOS entity.
  *
+ * Allocates a new entity descriptor and initializes it from the raw SMBIOS
+ * structure data. Parses the structure header, computes the total length
+ * (formatted area plus string set), and decodes the string table.
+ *
  * @param[in] context DMI context handle.
- * @param[in] data Pointer to SMBIOS structure data.
+ * @param[in] data    Pointer to raw SMBIOS structure data, starting with the
+ *                    structure header.
+ *
+ * @return A newly allocated entity descriptor on success, or `NULL` on
+ *         failure (e.g., invalid arguments, invalid structure length, or
+ *         allocation error).
  */
 dmi_entity_t *dmi_entity_create(dmi_context_t *context, const void *data);
 
 /**
  * @internal
  * @brief Decode SMBIOS entity.
+ *
+ * Looks up the entity specification by type, validates the minimum length
+ * constraint, allocates the decoded structure descriptor, and invokes the
+ * type-specific decode handler. If decoding has already been performed, this
+ * function returns `true` immediately.
+ *
+ * @param[in] entity Entity descriptor.
+ *
+ * @return `true` on success (including when already decoded or no decoder is
+ *         registered), `false` on failure.
  */
 bool dmi_entity_decode(dmi_entity_t *entity);
 
 /**
  * @internal
  * @brief Link SMBIOS entity.
+ *
+ * Invokes the type-specific link handler to resolve cross-references between
+ * entities (e.g., handle-based references to other structures). If linking has
+ * already been performed, this function returns `true` immediately.
+ *
+ * @param[in] entity Entity descriptor.
+ *
+ * @return `true` on success, `false` if linking failed or the entity has no
+ *         specification or link handler.
  */
 bool dmi_entity_link(dmi_entity_t *entity);
 
@@ -294,6 +322,9 @@ bool dmi_entity_link(dmi_entity_t *entity);
  * @brief Get entity handle.
  *
  * @param[in] entity Entity descriptor.
+ *
+ * @return The handle associated with the entity, or `DMI_HANDLE_INVALID` if
+ *         @p entity is `NULL`.
  */
 dmi_handle_t dmi_entity_handle(const dmi_entity_t *entity);
 
@@ -301,39 +332,80 @@ dmi_handle_t dmi_entity_handle(const dmi_entity_t *entity);
  * @brief Get entity type.
  *
  * @param[in] entity Entity descriptor.
+ *
+ * @return The SMBIOS type of the entity, or `DMI_TYPE_INVALID` if @p entity
+ *         is `NULL`.
  */
 dmi_type_t dmi_entity_type(const dmi_entity_t *entity);
 
 /**
  * @brief Get entity type name.
  *
+ * Returns the human-readable name of the entity's SMBIOS structure type.
+ *
  * @param[in] entity Entity descriptor.
+ *
+ * @return The type name string, or `NULL` if @p entity is `NULL`.
  */
 const char *dmi_entity_name(const dmi_entity_t *entity);
 
 /**
  * @brief Get pointer to raw SMBIOS data area of entity of the specified type.
+ *
+ * Returns a pointer to the raw SMBIOS structure data (including the header)
+ * if the entity matches the specified type.
+ *
+ * @param[in] entity Entity descriptor.
+ * @param[in] type   Expected SMBIOS type. Pass `DMI_TYPE_INVALID` to skip
+ *                   type checking.
+ *
+ * @return Pointer to the raw SMBIOS data, or `NULL` if @p entity is `NULL`
+ *         or the entity type does not match @p type.
  */
 const void *dmi_entity_data(const dmi_entity_t *entity, dmi_type_t type);
 
 /**
  * @brief Get pointer to decoded data of entity of the specified type.
+ *
+ * Returns a pointer to the decoded structure descriptor if the entity matches
+ * the specified type. The returned pointer should be cast to the appropriate
+ * structure type (e.g., `dmi_cooling_device_t *`).
+ *
+ * @param[in] entity Entity descriptor.
+ * @param[in] type   Expected SMBIOS type. Pass `DMI_TYPE_INVALID` to skip
+ *                   type checking.
+ *
+ * @return Pointer to the decoded data, or `NULL` if @p entity is `NULL`,
+ *         the entity has not been decoded, or the entity type does not match
+ *         @p type.
  */
 void *dmi_entity_info(const dmi_entity_t *entity, dmi_type_t type);
 
 /**
  * @brief Get entity string.
  *
+ * Retrieves a string from the entity's string table by its 1-based index.
+ * When @p raw is `false`, the returned string is trimmed of leading and
+ * trailing whitespace.
+ *
  * @param[in] entity Entity descriptor.
- * @param[in] num    String number.
- * @param[in] raw    Raw value flag.
+ * @param[in] num    1-based string index.
+ * @param[in] raw    If `true`, return the raw (untrimmed) string; if `false`,
+ *                   return the trimmed version.
+ *
+ * @return The requested string, or `NULL` if @p entity is `NULL`, @p num is
+ *         zero, or @p num exceeds the number of strings in the entity.
  */
 const char *dmi_entity_string_ex(const dmi_entity_t *entity, dmi_string_t num, bool raw);
 
 /**
  * @brief Destroy entity descriptor.
  *
- * @param[in] entity Entity descriptor.
+ * Releases all resources associated with the entity, including decoded data,
+ * strings, and the entity descriptor itself. If @p entity is `NULL`, this
+ * function does nothing.
+ *
+ * @param[in] entity Entity descriptor to destroy.
  */
 void dmi_entity_destroy(dmi_entity_t *entity);
 

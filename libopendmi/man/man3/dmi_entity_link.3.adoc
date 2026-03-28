@@ -1,0 +1,63 @@
+= dmi_entity_link(3)
+The OpenDMI contributors
+OpenDMI 0.3.0
+
+:doctype: manpage
+:release-version: 0.3.0
+:manmanual: OpenDMI Manual
+:mansource: OpenDMI {release-version}
+
+== Name
+
+dmi_entity_link - link SMBIOS entity.
+
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
+== Synopsis
+
+[source, c]
+----
+#include <opendmi/entity.h>
+
+bool dmi_entity_link(dmi_entity_t *entity);
+----
+
+== Description
+
+The `dmi_entity_link` function resolves cross-references between SMBIOS
+entities. It invokes the type-specific link handler, which typically resolves
+handle-based references to other structures in the SMBIOS table.
+
+This function should be called after `dmi_entity_decode`(3) has been called on
+all entities, so that referenced entities are available for linking.
+
+This function is idempotent: if linking has already been performed, it returns
+`true` immediately without repeating the operation.
+
+=== Parameters
+
+`entity`::
+Entity descriptor.
+
+== Return value
+
+Returns `true` on success. Returns `false` if `entity` is `NULL`, the entity
+has no specification, no link handler is registered, or the type-specific link
+handler fails.
+
+== Errors
+
+On failure, an error is raised on the entity's context.
+
+== See also
+
+`dmi_entity_create`(3),
+`dmi_entity_decode`(3),
+`dmi_entity_destroy`(3)
+
+== Copying
+
+Copyright (c) 2025-2026, The OpenDMI contributors. Free use of this software
+is granted under the terms of the BSD 3-Clause License.

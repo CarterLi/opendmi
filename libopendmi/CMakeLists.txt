@@ -486,7 +486,7 @@ if(ASCIIDOCTOR_FOUND)
         if (GZIP_EXECUTABLE)
             add_custom_command(
                 OUTPUT ${dst_path}.gz
-                COMMAND ${GZIP_EXECUTABLE} ${dst_path}
+                COMMAND ${GZIP_EXECUTABLE} --force ${dst_path}
                 DEPENDS ${dst_path}
             )
 

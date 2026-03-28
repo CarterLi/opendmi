@@ -1,0 +1,79 @@
+= dmi_entity_string_ex(3)
+The OpenDMI contributors
+OpenDMI 0.3.0
+
+:doctype: manpage
+:release-version: 0.3.0
+:manmanual: OpenDMI Manual
+:mansource: OpenDMI {release-version}
+
+== Name
+
+dmi_entity_string_ex, dmi_entity_string - get entity string.
+
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
+== Synopsis
+
+[source, c]
+----
+#include <opendmi/entity.h>
+
+const char *dmi_entity_string_ex(
+        const dmi_entity_t *entity,
+        dmi_string_t        num,
+        bool                raw);
+
+static inline const char *dmi_entity_string(
+        const dmi_entity_t *entity,
+        dmi_string_t        num);
+----
+
+== Description
+
+The `dmi_entity_string_ex` function retrieves a string from the entity's
+string table by its 1-based index. SMBIOS structures store variable-length
+text strings in an unformatted section following the formatted data; each
+string is referenced by a 1-based index.
+
+When `raw` is `false`, the returned string is trimmed of leading and trailing
+whitespace. When `raw` is `true`, the original untrimmed string is returned.
+
+The `dmi_entity_string` function is a convenience wrapper that calls
+`dmi_entity_string_ex` with `raw` set to `false`.
+
+=== Parameters
+
+`entity`::
+Entity descriptor.
+
+`num`::
+1-based string index.
+
+`raw`::
+If `true`, return the raw (untrimmed) string. If `false`, return the trimmed
+version.
+
+== Return value
+
+Returns a pointer to the requested string. The returned string must not be
+modified or freed by the caller. Returns `NULL` if `entity` is `NULL`, `num`
+is zero, or `num` exceeds the number of strings in the entity.
+
+== Errors
+
+If `num` exceeds the number of strings in the entity, a
+`DMI_ERROR_STRING_NOT_FOUND` error is raised on the entity's context.
+
+== See also
+
+`dmi_entity_create`(3),
+`dmi_entity_decode`(3),
+`dmi_entity_info`(3)
+
+== Copying
+
+Copyright (c) 2025-2026, The OpenDMI contributors. Free use of this software
+is granted under the terms of the BSD 3-Clause License.

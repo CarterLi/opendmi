@@ -1,0 +1,82 @@
+= dmi_entity_info(3)
+The OpenDMI contributors
+OpenDMI 0.3.0
+
+:doctype: manpage
+:release-version: 0.3.0
+:manmanual: OpenDMI Manual
+:mansource: OpenDMI {release-version}
+
+== Name
+
+dmi_entity_info - get pointer to decoded entity data.
+
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
+== Synopsis
+
+[source, c]
+----
+#include <opendmi/entity.h>
+
+void *dmi_entity_info(const dmi_entity_t *entity, dmi_type_t type);
+----
+
+== Description
+
+The `dmi_entity_info` function returns a pointer to the decoded structure
+descriptor for the given entity. The entity type is verified against the
+expected `type` parameter before returning the data.
+
+The returned pointer should be cast to the appropriate type-specific structure
+(e.g., `dmi_cooling_device_t *` for cooling device entities). The entity must
+have been previously decoded with `dmi_entity_decode`(3).
+
+=== Parameters
+
+`entity`::
+Entity descriptor.
+
+`type`::
+Expected SMBIOS structure type. If the entity's type does not match, the
+function returns `NULL` and raises an error. Pass `DMI_TYPE_INVALID` to skip
+type checking.
+
+== Return value
+
+Returns a pointer to the decoded structure descriptor. Returns `NULL` if
+`entity` is `NULL`, the entity has not been decoded, or the entity type does
+not match `type`.
+
+== Errors
+
+If the entity type does not match `type`, a `DMI_ERROR_INVALID_ENTITY_TYPE`
+error is raised on the entity's context.
+
+== Examples
+
+[source, c]
+```
+dmi_entity_t *entity;
+dmi_cooling_device_t *info;
+
+info = dmi_entity_info(entity, DMI_TYPE_COOLING_DEVICE);
+if (info != NULL) {
+    printf("type: %s\n", dmi_cooling_device_type_name(info->type));
+    printf("status: %s\n", dmi_status_name(info->status));
+}
+```
+
+== See also
+
+`dmi_entity_data`(3),
+`dmi_entity_decode`(3),
+`dmi_entity_handle`(3),
+`dmi_entity_type`(3)
+
+== Copying
+
+Copyright (c) 2025-2026, The OpenDMI contributors. Free use of this software
+is granted under the terms of the BSD 3-Clause License.

@@ -1,0 +1,54 @@
+= dmi_entity_name(3)
+The OpenDMI contributors
+OpenDMI 0.3.0
+
+:doctype: manpage
+:release-version: 0.3.0
+:manmanual: OpenDMI Manual
+:mansource: OpenDMI {release-version}
+
+== Name
+
+dmi_entity_name - get entity type name.
+
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
+== Synopsis
+
+[source, c]
+----
+#include <opendmi/entity.h>
+
+const char *dmi_entity_name(const dmi_entity_t *entity);
+----
+
+== Description
+
+The `dmi_entity_name` function returns the human-readable name of the entity's
+SMBIOS structure type (e.g., "BIOS Information", "System Information",
+"Cooling Device").
+
+=== Parameters
+
+`entity`::
+Entity descriptor.
+
+== Return value
+
+Returns a pointer to a string containing the type name. The returned string
+must not be modified or freed by the caller. If `entity` is `NULL`, returns
+`NULL`.
+
+== See also
+
+`dmi_entity_handle`(3),
+`dmi_entity_type`(3),
+`dmi_entity_data`(3),
+`dmi_entity_info`(3)
+
+== Copying
+
+Copyright (c) 2025-2026, The OpenDMI contributors. Free use of this software
+is granted under the terms of the BSD 3-Clause License.

@@ -1,0 +1,64 @@
+= dmi_entity_create(3)
+The OpenDMI contributors
+OpenDMI 0.3.0
+
+:doctype: manpage
+:release-version: 0.3.0
+:manmanual: OpenDMI Manual
+:mansource: OpenDMI {release-version}
+
+== Name
+
+dmi_entity_create - create SMBIOS entity descriptor.
+
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
+== Synopsis
+
+[source, c]
+----
+#include <opendmi/entity.h>
+
+dmi_entity_t *dmi_entity_create(dmi_context_t *context, const void *data);
+----
+
+== Description
+
+The `dmi_entity_create` function allocates a new entity descriptor and
+initializes it from the raw SMBIOS structure data pointed to by `data`. It
+parses the structure header, computes the total length (formatted area plus
+string set), and decodes the string table.
+
+The caller is responsible for destroying the returned entity descriptor with
+`dmi_entity_destroy`(3) when it is no longer needed.
+
+=== Parameters
+
+`context`::
+DMI context handle.
+
+`data`::
+Pointer to raw SMBIOS structure data, starting with the structure header.
+
+== Return value
+
+On success, returns a pointer to a newly allocated entity descriptor. On
+failure, returns `NULL` (e.g., if `context` or `data` is `NULL`, the structure
+length is invalid, or a memory allocation fails).
+
+== Errors
+
+On failure, an error is raised on `context`.
+
+== See also
+
+`dmi_entity_decode`(3),
+`dmi_entity_link`(3),
+`dmi_entity_destroy`(3)
+
+== Copying
+
+Copyright (c) 2025-2026, The OpenDMI contributors. Free use of this software
+is granted under the terms of the BSD 3-Clause License.
