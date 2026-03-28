@@ -89,22 +89,26 @@ const dmi_option_set_t dmi_global_options =
                 .required = true
             }
         },
-        {
-            .short_names = "S",
-            .long_names  = (const char *[]){ "no-sysfs", nullptr },
-            .description = "Do not attempt to read DMI data from SysFS"
-        },
-        {
-            .short_names = "d",
-            .long_names  = (const char *[]){ "device", nullptr },
-            .description = "Set path to memory device (default: /dev/mem)",
-            .value       = &dmi_global_config.device_path,
-            .argument    = {
-                .name     = "path",
-                .type     = DMI_ARGUMENT_TYPE_STRING,
-                .required = true
+#       if defined(__linux__)
+            {
+                .short_names = "S",
+                .long_names  = (const char *[]){ "no-sysfs", nullptr },
+                .description = "Do not attempt to read DMI data from SysFS"
             },
-        },
+#       endif
+#       if !defined(_WIN32)
+            {
+                .short_names = "d",
+                .long_names  = (const char *[]){ "device", nullptr },
+                .description = "Set path to memory device (default: /dev/mem)",
+                .value       = &dmi_global_config.device_path,
+                .argument    = {
+                    .name     = "path",
+                    .type     = DMI_ARGUMENT_TYPE_STRING,
+                    .required = true
+                },
+            },
+#       endif
         {
             .short_names = "i",
             .long_names  = (const char *[]){ "file", nullptr },

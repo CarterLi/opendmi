@@ -32,6 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `dmi_entity_type()`
 - Compress manual pages after creation
 
+### Changed
+
+- Disable `--no-sysfs` option on non-Linux systems
+- Disable `--path` option on Windows systems
+
 ### Fixed
 
 - Fix minor CppCheck warnings
