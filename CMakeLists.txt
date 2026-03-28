@@ -79,6 +79,8 @@ if(APPLE)
     LIST(PREPEND CMAKE_PROGRAM_PATH "/opt/homebrew/opt/icu4c/bin/")
 endif()
 
+find_program(GZIP_EXECUTABLE NAMES gzip)
+
 find_package(CppCheck)
 find_package(AsciiDoctor)
 find_package(AsciiDoctorPdf)

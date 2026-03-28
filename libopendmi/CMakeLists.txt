@@ -483,7 +483,17 @@ if(ASCIIDOCTOR_FOUND)
             DEPENDS ${src_path}
         )
 
-        list(APPEND LIBOPENDMI_MANPAGES ${dst_path})
+        if (GZIP_EXECUTABLE)
+            add_custom_command(
+                OUTPUT ${dst_path}.gz
+                COMMAND ${GZIP_EXECUTABLE} ${dst_path}
+                DEPENDS ${dst_path}
+            )
+
+            list(APPEND LIBOPENDMI_MANPAGES ${dst_path}.gz)
+        else()
+            list(APPEND LIBOPENDMI_MANPAGES ${dst_path})
+        endif()
     endforeach()
 
     add_custom_target(opendmi-manuals DEPENDS ${LIBOPENDMI_MANPAGES})
