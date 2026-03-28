@@ -19,7 +19,7 @@ typedef struct dmi_intel_rsd_tpm dmi_intel_rsd_tpm_t;
 typedef enum dmi_intel_rsd_tpm_status
 {
     DMI_INTEL_RSD_TPM_STATUS_DISABLED = 0x00, ///< Disabled
-    DMI_INTEL_RSD_TPM_STATUS_ENABLED  = 0x02, ///< Enabled
+    DMI_INTEL_RSD_TPM_STATUS_ENABLED  = 0x01, ///< Enabled
 } dmi_intel_rsd_tpm_status_t;
 
 /**
