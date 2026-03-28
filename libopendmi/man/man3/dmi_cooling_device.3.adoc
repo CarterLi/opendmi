@@ -8,7 +8,7 @@ OpenDMI 0.2.0
 
 == Name
 
-`dmi_cooling_device` -- describes the attributes for a cooling device in the
+`dmi_cooling_device` - describes the attributes for a cooling device in the
 system.
 
 == Library

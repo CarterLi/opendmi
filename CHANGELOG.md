@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fix minor CppCheck warnings
+- Fix minor AsciiDoctor warnings
 
 ## [0.2.3] - March 25, 2026
 

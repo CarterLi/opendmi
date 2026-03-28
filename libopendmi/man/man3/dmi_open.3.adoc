@@ -8,7 +8,7 @@ OpenDMI 0.2.0
 
 == Name
 
-dmi_open - open OpenDMI context.
+`dmi_open` - open OpenDMI context.
 
 == Library
 

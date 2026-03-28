@@ -6,6 +6,10 @@ OpenDMI 0.2.0
 :manmanual: DMI_DUMP_LOAD
 :mansource: DMI_DUMP_LOAD
 
+== Name
+
+`dmi_dump_load` - load SMBIOS dump into context.
+
 == Library
 
 OpenDMI C library (`libopendmi`, `-lopendmi`)

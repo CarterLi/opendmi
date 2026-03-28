@@ -8,7 +8,7 @@ OpenDMI 0.2.0
 
 == Name
 
-`dmi_memory_array_addr` -- provides the address mapping for a physical
+`dmi_memory_array_addr` - provides the address mapping for a physical
 memory array.
 
 == Library
