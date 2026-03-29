@@ -79,7 +79,37 @@ static inline unsigned int dmi_version_revision(dmi_version_t version)
 
 __BEGIN_DECLS
 
+/**
+ * @brief Format SMBIOS version as a string.
+ *
+ * Returns a dynamically allocated string representing the version number.
+ * The revision component is omitted when it is zero (e.g. "3.4"), otherwise
+ * the full "major.minor.revision" form is used. The caller is responsible for
+ * freeing the returned string.
+ *
+ * @param[in] version Version number.
+ *
+ * @return A newly allocated version string, or `NULL` on allocation failure.
+ */
 char *dmi_version_format(dmi_version_t version);
+
+/**
+ * @brief Format SMBIOS version as a string with explicit detail level.
+ *
+ * Returns a dynamically allocated string representing the version number
+ * formatted to the specified detail level:
+ * - @ref DMI_VERSION_LEVEL_MAJOR — "major"
+ * - @ref DMI_VERSION_LEVEL_MINOR — "major.minor"
+ * - @ref DMI_VERSION_LEVEL_REVISION — "major.minor.revision"
+ *
+ * The caller is responsible for freeing the returned string.
+ *
+ * @param[in] version Version number.
+ * @param[in] level   Detail level to include in the formatted string.
+ *
+ * @return A newly allocated version string, or `NULL` if @p level is invalid
+ *         or on allocation failure.
+ */
 char *dmi_version_format_ex(dmi_version_t version, dmi_version_level_t level);
 
 __END_DECLS

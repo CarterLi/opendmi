@@ -67,8 +67,40 @@ extern const dmi_name_set_t dmi_memory_error_operation_names;
 
 __BEGIN_DECLS
 
+/**
+ * @brief Get memory error type name.
+ *
+ * Returns the human-readable name of the memory error type.
+ *
+ * @param[in] value Memory error type value.
+ *
+ * @return The memory error type name string, or `NULL` if @p value is out of
+ * range.
+ */
 const char *dmi_memory_error_type_name(dmi_memory_error_type_t value);
+
+/**
+ * @brief Get memory error granularity name.
+ *
+ * Returns the human-readable name of the memory error granularity.
+ *
+ * @param[in] value Memory error granularity value.
+ *
+ * @return The memory error granularity name string, or `NULL` if @p value is
+ * out of range.
+ */
 const char *dmi_memory_error_granularity_name(dmi_memory_error_granularity_t value);
+
+/**
+ * @brief Get memory error operation name.
+ *
+ * Returns the human-readable name of the memory error operation.
+ *
+ * @param[in] value Memory error operation value.
+ *
+ * @return The memory error operation name string, or `NULL` if @p value is out
+ * of range.
+ */
 const char *dmi_memory_error_operation_name(dmi_memory_error_operation_t value);
 
 __END_DECLS

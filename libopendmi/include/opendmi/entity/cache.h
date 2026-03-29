@@ -333,18 +333,77 @@ extern const dmi_entity_spec_t dmi_cache_spec;
 
 __BEGIN_DECLS
 
+/**
+ * @brief Get cache type name.
+ *
+ * Returns the human-readable name of the cache type.
+ *
+ * @param[in] value Cache type value.
+ *
+ * @return The cache type name string, or `NULL` if @p value is out of range.
+ */
 const char *dmi_cache_type_name(dmi_cache_type_t value);
+
+/**
+ * @brief Get cache operational mode name.
+ *
+ * Returns the human-readable name of the cache operational mode.
+ *
+ * @param[in] value Cache mode value.
+ *
+ * @return The cache mode name string, or `NULL` if @p value is out of range.
+ */
 const char *dmi_cache_mode_name(dmi_cache_mode_t value);
+
+/**
+ * @brief Get cache associativity name.
+ *
+ * Returns the human-readable name of the cache associativity type.
+ *
+ * @param[in] value Cache associativity value.
+ *
+ * @return The cache associativity name string, or `NULL` if @p value is out of
+ * range.
+ */
 const char *dmi_cache_assoc_name(dmi_cache_assoc_t value);
+
+/**
+ * @brief Get cache location name.
+ *
+ * Returns the human-readable name of the cache location relative to the CPU
+ * module.
+ *
+ * @param[in] value Cache location value.
+ *
+ * @return The cache location name string, or `NULL` if @p value is out of
+ * range.
+ */
 const char *dmi_cache_location_name(dmi_cache_location_t value);
 
 /**
  * @internal
+ * @brief Decode cache size from a 16-bit SMBIOS value.
+ *
+ * Converts the raw 16-bit cache size field into a size in bytes. Bit 15
+ * determines the granularity: 1 Kb when clear, 64 Kb when set.
+ *
+ * @param[in] value Raw 16-bit cache size value.
+ *
+ * @return Cache size in bytes.
  */
 dmi_size_t dmi_cache_size(uint16_t value);
 
 /**
  * @internal
+ * @brief Decode cache size from a 32-bit SMBIOS value.
+ *
+ * Converts the raw 32-bit extended cache size field into a size in bytes.
+ * Bit 31 determines the granularity: 1 Kb when clear, 64 Kb when set.
+ * Used for caches larger than 2047 MiB (SMBIOS 3.1+).
+ *
+ * @param[in] value Raw 32-bit cache size value.
+ *
+ * @return Cache size in bytes.
  */
 dmi_size_t dmi_cache_size_ex(uint32_t value);
 

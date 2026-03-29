@@ -155,6 +155,16 @@ extern const dmi_entity_spec_t dmi_memory_channel_spec;
 
 __BEGIN_DECLS
 
+/**
+ * @brief Get memory channel type name.
+ *
+ * Returns the human-readable name of the memory channel type.
+ *
+ * @param[in] value Memory channel type value.
+ *
+ * @return The memory channel type name string, or `NULL` if @p value is out of
+ * range.
+ */
 const char *dmi_memory_channel_type_name(dmi_memory_channel_type_t value);
 
 __END_DECLS

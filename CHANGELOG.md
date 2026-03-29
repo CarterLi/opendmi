@@ -18,19 +18,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Intel RSD TXT information decoder #86
 - Add Intel RSD Memory device information decoder #87
 - Add new manual pages:
-  - `dmi_base64_decode()`
-  - `dmi_base64_encode()`
-  - `dmi_entity_create()`
-  - `dmi_entity_data()`
-  - `dmi_entity_decode()`
-  - `dmi_entity_destroy()`
-  - `dmi_entity_handle()`
-  - `dmi_entity_info()`
-  - `dmi_entity_link()`
-  - `dmi_entity_name()`
-  - `dmi_entity_string()`
-  - `dmi_entity_string_ex()`
-  - `dmi_entity_type()`
+  - `dmi_base64_decode()`, `dmi_base64_encode()`
+  - `dmi_entity_create()`, `dmi_entity_destroy()`
+  - `dmi_entity_decode()`, `dmi_entity_link()`
+  - `dmi_entity_data()`, `dmi_entity_info()`
+  - `dmi_entity_handle()`, `dmi_entity_type()`, `dmi_entity_name()`
+  - `dmi_entity_string()`, `dmi_entity_string_ex()`
+  - `dmi_file_lock()`, `dmi_file_unlock()`
+  - `dmi_file_seek()`, `dmi_file_tell()`, `dmi_file_stat()`
+  - `dmi_file_read()`
+  - `dmi_file_close()`
+  - `dmi_stream_initialize()`
+  - `dmi_stream_decode()`, `dmi_stream_decode_at()`
+  - `dmi_stream_decode_bcd()`, `dmi_stream_decode_bcd_at()`
+  - `dmi_stream_decode_str()`, `dmi_stream_decode_str_at()`
+  - `dmi_stream_decode_uuid()`, `dmi_stream_decode_uuid_at()`
+  - `dmi_stream_is_done()`
+  - `dmi_stream_read()`, `dmi_stream_read_at()`
+  - `dmi_stream_read_data()`, `dmi_stream_read_data_at()`
+  - `dmi_stream_seek()`
+  - `dmi_stream_reset()`
+  - `dmi_uuid_decode()`, `dmi_uuid_encode()`
+  - `dmi_version_format()`, `dmi_version_format_ex()`
 - Compress manual pages after creation
 
 ### Changed

@@ -343,8 +343,21 @@ struct dmi_chassis_element
      */
     dmi_baseboard_type_t board_type;
 
+    /**
+     * @brief Specifies the minimum number of the element type that can be
+     * installed in the chassis for the chassis to properly operate, in the
+     * range 0 to 254. The value 255 (0xFF) is reserved for future definition
+     * by this specification.
+     *
+     * TODO: Convert reserved value to SIZE_MAX.
+     */
     size_t minimum_count;
 
+    /**
+     * @brief Specifies the maximum number of the element type that can be
+     * installed in the chassis, in the range 1 to 255. The value 0 is reserved
+     * for future definition by this specification.
+     */
     size_t maximum_count;
 };
 
@@ -355,7 +368,27 @@ extern const dmi_entity_spec_t dmi_chassis_spec;
 
 __BEGIN_DECLS
 
+/**
+ * @brief Get chassis type name.
+ *
+ * Returns the human-readable name of the system enclosure or chassis type.
+ *
+ * @param[in] value Chassis type value.
+ *
+ * @return The chassis type name string, or `NULL` if @p value is out of range.
+ */
 const char *dmi_chassis_type_name(dmi_chassis_type_t value);
+
+/**
+ * @brief Get chassis security status name.
+ *
+ * Returns the human-readable name of the chassis physical security status.
+ *
+ * @param[in] value Chassis security status value.
+ *
+ * @return The chassis security status name string, or `NULL` if @p value is
+ * out of range.
+ */
 const char *dmi_chassis_security_status_name(dmi_chassis_security_status_t value);
 
 __END_DECLS

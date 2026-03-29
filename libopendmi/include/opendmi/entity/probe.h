@@ -132,6 +132,17 @@ const char *dmi_probe_location_name(dmi_probe_location_t value);
 
 /**
  * @internal
+ * @brief Decode common probe fields from an SMBIOS entity.
+ *
+ * Reads the probe description, location, status, value range (maximum,
+ * minimum, resolution, tolerance, accuracy), OEM-defined data, and optional
+ * nominal value from the entity's data stream into a @ref dmi_probe_t
+ * structure. This function is shared by type-specific probe decoders
+ * (voltage, temperature, current).
+ *
+ * @param[in] entity Entity descriptor.
+ *
+ * @return `true` on success, `false` on decoding failure.
  */
 bool dmi_probe_decode(dmi_entity_t *entity);
 

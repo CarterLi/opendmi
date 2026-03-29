@@ -1,0 +1,73 @@
+= dmi_uuid_encode(3)
+The OpenDMI contributors
+OpenDMI 0.3.0
+
+:doctype: manpage
+:release-version: 0.3.0
+:manmanual: OpenDMI Manual
+:mansource: OpenDMI {release-version}
+
+== Name
+
+dmi_uuid_encode - encode a UUID from RFC 4122 representation into SMBIOS byte order.
+
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
+== Synopsis
+
+[source, c]
+----
+#include <opendmi/utils/uuid.h>
+
+void dmi_uuid_encode(dmi_uuid_t value, uint8_t out[16]);
+----
+
+== Description
+
+The `dmi_uuid_encode` function performs the inverse of `dmi_uuid_decode`(3):
+it converts a `dmi_uuid_t` value in RFC 4122 (big-endian) byte order back into
+the raw 16-byte format used by SMBIOS structures.
+
+The `time_low`, `time_mid`, and `time_hi_and_version` fields are byte-swapped
+from big-endian (RFC 4122) to little-endian (SMBIOS) byte order. The
+`clock_seq_hi_and_reserved`, `clock_seq_low`, and `node` fields are copied
+without modification.
+
+=== Parameters
+
+`value`::
+UUID in RFC 4122 (big-endian) byte order.
+
+`out`::
+Buffer of exactly 16 bytes that receives the UUID in SMBIOS (little-endian)
+byte order.
+
+== Examples
+
+[source, c]
+```
+/* Construct a UUID in RFC 4122 representation */
+dmi_uuid_t uuid = {
+    .time_low                = 0x1624a9df,
+    .time_mid                = 0x5e13,
+    .time_hi_and_version     = 0x47fc,
+    .clock_seq_hi_and_reserved = 0x87,
+    .clock_seq_low             = 0x4a,
+    .node                    = { 0xdf, 0x3a, 0xff, 0x14, 0x30, 0x89 }
+};
+
+/* Encode into the 16-byte SMBIOS format */
+uint8_t out[16];
+dmi_uuid_encode(uuid, out);
+```
+
+== See also
+
+`dmi_uuid_decode`(3)
+
+== Copying
+
+Copyright (c) 2025-2026, The OpenDMI contributors. Free use of this software
+is granted under the terms of the BSD 3-Clause License.

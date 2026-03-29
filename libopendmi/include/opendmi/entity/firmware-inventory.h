@@ -361,8 +361,40 @@ extern const dmi_entity_spec_t dmi_firmware_inventory_spec;
 
 __BEGIN_DECLS
 
+/**
+ * @brief Get version number format name.
+ *
+ * Returns the human-readable name of the version number format.
+ *
+ * @param[in] value Version format value.
+ *
+ * @return The version format name string, or `NULL` if @p value is out of
+ * range.
+ */
 const char *dmi_version_format_name(dmi_version_format_t value);
+
+/**
+ * @brief Get firmware identifier format name.
+ *
+ * Returns the human-readable name of the firmware identifier format.
+ *
+ * @param[in] value Firmware identifier format value.
+ *
+ * @return The firmware identifier format name string, or `NULL` if @p value is
+ * out of range.
+ */
 const char *dmi_firmware_ident_format_name(dmi_firmware_ident_format_t value);
+
+/**
+ * @brief Get firmware inventory state name.
+ *
+ * Returns the human-readable name of the firmware inventory state.
+ *
+ * @param[in] value Firmware inventory state value.
+ *
+ * @return The firmware inventory state name string, or `NULL` if @p value is
+ * out of range.
+ */
 const char *dmi_firmware_inventory_state_name(dmi_firmware_inventory_state_t value);
 
 __END_DECLS
