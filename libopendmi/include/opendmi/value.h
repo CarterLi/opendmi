@@ -30,6 +30,13 @@
 
 #define DMI_UNIT_BIT            "bits"
 
+#define DMI_UNIT_KILOBYTE       "KB"
+#define DMI_UNIT_KIBIBYTE       "KiB"
+#define DMI_UNIT_MEGABYTE       "MB"
+#define DMI_UNIT_MIBIBYTE       "MiB"
+#define DMI_UNIT_GIGABYTE       "GB"
+#define DMI_UNIT_GIBIBYTE       "GiB"
+
 #define DMI_UNIT_MEGAXA_SECOND  "MT/s"
 #define DMI_UNIT_KILOBIT_SECOND "Kbps"
 #define DMI_UNIT_MEGABIT_SECOND "Mbps"

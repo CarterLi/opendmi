@@ -47,6 +47,26 @@ typedef enum dmi_error_correct_type
     __DMI_ERROR_CORRECT_TYPE_COUNT
 } dmi_error_correct_type_t;
 
+/**
+ * @brief PCI class identifier.
+ */
+typedef uint8_t dmi_pci_class_t;
+
+/**
+ * @brief PCI slot number.
+ */
+typedef uint16_t dmi_pci_slot_t;
+
+/**
+ * @brief PCI vendor identifier.
+ */
+typedef uint16_t dmi_pci_vendor_id_t;
+
+/**
+ * @brief PCI device identifier.
+ */
+typedef uint16_t dmi_pci_device_id_t;
+
 dmi_packed_struct(dmi_pci_addr_data)
 {
     /**
@@ -70,6 +90,9 @@ dmi_packed_struct(dmi_pci_addr_data)
     dmi_byte_t device_number : 5;
 };
 
+/**
+ * @brief PCI address.
+ */
 struct dmi_pci_addr
 {
     /**

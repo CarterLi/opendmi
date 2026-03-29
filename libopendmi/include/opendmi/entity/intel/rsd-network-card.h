@@ -10,6 +10,7 @@
 #pragma once
 
 #include <opendmi/entity.h>
+#include <opendmi/entity/common.h>
 
 typedef struct dmi_intel_rsd_network_card dmi_intel_rsd_network_card_t;
 
@@ -22,32 +23,32 @@ struct dmi_intel_rsd_network_card
      * @brief PCI class code is used to identify the generic function of the
      * device.
      */
-    uint8_t pci_class;
+    dmi_pci_class_t pci_class;
 
     /**
      * @brief Physical slot number of the slot connected to the PCIe port.
      */
-    uint16_t pci_slot_number;
+    dmi_pci_slot_t pci_slot_number;
 
     /**
      * @brief Vendor identification number.
      */
-    uint16_t vendor_id;
+    dmi_pci_vendor_id_t vendor_id;
 
     /**
      * @brief Device identification number.
      */
-    uint16_t device_id;
+    dmi_pci_device_id_t device_id;
 
     /**
      * @brief Sub-vendor identifier used to differentiate specific model.
      */
-    uint16_t sub_vendor_id;
+    dmi_pci_vendor_id_t sub_vendor_id;
 
     /**
      * @brief Sub-device identifier used to differentiate specific model.
      */
-    uint16_t sub_device_id;
+    dmi_pci_device_id_t sub_device_id;
 
     /**
      * @brief Maximum speed in Mbps (for example 10000 for 10 Gbps, 40000 for
