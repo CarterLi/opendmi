@@ -277,15 +277,19 @@ __BEGIN_DECLS
  * structure data. Parses the structure header, computes the total length
  * (formatted area plus string set), and decodes the string table.
  *
- * @param[in] context DMI context handle.
- * @param[in] data    Pointer to raw SMBIOS structure data, starting with the
- *                    structure header.
+ * @param[in] context    DMI context handle.
+ * @param[in] data       Pointer to raw SMBIOS structure data, starting with the
+ *                       structure header.
+ * @param[in] max_length Total amount of remaining data in the table area.
  *
  * @return A newly allocated entity descriptor on success, or `NULL` on
  *         failure (e.g., invalid arguments, invalid structure length, or
  *         allocation error).
  */
-dmi_entity_t *dmi_entity_create(dmi_context_t *context, const void *data);
+dmi_entity_t *dmi_entity_create(
+        dmi_context_t *context,
+        const void    *data,
+        size_t         max_length);
 
 /**
  * @internal

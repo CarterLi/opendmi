@@ -35,6 +35,7 @@ typedef enum dmi_error_code
     DMI_ERROR_INVALID_ENTITY_ADDR,   ///< Invalid structure address
     DMI_ERROR_INVALID_ENTITY_LENGTH, ///< Invalid structure length
     DMI_ERROR_INVALID_ENTITY_TYPE,   ///< Invalid structure type
+    DMI_ERROR_ENTITY_TRUNCATED,      ///< Truncated entity
     DMI_ERROR_ENTITY_DECODE,         ///< Unable to decode structure
     DMI_ERROR_ENTITY_REGISTER,       ///< Unable to register structure
     DMI_ERROR_ENTITY_LINK,           ///< Unable to link structure
@@ -44,7 +45,7 @@ typedef enum dmi_error_code
     DMI_ERROR_DUPLICATE_HANDLE,      ///< Duplicate handle
     DMI_ERROR_NO_MORE_ENTRIES,       ///< No more entries
     DMI_ERROR_MISSING_FIRMWARE_INFO, ///< No platform firmware information structure is present
-    DMI_ERROR_MODULE_CONFLICT,    ///< Extension has conflicts
+    DMI_ERROR_MODULE_CONFLICT,       ///< Extension has conflicts
     DMI_ERROR_OUT_OF_MEMORY,         ///< Out of memory
     DMI_ERROR_SERVICE_UNAVAILABLE,   ///< Service unavailable
     DMI_ERROR_SYSTEM,                ///< System error

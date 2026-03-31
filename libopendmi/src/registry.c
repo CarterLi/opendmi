@@ -212,14 +212,24 @@ bool dmi_registry_scan(dmi_registry_t *registry)
     while ((context->entity_count == 0) or (index < context->entity_count)) {
         dmi_entity_t *entity = nullptr;
 
-        // Check structure address
-        if ((size_t)(ptr - context->table_data) > context->table_area_size) {
-            dmi_error_raise(context, DMI_ERROR_INVALID_ENTITY_ADDR);
-            goto exit;
+        // Get remaining table area size
+        size_t remaining = 0;
+        size_t offset = (size_t)(ptr - context->table_data);
+        if (context->table_area_size > 0)
+            remaining = context->table_area_size - offset;
+        else if (context->table_area_max_size > 0)
+            remaining = context->table_area_max_size - offset;
+        else
+            assert(false);
+
+        // Check for the end of table area
+        if (remaining < sizeof(dmi_header_t) + 2) {
+            dmi_log_warning(context, "Truncated table area, stopping before end-of-table");
+            break;
         }
 
         // Create entity for the structure
-        entity = dmi_entity_create(context, ptr);
+        entity = dmi_entity_create(context, ptr, remaining);
         if (entity == nullptr) {
             dmi_error_raise(context, DMI_ERROR_ENTITY_DECODE);
             goto exit;

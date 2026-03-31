@@ -414,7 +414,7 @@ macro(opendmi_test TEST_NAME TEST_SOURCES)
     string(REPLACE "/" "-" TEST_TARGET "${TEST_NAME}")
     string(APPEND TEST_TARGET "-test")
 
-    add_executable(${TEST_TARGET} ${TEST_SOURCES})
+    add_executable(${TEST_TARGET} ${TEST_SOURCES} test/logger.c)
     target_link_libraries(${TEST_TARGET} opendmi-shared cmocka-static)
 
     if(ENABLE_COVERAGE)

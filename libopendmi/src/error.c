@@ -39,6 +39,7 @@ static const char *dmi_error_messages[__DMI_ERROR_COUNT] =
     [DMI_ERROR_INVALID_ENTITY_ADDR]   = "Invalid structure address",
     [DMI_ERROR_INVALID_ENTITY_LENGTH] = "Invalid structure length",
     [DMI_ERROR_INVALID_ENTITY_TYPE]   = "Invalid structure type",
+    [DMI_ERROR_ENTITY_TRUNCATED]      = "Truncated structure",
     [DMI_ERROR_ENTITY_DECODE]         = "Unable to decode structure",
     [DMI_ERROR_ENTITY_REGISTER]       = "Unable to register structure",
     [DMI_ERROR_ENTITY_LINK]           = "Unable to link structure",

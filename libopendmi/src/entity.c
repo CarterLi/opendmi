@@ -17,7 +17,9 @@
 /**
  * @internal
  */
-static void dmi_entity_decode_length(dmi_entity_t *entity);
+static bool dmi_entity_decode_length(
+        dmi_entity_t *entity,
+        size_t        max_length);
 
 /**
  * @internal
@@ -29,7 +31,10 @@ static bool dmi_entity_decode_strings(dmi_entity_t *entity);
  */
 static char *dmi_entity_string_trim(dmi_context_t *context, const char *ptr);
 
-dmi_entity_t *dmi_entity_create(dmi_context_t *context, const void *data)
+dmi_entity_t *dmi_entity_create(
+        dmi_context_t *context,
+        const void    *data,
+        size_t         max_length)
 {
     dmi_entity_t *entity = nullptr;
 
@@ -59,6 +64,10 @@ dmi_entity_t *dmi_entity_create(dmi_context_t *context, const void *data)
                            "0x%04hx (%s): %zu bytes",
                            handle, dmi_type_name(context, type), length);
         return nullptr;
+    } else if (length > max_length) {
+        dmi_error_raise_ex(context, DMI_ERROR_ENTITY_TRUNCATED,
+                           "0x%04hx (%s): %zu bytes long, only %zu available",
+                           handle, dmi_type_name(context, type), length, max_length);
     }
 
     // Allocate new entity descriptor
@@ -77,7 +86,12 @@ dmi_entity_t *dmi_entity_create(dmi_context_t *context, const void *data)
     bool success = false;
     do {
         // Decode strings
-        dmi_entity_decode_length(entity);
+        if (not dmi_entity_decode_length(entity, max_length)) {
+            dmi_error_raise_ex(context, DMI_ERROR_ENTITY_TRUNCATED,
+                               "0x%04hx (%s): Unformatted area exceeds limits",
+                               handle, dmi_type_name(context, type));
+            break;
+        }
         if (not dmi_entity_decode_strings(entity))
             break;
 
@@ -269,28 +283,39 @@ void dmi_entity_destroy(dmi_entity_t *entity)
     dmi_free(entity);
 }
 
-static void dmi_entity_decode_length(dmi_entity_t *entity)
+static bool dmi_entity_decode_length(
+        dmi_entity_t *entity,
+        size_t        max_length)
 {
     assert(entity != nullptr);
     assert(entity->data != nullptr);
+    assert(max_length >= sizeof(dmi_header_t) + 2);
 
-    const char *data  = dmi_cast(data, entity->data);
-    const char *start = data + entity->body_length;
-    const char *ptr   = start;
-    size_t      count = 0;
+    const char *data      = dmi_cast(data, entity->data);
+    const char *start     = data + entity->body_length;
+    const char *ptr       = start;
+    size_t      count     = 0;
+    size_t      remaining = max_length - (ptr - data);
+
+    if (--remaining == 0)
+        return false;
 
     // Calculate structure length and count strings
     while (true) {
         if (*ptr != 0) {
             count++;
 
+            if (--remaining == 0)
+                return false;
+
             while (*ptr != 0) {
                 ptr++;
+                if (--remaining == 0)
+                    return false;
             }
         }
 
         ptr++;
-
         if (*ptr == 0) {
             ptr++;
             break;
@@ -300,6 +325,8 @@ static void dmi_entity_decode_length(dmi_entity_t *entity)
     entity->extra_length = ptr - start;
     entity->total_length = entity->body_length + entity->extra_length;
     entity->string_count = count;
+
+    return true;
 }
 
 static bool dmi_entity_decode_strings(dmi_entity_t *entity)
