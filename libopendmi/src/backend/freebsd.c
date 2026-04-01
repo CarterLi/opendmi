@@ -100,7 +100,7 @@ static dmi_data_t *dmi_freebsd_read_entry(dmi_context_t *context, size_t *plengt
             return nullptr;
         }
 
-        session->entry = dmi_memory_read(context, DMI_FREEBSD_DEV_MEMORY, addr, DMI_ENTRY_MAX_SIZE);
+        session->entry = dmi_memory_get(context, DMI_FREEBSD_DEV_MEMORY, addr, DMI_ENTRY_MAX_SIZE);
         if (session->entry == nullptr)
             return nullptr;
 
@@ -121,7 +121,7 @@ static dmi_data_t *dmi_freebsd_read_table(dmi_context_t *context, size_t *plengt
     dmi_freebsd_session_t *session = dmi_cast(session, context->session);
 
     if (session->table == nullptr) {
-        session->table = dmi_memory_read(context, DMI_FREEBSD_DEV_MEMORY,
+        session->table = dmi_memory_get(context, DMI_FREEBSD_DEV_MEMORY,
                                          context->table_area_addr, context->table_area_max_size);
         if (session->table == nullptr)
             return nullptr;
@@ -198,12 +198,11 @@ static bool dmi_freebsd_find_entry_addr(dmi_context_t *context, size_t *paddr)
     const size_t area_size = 0x10000;
 
     dmi_data_t *buffer = nullptr;
-    size_t      addr   = 0;
     bool        found  = false;
 
     dmi_log_debug(context, "Running memory scan...");
 
-    buffer = dmi_memory_read(context, DMI_FREEBSD_DEV_MEMORY, base_addr, area_size);
+    buffer = dmi_memory_get(context, DMI_FREEBSD_DEV_MEMORY, base_addr, area_size);
     if (buffer == nullptr)
         return false;
 
