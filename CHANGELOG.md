@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fix crash on truncated SMBIOS data #103
+- Fix context creation on truncated SMBIOS data #103
 - Fix minor CppCheck warnings
 - Fix minor AsciiDoctor warnings
 - Fix manual page name sections formatting
