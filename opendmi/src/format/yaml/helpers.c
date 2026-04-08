@@ -6,17 +6,17 @@
 //
 // Copyright (c) 2017-2020 Ingy döt Net
 // Copyright (c) 2006-2016 Kirill Simonov
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy of
 // this software and associated documentation files (the "Software"), to deal in
 // the Software without restriction, including without limitation the rights to
 // use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
 // of the Software, and to permit persons to whom the Software is furnished to do
 // so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -77,7 +77,7 @@ bool dmi_yaml_scalar(
             tag   = YAML_BINARY_TAG;
             style = YAML_LITERAL_SCALAR_STYLE;
 
-            binary = dmi_base64_encode((dmi_data_t *)value, strlen(value), &length);
+            binary = dmi_base64_encode(dmi_data(value), strlen(value), &length);
             if (binary == nullptr) {
                 dmi_error_raise(session->context, DMI_ERROR_OUT_OF_MEMORY);
                 return false;

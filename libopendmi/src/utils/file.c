@@ -68,7 +68,7 @@ off_t dmi_file_seek(int fd, off_t offset, int whence)
     return rv;
 }
 
-bool  dmi_file_lock(int fd, off_t size)
+bool dmi_file_lock(int fd, off_t size)
 {
     assert(fd >= 0);
 
@@ -83,7 +83,7 @@ bool  dmi_file_lock(int fd, off_t size)
     return true;
 }
 
-bool  dmi_file_unlock(int fd, off_t size)
+bool dmi_file_unlock(int fd, off_t size)
 {
     assert(fd >= 0);
 
@@ -121,6 +121,31 @@ ssize_t dmi_file_read(int fd, dmi_data_t *data, size_t size)
     }
 
     return nread;
+}
+
+ssize_t dmi_file_write(int fd, dmi_data_t *data, size_t size)
+{
+    size_t nwritten = 0;
+
+    assert(fd >= 0);
+    assert(data != nullptr);
+
+    while (size > 0) {
+        ssize_t rv = write(fd, data + nwritten, size - nwritten);
+
+        if (rv < 0) {
+            if (errno == EINTR)
+                continue;
+            return -1;
+        }
+
+        if (rv == 0)
+            break;
+
+        nwritten += rv;
+    }
+
+    return nwritten;
 }
 
 int dmi_file_close(int fd)

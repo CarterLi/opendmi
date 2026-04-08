@@ -104,7 +104,7 @@ typedef struct dmi_member_ref
 #define dmi_member_is_present(__member) ((__member).size != 0)
 
 #define dmi_member_ptr(__object, __member, __type) \
-        ((__type *)((dmi_data_t *)(__object) + __member.offset))
+        ((__type *)(dmi_data(__object) + __member.offset))
 #define dmi_member_value(__object, __member, __type) \
         (*dmi_member_ptr(__object, __member, __type))
 

@@ -11,7 +11,7 @@
 
 #include <opendmi/types.h>
 
-typedef struct dmi_pidfile *dmi_pidfile_t;
+typedef struct dmi_pidfile dmi_pidfile_t;
 
 struct dmi_pidfile
 {
