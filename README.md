@@ -52,18 +52,45 @@ Use the following command to configure OpenDMI build:
 $ ./build.sh configure
 ```
 
-This produces a debug build by default. Optimization isn't enabled, and debug
-assertions are included. Pass `--release` to configure a release build:
+This produces a release build by default. Pass `--debug` to configure a debug
+build (optimization disabled, debug assertions included):
 
 ```sh
-$ ./build.sh configure --release
+$ ./build.sh configure --debug
 ```
 
-For advanced configuration options, see usage:
+To set the installation prefix:
+
+```sh
+$ ./build.sh configure --prefix /usr/local
+```
+
+To enable optional components:
+
+```sh
+$ ./build.sh configure --enable-dbus --enable-python
+```
+
+To enable all optional components at once:
+
+```sh
+$ ./build.sh configure --enable-all
+```
+
+To enable optional format support:
+
+```sh
+$ ./build.sh configure --with-json --with-xml --with-yaml
+```
+
+For all configuration options, see usage:
 
 ```sh
 $ ./build.sh --help
 ```
+
+To override defaults persistently without modifying `build.conf.dist`, create a
+`build.conf` file in the project root — settings there take precedence.
 
 ### Building
 
@@ -73,6 +100,18 @@ Use the following command to build OpenDMI:
 $ ./build.sh build
 ```
 
+To build using a specific number of parallel jobs:
+
+```sh
+$ ./build.sh -j 4 build
+```
+
+To use a custom build directory:
+
+```sh
+$ ./build.sh -b /tmp/opendmi-build build
+```
+
 ### Testing
 
 OpenDMI uses the CTest framework for testing. You can simply run it to ensure
@@ -80,6 +119,134 @@ that build was successful:
 
 ```sh
 $ ./build.sh test
+```
+
+To re-run only the failed tests:
+
+```sh
+$ ./build.sh test --failed
+```
+
+### Installing
+
+Use the following command to install OpenDMI to the configured prefix:
+
+```sh
+$ ./build.sh install
+```
+
+### Packaging
+
+Use the following command to build distributable packages using CPack:
+
+```sh
+$ ./build.sh package
+```
+
+### Cleaning
+
+To remove build artifacts without removing the configuration:
+
+```sh
+$ ./build.sh clean
+```
+
+To remove the entire build directory including the configuration:
+
+```sh
+$ ./build.sh distclean
+```
+
+## Usage
+
+The `opendmi` command line tool provides access to DMI/SMBIOS data. The general
+usage pattern is:
+
+```sh
+$ opendmi [global options] <command> [command options]
+```
+
+### Global options
+
+| Option | Description |
+|---|---|
+| `-v`, `--version` | Print version information and exit |
+| `-h`, `--help` | Print help and exit |
+| `-i`, `--file=<path>` | Read DMI data from a binary file instead of the system |
+| `-d`, `--device=<path>` | Set path to memory device (default: `/dev/mem`) |
+| `-m`, `--module=<module>` | Enable the specified module |
+| `-l`, `--log[=<path>]` | Enable logging, optionally to a file |
+| `-L`, `--log-level=<level>` | Set logging level |
+
+### Commands
+
+| Command | Description |
+|---|---|
+| `show` | Show SMBIOS structures data |
+| `list` | List SMBIOS structures |
+| `entry` | Show SMBIOS entry point data |
+| `types` | List SMBIOS structure types |
+| `explain` | Explain an SMBIOS structure type |
+| `export` | Export SMBIOS data to external format (JSON, XML, YAML) |
+| `dump` | Dump the entire SMBIOS table to a binary file |
+| `modules` | List available modules |
+
+Use `opendmi <command> --help` for detailed information on a specific command.
+
+### Examples
+
+Show all SMBIOS structures in human-readable format:
+
+```sh
+$ opendmi show
+```
+
+Show structures of a specific type only:
+
+```sh
+$ opendmi show -t processor
+```
+
+List all structures with their handles and types:
+
+```sh
+$ opendmi list
+```
+
+Show SMBIOS entry point information:
+
+```sh
+$ opendmi entry
+```
+
+Explain a specific structure type:
+
+```sh
+$ opendmi explain processor
+```
+
+Export SMBIOS data to YAML (default format):
+
+```sh
+$ opendmi export -o smbios.yaml
+```
+
+Export SMBIOS data to JSON with pretty-printing:
+
+```sh
+$ opendmi export -f json --pretty -o smbios.json
+```
+
+Dump the raw SMBIOS table to a binary file:
+
+```sh
+$ opendmi dump -o smbios.bin
+```
+
+Read SMBIOS data from a previously saved dump:
+
+```sh
+$ opendmi -i smbios.bin show
 ```
 
 ## Contributing
