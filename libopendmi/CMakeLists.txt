@@ -437,6 +437,9 @@ macro(opendmi_test TEST_NAME TEST_SOURCES)
     endif()
 endmacro()
 
+opendmi_test(attribute test/attribute.c)
+opendmi_test(error test/error.c)
+
 opendmi_test(utils/endian test/utils/endian.c)
 opendmi_test(utils/codec test/utils/codec.c)
 opendmi_test(utils/string test/utils/string.c)
@@ -445,8 +448,6 @@ opendmi_test(utils/version test/utils/version.c)
 opendmi_test(utils/datetime test/utils/datetime.c)
 opendmi_test(utils/uuid test/utils/uuid.c)
 opendmi_test(utils/misc test/utils/misc.c)
-
-opendmi_test(attribute test/attribute.c)
 
 opendmi_test(entity/common test/entity/common.c)
 opendmi_test(entity/baseboard test/entity/baseboard.c)
