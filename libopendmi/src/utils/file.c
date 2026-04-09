@@ -123,7 +123,7 @@ ssize_t dmi_file_read(int fd, dmi_data_t *data, size_t size)
     return nread;
 }
 
-ssize_t dmi_file_write(int fd, dmi_data_t *data, size_t size)
+ssize_t dmi_file_write(int fd, const dmi_data_t *data, size_t size)
 {
     size_t nwritten = 0;
 

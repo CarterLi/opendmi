@@ -21,6 +21,17 @@ typedef struct dmi_registry_entry dmi_registry_entry_t;
 typedef struct dmi_registry_iter  dmi_registry_iter_t;
 
 /**
+ * @brief Registry status flags.
+ */
+enum dmi_context_status
+{
+    DMI_REGISTRY_STATUS_SCANNED   = (1 << 0),
+    DMI_REGISTRY_STATUS_TRUNCATED = (1 << 1),
+    DMI_REGISTRY_STATUS_DECODED   = (1 << 2),
+    DMI_REGISTRY_STATUS_LINKED    = (1 << 3)
+};
+
+/**
  * @brief Registry descriptor.
  */
 struct dmi_registry
@@ -54,6 +65,11 @@ struct dmi_registry
      * @brief Pointer to last entry in sequence.
      */
     dmi_registry_entry_t *tail;
+
+    /**
+     * @brief Status flags.
+     */
+    unsigned int status;
 };
 
 /**
@@ -159,7 +175,7 @@ dmi_entity_t *dmi_registry_get(
 
 /**
  * @brief Get entity from registry, that matches any of the expected types.
- * 
+ *
  * @param[in] registry Registry handle.
  *
  * @param[in] handle   Entity handle. In constrast to `dmi_registry_get()`,
@@ -178,6 +194,14 @@ dmi_entity_t *dmi_registry_get_any(
         dmi_handle_t      handle,
         const dmi_type_t *type,
         bool              optional);
+
+/**
+ * @brief Get registry status flags.
+ *
+ * @param[in] registry Registry handle.
+ * @return Status flags
+ */
+unsigned dmi_registry_status(const dmi_registry_t *registry);
 
 /**
  * @brief Destroy registry.

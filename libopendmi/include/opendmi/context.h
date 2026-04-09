@@ -181,6 +181,14 @@ dmi_context_t *dmi_create(unsigned int flags);
 void dmi_set_flags(dmi_context_t *context, unsigned flags);
 
 /**
+ * @brief Get DMI context flags.
+ *
+ * @param[in] context DMI context handle.
+ * @return Flags
+ */
+unsigned dmi_get_flags(const dmi_context_t *context);
+
+/**
  * @brief Open DMI context.
  *
  * @param[in] context DMI context handle.

@@ -294,6 +294,13 @@ void dmi_set_flags(dmi_context_t *context, unsigned flags)
     context->flags = flags;
 }
 
+unsigned dmi_get_flags(const dmi_context_t *context) {
+    if (context == nullptr)
+        return 0;
+
+    return context->flags;
+}
+
 bool dmi_open(dmi_context_t *context, const char *device)
 {
     if (context == nullptr)

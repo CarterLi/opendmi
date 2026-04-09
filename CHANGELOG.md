@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Intel RSD TPM information decoder #85
 - Add Intel RSD TXT information decoder #86
 - Add Intel RSD Memory device information decoder #87
+- Add registry status flags support
 - Add `dmi_pci_class_t`, `dmi_pci_slot_t`, `dmi_pci_vendor_id_t`, `dmi_pci_device_id_t` types for PCI identifiers
 - Add new manual pages:
   - `dmi_base64_decode()`, `dmi_base64_encode()`

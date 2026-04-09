@@ -125,7 +125,7 @@ ssize_t dmi_file_read(int fd, dmi_data_t *data, size_t size);
  *         zero-length write occurs), or `-1` on error with `errno` set
  *         accordingly.
  */
-ssize_t dmi_file_write(int fd, dmi_data_t *data, size_t size);
+ssize_t dmi_file_write(int fd, const dmi_data_t *data, size_t size);
 
 /**
  * @brief Closes an open file descriptor.
