@@ -12,6 +12,7 @@ Testing
 *.so
 *.dylib
 *.log
+*.profdata
 *-test
 _CPack_Packages
 *.tar.gz
