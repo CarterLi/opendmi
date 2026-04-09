@@ -1,0 +1,84 @@
+= dmi_error_raise_ex(3)
+The OpenDMI contributors
+OpenDMI 0.3.0
+
+:doctype: manpage
+:release-version: 0.3.0
+:manmanual: OpenDMI Manual
+:mansource: OpenDMI {release-version}
+
+== Name
+
+dmi_error_raise_ex - raise an error with an additional formatted message and add it to the error queue.
+
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
+== Synopsis
+
+[source, c]
+----
+#include <opendmi/error.h>
+
+bool dmi_error_raise_ex(dmi_context_t *context, dmi_error_code_t reason,
+                        const char *message, ...);                        /* macro */
+----
+
+== Description
+
+The `dmi_error_raise_ex` macro adds an error entry with reason code `reason`
+and an additional printf-style formatted message to the error queue of
+`context`. The source file name, function name, and line number are captured
+automatically from the call site.
+
+The formatted message is stored in the `message` field of the resulting
+`dmi_error_t` entry and is freed automatically when the entry is evicted from
+the queue or the queue is cleared.
+
+To raise an error without an additional message, use `dmi_error_raise`(3).
+
+The error queue is a ring buffer with a maximum depth of `DMI_ERROR_MAX_DEPTH`
+entries. When the queue is full, the oldest entry is overwritten silently.
+
+=== Parameters
+
+`context`::
+DMI context.
+
+`reason`::
+Error reason code.
+
+`message`::
+printf-style format string for the additional message.
+
+`...`::
+Format arguments.
+
+== Return value
+
+Returns `true` on success. Returns `false` if `context` is `NULL` or if
+memory allocation for the formatted message fails.
+
+== Examples
+
+[source, c]
+```
+if (fd < 0) {
+    dmi_error_raise_ex(context, DMI_ERROR_FILE_OPEN,
+                       "cannot open '%s': %s", path, strerror(errno));
+    return false;
+}
+```
+
+== See also
+
+`dmi_error_raise`(3),
+`dmi_error_get_first`(3),
+`dmi_error_get_last`(3),
+`dmi_error_message`(3)
+
+== Copying
+
+Copyright (c) 2025-2026, The OpenDMI contributors. Free use of this software
+is granted under the terms of the BSD 3-Clause License.

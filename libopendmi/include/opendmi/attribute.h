@@ -148,13 +148,93 @@ struct dmi_attribute
 
 __BEGIN_DECLS
 
+/**
+ * @brief Checks whether an attribute value represents an unspecified state.
+ *
+ * The check is type-dependent:
+ * - If `attr->params.unspec` is set, the value is compared byte-for-byte
+ *   against it.
+ * - For `DMI_ATTRIBUTE_TYPE_STRING` without a sentinel: the value is
+ *   considered unspecified when the string pointer is @c NULL.
+ * - For `DMI_ATTRIBUTE_TYPE_HANDLE` without a sentinel: the value is
+ *   considered unspecified when the handle equals `DMI_HANDLE_INVALID`.
+ * - For all other types without a sentinel: always returns @c false.
+ *
+ * @param attr  Attribute descriptor; must not be @c NULL.
+ * @param value Pointer to the value to check; must not be @c NULL.
+ * @return @c true if the value represents an unspecified state, @c false
+ *         otherwise.
+ */
 bool dmi_attribute_is_unspecified(const dmi_attribute_t *attr, const void *value);
+
+/**
+ * @brief Checks whether an attribute value represents an unknown state.
+ *
+ * Compares @p value byte-for-byte against the sentinel stored in
+ * `attr->params.unknown`. If no unknown sentinel is configured, always
+ * returns @c false.
+ *
+ * @param attr  Attribute descriptor; must not be @c NULL.
+ * @param value Pointer to the value to check; must not be @c NULL.
+ * @return @c true if the value matches the unknown sentinel, @c false
+ *         otherwise.
+ */
 bool dmi_attribute_is_unknown(const dmi_attribute_t *attr, const void *value);
 
+/**
+ * @brief Reads a boolean attribute value.
+ *
+ * @param attr  Attribute descriptor (unused).
+ * @param value Pointer to the value to read; must not be @c NULL.
+ * @return The boolean value at @p value.
+ */
 bool dmi_attribute_get_bool(const dmi_attribute_t *attr, const void *value);
+
+/**
+ * @brief Reads a signed integer attribute value of any supported width.
+ *
+ * Interprets the bytes at @p value as a signed integer whose width is
+ * determined by `attr->value.size` (1, 2, 4, or 8 bytes).
+ *
+ * @param attr  Attribute descriptor; must not be @c NULL.
+ * @param value Pointer to the value to read; must not be @c NULL.
+ * @return The signed integer value widened to `intmax_t`, or `INTMAX_MAX` if
+ *         `attr->value.size` does not match any supported width.
+ */
 intmax_t dmi_attribute_get_int(const dmi_attribute_t *attr, const void *value);
+
+/**
+ * @brief Reads an unsigned integer attribute value of any supported width.
+ *
+ * Interprets the bytes at @p value as an unsigned integer whose width is
+ * determined by `attr->value.size` (1, 2, 4, or 8 bytes).
+ *
+ * @param attr  Attribute descriptor; must not be @c NULL.
+ * @param value Pointer to the value to read; must not be @c NULL.
+ * @return The unsigned integer value widened to `uintmax_t`, or `UINTMAX_MAX`
+ *         if `attr->value.size` does not match any supported width.
+ */
 uintmax_t dmi_attribute_get_uint(const dmi_attribute_t *attr, const void *value);
 
+/**
+ * @brief Formats an attribute value as a newly allocated string.
+ *
+ * Dispatches to a type-specific formatter based on `attribute->type`. The
+ * @p pretty flag controls the output style: when @c true, values are
+ * formatted for human consumption (e.g., enum names, scaled byte sizes);
+ * when @c false, values use a machine-readable form (e.g., enum codes, raw
+ * byte counts).
+ *
+ * The caller is responsible for freeing the returned string.
+ *
+ * @param context   DMI context used for error reporting.
+ * @param attribute Attribute descriptor; must not be @c NULL.
+ * @param value     Pointer to the value to format; must not be @c NULL.
+ * @param pretty    @c true for human-readable output, @c false for
+ *                  machine-readable output.
+ * @return A newly allocated null-terminated string, or @c NULL if the
+ *         attribute type has no formatter or memory allocation fails.
+ */
 char *dmi_attribute_format(
         dmi_context_t         *context,
         const dmi_attribute_t *attribute,

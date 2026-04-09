@@ -26,9 +26,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `dmi_entity_data()`, `dmi_entity_info()`
   - `dmi_entity_handle()`, `dmi_entity_type()`, `dmi_entity_name()`
   - `dmi_entity_string()`, `dmi_entity_string_ex()`
+  - `dmi_error_message()`
+  - `dmi_error_get_first()`, `dmi_error_get_last()`
+  - `dmi_error_peek_first()`, `dmi_error_peek_last()`
+  - `dmi_error_raise()`, `dmi_error_raise_ex()`
+  - `dmi_error_clear()`
   - `dmi_file_lock()`, `dmi_file_unlock()`
   - `dmi_file_seek()`, `dmi_file_tell()`, `dmi_file_stat()`
-  - `dmi_file_read()`
+  - `dmi_file_read()`, `dmi_file_write()`
   - `dmi_file_close()`
   - `dmi_stream_initialize()`
   - `dmi_stream_decode()`, `dmi_stream_decode_at()`

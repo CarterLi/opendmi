@@ -14,7 +14,7 @@
 #define DMI_ERROR_MAX_DEPTH 32
 
 /**
- * @brief DMI error codes
+ * @brief DMI error codes.
  */
 typedef enum dmi_error_code
 {
@@ -96,20 +96,63 @@ typedef struct dmi_error_queue
     size_t count;
 } dmi_error_queue_t;
 
+/**
+ * @brief Raises an error and adds it to the error queue of @p context.
+ *
+ * The source file, function name, and line number are captured automatically.
+ *
+ * @param context DMI context.
+ * @param reason  Error reason code.
+ * @return @c true on success, @c false if @p context is @c NULL or memory
+ *         allocation fails.
+ */
 #define dmi_error_raise(context, reason) \
         __dmi_error_raise(context, __FILE__, __func__, __LINE__, reason, nullptr)
+
+/**
+ * @brief Raises an error with an additional formatted message and adds it to
+ * the error queue of @p context.
+ *
+ * The source file, function name, and line number are captured automatically.
+ *
+ * @param context  DMI context.
+ * @param reason   Error reason code.
+ * @param message  printf-style format string for the additional message.
+ * @param ...      Format arguments.
+ * @return @c true on success, @c false if @p context is @c NULL or memory
+ *         allocation fails.
+ */
 #define dmi_error_raise_ex(context, reason, message, ...) \
         __dmi_error_raise(context, __FILE__, __func__, __LINE__, reason, message, ##__VA_ARGS__)
 
 __BEGIN_DECLS
 
 /**
- * @brief Returns the error message for specified reason code.
+ * @brief Returns the human-readable message for an error reason code.
+ *
+ * @param reason Error reason code.
+ * @return A pointer to a static string describing the error.  Returns
+ *         @c "Unknown error" if @p reason is out of range or has no message.
  */
 const char *dmi_error_message(dmi_error_code_t reason);
 
 /**
  * @internal
+ * @brief Adds an error entry to the error queue of @p context.
+ *
+ * Prefer the @c dmi_error_raise() and @c dmi_error_raise_ex() macros, which
+ * fill @p file, @p function, and @p line automatically.
+ *
+ * @param context  DMI context.
+ * @param file     Path to the source file where the error occurred.
+ * @param function Name of the function where the error occurred.
+ * @param line     Line number where the error occurred.
+ * @param reason   Error reason code.
+ * @param message  printf-style format string for an additional message, or
+ *                 @c NULL if no additional message is needed.
+ * @param ...      Format arguments.
+ * @return @c true on success, @c false if @p context is @c NULL or memory
+ *         allocation for the message fails.
  */
 bool __dmi_error_raise(
         dmi_context_t    *context,
@@ -122,6 +165,18 @@ bool __dmi_error_raise(
 
 /**
  * @internal
+ * @brief @c va_list variant of @c __dmi_error_raise().
+ *
+ * @param context  DMI context.
+ * @param file     Path to the source file where the error occurred.
+ * @param function Name of the function where the error occurred.
+ * @param line     Line number where the error occurred.
+ * @param reason   Error reason code.
+ * @param message  printf-style format string for an additional message, or
+ *                 @c NULL if no additional message is needed.
+ * @param args     Format arguments.
+ * @return @c true on success, @c false if @p context is @c NULL or memory
+ *         allocation for the message fails.
  */
 bool __dmi_error_vraise(
         dmi_context_t    *context,
@@ -133,37 +188,62 @@ bool __dmi_error_vraise(
         va_list           args);
 
 /**
- * @brief This function returns the earliest error code from the error stack.
+ * @brief Returns the oldest error descriptor from the error queue without
+ * removing it.
+ *
+ * @param context DMI context.
+ * @return Pointer to the oldest error descriptor, or @c NULL if @p context is
+ *         @c NULL or the error queue is empty.
  */
 dmi_error_t *dmi_error_peek_first(dmi_context_t *context);
 
 /**
- * @brief This function returns the latest error code from the error stack.
+ * @brief Returns the newest error descriptor from the error queue without
+ * removing it.
+ *
+ * @param context DMI context.
+ * @return Pointer to the newest error descriptor, or @c NULL if @p context is
+ *         @c NULL or the error queue is empty.
  */
 dmi_error_t *dmi_error_peek_last(dmi_context_t *context);
 
 /**
- * @brief This function returns the earliest error code from the error stack
- * and removes the entry. It can be called repeatedly until there are no more
- * error codes to return.
+ * @brief Removes and returns the oldest error descriptor from the error queue.
  *
- * @note
- * The returned value is only valid until next call of `dmi_error_get_first()`,
- * `dmi_error_get_last()` or `dmi_error_raise()`.
+ * Can be called repeatedly until there are no more entries.
+ *
+ * @param context DMI context.
+ * @return Pointer to the oldest error descriptor, or @c NULL if @p context is
+ *         @c NULL or the error queue is empty.
+ *
+ * @note The returned pointer is valid only until the error queue is next
+ *       modified by @c dmi_error_raise(), @c dmi_error_raise_ex(),
+ *       @c dmi_error_get_first(), @c dmi_error_get_last(), or
+ *       @c dmi_error_clear().
  */
 dmi_error_t *dmi_error_get_first(dmi_context_t *context);
 
 /**
- * @brief This function returns the latest error code from the error stack
- * and removes the entry. It can be called repeatedly until there are no more
- * error codes to return.
+ * @brief Removes and returns the newest error descriptor from the error queue.
  *
- * @note
- * The returned value is only valid until next call of `dmi_error_get_first()`,
- * `dmi_error_get_last()` or `dmi_error_raise()`.
+ * Can be called repeatedly until there are no more entries.
+ *
+ * @param context DMI context.
+ * @return Pointer to the newest error descriptor, or @c NULL if @p context is
+ *         @c NULL or the error queue is empty.
+ *
+ * @note The returned pointer is valid only until the error queue is next
+ *       modified by @c dmi_error_raise(), @c dmi_error_raise_ex(),
+ *       @c dmi_error_get_first(), @c dmi_error_get_last(), or
+ *       @c dmi_error_clear().
  */
 dmi_error_t *dmi_error_get_last(dmi_context_t *context);
 
+/**
+ * @brief Removes all error descriptors from the error queue.
+ *
+ * @param context DMI context.
+ */
 void dmi_error_clear(dmi_context_t *context);
 
 __END_DECLS

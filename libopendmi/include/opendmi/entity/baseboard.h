@@ -254,6 +254,15 @@ extern const dmi_entity_spec_t dmi_baseboard_spec;
 
 __BEGIN_DECLS
 
+/**
+ * @brief Get baseboard type name.
+ *
+ * Returns the human-readable name of the baseboard type.
+ *
+ * @param[in] value Baseboard type value.
+ * @return The baseboard type name string, or `NULL` if @p value is out of
+ * range.
+ */
 const char *dmi_baseboard_type_name(dmi_baseboard_type_t value);
 
 __END_DECLS

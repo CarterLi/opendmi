@@ -231,7 +231,7 @@ bool dmi_registry_scan(dmi_registry_t *registry)
         // Create entity for the structure
         entity = dmi_entity_create(context, ptr, remaining);
         if (entity == nullptr) {
-            dmi_error_t *error = dmi_error_get_last(context);
+            dmi_error_t *error = dmi_error_peek_last(context);
 
             if (error->reason == DMI_ERROR_ENTITY_TRUNCATED) {
                 dmi_log_warning(context, "Truncated structure, stopping before end-of-table");

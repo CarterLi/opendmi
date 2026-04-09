@@ -108,6 +108,23 @@ bool dmi_file_unlock(int fd, off_t size);
  */
 ssize_t dmi_file_read(int fd, dmi_data_t *data, size_t size);
 
+/**
+ * @brief Writes exactly @p size bytes to an open file descriptor.
+ *
+ * Performs a full write by looping until all requested bytes are written or
+ * a zero-length write is returned. Retries automatically if interrupted by a
+ * signal (`EINTR`). Returns fewer than @p size bytes only if the underlying
+ * `write()` returns zero before all bytes are written.
+ *
+ * @param[in] fd    Open file descriptor to write to.
+ * @param[in] data  Buffer containing the data to write; must be at least
+ *                  @p size bytes.
+ * @param[in] size  Number of bytes to write.
+ *
+ * @return The total number of bytes written (may be less than @p size if a
+ *         zero-length write occurs), or `-1` on error with `errno` set
+ *         accordingly.
+ */
 ssize_t dmi_file_write(int fd, dmi_data_t *data, size_t size);
 
 /**

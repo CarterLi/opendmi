@@ -64,9 +64,46 @@ struct dmi_name_set
 
 __BEGIN_DECLS
 
+/**
+ * @brief Look up the machine-readable code string for an integer identifier.
+ *
+ * Searches @p dict first by exact entry match in `names`, then by range match
+ * in `ranges`, and returns the `code` field of the first matching entry.
+ *
+ * @param dict Dictionary to search; must not be @c NULL.
+ * @param id   Integer identifier to look up; must be non-negative.
+ * @return The code string for @p id, or @c NULL if @p dict is @c NULL,
+ *         @p id is negative, or no matching entry is found.
+ */
 const char *dmi_code_lookup(const dmi_name_set_t *dict, int id);
+
+/**
+ * @brief Reverse look up the integer identifier for a machine-readable code
+ *        string.
+ *
+ * Searches the `names` entries of @p dict for an entry whose `code` field
+ * equals @p code and returns the corresponding integer identifier.
+ *
+ * @note Range entries are not searched.
+ *
+ * @param dict Dictionary to search; must not be @c NULL.
+ * @param code Code string to look up; must not be @c NULL.
+ * @return The integer identifier for @p code, or @c -1 if @p dict is @c NULL,
+ *         @p dict has no `names` entries, or no matching entry is found.
+ */
 int dmi_code_lookup_rev(const dmi_name_set_t *dict, const char *code);
 
+/**
+ * @brief Look up the human-readable name string for an integer identifier.
+ *
+ * Searches @p dict first by exact entry match in `names`, then by range match
+ * in `ranges`, and returns the `name` field of the first matching entry.
+ *
+ * @param dict Dictionary to search; must not be @c NULL.
+ * @param id   Integer identifier to look up; must be non-negative.
+ * @return The name string for @p id, or @c NULL if @p dict is @c NULL,
+ *         @p id is negative, or no matching entry is found.
+ */
 const char *dmi_name_lookup(const dmi_name_set_t *dict, int id);
 
 __END_DECLS

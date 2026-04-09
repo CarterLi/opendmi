@@ -1,0 +1,54 @@
+= dmi_error_peek_last(3)
+The OpenDMI contributors
+OpenDMI 0.3.0
+
+:doctype: manpage
+:release-version: 0.3.0
+:manmanual: OpenDMI Manual
+:mansource: OpenDMI {release-version}
+
+== Name
+
+dmi_error_peek_last - return the newest error descriptor from the error queue without removing it.
+
+== Library
+
+OpenDMI C library (`libopendmi`, `-lopendmi`)
+
+== Synopsis
+
+[source, c]
+----
+#include <opendmi/error.h>
+
+dmi_error_t *dmi_error_peek_last(dmi_context_t *context);
+----
+
+== Description
+
+The `dmi_error_peek_last` function returns a pointer to the newest error
+descriptor in the error queue of `context` without removing it. The queue is
+not modified.
+
+=== Parameters
+
+`context`::
+DMI context.
+
+== Return value
+
+Returns a pointer to the newest `dmi_error_t` in the queue, or `NULL` if
+`context` is `NULL` or the error queue is empty.
+
+== See also
+
+`dmi_error_peek_first`(3),
+`dmi_error_get_first`(3),
+`dmi_error_get_last`(3),
+`dmi_error_clear`(3),
+`dmi_error_raise`(3)
+
+== Copying
+
+Copyright (c) 2025-2026, The OpenDMI contributors. Free use of this software
+is granted under the terms of the BSD 3-Clause License.

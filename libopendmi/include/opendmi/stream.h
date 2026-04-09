@@ -13,10 +13,37 @@
 
 typedef struct dmi_stream dmi_stream_t;
 
+/**
+ * @brief Sequential reader over an SMBIOS entity body.
+ *
+ * Provides a cursor-based view of the body data (the portion of the SMBIOS
+ * structure that follows its fixed-size header). Initialise with
+ * `dmi_stream_initialize`(3) before use.
+ *
+ * @note All fields are maintained internally. Do not modify them directly;
+ *       use the stream API instead.
+ */
 struct dmi_stream
 {
+    /**
+     * @brief Entity whose body data is being read.
+     */
     const dmi_entity_t *entity;
+
+    /**
+     * @brief Current byte offset from the beginning of the entity body.
+     *
+     * Advanced by sequential read operations. May be repositioned with
+     * `dmi_stream_seek`(3) or reset to zero with `dmi_stream_reset`(3).
+     */
     size_t position;
+
+    /**
+     * @brief Number of bytes available from the current position to the end
+     *        of the entity body.
+     *
+     * Always equal to `entity->body_length - position`.
+     */
     size_t remaining;
 };
 
