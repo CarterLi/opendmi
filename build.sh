@@ -5,6 +5,8 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
+set -e
+
 SCRIPT_PATH=`readlink -f "$0"`
 SCRIPT_ROOT=`dirname "$0"`
 SCRIPT_NAME=`basename "$0"`
@@ -37,24 +39,29 @@ case "${OSNAME}" in
     Linux)
         NPROC=`nproc --all`
         ;;
-    FreeBSD|Darwin)
+    FreeBSD|NetBSD|Darwin)
         NPROC=`sysctl -n hw.ncpu`
         ;;
     *)
         NPROC=1
 esac
 
-CMAKE=`which cmake`
-if [ "$?" -ne "0" ]; then
-    echo "CMake not found" 1>&2
-    exit 1
-fi
+_find_command() {
+    local NAME="$1"
+    local COMMAND="$2"
+    local PATH=`which ${COMMAND}`
 
-CTEST=`which ctest`
-if [ "$?" -ne "0" ]; then
-    echo "CTest not found" 1>&2
-    exit 1
-fi
+    if [ -z "${PATH}" ]; then
+        echo "${NAME} not found (${COMMAND})" 1>&2
+        exit 1
+    fi
+
+    echo ${PATH}
+}
+
+CMAKE="`_find_command "CMake" cmake`"
+CTEST="`_find_command "CTest" ctest`"
+COMPILER="`_find_command "Compiler" cc`"
 
 _missing_command() {
     echo "Missing command. Use -h or --help for help" 1>&2
@@ -101,26 +108,28 @@ _usage() {
     echo
     echo "Configure options:"
     echo "    General:"
-    echo "        --prefix <PATH>  Set installation prefix (default=${PREFIX})"
-    echo "        --release        Release build"
-    echo "        --debug          Debug build"
-    echo "        --coverage       Coverage build"
+    echo "        --prefix <PATH>    Set installation prefix (default=${PREFIX})"
+    echo "        --compiler <PATH>  Set path to C compiler"
+    echo "        --release          Release build"
+    echo "        --debug            Debug build"
+    echo "        --coverage         Coverage build"
     echo "    Components:"
-    echo "        --enable-all     Build all components"
-    echo "        --enable-golang  Build with Go support (libopendmi-go, default=${ENABLE_GOLANG})"
-    echo "        --enable-python  Build with Python support (libopendmi-python, default=${ENABLE_PYTHON})"
-    echo "        --enable-rust    Build with Rust support (libopendmi-rust, default=${ENABLE_RUST})"
-    echo "        --enable-dbus    Build with D-bus support (opendmi-dbus, default=${ENABLE_DBUS})"
+    echo "        --enable-all       Build all components"
+    echo "        --enable-golang    Build with Go support (libopendmi-go, default=${ENABLE_GOLANG})"
+    echo "        --enable-python    Build with Python support (libopendmi-python, default=${ENABLE_PYTHON})"
+    echo "        --enable-rust      Build with Rust support (libopendmi-rust, default=${ENABLE_RUST})"
+    echo "        --enable-dbus      Build with D-bus support (opendmi-dbus, default=${ENABLE_DBUS})"
     echo "    Features:"
-    echo "        --with-icu       Build with ICU4C support (default=${ENABLE_ICU})"
-    echo "        --with-curses    Build with Curses support (default=${ENABLE_CURSES})"
-    echo "        --with-xml       Build with XML support (default=${ENABLE_XML})"
-    echo "        --with-yaml      Build with YAML support (default=${ENABLE_YAML})"
-    echo "        --with-json      Build with JSON support (default=${ENABLE_JSON})"
+    echo "        --with-icu         Build with ICU4C support (default=${ENABLE_ICU})"
+    echo "        --with-curses      Build with Curses support (default=${ENABLE_CURSES})"
+    echo "        --with-xml         Build with XML support (default=${ENABLE_XML})"
+    echo "        --with-yaml        Build with YAML support (default=${ENABLE_YAML})"
+    echo "        --with-json        Build with JSON support (default=${ENABLE_JSON})"
     echo "    Miscellaneous:"
-    echo "        --verbose        Generate verbose Makefiles"
+    echo "        --verbose          Generate verbose Makefiles"
     echo
     echo "Defaults:"
+    echo "    Compiler:        ${COMPILER}"
     echo "    Build directory: ${BUILD_DIR}"
     echo "    Build type:      ${BUILD_TYPE}"
     echo "    Number of jobs:  ${NPROC}"
@@ -128,7 +137,7 @@ _usage() {
 
 _configure() {
     RELEASE_BRANCH=`git branch --show-current`
-    if [ "${RELEASE_BRANCH}" == "main" ]; then
+    if [ "${RELEASE_BRANCH}" = "main" ]; then
         RELEASE_DATE=`date +'%Y-%m-%d'`
     else
         RELEASE_TAG=`git describe --tags --abbrev=0`
@@ -140,8 +149,13 @@ _configure() {
         shift
 
         case "$OPTION" in
+            --compiler)
+                _require_argument "$OPTION" "$#"
+                COMPILER="$1"
+                shift
+                ;;
             --prefix)
-                _require_argument $OPTION $#
+                _require_argument "$OPTION" "$#"
                 PREFIX="$1"
                 shift
                 ;;
@@ -220,6 +234,7 @@ _configure() {
     echo "Target:          ${OSNAME}"
     echo "Using CMake:     ${CMAKE}"
     echo "Using CTest:     ${CTEST}"
+    echo "Using compiler:  ${COMPILER}"
     echo "Build directory: ${BUILD_DIR}"
     echo "Release branch:  ${RELEASE_BRANCH}"
     echo "Release date:    ${RELEASE_DATE}"
@@ -228,6 +243,7 @@ _configure() {
     echo
 
     ${CMAKE} -B ${BUILD_DIR} \
+        -DCMAKE_C_COMPILER=${COMPILER} \
         -DCMAKE_INSTALL_PREFIX=${PREFIX} \
         -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
         -DOPENDMI_RELEASE_DATE=${RELEASE_DATE} \
@@ -243,7 +259,7 @@ _build() {
 }
 
 _test() {
-    CTEST_ARGS=""
+    local CTEST_ARGS=""
 
     while [ $# -gt 0 ]; do
         OPTION=$1
