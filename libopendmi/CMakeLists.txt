@@ -194,7 +194,7 @@ target_sources(opendmi-object
         src/module/hpe.c
 
         src/module/intel.c
-        src/entity/intel/rsd-cabled-pcie-port.c
+        src/entity/intel/rsd-cabled-pcie.c
         src/entity/intel/rsd-fpga.c
         src/entity/intel/rsd-memory-device.c
         src/entity/intel/rsd-network-card.c
@@ -318,7 +318,7 @@ target_sources(opendmi-object
             include/opendmi/module/hpe.h
 
             include/opendmi/module/intel.h
-            include/opendmi/entity/intel/rsd-cabled-pcie-port.h
+            include/opendmi/entity/intel/rsd-cabled-pcie.h
             include/opendmi/entity/intel/rsd-fpga.h
             include/opendmi/entity/intel/rsd-memory-device.h
             include/opendmi/entity/intel/rsd-network-card.h

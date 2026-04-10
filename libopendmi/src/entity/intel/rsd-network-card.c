@@ -23,9 +23,9 @@ const dmi_entity_spec_t dmi_intel_rsd_network_card_spec =
             .code = "pci-class",
             .name = "PCI class"
         }),
-        DMI_ATTRIBUTE(dmi_intel_rsd_network_card_t, pci_slot_number, INTEGER, {
-            .code = "pci-slot-number",
-            .name = "PCI slot number"
+        DMI_ATTRIBUTE(dmi_intel_rsd_network_card_t, pci_slot_id, INTEGER, {
+            .code = "pci-slot-id",
+            .name = "PCI slot ID"
         }),
         DMI_ATTRIBUTE(dmi_intel_rsd_network_card_t, vendor_id, INTEGER, {
             .code  = "vendor-id",
@@ -85,7 +85,7 @@ static bool dmi_intel_rsd_network_card_decode(dmi_entity_t *entity)
 
     return
         dmi_stream_decode(stream, dmi_byte_t, &info->pci_class) and
-        dmi_stream_decode(stream, dmi_word_t, &info->pci_slot_number) and
+        dmi_stream_decode(stream, dmi_word_t, &info->pci_slot_id) and
         dmi_stream_decode(stream, dmi_word_t, &info->vendor_id) and
         dmi_stream_decode(stream, dmi_word_t, &info->device_id) and
         dmi_stream_decode(stream, dmi_word_t, &info->sub_vendor_id) and

@@ -28,7 +28,7 @@ struct dmi_intel_rsd_network_card
     /**
      * @brief Physical slot number of the slot connected to the PCIe port.
      */
-    dmi_pci_slot_t pci_slot_number;
+    dmi_pci_slot_t pci_slot_id;
 
     /**
      * @brief Vendor identification number.

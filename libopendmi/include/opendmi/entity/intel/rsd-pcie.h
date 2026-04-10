@@ -31,7 +31,7 @@ struct dmi_intel_rsd_pcie
      * Slots (type 9) attribute structure for the slot this PCIe device is
      * located in.
      */
-    dmi_pci_slot_t pci_slot_number;
+    dmi_pci_slot_t pci_slot_id;
 
     /**
      * @brief Vendor identification number.

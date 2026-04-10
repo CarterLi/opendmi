@@ -6,7 +6,7 @@
 //
 #include <opendmi/module/intel.h>
 
-#include <opendmi/entity/intel/rsd-cabled-pcie-port.h>
+#include <opendmi/entity/intel/rsd-cabled-pcie.h>
 #include <opendmi/entity/intel/rsd-fpga.h>
 #include <opendmi/entity/intel/rsd-memory-device.h>
 #include <opendmi/entity/intel/rsd-network-card.h>
@@ -25,7 +25,7 @@ static dmi_module_t dmi_intel_module =
     .code     = "intel",
     .name     = "Intel extensions",
     .entities = (const dmi_entity_spec_t *[]){
-        &dmi_intel_rsd_cabled_pcie_port_spec,
+        &dmi_intel_rsd_cabled_pcie_spec,
         &dmi_intel_rsd_fpga_spec,
         &dmi_intel_rsd_memory_device_spec,
         &dmi_intel_rsd_network_card_spec,
