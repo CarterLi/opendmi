@@ -28,6 +28,8 @@
 #include <opendmi/utils.h>
 #include <opendmi/utils/file.h>
 
+#include <opendmi/backend/dump.h>
+
 #include <opendmi/entity/additional-info.h>
 #include <opendmi/entity/baseboard.h>
 #include <opendmi/entity/battery.h>
@@ -78,23 +80,6 @@
 #include <opendmi/entity/tpm-device.h>
 #include <opendmi/entity/voltage-probe.h>
 
-#include <opendmi/backend/dump.h>
-#if defined(__linux__)
-#   include <opendmi/backend/linux.h>
-#   define DMI_BACKEND dmi_linux_backend
-#elif defined(__APPLE__)
-#   include <opendmi/backend/darwin.h>
-#   define DMI_BACKEND dmi_darwin_backend
-#elif defined(__FreeBSD__)
-#   include <opendmi/backend/freebsd.h>
-#   define DMI_BACKEND dmi_freebsd_backend
-#elif defined(_WIN32)
-#   include <opendmi/backend/windows.h>
-#   define DMI_BACKEND dmi_windows_backend
-#else
-#   error "Unsupported OS type"
-#endif
-
 static bool dmi_open_ex(
         dmi_context_t       *context,
         const dmi_backend_t *backend,
@@ -111,11 +96,6 @@ static bool dmi_setup_extensions(dmi_context_t *context);
  * @brief Fixup DMI version number.
  */
 static void dmi_version_fixup(dmi_context_t *context);
-
-/**
- * @brief Backend handle.
- */
-static dmi_backend_t *dmi_backend = &DMI_BACKEND;
 
 static const dmi_entity_spec_t dmi_inactive_spec =
 {

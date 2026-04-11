@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add Windows backend #99
+- Add NetBSD backend #97
 - Add pager support on Windows
 - Add `explain` command implementation
 - Add Intel RSD Network card information decoder #81
@@ -21,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Intel RSD Cabled PCIe port information decoder #89
 - Add registry status flags support
 - Add `dmi_pci_class_t`, `dmi_pci_slot_t`, `dmi_pci_vendor_id_t`, `dmi_pci_device_id_t` types for PCI identifiers
-- Add `--compiler` flag to `build.sh`
+- Add `--compiler` option to `build.sh`
 - Add new manual pages:
   - `dmi_base64_decode()`, `dmi_base64_encode()`
   - `dmi_entity_create()`, `dmi_entity_destroy()`

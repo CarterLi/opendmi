@@ -98,12 +98,17 @@ bool dmi_file_unlock(int fd, off_t size)
     return true;
 }
 
-ssize_t dmi_file_read(int fd, dmi_data_t *data, size_t size)
+ssize_t dmi_file_read(int fd, dmi_data_t *data, off_t offset, size_t size)
 {
     size_t nread = 0;
 
     assert(fd >= 0);
     assert(data != nullptr);
+
+    if (offset >= 0) {
+        if (dmi_file_seek(fd, offset, SEEK_SET) < 0)
+            return -1;
+    }
 
     while (size > 0) {
         ssize_t rv = read(fd, data + nread, size - nread);

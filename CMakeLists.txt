@@ -86,6 +86,7 @@ find_package(AsciiDoctor)
 find_package(AsciiDoctorPdf)
 
 find_package_ex(ICU ENABLE_ICU COMPONENTS data uc)
+set(CURSES_NEED_NCURSES TRUE)
 find_package_ex(Curses ENABLE_CURSES)
 find_package_ex(LibXml2 ENABLE_XML)
 find_package_ex(LibYaml ENABLE_YAML)

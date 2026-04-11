@@ -89,7 +89,11 @@ uint64_t dmi_ipow64(uint64_t value, unsigned int factor);
  * @return Pointer to a newly allocated buffer containing the file data, or
  *         @c NULL on failure. @p plength is not modified on failure.
  */
-dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *plength);
+dmi_data_t *dmi_file_get(
+        dmi_context_t *context,
+        const char    *path,
+        off_t         offset,
+        size_t       *plength);
 
 #if !defined(_WIN32)
 /**

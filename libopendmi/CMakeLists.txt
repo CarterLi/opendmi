@@ -98,6 +98,7 @@ target_include_directories(opendmi-object PUBLIC include)
 target_sources(opendmi-object
     PRIVATE
         src/attribute.c
+        src/backend.c
         src/context.c
         src/entity.c
         src/entry.c
@@ -342,7 +343,7 @@ target_sources(opendmi-object
 )
 
 if(UNIX)
-    target_compile_definitions(opendmi-object PRIVATE _XOPEN_SOURCE _GNU_SOURCE)
+    add_compile_definitions(_REENTRANT _XOPEN_SOURCE _GNU_SOURCE)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -368,10 +369,26 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
     target_sources(opendmi-object
         PRIVATE
+            src/backend/generic.c
             src/backend/freebsd.c
         PUBLIC FILE_SET HEADERS
             BASE_DIRS include
-            FILES include/opendmi/backend/freebsd.h
+            FILES
+                include/opendmi/backend/generic.h
+                include/opendmi/backend/freebsd.h
+    )
+elseif(CMAKE_SYSTEM_NAME STREQUAL "NetBSD")
+    add_compile_definitions(_NETBSD_SOURCE)
+
+    target_sources(opendmi-object
+        PRIVATE
+            src/backend/generic.c
+            src/backend/netbsd.c
+        PUBLIC FILE_SET HEADERS
+            BASE_DIRS include
+            FILES
+                include/opendmi/backend/generic.h
+                include/opendmi/backend/netbsd.h
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     list(APPEND LIBOPENDMI_LIBRARIES ntdll)

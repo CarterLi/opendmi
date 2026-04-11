@@ -45,6 +45,10 @@ add_executable(opendmi
     src/utils/tty.c
 )
 
+if(UNIX)
+    add_compile_definitions(_REENTRANT _XOPEN_SOURCE _GNU_SOURCE)
+endif()
+
 if(WIN32)
     target_sources(opendmi PRIVATE src/pager/win32.c)
 else()

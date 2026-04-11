@@ -98,15 +98,17 @@ bool dmi_file_unlock(int fd, off_t size);
  * (`EINTR`). Returns fewer than @p size bytes only if EOF is encountered
  * before the read is complete.
  *
- * @param[in]  fd    Open file descriptor to read from.
- * @param[out] data  Buffer that receives the data; must be at least
- *                   @p size bytes.
- * @param[in]  size  Number of bytes to read.
+ * @param[in]  fd      Open file descriptor to read from.
+ * @param[out] data    Buffer that receives the data; must be at least
+ *                     @p size bytes.
+ * @param[in]  offset  Starting offset. Should be set to `-1` for reading from
+ *                     current position.
+ * @param[in]  size    Number of bytes to read.
  *
  * @return The total number of bytes read (may be less than @p size at EOF),
  *         or `-1` on error with `errno` set accordingly.
  */
-ssize_t dmi_file_read(int fd, dmi_data_t *data, size_t size);
+ssize_t dmi_file_read(int fd, dmi_data_t *data, off_t offset, size_t size);
 
 /**
  * @brief Writes exactly @p size bytes to an open file descriptor.

@@ -11,7 +11,7 @@ The project is under active development, see [ROADMAP](ROADMAP.md) and [CHANGELO
 * Bindings for Python, Go and Rust languages.
 * Modular extensions for handling OEM-specific structures.
 * JSON, XML and YAML output support for automation purposes.
-* Works on Linux, MacOS, BSD and Windows platforms.
+* Works on Linux, MacOS, Free/Net BSD and Windows platforms.
 * Small footprint, no external dependencies.
 
 ## Components

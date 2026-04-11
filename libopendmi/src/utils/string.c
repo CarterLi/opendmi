@@ -11,7 +11,6 @@
 
 #include <opendmi/utils/string.h>
 
-
 int dmi_asprintf(char **strp, const char *format, ...)
 {
     int rv;
@@ -68,7 +67,7 @@ void dmi_string_tolower(char *str)
     assert(str != nullptr);
 
     while (*str != 0) {
-        *str = tolower(*str);
+        *str = tolower((int)*str);
         str++;
     }
 }
@@ -78,7 +77,7 @@ void dmi_string_toupper(char *str)
     assert(str != nullptr);
 
     while (*str != 0) {
-        *str = toupper(*str);
+        *str = toupper((int)*str);
         str++;
     }
 }

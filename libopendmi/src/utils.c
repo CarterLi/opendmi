@@ -103,7 +103,11 @@ uint64_t dmi_ipow64(uint64_t value, unsigned int factor)
     return value * result;
 }
 
-dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *plength)
+dmi_data_t *dmi_file_get(
+        dmi_context_t *context,
+        const char    *path,
+        off_t          offset,
+        size_t        *plength)
 {
     if (context == nullptr)
         return nullptr;
@@ -119,7 +123,8 @@ dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *pleng
 
     int         fd     = -1;
     dmi_data_t *data   = nullptr;
-    ssize_t     length = 0;
+    size_t      length = *plength;
+    ssize_t     nread  = 0;
 
     bool success = false;
     do {
@@ -127,6 +132,7 @@ dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *pleng
 
         dmi_log_debug(context, "Reading %s ...", path);
 
+        // Open file
 #if defined(_WIN32)
         if (_sopen_s(&fd, path, _O_RDONLY, _SH_DENYNO, _S_IREAD) != 0)
             break;
@@ -137,16 +143,23 @@ dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *pleng
         }
 #endif
 
-        if (dmi_file_stat(fd, &st) < 0) {
-            dmi_error_raise_ex(context, DMI_ERROR_FILE_STAT, "%s: %s", path, strerror(errno));
-            break;
+        // Determine actual number of bytes to read
+        if (length == 0) {
+            if (dmi_file_stat(fd, &st) < 0) {
+                dmi_error_raise_ex(context, DMI_ERROR_FILE_STAT, "%s: %s", path, strerror(errno));
+                break;
+            }
+
+            length = st.st_size;
         }
 
-        if ((data = dmi_alloc(context, st.st_size)) == nullptr)
+        // Allocate output buffer
+        if ((data = dmi_alloc(context, length)) == nullptr)
             break;
 
-        length = dmi_file_read(fd, data, st.st_size);
-        if (length < 0) {
+        // Read data into buffer
+        nread = dmi_file_read(fd, data, offset, length);
+        if (nread < 0) {
             dmi_error_raise_ex(context, DMI_ERROR_FILE_READ, "%s: %s", path, strerror(errno));
             break;
         }
@@ -156,15 +169,17 @@ dmi_data_t *dmi_file_get(dmi_context_t *context, const char *path, size_t *pleng
         success = true;
     } while (false);
 
+    // Cleanup
     if (fd >= 0)
         dmi_file_close(fd);
 
+    // Handle errors
     if (not success) {
         dmi_free(data);
         return nullptr;
     }
 
-    *plength = (size_t)length;
+    *plength = (size_t)nread;
 
     return data;
 }

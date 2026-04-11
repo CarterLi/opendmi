@@ -23,10 +23,10 @@
 #   elif __has_include(<curses.h>)
 #       include <curses.h>
 #   endif
-#   if __has_include(<term.h>)
-#       include <term.h>
-#   elif __has_include(<ncurses/term.h>)
+#   if __has_include(<ncurses/term.h>)
 #       include <ncurses/term.h>
+#   elif __has_include(<term.h>)
+#       include <term.h>
 #   endif
 #endif // ENABLE_CURSES
 

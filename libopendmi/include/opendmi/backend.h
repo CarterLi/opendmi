@@ -29,4 +29,9 @@ struct dmi_backend
     bool (*close)(dmi_context_t *context);
 };
 
+/**
+ * @brief Backend handle.
+ */
+extern dmi_backend_t *dmi_backend;
+
 #endif // !OPENDMI_BACKEND_H
