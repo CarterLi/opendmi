@@ -72,6 +72,16 @@ else()
     add_compile_definitions(NDEBUG)
 endif()
 
+if(UNIX)
+    add_compile_definitions(_REENTRANT _GNU_SOURCE)
+endif()
+
+if(CMAKE_SYSTEM_NAME STREQUAL "NetBSD")
+    add_compile_definitions(_NETBSD_SOURCE)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "OpenBSD")
+    add_compile_definitions(__BSD_VISIBLE __XPG_VISIBLE=420)
+endif()
+
 include(FindPackageEx)
 
 if(APPLE)

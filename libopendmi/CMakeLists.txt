@@ -342,10 +342,6 @@ target_sources(opendmi-object
             include/opendmi/backend/dump.h
 )
 
-if(UNIX)
-    add_compile_definitions(_REENTRANT _XOPEN_SOURCE _GNU_SOURCE)
-endif()
-
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_sources(opendmi-object
         PRIVATE
@@ -378,8 +374,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
                 include/opendmi/backend/freebsd.h
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "NetBSD")
-    add_compile_definitions(_NETBSD_SOURCE)
-
     target_sources(opendmi-object
         PRIVATE
             src/backend/generic.c

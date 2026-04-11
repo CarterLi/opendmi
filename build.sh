@@ -39,7 +39,7 @@ case "${OSNAME}" in
     Linux)
         NPROC=`nproc --all`
         ;;
-    FreeBSD|NetBSD|Darwin)
+    FreeBSD|OpenBSD|NetBSD|Darwin)
         NPROC=`sysctl -n hw.ncpu`
         ;;
     *)
@@ -49,7 +49,7 @@ esac
 _find_command() {
     local NAME="$1"
     local COMMAND="$2"
-    local PATH=`which ${COMMAND}`
+    local PATH=`which ${COMMAND} 2>/dev/null`
 
     if [ -z "${PATH}" ]; then
         echo "${NAME} not found (${COMMAND})" 1>&2
