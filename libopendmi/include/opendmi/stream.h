@@ -111,8 +111,28 @@ bool dmi_stream_read_data(dmi_stream_t *stream, void *ptr, size_t length);
  */
 bool dmi_stream_read_data_at(const dmi_stream_t *stream, void *ptr, size_t offset, size_t length);
 
+/**
+ * @brief Advance the stream cursor without reading data.
+ *
+ * Moves the stream cursor forward by @p length bytes, effectively discarding
+ * that many bytes from the current position.
+ *
+ * @param[in,out] stream Stream to advance.
+ * @param[in]     length Number of bytes to skip.
+ *
+ * @return `true` on success, `false` if there are fewer than @p length bytes
+ *         remaining in the stream.
+ */
 bool dmi_stream_skip(dmi_stream_t *stream, size_t length);
 
+/**
+ * @brief Return the number of unread bytes in the stream.
+ *
+ * @param[in] stream Stream to query.
+ *
+ * @return Number of bytes from the current cursor position to the end of the
+ *         entity body.
+ */
 size_t dmi_stream_remaining(const dmi_stream_t *stream);
 
 /**

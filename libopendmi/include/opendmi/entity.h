@@ -415,6 +415,18 @@ void dmi_entity_destroy(dmi_entity_t *entity);
 
 __END_DECLS
 
+/**
+ * @brief Get entity string (trimmed).
+ *
+ * Convenience wrapper around `dmi_entity_string_ex`(3) that returns the
+ * trimmed version of the string at @p num.
+ *
+ * @param[in] entity Entity descriptor.
+ * @param[in] num    1-based string index.
+ *
+ * @return The trimmed string, or `NULL` if @p entity is `NULL`, @p num is
+ *         zero, or @p num exceeds the number of strings in the entity.
+ */
 static inline const char *dmi_entity_string(const dmi_entity_t *entity, dmi_string_t num)
 {
     return dmi_entity_string_ex(entity, num, false);
